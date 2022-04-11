@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  @apply font-sans bg-white text-gray-900;
+}
+
+a {
+  @apply text-gray-900;
+}
+
+a:hover {
+  @apply text-mochi;
+}

@@ -1,0 +1,46 @@
+.button {
+  @apply cursor-pointer rounded-xl;
+  @apply font-semibold text-center;
+  @apply transition-all duration-200 ease-in-out;
+}
+
+a.button {
+  display: inline-block;
+}
+
+a.button.base {
+  line-height: 3rem;
+}
+
+.button:not(:disabled):hover {
+  @apply -translate-y-1;
+  @apply shadow-mochi-100 shadow-xl;
+}
+
+.button:disabled {
+  @apply opacity-50;
+}
+
+.fullRadius {
+  @apply rounded-full;
+}
+
+.base {
+  @apply h-12 px-8 text-lg;
+}
+
+.small {
+  @apply h-10 px-3 text-base;
+}
+
+.mochi {
+  @apply text-white bg-mochi;
+}
+
+.white {
+  @apply text-mochi bg-mochi-50;
+}
+
+.button:focus {
+  @apply outline outline-2 outline-offset-2 outline-mochi;
+}

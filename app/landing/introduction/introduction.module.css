@@ -1,0 +1,53 @@
+.container {
+  @apply max-w-5xl p-12 mx-auto flex flex-col md:flex-row items-center;
+}
+
+.circle {
+  @apply top-full -translate-y-1/2 -translate-x-1/2;
+  @apply absolute md:top-1/2 right-0;
+  @apply transform md:-translate-y-1/2 md:translate-x-1/2;
+  @apply flex items-center justify-center;
+  @apply rounded-full bg-mochi shadow-mochi-700;
+  @apply w-24 h-24 md:w-32 md:h-32;
+  --tw-shadow-colored: 0 0 128px -24px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.textMochi {
+  @apply relative;
+  @apply text-2xl md:text-4xl font-display text-white;
+}
+
+.textMochiOutline {
+  @apply absolute text-transparent;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 1px theme("colors.white");
+}
+
+.bef {
+  @apply -mt-6 opacity-20;
+}
+.bef.next {
+  @apply -mt-12 opacity-10;
+}
+
+.aft {
+  @apply mt-6 opacity-20;
+}
+.aft.next {
+  @apply mt-12 opacity-10;
+}
+
+.illustration {
+  @apply w-full md:w-1/4 relative pointer-events-none flex-shrink-0;
+}
+
+.image {
+  @apply h-48 md:h-96 rounded-lg bg-cover bg-center;
+  background-image: url("/assets/mochi.jpg");
+}
+
+.entry {
+  @apply flex-1 pl-12 pt-12 md:pt-0 md:pl-32 lg:pl-48 pr-9;
+}
