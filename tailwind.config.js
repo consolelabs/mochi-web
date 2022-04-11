@@ -21,7 +21,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
-        serif: ["Playfair Display", "serif"],
+        serif: ["DM Serif Display", "serif"],
         display: ["Dela Gothic One"],
       },
     },
