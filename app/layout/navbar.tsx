@@ -7,7 +7,7 @@ export const Navbar = () => (
     <div className="flex items-center max-w-5xl px-12 py-5 mx-auto">
       <Link href="/">
         <a className="text-gray-900 flex items-center gap-4 group">
-          <div className="rounded-full group-hover:shadow-xl w-9 h-9 group-hover:shadow-mochi-200">
+          <div className="rounded-full transition-shadow duration-200 ease-in-out group-hover:shadow-xl w-9 h-9 group-hover:shadow-mochi-200">
             <Image
               src="/logo.png"
               alt="Logo"
