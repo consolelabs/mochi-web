@@ -9,7 +9,7 @@ export default function AboutPage() {
   return (
     <Layout>
       <SEO title={PAGES.ABOUT.title} tailTitle />
-      <div className="max-w-5xl px-12 py-16 mx-auto">
+      <div className="max-w-5xl px-12 py-16 pr-0 mx-auto lg:pr-12">
         <div className="flex items-start">
           <SidewayHeading>About</SidewayHeading>
           <div className="flex-1 px-12">
@@ -17,9 +17,9 @@ export default function AboutPage() {
               We build tools that make blockchain easier than ever for everyone.
             </p>
             <Mission />
-            <Team />
           </div>
         </div>
+        <Team />
       </div>
     </Layout>
   );

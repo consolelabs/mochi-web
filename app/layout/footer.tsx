@@ -5,10 +5,10 @@ import { SOCIAL_LINKS } from "~constants";
 import s from "./footer.module.css";
 
 export const Footer = () => (
-  <footer className="pt-16 pb-32 mt-auto">
+  <footer className="pt-16 pb-24 mt-auto">
     <div className="max-w-5xl px-12 mx-auto">
       <div className="flex flex-wrap">
-        <div className="text-sm text-gray-500 w-full md:w-2/5">
+        <div className="w-full text-sm text-gray-500 md:w-2/5">
           <div className="flex items-center gap-4">
             <div className={s.logoGrow}>
               <Image
@@ -19,11 +19,11 @@ export const Footer = () => (
                 className="block rounded-full"
               />
             </div>
-            <span className="text-lg font-black uppercase text-gray-900">
+            <span className="text-lg font-black text-gray-900 uppercase">
               Mochi<span className="text-mochi">.</span>
             </span>
           </div>
-          <p className="text-xs my-6">
+          <p className="my-6 text-xs">
             Our mission is to bring and connect communities, users, and
             blockchain together closer and building the best grow tool for your
             Discord server.
@@ -37,7 +37,7 @@ export const Footer = () => (
             </a>
           </div>
         </div>
-        <div className="flex gap-6 w-full md:w-3/5"></div>
+        <div className="flex w-full gap-6 md:w-3/5"></div>
       </div>
       <div className="pt-6 text-xs text-gray-500">
         Copyright &copy; 2022+ MochiBot, All rights reserved

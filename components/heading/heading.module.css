@@ -1,4 +1,4 @@
 .sideway {
-  @apply font-serif text-6xl font-bold;
+  @apply font-serif text-4xl font-bold md:text-6xl;
   writing-mode: sideways-lr;
 }
