@@ -20,7 +20,7 @@ export const SEO = ({
   description = CONFIG.description,
 }: Props) => (
   <Head>
-    <title>{title + (tailTitle === true ? ` - ${CONFIG.title}` : "")}</title>
+    <title>{title + (tailTitle === true ? ` — ${CONFIG.title}` : "")}</title>
 
     <meta name="title" content={title} />
     <meta name="description" content={description} />

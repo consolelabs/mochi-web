@@ -1,0 +1,10 @@
+.text {
+  font-size: 64px;
+  @apply mx-auto text-mochi font-display;
+}
+
+.outline {
+  @apply text-transparent;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 1px theme("colors.mochi.500");
+}

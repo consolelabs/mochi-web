@@ -1,0 +1,4 @@
+.sideway {
+  @apply font-serif text-6xl font-bold;
+  writing-mode: sideways-lr;
+}

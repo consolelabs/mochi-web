@@ -1,6 +1,7 @@
 import { CONFIG } from "~app/layout/seo";
 import Button from "~components/button";
 import { DiscordIcon } from "~components/icons/discord";
+import { JP_NAME } from "~constants";
 import s from "./introduction.module.css";
 
 export const IntroductionSection = () => (
@@ -8,21 +9,21 @@ export const IntroductionSection = () => (
     <div className={s.illustration}>
       <div className={s.circle}>
         <div className={[s.textMochi, s.aft, s.textMochiOutline].join(" ")}>
-          もち
+          {JP_NAME}
         </div>
         <div
           className={[s.textMochi, s.aft, s.textMochiOutline, s.next].join(" ")}
         >
-          もち
+          {JP_NAME}
         </div>
-        <div className={s.textMochi}>もち</div>
+        <div className={s.textMochi}>{JP_NAME}</div>
         <div className={[s.textMochi, s.textMochiOutline, s.bef].join(" ")}>
-          もち
+          {JP_NAME}
         </div>
         <div
           className={[s.textMochi, s.textMochiOutline, s.bef, s.next].join(" ")}
         >
-          もち
+          {JP_NAME}
         </div>
       </div>
       <div className={s.image} />
