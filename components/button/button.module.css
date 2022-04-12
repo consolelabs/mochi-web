@@ -14,7 +14,8 @@ a.button.base {
 
 .button:not(:disabled):hover {
   @apply -translate-y-1;
-  @apply shadow-mochi-100 shadow-xl;
+  box-shadow: 0 20px 25px -5px rgba(240, 181, 179, 0.48),
+    0 8px 10px -6px rgba(240, 181, 179, 0.48);
 }
 
 .button:disabled {
