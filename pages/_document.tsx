@@ -27,6 +27,11 @@ class MyDocument extends Document {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#24292e" />
           <meta name="apple-mobile-web-app-title" content={CONFIG.title} />
           <meta name="application-name" content={CONFIG.title} />
+          <script
+            defer
+            data-domain="getmochi.co"
+            src="https://plausible.io/js/plausible.js"
+          />
         </Head>
         <body>
           <Main />
