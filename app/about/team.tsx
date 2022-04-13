@@ -5,9 +5,7 @@ export const Team = () => (
     <div className="bg-white border-gradient-entry" />
     <div className="relative p-9 lg:p-12">
       <h3 className="mb-6 text-2xl font-bold text-center">
-        <span className="text-transparent uppercase bg-clip-text bg-gradient-to-r from-mochi-300 to-mochi-600">
-          Our Builders
-        </span>
+        <span className="uppercase text-mochi-gradient">Our Builders</span>
       </h3>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {TEAM.map((ppl) => (

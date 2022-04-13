@@ -24,6 +24,9 @@ module.exports = {
         serif: ["DM Serif Display", "serif"],
         display: ["Dela Gothic One"],
       },
+      blur: {
+        "4xl": "128px",
+      },
     },
   },
   plugins: [],
