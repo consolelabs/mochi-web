@@ -1,7 +1,7 @@
 import { CONFIG } from "~app/layout/seo";
 import Button from "~components/button";
 import { DiscordIcon } from "~components/icons/discord";
-import { JP_NAME } from "~constants";
+import { INVITE_LINK, JP_NAME } from "~constants";
 import s from "./introduction.module.css";
 
 export const IntroductionSection = () => (
@@ -35,7 +35,7 @@ export const IntroductionSection = () => (
         server!
       </p>
       <div className="flex flex-wrap items-center gap-4">
-        <Button className="flex items-center gap-4">
+        <Button href={INVITE_LINK} className="flex items-center gap-4">
           <DiscordIcon className="w-5 h-5" />
           <span>Get Mochi</span>
         </Button>

@@ -4,10 +4,6 @@
   @apply transition-all duration-200 ease-in-out;
 }
 
-a.button {
-  display: inline-block;
-}
-
 a.button.base {
   line-height: 3rem;
 }
@@ -38,8 +34,16 @@ a.button.base {
   @apply text-white bg-mochi;
 }
 
+a.button.mochi:hover {
+  @apply text-white;
+}
+
 .white {
   @apply text-mochi bg-mochi-50;
+}
+
+a.button.white:hover {
+  @apply text-mochi;
 }
 
 .button:focus {

@@ -18,4 +18,7 @@ export const SOCIAL_LINKS = {
   TWITTER: "https://twitter.com/getmochico",
 };
 
+export const INVITE_LINK =
+  "https://discord.com/oauth2/authorize?client_id=963123183131709480&permissions=1541088427249&scope=bot";
+
 export const JP_NAME = "もち";
