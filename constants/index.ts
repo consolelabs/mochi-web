@@ -8,7 +8,7 @@ export const PAGES = {
     title: "About Us",
   },
   NFT: {
-    path: "/nft",
+    path: "/nfts",
     title: "NFT Collection",
   },
 };
@@ -20,5 +20,7 @@ export const SOCIAL_LINKS = {
 
 export const INVITE_LINK =
   "https://discord.com/oauth2/authorize?client_id=963123183131709480&permissions=1541088427249&scope=bot";
+
+export const TOKEN_NAME = "$MOCHI";
 
 export const JP_NAME = "もち";
