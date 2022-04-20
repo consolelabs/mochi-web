@@ -1,6 +1,8 @@
 export const FeaturesSection = () => (
   <div className="max-w-5xl px-12 py-16 mx-auto" id="features">
-    <h2 className="mb-12 font-serif text-3xl text-center">Mochi Features</h2>
+    <h2 className="mb-12 font-serif text-3xl text-center md:text-4xl lg:text-5xl">
+      Mochi Features
+    </h2>
     <div className="flex flex-wrap items-center mb-12 md:flex-nowrap">
       <div className="w-full max-w-md mx-auto text-center md:text-left">
         <h3 className="font-serif text-2xl">
@@ -52,6 +54,8 @@ export const FeaturesSection = () => (
         />
       </div>
     </div>
-    <div className="mb-12 font-serif text-2xl text-center">And more...</div>
+    <div className="mb-12 font-serif text-2xl text-center md:text-3xl lg:text-4xl">
+      And more...
+    </div>
   </div>
 );

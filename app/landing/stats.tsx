@@ -1,5 +1,5 @@
 export const StatsSection = () => (
-  <div className="max-w-5xl px-12 py-16 mx-auto" id="features">
+  <div className="max-w-5xl px-12 py-16 mx-auto">
     <div className="mr-12 border-gradient lg:mr-0">
       <div className="bg-white border-gradient-entry" />
       <div className="relative p-9 lg:p-12">
