@@ -29,7 +29,9 @@ export const IntroductionSection = () => (
       <div className={s.image} />
     </div>
     <div className={s.entry}>
-      <h2 className="mb-4 font-serif text-3xl">{CONFIG.description}</h2>
+      <h2 className="mb-4 font-serif text-3xl md:text-4xl lg:text-5xl">
+        {CONFIG.description}
+      </h2>
       <p className="mb-8 text-lg text-gray-600">
         Easy leveling, moderation, tips, and much more fun in yourd Discord
         server!

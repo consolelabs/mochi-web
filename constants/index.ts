@@ -11,6 +11,10 @@ export const PAGES = {
     path: "/nfts",
     title: "NFT Collection",
   },
+  CHANGE_LOG: {
+    path: "/changelog",
+    title: "Changelog",
+  },
 };
 
 export const SOCIAL_LINKS = {
