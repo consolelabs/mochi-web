@@ -11,3 +11,7 @@
 .content h3 {
   @apply pt-24 mb-8 -mt-12 text-xl font-bold lg:text-2xl;
 }
+
+.content a {
+  @apply underline;
+}
