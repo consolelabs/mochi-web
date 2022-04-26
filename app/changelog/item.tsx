@@ -24,7 +24,6 @@ export const ChangelogItem = ({ log }: { log: ChangelogContent }) => (
       </div>
     </div>
     <div className="flex-1 pb-6">
-      <h3 className="mb-4 text-2xl font-bold lg:text-3xl">{log.title}</h3>
       <div className={s.content}>
         <Markdown>{log.content}</Markdown>
       </div>
