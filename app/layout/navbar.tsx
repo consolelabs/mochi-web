@@ -6,13 +6,13 @@ import { PAGES, SOCIAL_LINKS } from "~constants";
 const NavLinks = ({ className }: { className: string }) => (
   <div className={["flex items-center justify-center", className].join(" ")}>
     <Link href={PAGES.ABOUT.path}>
-      <a className="font-semibold">{PAGES.ABOUT.title}</a>
+      <a className="text-sm font-semibold">{PAGES.ABOUT.title}</a>
     </Link>
     <Link href={PAGES.NFT.path}>
-      <a className="font-semibold">{PAGES.NFT.title}</a>
+      <a className="text-sm font-semibold">{PAGES.NFT.title}</a>
     </Link>
     <a
-      className="font-semibold"
+      className="text-sm font-semibold"
       href={SOCIAL_LINKS.DISCORD}
       target="_blank"
       rel="noreferrer"
@@ -42,11 +42,11 @@ export const Navbar = () => (
             </span>
           </a>
         </Link>
-        <NavLinks className="hidden gap-12 ml-auto sm:flex" />
+        <NavLinks className="hidden gap-10 ml-auto sm:flex" />
       </div>
     </nav>
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white sm:hidden bg-opacity-95 backdrop-blur-md backdrop-filter">
-      <NavLinks className="gap-12 p-6 text-sm" />
+      <NavLinks className="gap-10 p-6 text-sm" />
     </div>
   </Fragment>
 );
