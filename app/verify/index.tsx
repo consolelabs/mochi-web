@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Layout } from "~app/layout";
 import { SEO } from "~app/layout/seo";
 import { PAGES } from "~constants";
+import { verifyWallet } from "~constants/api";
 import { useWeb3React } from "~hooks/useWeb3React";
 import { VerifyAction } from "./action";
 
@@ -25,10 +26,10 @@ export const VerifyPage = ({ code }: Props) => {
       setLoading(true);
       const signer = library.getSigner();
       const signature = await signer.signMessage(
-        `This will help us connect your discord account to the wallet address.\n\nMochiCode=${code}`
+        `This will help us connect your discord account to the wallet address.\n\nMochiBotCode=${code}`
       );
-      // const response = await
-      console.log(signature);
+      const response = await verifyWallet(account, code, signature);
+      console.log(response);
     } catch (e) {
       console.error("sign method error", e);
     } finally {
