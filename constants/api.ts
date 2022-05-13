@@ -1,6 +1,8 @@
 import { fetcher } from "~utils/fetcher";
 
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.ENV === "production";
+
+console.log(isProd);
 
 const API_GW = {
   DEV: "https://develop-api.mochi.pod.town/api/v1",
