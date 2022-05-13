@@ -5,15 +5,19 @@ export const PAGES = {
   },
   ABOUT: {
     path: "/about",
-    title: "About Us",
+    title: "About",
   },
   NFT: {
     path: "/nfts",
-    title: "NFT Collection",
+    title: "NFT",
   },
   CHANGE_LOG: {
     path: "/changelog",
     title: "Changelog",
+  },
+  VERIFY: {
+    path: "/verify",
+    title: "Verify Wallet",
   },
 };
 
