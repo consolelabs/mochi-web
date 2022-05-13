@@ -1,13 +1,20 @@
 import { fetcher } from "~utils/fetcher";
 
-const API_GW = "https://develop-api.mochi.pod.town/api/v1";
+const isProd = process.env.NODE_ENV === "production";
+
+const API_GW = {
+  DEV: "https://develop-api.mochi.pod.town/api/v1",
+  PROD: "https://api.mochi.pod.town/api/v1",
+};
+
+const getGW = () => (isProd ? API_GW.PROD : API_GW.DEV);
 
 const verify = async (
   wallet_address: string,
   code: string,
   signature: string
 ) =>
-  await fetcher.post<{ error?: string; status?: string }>(`${API_GW}/verify`, {
+  await fetcher.post<{ error?: string; status?: string }>(`${getGW()}/verify`, {
     wallet_address,
     code,
     signature,
