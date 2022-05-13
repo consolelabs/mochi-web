@@ -1,6 +1,6 @@
 import { fetcher } from "~utils/fetcher";
 
-const isProd = process.env.ENV === "production";
+const isProd = process.env.NEXT_PUBLIC_ENV === "production";
 
 console.log(isProd);
 
