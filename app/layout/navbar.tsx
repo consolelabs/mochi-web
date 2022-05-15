@@ -8,8 +8,11 @@ const NavLinks = ({ className }: { className: string }) => (
     <Link href={PAGES.ABOUT.path}>
       <a className="text-sm font-semibold">{PAGES.ABOUT.title}</a>
     </Link>
-    <Link href={PAGES.NFT.path}>
+    {/* <Link href={PAGES.NFT.path}>
       <a className="text-sm font-semibold">{PAGES.NFT.title}</a>
+    </Link> */}
+    <Link href={PAGES.CHANGE_LOG.path}>
+      <a className="text-sm font-semibold">{PAGES.CHANGE_LOG.title}</a>
     </Link>
     <a
       className="text-sm font-semibold"
