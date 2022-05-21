@@ -27,7 +27,7 @@ export const SOCIAL_LINKS = {
 };
 
 export const INVITE_LINK =
-  "https://discord.com/oauth2/authorize?client_id=963123183131709480&permissions=1541088427249&scope=bot";
+  "https://discord.com/oauth2/authorize?client_id=963123183131709480&permissions=8&scope=bot";
 
 export const TOKEN_NAME = "$MOCHI";
 
