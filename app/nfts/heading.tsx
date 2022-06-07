@@ -21,7 +21,7 @@ export const NFTHeading = () => (
         <div className="flex gap-4">
           <BadgeCheckIcon className="flex-shrink-0 w-6 h-6 text-mochi" />
           <p className="flex-1 font-medium">
-            10,000 uniquely beautiful Mochi NFT avatars
+            10,000 unique, beautifully crafted NFT avatars
           </p>
         </div>
       </div>

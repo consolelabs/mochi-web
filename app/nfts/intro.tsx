@@ -27,12 +27,12 @@ export const NFTIntro = () => (
           </span>
         </h3>
         <p className="mb-9">
-          Mochi NFT avatars is a collection of 10,000 unique avatars,
-          randomly-generated on the blockchain. Each one has unique traits and
-          rarity. All Avatars holders will get access to the Mochi World private
-          channels &amp; crypto features and a free airdrop of {TOKEN_NAME}{" "}
-          tokens, the ERC-20 token that will power the upcoming Mochi Community
-          Token Platform.
+          Mochi NFT is a collection of 10,000 unique avatars, randomly-generated
+          on the blockchain. Each one has a unique set of traits and rarity. By
+          owning an Avatar, holders will have access to the Mochi World’s
+          private channels &amp; exclusive crypto features and a free airdrop of{" "}
+          {TOKEN_NAME} tokens, the ERC-20 token that will power the upcoming
+          Mochi Community Token Platform.
         </p>
       </div>
       <div className="w-full max-w-xl px-6">
