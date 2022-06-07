@@ -33,8 +33,8 @@ export const IntroductionSection = () => (
         {CONFIG.description}
       </h2>
       <p className="mb-8 text-lg text-gray-600">
-        Easy leveling, moderation, tips, and much more fun in yourd Discord
-        server!
+        Manage your Discord server, with ease! Easy leveling, moderation, tips,
+        and much more.
       </p>
       <div className="flex flex-wrap items-center gap-4">
         <Button href={INVITE_LINK} className="flex items-center gap-4">

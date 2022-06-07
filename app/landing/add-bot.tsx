@@ -10,7 +10,9 @@ export const AddBotSection = () => (
     >
       <div className="px-12 py-9 bg-mochi bg-opacity-90">
         <div className="max-w-lg mx-auto mb-6 text-3xl font-bold text-center text-white">
-          Let&apos;s start to level up your Discord server for free!
+          Level up your Discord server now!
+          <br />
+          No strings attached!
         </div>
         <div className="flex justify-center">
           <Button
@@ -19,7 +21,7 @@ export const AddBotSection = () => (
             className="flex items-center gap-4 mx-auto"
           >
             <DiscordIcon className="w-5 h-5" />
-            <span>Add to Discord</span>
+            <span>Invite to Discord</span>
           </Button>
         </div>
       </div>

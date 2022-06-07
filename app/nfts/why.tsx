@@ -10,7 +10,7 @@ export const NFTWhy = () => (
         <div className="w-24 h-24 mx-auto mb-4 border-gradient">
           <div className="bg-white border-gradient-entry" />
         </div>
-        <p className="text-gray-500 px-9">Access into Mochi private channels</p>
+        <p className="text-gray-500 px-9">Access to Mochi private channels</p>
       </div>
       <div className="px-6 text-center">
         <div className="w-24 h-24 mx-auto mb-4 border-gradient">

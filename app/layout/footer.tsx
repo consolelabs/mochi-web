@@ -24,9 +24,9 @@ export const Footer = () => (
             </span>
           </div>
           <p className="my-6 text-xs">
-            Our mission is to bring and connect communities, users, and
-            blockchain together closer and building the best grow tool for your
-            Discord server.
+            Our mission is to build the best growth tool for your Discord
+            servers, and help you bring about and connect strong communities,
+            active users with the ever-growing blockchain.
           </p>
           <div className="flex items-center gap-4">
             <a href={SOCIAL_LINKS.TWITTER} target="_blank" rel="noreferrer">

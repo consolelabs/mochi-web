@@ -8,19 +8,19 @@ export const StatsSection = () => (
             <div className="text-4xl font-bold uppercase text-mochi-gradient">
               1,000+
             </div>
-            <p className="text-gray-600">Commands typed per day</p>
+            <p className="text-gray-600">commands typed per day</p>
           </div>
           <div className="text-center">
             <div className="text-4xl font-bold uppercase text-mochi-gradient">
               10,000+
             </div>
-            <p className="text-gray-600">Community members using Mochi</p>
+            <p className="text-gray-600">Discord members served</p>
           </div>
           <div className="text-center">
             <div className="text-4xl font-bold uppercase text-mochi-gradient">
               400+
             </div>
-            <p className="text-gray-600">User verified by Mochi</p>
+            <p className="text-gray-600">users verified by Mochi</p>
           </div>
         </div>
       </div>
