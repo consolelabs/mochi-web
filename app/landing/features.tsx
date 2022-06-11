@@ -5,7 +5,7 @@ export const FeaturesSection = () => (
     </h2>
     <div className="flex flex-wrap items-center mb-12 md:flex-nowrap">
       <div className="w-full max-w-md mx-auto text-center md:text-left">
-        <h3 className="font-serif text-2xl">Mochi website copywrite</h3>
+        <h3 className="font-serif text-2xl">Intuitive Wallet Verification</h3>
         <p className="my-5">
           Mochi helps to verify wallets of newcomers to let them enjoy the best
           of Discord and start earning on your server.
