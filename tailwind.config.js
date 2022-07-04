@@ -17,6 +17,14 @@ module.exports = {
           800: "#DC4D48",
           900: "#D73833",
         },
+        rarity: {
+          common: "#94a3b8",
+          uncommon: "#22d3ee",
+          rare: " #0284c7",
+          legendary: "#f59e0b",
+          mythic: " #d633ff",
+          epic: " #d633ff",
+        },
         white: "#fafafd",
       },
       fontFamily: {
