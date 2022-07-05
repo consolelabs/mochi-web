@@ -6,7 +6,7 @@ function NFTAttribute({ data }: { data: IAttribute }) {
   return (
     <div
       className={cc(
-        "relative bg-mochi-200 bg-opacity-50 p-2 border-l-4 rounded-md text-sm text-slate-800 h-full",
+        "relative bg-mochi-gray p-2 border-l-4 rounded-md text-sm text-slate-800 h-full",
         `border-nft-${data.rarity.toLowerCase()}`
       )}
     >
