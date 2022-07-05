@@ -44,3 +44,60 @@ a:hover {
 .text-mochi-gradient {
   @apply text-transparent uppercase bg-clip-text bg-gradient-to-r from-mochi-300 via-mochi-600 to-mochi-300;
 }
+
+.text-nft-common {
+  @apply text-rarity-common;
+}
+.text-nft-uncommon {
+  @apply text-rarity-uncommon;
+}
+.text-nft-rare {
+  @apply text-rarity-rare;
+}
+.text-nft-legendary {
+  @apply text-rarity-legendary;
+}
+.text-nft-mythic {
+  @apply text-rarity-mythic;
+}
+.text-nft-epic {
+  @apply text-rarity-epic;
+}
+
+.border-nft-common {
+  @apply border-rarity-common;
+}
+.border-nft-uncommon {
+  @apply border-rarity-uncommon;
+}
+.border-nft-rare {
+  @apply border-rarity-rare;
+}
+.border-nft-legendary {
+  @apply border-rarity-legendary;
+}
+.border-nft-mythic {
+  @apply border-rarity-mythic;
+}
+.border-nft-epic {
+  @apply border-rarity-epic;
+}
+
+.bg-nft-common {
+  @apply bg-rarity-common;
+}
+.bg-nft-uncommon {
+  @apply bg-rarity-uncommon;
+}
+.bg-nft-rare {
+  @apply bg-rarity-rare;
+}
+.bg-nft-legendary {
+  @apply bg-rarity-legendary;
+}
+.bg-nft-mythic {
+  @apply bg-rarity-mythic;
+}
+.bg-nft-epic {
+  @apply bg-rarity-epic;
+}

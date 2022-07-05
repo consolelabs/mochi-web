@@ -8,6 +8,8 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@dwarvesf/react-hooks": "^0.7.0",
+    "@dwarvesf/react-utils": "^0.4.1",
     "@fontsource/dela-gothic-one": "^4.5.8",
     "@fontsource/dm-serif-display": "^4.5.6",
     "@fontsource/inter": "^4.5.7",

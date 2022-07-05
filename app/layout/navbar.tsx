@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { PAGES, SOCIAL_LINKS } from "~constants";
+import Button from "~components/button";
+import { DiscordIcon } from "~components/icons/discord";
+import { INVITE_LINK, PAGES, SOCIAL_LINKS } from "~constants";
 
 const NavLinks = ({ className }: { className: string }) => (
   <div className={["flex items-center justify-center", className].join(" ")}>
@@ -22,6 +24,10 @@ const NavLinks = ({ className }: { className: string }) => (
     >
       Support Server
     </a>
+    <Button size="small" href={INVITE_LINK} className="flex items-center gap-4">
+      <DiscordIcon className="w-5 h-5" />
+      <span>Get Mochi</span>
+    </Button>
   </div>
 );
 

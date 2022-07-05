@@ -5,6 +5,7 @@ interface Props {
   title?: string;
   tailTitle?: boolean;
   description?: string;
+  image?: string;
 }
 
 export const CONFIG = {
@@ -18,6 +19,7 @@ export const SEO = ({
   title = CONFIG.title,
   tailTitle = false,
   description = CONFIG.description,
+  image,
 }: Props) => (
   <Head>
     <title>{title + (tailTitle === true ? ` — ${CONFIG.title}` : "")}</title>
@@ -29,12 +31,12 @@ export const SEO = ({
     <meta property="og:url" content={CONFIG.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={CONFIG.image} />
+    <meta property="og:image" content={image || CONFIG.image} />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={CONFIG.url} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={CONFIG.image} />
+    <meta property="twitter:image" content={image || CONFIG.image} />
   </Head>
 );
