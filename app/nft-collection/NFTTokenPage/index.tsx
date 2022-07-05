@@ -35,7 +35,7 @@ export default function NFTTokenPage({
         }`
       )}
     >
-      <div className="w-full md:w-1/4 bg-mochi-50 p-6">
+      <div className="w-full md:w-1/4 bg-mochi-gray p-6">
         <h1 className="text-center font-bold text-2xl mb-6 text-mochi-500">
           {data.name}
         </h1>
@@ -65,7 +65,7 @@ export default function NFTTokenPage({
               <p className="font-normal">Rank</p>
               <p className="font-semibold">
                 <span className="text-sm">{data.rarity.rank}/</span>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs font-light text-slate-500">
                   {data.rarity.total}
                 </span>
               </p>
@@ -92,7 +92,7 @@ export default function NFTTokenPage({
           )}
         </div>
       </div>
-      <div className="w-full md:w-3/4 bg-mochi-50 bg-opacity-50 p-6">
+      <div className="w-full md:w-3/4 bg-white p-6">
         <div className="text-mochi-500">
           <div className="flex items-center justify-between">
             <h1 title={collection.name} className="text-2xl font-bold">
