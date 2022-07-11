@@ -1,11 +1,15 @@
-import React from "react";
+import React, { memo } from "react";
 import { INFTCollection, INFTTicker, INFTToken } from "~types/nft";
 import NFTAttribute from "./NFTAttribute";
 import cc from "classnames";
 import { truncate } from "@dwarvesf/react-utils";
-import { useClipboard } from "@dwarvesf/react-hooks";
-import { ClipboardCopyIcon, ClipboardCheckIcon } from "@heroicons/react/solid";
-import { EXPLORERS } from "~constants/chain";
+import {
+  ClipboardCopyIcon,
+  ClipboardCheckIcon,
+  LinkIcon,
+  CheckCircleIcon,
+} from "@heroicons/react/solid";
+import { CHAIN_NAMES, EXPLORERS } from "~constants/chain";
 
 function getChainExplorerLink(chainID: number, address: string) {
   const host = EXPLORERS[chainID];
@@ -14,6 +18,32 @@ function getChainExplorerLink(chainID: number, address: string) {
   }
   return `${host}/token/${address}`;
 }
+
+const AddressDisplay = memo(function AddressDisplay({
+  title,
+  address,
+}: {
+  title: string;
+  address: string;
+}) {
+  return (
+    <div className="flex items-center space-x-2">
+      <div className="flex-none h-9 w-9">
+        <div className="paper">
+          <img src="/logo.png" alt="mochi logo" className="rounded-full" />
+        </div>
+      </div>
+      <div className="flex flex-col justify-between">
+        <span className="text-xs block leading-tight tracking-wide truncate text-gray-400">
+          {title}
+        </span>
+        <span className="text-sm font-semibold truncate tracking-wide text-gray-800">
+          {truncate(address, 12, true)}
+        </span>
+      </div>
+    </div>
+  );
+});
 
 export default function NFTTokenPage({
   token: data,
@@ -24,81 +54,46 @@ export default function NFTTokenPage({
   collection: INFTCollection;
   ticker: INFTTicker;
 }) {
-  const { hasCopied, onCopy } = useClipboard(data.collection_address);
-
   return (
     <div
       className={cc(
-        "block md:flex items-stretch justify-center shadow-lg rounded-lg overflow-hidden w-full",
-        `border-l-[8px] border-nft-${
-          data.rarity.rarity?.toLowerCase() || "common"
-        }`
+        "w-full flex-col lg:flex-row flex mx-auto space-y-5 lg:space-y-0 lg:space-x-12"
       )}
     >
-      <div className="w-full md:w-1/4 bg-mochi-gray p-6">
-        <h1 className="text-center font-bold text-2xl mb-6 text-mochi-500">
-          {data.name}
-        </h1>
+      <div className="flex-shrink-0 lg:w-96 flex flex-col space-y-3">
         <img
           src={
             data.image?.replace(/^(ipfs:\/\/)/, "https://ipfs.io/ipfs/") ||
             "/teams/dango.png"
           }
           alt={data.name}
-          className="rounded-lg mb-6"
+          className="rounded-2xl"
         />
-        <div className="text-sm text-slate-600">
-          {data.rarity.rarity && (
-            <div className="flex items-center justify-between capitalize mb-1">
-              <span className="font-normal">Tier</span>
-              <span
-                className={`font-semibold text-nft-${
-                  data.rarity.rarity?.toLowerCase() || "common"
-                }`}
-              >
-                {data.rarity.rarity}
-              </span>
+
+        <div className="border border-gray-200 rounded-2xl p-3 space-y-2">
+          {data?.attributes?.length && (
+            <div className="grid grid-cols-2 gap-3">
+              {data.attributes.map((att) => (
+                <NFTAttribute key={att.trait_type} data={att} />
+              ))}
             </div>
           )}
-          {!!data.rarity.rank && (
-            <div className="flex items-center justify-between capitalize mb-1">
-              <p className="font-normal">Rank</p>
-              <p className="font-semibold">
-                <span className="text-sm">{data.rarity.rank}/</span>
-                <span className="text-xs font-light text-slate-500">
-                  {data.rarity.total}
-                </span>
-              </p>
+
+          <div className="h-4 flex items-center justify-center relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
             </div>
-          )}
-          {!!Number(data.rarity.score) && (
-            <div className="flex items-center justify-between capitalize mb-1">
-              <span className="font-normal">Score</span>
-              <span className="font-semibold">
-                {Number(data.rarity.score).toFixed(3)}
-              </span>
-            </div>
-          )}
-          {!!ticker?.floor_price && (
-            <div
-              className="flex items-center justify-between capitalize mb-1"
-              title={`${ticker.floor_price} ${ticker.chain}`}
-            >
-              <span className="font-normal">Floor price</span>
-              <span className="font-semibold">
-                {ticker.floor_price} {ticker.chain}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="w-full md:w-3/4 bg-white p-6">
-        <div className="text-mochi-500">
-          <div className="flex items-center justify-between">
-            <h1 title={collection.name} className="text-2xl font-bold">
+          </div>
+
+          <div className="flex items-center justify-between capitalize mb-1">
+            <p className="text-sm tracking-wide text-gray-500">Collection</p>
+            <p className="font-semibold text-sm tracking-wide text-gray-800">
               {collection.name}
-            </h1>
-            <div className="flex items-center justify-end">
+            </p>
+          </div>
+          <div className="text-sm text-slate-600">
+            <div className="flex items-center justify-between capitalize mb-1">
+              <p className="text-sm tracking-wide text-gray-500">Address</p>
               <a
                 href={getChainExplorerLink(
                   collection.chain_id,
@@ -106,42 +101,64 @@ export default function NFTTokenPage({
                 )}
                 target="_blank"
                 rel="noreferrer"
-                className="text-mochi-500 text-base"
+                className="font-semibold text-sm tracking-wide text-mochi-500 flex items-center justify-end"
               >
                 {truncate(data.collection_address, 12, true)}
+                <LinkIcon className="h-4 w-4 ml-2" />
               </a>
-              <button className="border-none ml-2" onClick={onCopy}>
-                {hasCopied ? (
-                  <ClipboardCheckIcon className="h-5 w-5" />
-                ) : (
-                  <ClipboardCopyIcon className="h-5 w-5" />
-                )}
-              </button>
+            </div>
+            <div className="flex items-center justify-between capitalize mb-1">
+              <p className="text-sm tracking-wide text-gray-500">Token ID</p>
+              <p className="font-semibold text-sm tracking-wide text-gray-800">
+                {data.token_id}
+              </p>
+            </div>
+            <div className="flex items-center justify-between capitalize mb-1">
+              <p className="text-sm tracking-wide text-gray-500">
+                Token Standard
+              </p>
+              <p className="font-semibold text-sm tracking-wide text-gray-800">
+                {collection.erc_format}
+              </p>
+            </div>
+            <div className="flex items-center justify-between capitalize mb-1">
+              <p className="text-sm tracking-wide text-gray-500">Chain</p>
+              <p className="font-semibold text-sm tracking-wide text-gray-800">
+                {CHAIN_NAMES[collection.chain_id]}
+              </p>
             </div>
           </div>
-          <p className="text-sm mt-1 text-slate-600">{data.description}</p>
         </div>
-
-        {data?.attributes?.length && (
-          <div className="mt-4">
-            <h1
-              title="attributes"
-              className="font-bold text-2xl text-mochi-500"
-            >
-              Attributes
+      </div>
+      <div className="flex-1 flex-col space-y-3">
+        <div className="text-mochi-700">
+          <div className="flex items-center justify-between">
+            <h1 title={data.name} className="text-4xl font-bold">
+              {data.name}
             </h1>
-            <div className="flex items-stretch flex-wrap -mx-2">
-              {data.attributes.map((att) => (
-                <div
-                  key={att.trait_type}
-                  className="mt-4 px-2 w-1/2 md:w-1/3 h-full"
-                >
-                  <NFTAttribute data={att} />
-                </div>
-              ))}
-            </div>
           </div>
-        )}
+          <div className="flex items-center justify-start text-sm mt-4 space-x-4">
+            <p className="flex items-center text-gray-500">
+              Collection{" "}
+              <CheckCircleIcon className="h-6 w-6 text-green-600 ml-1" />
+            </p>
+            <p
+              className={`rounded-lg bg-nft-${data.rarity.rarity?.toLowerCase()} text-white px-2 py-1 font-medium`}
+            >
+              #{data.rarity.rank}
+            </p>
+          </div>
+          <p className="text-sm mt-3 text-slate-600 bg-gray-200 p-3 rounded-2xl">
+            {data.description}
+          </p>
+          <div className="flex items-center space-x-2 mt-3">
+            <AddressDisplay title="Owner" address={data.owner.owner_address} />
+            <AddressDisplay
+              title="Creator"
+              address={data.owner.owner_address}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

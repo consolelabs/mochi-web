@@ -60,7 +60,7 @@ export const VerifyPage = ({ code }: Props) => {
     <Layout>
       <SEO title={PAGES.VERIFY.title} tailTitle />
       <div className="relative flex flex-col items-center">
-        <div className="max-w-5xl px-12 py-16 mx-auto">
+        <div className="max-w-7xl px-12 py-16 mx-auto">
           <div className="py-24 md:py-48">
             {code && !error ? (
               verified ? (

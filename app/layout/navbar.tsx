@@ -34,7 +34,7 @@ const NavLinks = ({ className }: { className: string }) => (
 export const Navbar = () => (
   <Fragment>
     <nav className="sticky top-0 z-10 bg-white bg-opacity-95 backdrop-blur-md backdrop-filter">
-      <div className="flex items-center max-w-5xl px-12 py-5 mx-auto">
+      <div className="flex items-center max-w-7xl px-12 py-5 mx-auto">
         <Link href="/">
           <a className="flex items-center gap-4 text-gray-900 group">
             <div className="transition-shadow duration-200 ease-in-out rounded-full group-hover:shadow-xl w-9 h-9 group-hover:shadow-mochi-200">

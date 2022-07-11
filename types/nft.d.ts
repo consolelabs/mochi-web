@@ -10,6 +10,7 @@ export interface INFTToken {
   image_content_type: string;
   attributes?: IAttribute[];
   rarity: IRarity;
+  owner: IOwner;
 }
 
 export interface IAttribute {
@@ -25,6 +26,16 @@ export interface IRarity {
   score: string;
   total: number;
   rarity?: string;
+}
+
+export interface IOwner {
+  owner_address: string;
+  collection_address: string;
+  token_id: string;
+  chain_id: number;
+  token: any;
+  created_time: string;
+  last_updated_time: string;
 }
 
 export interface INFTCollectionList {
