@@ -12,7 +12,7 @@ export const LandingPage = () => (
     <IntroductionSection />
     <FeaturesSection />
     <StatsSection />
-    <MochiText className="max-w-5xl px-12 py-16 mx-auto" />
+    <MochiText className="max-w-7xl px-12 py-16 mx-auto" />
     <AddBotSection />
   </Layout>
 );

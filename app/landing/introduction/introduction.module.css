@@ -1,5 +1,5 @@
 .container {
-  @apply flex flex-col items-center max-w-5xl p-12 mx-auto md:flex-row;
+  @apply flex flex-col items-center max-w-7xl p-12 mx-auto md:flex-row;
 }
 
 .circle {

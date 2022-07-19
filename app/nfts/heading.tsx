@@ -4,7 +4,7 @@ export const NFTHeading = () => (
   <div className="relative pt-24 -mt-20">
     <div className="absolute w-32 h-32 top-64 left-1/3 bg-mochi blur-4xl" />
     <div className="absolute w-28 h-28 top-80 right-1/3 bg-amber-500 blur-4xl" />
-    <div className="max-w-5xl px-12 py-24 mx-auto">
+    <div className="max-w-7xl px-12 py-24 mx-auto">
       <h2 className="mb-12 text-5xl text-center">
         <span className="font-black uppercase text-mochi-gradient">
           {" "}

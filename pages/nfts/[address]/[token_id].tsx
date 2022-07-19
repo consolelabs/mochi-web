@@ -10,10 +10,10 @@ import { INFTCollection, INFTTicker, INFTToken } from "~types/nft";
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
     const { address, token_id } = query;
-    const [collection, token, ticker = {} as any] = await Promise.all([
+    const [collection, token, ticker] = await Promise.all([
       API.getNFTCollectionDetails(address as string),
       API.getNFTTokenDetails(address as string, token_id as string),
-      // API.getNFTCollectionPrice(address as string),
+      API.getNFTCollectionPrice(address as string),
     ]);
 
     if (!token || !collection) {
@@ -80,7 +80,7 @@ export default function Page({
         description={seoDescription || token.description}
         image={token.image?.replace(/^(ipfs:\/\/)/, "https://ipfs.io/ipfs/")}
       />
-      <div className="max-w-5xl flex items-center justify-center mx-auto p-6 md:p-12">
+      <div className="max-w-7xl flex items-center justify-center mx-auto p-6 md:p-12">
         <NFTTokenPage token={token} collection={collection} ticker={ticker} />
       </div>
     </Layout>

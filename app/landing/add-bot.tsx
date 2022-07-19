@@ -3,7 +3,7 @@ import { DiscordIcon } from "~components/icons/discord";
 import { INVITE_LINK } from "~constants";
 
 export const AddBotSection = () => (
-  <div className="max-w-5xl px-12 py-16 mx-auto">
+  <div className="max-w-7xl px-12 py-16 mx-auto">
     <div
       className="overflow-hidden bg-center bg-cover rounded-lg"
       style={{ backgroundImage: `url("/assets/mochi.png")` }}

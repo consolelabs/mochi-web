@@ -1,5 +1,5 @@
 export const FeaturesSection = () => (
-  <div className="max-w-5xl px-12 py-16 mx-auto" id="features">
+  <div className="max-w-7xl px-12 py-16 mx-auto" id="features">
     <h2 className="mb-12 font-serif text-3xl text-center md:text-4xl lg:text-5xl">
       Mochi Features
     </h2>

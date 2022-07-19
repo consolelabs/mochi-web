@@ -1,7 +1,7 @@
 import { TOKEN_NAME } from "~constants";
 
 export const NFTIntro = () => (
-  <div className="max-w-5xl px-12 py-16 mx-auto">
+  <div className="max-w-7xl px-12 py-16 mx-auto">
     <div className="flex flex-col items-center justify-between lg:flex-row">
       <div className="flex flex-col mr-0 lg:mr-24 lg:max-w-xl">
         <div className="max-w-xs mx-auto">

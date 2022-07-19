@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const VerifyAction = (props: Props) => (
-  <div className="w-full max-w-xs px-6 py-8 mx-auto sm:max-w-5xl">
+  <div className="w-full max-w-xs px-6 py-8 mx-auto sm:max-w-7xl">
     <h3 className="mb-4 text-3xl font-black text-center uppercase md:text-4xl lg:text-5xl text-mochi-gradient">
       Verify your wallet
     </h3>

@@ -1,5 +1,8 @@
 import { INFTCollectionList, INFTTicker, INFTToken } from "~types/nft";
 import { fetcher } from "~utils/fetcher";
+import qs from "querystring";
+import getUnixTime from "date-fns/getUnixTime";
+import subDays from "date-fns/subDays";
 
 const isProd = process.env.NEXT_PUBLIC_ENV === "production";
 
@@ -37,10 +40,16 @@ const getNFTCollectionDetails = async (address: string) => {
   return data?.data?.[0];
 };
 
-const getNFTCollectionPrice = async (address: string) =>
-  await fetcher.get<{ error?: string } & INFTTicker>(
-    `${API_GW.INDEXER}/nft/ticker/${address}`
+const getNFTCollectionPrice = async (address: string) => {
+  const q = qs.stringify({
+    from: getUnixTime(subDays(new Date(), 7)) * 1000,
+    to: getUnixTime(new Date()) * 1000,
+  });
+
+  return fetcher.get<{ error?: string } & INFTTicker>(
+    `${API_GW.INDEXER}/nft/ticker/${address}?${q}`
   );
+};
 
 export const API = {
   verify,

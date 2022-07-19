@@ -1,7 +1,7 @@
 import { TOKEN_NAME } from "~constants";
 
 export const NFTWhy = () => (
-  <div className="max-w-5xl px-12 py-16 mx-auto">
+  <div className="max-w-7xl px-12 py-16 mx-auto">
     <h3 className="font-serif text-4xl font-bold text-center mb-9">
       <span className="text-mochi-gradient">Why mint Mochi NFT?</span>
     </h3>

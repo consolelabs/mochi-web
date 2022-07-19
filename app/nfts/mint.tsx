@@ -7,7 +7,7 @@ export const NFTMint = () => {
   const [days, hours, minutes, seconds] = useCountdown(PUBLIC_MINT_TIME);
 
   return (
-    <div className="max-w-5xl px-12 py-16 mx-auto">
+    <div className="max-w-7xl px-12 py-16 mx-auto">
       <div className="border-gradient">
         <div className="bg-white border-gradient-entry" />
         <div className="relative p-9 lg:p-12">
