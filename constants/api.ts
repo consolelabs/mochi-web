@@ -6,7 +6,10 @@ import subDays from "date-fns/subDays";
 
 const isProd = process.env.NEXT_PUBLIC_ENV === "production";
 
-console.log(isProd);
+console.log("NEXT_PUBLIC_ENV", process.env.NEXT_PUBLIC_ENV);
+console.log("NEXT_PUBLIC_VERCEL_ENV", process.env.NEXT_PUBLIC_VERCEL_ENV);
+console.log("PUBLIC_ENV", process.env.PUBLIC_ENV);
+console.log("VERCEL_ENV", process.env.VERCEL_ENV);
 
 const API_GW = {
   DEV: "https://develop-api.mochi.pod.town/api/v1",
