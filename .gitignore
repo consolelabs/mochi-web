@@ -35,3 +35,5 @@ yarn-error.log*
 
 # editor
 .vscode
+
+components/icons/components
