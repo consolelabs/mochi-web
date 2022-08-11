@@ -11,60 +11,62 @@ import {
   INFTTicker,
   INFTToken,
 } from '~types/nft'
+import { sortNFTAttributes } from '~utils/nft'
+import { capitalizeFirstLetter } from '~utils/string'
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
     const { address, token_id } = query
-    const [collection, token, ticker, attrIcons = []] = await Promise.all([
+    const [collection, token, ticker] = await Promise.all([
       API.getNFTCollectionDetails(address as string),
       API.getNFTTokenDetails(address as string, token_id as string),
       API.getNFTCollectionPrice(address as string),
-      API.getAttributeIcons(),
     ])
 
     if (!token || !collection) {
       throw new Error('Token not found')
     }
-
-    const attrIconMap = attrIcons.reduce(
+    const attrs = sortNFTAttributes(token.attributes || [])
+    const traits = (token.attributes || []).map((att) => att.trait_type)
+    const attrIcons = await API.getAttributeIcons(traits)
+    const attrIconMap = (attrIcons || []).reduce(
       (acc, icon) => ({ ...acc, [icon.trait_type.toLowerCase()]: icon }),
       {},
+    )
+
+    const nftTier = token.rarity.rarity
+      ? [
+          `🏆ㅤTier: ${token.rarity.rarity}`,
+          `Rank: ${token.rarity.rank}`,
+          `Score: ${Number(token.rarity.score).toFixed(3)}`,
+        ].join(' | ')
+      : undefined
+
+    const tokenPrice = !!ticker?.floor_price
+      ? `💎ㅤFloor price: ${Number(ticker?.floor_price || 0)} ${ticker.chain}`
+      : undefined
+
+    const tokenAttrWithIcon = attrs.map((att) =>
+      [
+        getTraitEmoji(attrIconMap, att.trait_type),
+        `${capitalizeFirstLetter(att.trait_type)}:`,
+        att.value,
+      ].join('ㅤ'),
     )
 
     return {
       props: {
         collection,
-        token,
+        token: { ...token, attributes: attrs },
         ticker,
         attrIcons: attrIconMap,
         seoDescription: [
           `Collection: ${collection.name} ✔`,
-          token.rarity.rarity &&
-            [
-              `🏆ㅤTier: ${token.rarity.rarity}`,
-              `Rank: ${token.rarity.rank}`,
-              `Score: ${Number(token.rarity.score).toFixed(3)}`,
-            ].join(' | '),
-          !!ticker?.floor_price
-            ? `💎ㅤFloor price: ${Number(ticker?.floor_price || 0)} ${
-                ticker.chain
-              }`
-            : undefined,
+          nftTier,
+          tokenPrice,
           '\n',
           !!token.attributes?.length && `Attributes:`,
-          (token.attributes || [])
-            .sort(
-              (a, b) =>
-                Number(a.frequency?.replace('%', '') || 0) * 100 -
-                Number(b.frequency?.replace('%', '') || 0) * 100,
-            )
-            .map(
-              (att) =>
-                `${getTraitEmoji(attrIconMap, att.trait_type.toLowerCase())}ㅤ${
-                  att.trait_type
-                }: ${att.value}`,
-            )
-            .join('\n'),
+          ...tokenAttrWithIcon,
         ]
           .filter(Boolean)
           .join('\n'),
