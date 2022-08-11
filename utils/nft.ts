@@ -1,4 +1,5 @@
 import { BigNumber, utils } from 'ethers'
+import { IAttribute } from '~types/nft'
 import { formatNumber } from './number'
 
 export const getNftPrice = ({ listing }: any) => {
@@ -31,4 +32,12 @@ export const formatPrice = (
     )
   }
   return defaultValue
+}
+
+export function sortNFTAttributes(attrs: IAttribute[]) {
+  return [...attrs].sort(
+    (a, b) =>
+      Number(a.frequency?.replace('%', '') || 0) * 100 -
+      Number(b.frequency?.replace('%', '') || 0) * 100,
+  )
 }

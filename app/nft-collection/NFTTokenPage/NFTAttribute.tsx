@@ -1,6 +1,6 @@
-import React from "react";
-import { IAttribute } from "~types/nft";
-import cc from "classnames";
+import React from 'react'
+import { IAttribute } from '~types/nft'
+import cc from 'classnames'
 
 function NFTAttribute({ data, emoji }: { data: IAttribute; emoji: string }) {
   return (
@@ -11,14 +11,18 @@ function NFTAttribute({ data, emoji }: { data: IAttribute; emoji: string }) {
         </h4>
         <p aria-label={emoji}>{emoji}&nbsp;</p>
       </div>
-      <p className="font-medium tracking-wide truncate text-gray-800 my-0.5">
+      <p
+        className="font-medium tracking-wide truncate text-gray-800 my-0.5"
+        aria-label={data.value}
+        title={data.value}
+      >
         {data.value}
       </p>
       <p className="text-xs font-thin tracking-wide text-gray-500">
         {data.count} have this trait
       </p>
     </div>
-  );
+  )
 }
 
-export default React.memo(NFTAttribute);
+export default React.memo(NFTAttribute)

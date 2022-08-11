@@ -15,8 +15,8 @@ const isProd = process.env.NEXT_PUBLIC_ENV === 'production'
 const API_GW = {
   DEV: 'https://develop-api.mochi.pod.town/api/v1',
   PROD: 'https://api.mochi.pod.town/api/v1',
-  // INDEXER: "https://api.indexer.console.so/api/v1",
-  INDEXER: 'http://localhost:8080/api/v1',
+  INDEXER: 'https://api.indexer.console.so/api/v1',
+  // INDEXER: 'http://localhost:8080/api/v1',
 }
 
 const getGW = () => (isProd ? API_GW.PROD : API_GW.DEV)
@@ -63,9 +63,10 @@ const getNFTCollectionPrice = async (address: string) => {
   return data?.data
 }
 
-const getAttributeIcons = async () => {
+const getAttributeIcons = async (traits: string[]) => {
+  const q = qs.stringify({ trait_type: traits })
   const data = await fetcher.get<{ error?: string; data?: IAttributeIcon[] }>(
-    `${API_GW.INDEXER}/nft/metadata/attributes-icon`,
+    `${API_GW.INDEXER}/nft/metadata/attributes-icon?${q}`,
   )
   return data?.data
 }
