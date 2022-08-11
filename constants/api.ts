@@ -1,59 +1,87 @@
-import { INFTCollectionList, INFTTicker, INFTToken } from "~types/nft";
-import { fetcher } from "~utils/fetcher";
-import qs from "querystring";
-import getUnixTime from "date-fns/getUnixTime";
-import subDays from "date-fns/subDays";
+import {
+  IAttributeIcon,
+  INFTCollectionList,
+  INFTTicker,
+  INFTToken,
+  ITokenMetadata,
+} from '~types/nft'
+import { fetcher } from '~utils/fetcher'
+import qs from 'querystring'
+import getUnixTime from 'date-fns/getUnixTime'
+import subDays from 'date-fns/subDays'
 
-const isProd = process.env.NEXT_PUBLIC_ENV === "production";
-
-console.log(isProd);
+const isProd = process.env.NEXT_PUBLIC_ENV === 'production'
 
 const API_GW = {
-  DEV: "https://develop-api.mochi.pod.town/api/v1",
-  PROD: "https://api.mochi.pod.town/api/v1",
-  INDEXER: "https://api.indexer.console.so/api/v1",
-};
+  DEV: 'https://develop-api.mochi.pod.town/api/v1',
+  PROD: 'https://api.mochi.pod.town/api/v1',
+  // INDEXER: "https://api.indexer.console.so/api/v1",
+  INDEXER: 'http://localhost:8080/api/v1',
+}
 
-const getGW = () => (isProd ? API_GW.PROD : API_GW.DEV);
+const getGW = () => (isProd ? API_GW.PROD : API_GW.DEV)
 
 const verify = async (
   wallet_address: string,
   code: string,
-  signature: string
+  signature: string,
 ) =>
   await fetcher.post<{ error?: string; status?: string }>(`${getGW()}/verify`, {
     wallet_address,
     code,
     signature,
-  });
+  })
 
-const getNFTTokenDetails = async (address: string, token_id: string | number) =>
-  await fetcher.get<{ error?: string } & INFTToken>(
-    `${API_GW.INDEXER}/nft/${address}/${token_id}`
-  );
+const getNFTTokenDetails = async (
+  address: string,
+  token_id: string | number,
+) => {
+  const data = await fetcher.get<{ error?: string; data?: INFTToken }>(
+    `${API_GW.INDEXER}/nft/${address}/${token_id}`,
+  )
+
+  return data?.data
+}
 
 const getNFTCollectionDetails = async (address: string) => {
   const data = await fetcher.get<{ error?: string } & INFTCollectionList>(
-    `${API_GW.INDEXER}/nft?address=${address}`
-  );
+    `${API_GW.INDEXER}/nft?address=${address}`,
+  )
 
-  return data?.data?.[0];
-};
+  return data?.data?.[0]
+}
 
 const getNFTCollectionPrice = async (address: string) => {
   const q = qs.stringify({
     from: getUnixTime(subDays(new Date(), 7)) * 1000,
     to: getUnixTime(new Date()) * 1000,
-  });
+  })
 
-  return fetcher.get<{ error?: string } & INFTTicker>(
-    `${API_GW.INDEXER}/nft/ticker/${address}?${q}`
-  );
-};
+  const data = await fetcher.get<{ error?: string; data?: INFTTicker }>(
+    `${API_GW.INDEXER}/nft/ticker/${address}?${q}`,
+  )
+  return data?.data
+}
+
+const getAttributeIcons = async () => {
+  const data = await fetcher.get<{ error?: string; data?: IAttributeIcon[] }>(
+    `${API_GW.INDEXER}/nft/metadata/attributes-icon`,
+  )
+  return data?.data
+}
+
+async function getAssetMetadata(collectionAddress: string, tokenId: number) {
+  const data = await fetcher.get<{ error?: string; data?: ITokenMetadata }>(
+    `${API_GW.INDEXER}/nft/${collectionAddress}/${tokenId}/metadata`,
+  )
+  return data?.data
+}
 
 export const API = {
   verify,
   getNFTTokenDetails,
   getNFTCollectionDetails,
   getNFTCollectionPrice,
-};
+  getAttributeIcons,
+  getAssetMetadata,
+}

@@ -1,21 +1,30 @@
+import { IAttributeIcon } from "~types/nft";
+
 const traitEmojis: Record<string, string> = {
-  BACKGROUND: "🏙️ㅤ",
-  BODY: "🎽ㅤ",
-  EYES: "👁ㅤ",
-  EYEWEAR: "👓ㅤ",
-  MOUTH: "👅ㅤ",
-  CLOTHE: "🥋ㅤ",
-  CLOTHES: "🥋ㅤ",
-  HAT: "🎩ㅤ",
-  MASK: "👹ㅤ",
-  EARRING: "✨ㅤ",
-  FUR: "✨ㅤ",
-  ASPECT: "☯️ㅤ",
-  ELEMENT: "🔥ㅤ",
-  BLOODTYPE: "🩸ㅤ",
-  NECKLACE: "✨ㅤ",
+  BACKGROUND: "🏙️",
+  BODY: "🎽",
+  EYES: "👁",
+  EYEWEAR: "👓",
+  MOUTH: "👅",
+  CLOTHE: "🥋",
+  CLOTHES: "🥋",
+  HAT: "🎩",
+  MASK: "👹",
+  EARRING: "✨",
+  FUR: "✨",
+  ASPECT: "☯️",
+  ELEMENT: "🔥",
+  BLOODTYPE: "🩸",
+  NECKLACE: "✨",
 };
 
-export function getTraitEmoji(trainType: string) {
-  return traitEmojis[trainType.toUpperCase()] || "🧩ㅤ";
+export function getTraitEmoji(
+  list: Record<string, IAttributeIcon>,
+  trainType: string
+) {
+  return (
+    list[trainType]?.unicode_icon ||
+    traitEmojis[trainType.toUpperCase()] ||
+    "🧩"
+  );
 }
