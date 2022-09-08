@@ -1,8 +1,9 @@
-import Image from "next/image";
-import { DiscordIcon } from "~components/icons/discord";
-import { TwitterIcon } from "~components/icons/twitter";
-import { SOCIAL_LINKS } from "~constants";
-import s from "./footer.module.css";
+import Image from 'next/image'
+import { DiscordIcon } from '~components/icons/discord'
+import { TwitterIcon } from '~components/icons/twitter'
+import { GitbookIcon } from '~components/icons/gitbook'
+import { SOCIAL_LINKS } from '~constants'
+import s from './footer.module.css'
 
 export const Footer = () => (
   <footer className="pt-16 pb-24 mt-auto">
@@ -35,6 +36,9 @@ export const Footer = () => (
             <a href={SOCIAL_LINKS.DISCORD} target="_blank" rel="noreferrer">
               <DiscordIcon className="w-4 h-4 text-gray-500" />
             </a>
+            <a href={SOCIAL_LINKS.GITBOOK} target="_blank" rel="noreferrer">
+              <GitbookIcon className="w-4 h-4 text-gray-500" />
+            </a>
           </div>
         </div>
         <div className="flex w-full gap-6 md:w-3/5"></div>
@@ -44,4 +48,4 @@ export const Footer = () => (
       </div>
     </div>
   </footer>
-);
+)
