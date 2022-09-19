@@ -19,6 +19,14 @@ export const PAGES = {
     path: '/verify',
     title: 'Verify Wallet',
   },
+  TOS: {
+    path: '/tos',
+    title: 'Terms of Service',
+  },
+  PRIVACY: {
+    path: '/privacy',
+    title: 'Privacy Policty',
+  },
 }
 
 export const SOCIAL_LINKS = {

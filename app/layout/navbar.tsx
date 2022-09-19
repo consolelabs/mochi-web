@@ -1,12 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Fragment } from "react";
-import Button from "~components/button";
-import { DiscordIcon } from "~components/icons/discord";
-import { INVITE_LINK, PAGES, SOCIAL_LINKS } from "~constants";
+import Image from 'next/image'
+import Link from 'next/link'
+import { Fragment } from 'react'
+import Button from '~components/button'
+import { DiscordIcon } from '~components/icons/discord'
+import { INVITE_LINK, PAGES, SOCIAL_LINKS } from '~constants'
 
 const NavLinks = ({ className }: { className: string }) => (
-  <div className={["flex items-center justify-center", className].join(" ")}>
+  <div className={['flex items-center justify-center', className].join(' ')}>
     <Link href={PAGES.ABOUT.path}>
       <a className="text-sm font-semibold">{PAGES.ABOUT.title}</a>
     </Link>
@@ -24,12 +24,28 @@ const NavLinks = ({ className }: { className: string }) => (
     >
       Support Server
     </a>
+    <a
+      className="text-sm font-semibold"
+      href={PAGES.TOS.path}
+      target="_blank"
+      rel="noreferrer"
+    >
+      ToS
+    </a>
+    <a
+      className="text-sm font-semibold"
+      href={PAGES.PRIVACY.path}
+      target="_blank"
+      rel="noreferrer"
+    >
+      Privacy Policy
+    </a>
     <Button size="small" href={INVITE_LINK} className="flex items-center gap-4">
       <DiscordIcon className="w-5 h-5" />
       <span>Get Mochi</span>
     </Button>
   </div>
-);
+)
 
 export const Navbar = () => (
   <Fragment>
@@ -58,4 +74,4 @@ export const Navbar = () => (
       <NavLinks className="gap-10 p-6 text-sm" />
     </div>
   </Fragment>
-);
+)
