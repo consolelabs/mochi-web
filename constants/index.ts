@@ -27,6 +27,9 @@ export const PAGES = {
     path: '/privacy',
     title: 'Privacy Policty',
   },
+  TRADE_DETAIL: {
+    title: 'Swap',
+  },
 }
 
 export const SOCIAL_LINKS = {

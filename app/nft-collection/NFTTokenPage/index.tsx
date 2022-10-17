@@ -8,12 +8,7 @@ import {
 import NFTAttribute from './NFTAttribute'
 import cc from 'classnames'
 import { truncate } from '@dwarvesf/react-utils'
-import {
-  ClipboardCopyIcon,
-  ClipboardCheckIcon,
-  LinkIcon,
-  CheckCircleIcon,
-} from '@heroicons/react/solid'
+import { LinkIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
 import { CHAIN_NAMES, EXPLORERS } from '~constants/chain'
 import { getTraitEmoji } from '~constants/emoji'
 import { useFetch } from '~hooks/useFetch'
@@ -73,7 +68,6 @@ const AddressDisplay = memo(function AddressDisplay({
 export default function NFTTokenPage({
   token: data,
   collection,
-  ticker,
   attrIcons,
 }: {
   token: INFTToken

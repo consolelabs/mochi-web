@@ -1,8 +1,8 @@
-import Button from "~components/button";
+import Button from '~components/button'
 
 interface Props {
-  handleVerify: () => void;
-  loading: boolean;
+  handleVerify: () => void
+  loading: boolean
 }
 
 export const VerifyAction = (props: Props) => (
@@ -20,7 +20,7 @@ export const VerifyAction = (props: Props) => (
       color="white"
     >
       {props.loading ? (
-        "Verifying..."
+        'Verifying...'
       ) : (
         <>
           <img src="/assets/metamask.svg" className="h-8 mr-2" alt="Metamask" />
@@ -29,4 +29,4 @@ export const VerifyAction = (props: Props) => (
       )}
     </Button>
   </div>
-);
+)

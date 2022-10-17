@@ -24,22 +24,6 @@ const NavLinks = ({ className }: { className: string }) => (
     >
       Support Server
     </a>
-    <a
-      className="text-sm font-semibold"
-      href={PAGES.TOS.path}
-      target="_blank"
-      rel="noreferrer"
-    >
-      ToS
-    </a>
-    <a
-      className="text-sm font-semibold"
-      href={PAGES.PRIVACY.path}
-      target="_blank"
-      rel="noreferrer"
-    >
-      Privacy Policy
-    </a>
     <Button size="small" href={INVITE_LINK} className="flex items-center gap-4">
       <DiscordIcon className="w-5 h-5" />
       <span>Get Mochi</span>
@@ -67,11 +51,8 @@ export const Navbar = () => (
             </span>
           </a>
         </Link>
-        <NavLinks className="hidden gap-10 ml-auto sm:flex" />
+        <NavLinks className="flex gap-10 ml-auto" />
       </div>
     </nav>
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white sm:hidden bg-opacity-95 backdrop-blur-md backdrop-filter">
-      <NavLinks className="gap-10 p-6 text-sm" />
-    </div>
   </Fragment>
 )

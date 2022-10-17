@@ -78,6 +78,30 @@ async function getAssetMetadata(collectionAddress: string, tokenId: number) {
   return data?.data
 }
 
+async function getUserNFTCollections(address: string) {
+  const data = await fetcher.get<any>(`${API_GW.INDEXER}/${address}/collection`)
+
+  return data?.data
+}
+
+async function getUserNFTs(
+  address: string,
+  colAddress: string,
+  chainId: number,
+) {
+  const data = await fetcher.get<any>(
+    `${API_GW.INDEXER}/${address}/nft?collection_addresses=${colAddress}&chain_id=${chainId}`,
+  )
+
+  return data.data
+}
+
+async function getTradeOffer(tradeId: string) {
+  const data = await fetcher.get<any>(`${getGW()}/trades/${tradeId}`)
+
+  return data.data
+}
+
 export const API = {
   verify,
   getNFTTokenDetails,
@@ -85,4 +109,7 @@ export const API = {
   getNFTCollectionPrice,
   getAttributeIcons,
   getAssetMetadata,
+  getUserNFTCollections,
+  getUserNFTs,
+  getTradeOffer,
 }

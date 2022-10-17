@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { Footer } from './footer'
 import { Navbar } from './navbar'
 
@@ -7,9 +6,9 @@ interface Props {
 }
 
 export const Layout = (props: Props) => (
-  <Fragment>
+  <div className="min-h-screen flex flex-col">
     <Navbar />
     {props.children}
     <Footer />
-  </Fragment>
+  </div>
 )

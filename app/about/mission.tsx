@@ -1,4 +1,4 @@
-import { CollectionIcon, HeartIcon } from "@heroicons/react/solid";
+import { RectangleStackIcon, HeartIcon } from '@heroicons/react/24/solid'
 
 export const Mission = () => (
   <div className="relative flex flex-wrap-reverse mb-12 text-lg md:flex-nowrap">
@@ -22,7 +22,7 @@ export const Mission = () => (
           </div>
         </li>
         <li className="flex gap-2">
-          <CollectionIcon className="flex-shrink-0 w-5 h-5 mt-1 text-mochi" />
+          <RectangleStackIcon className="flex-shrink-0 w-5 h-5 mt-1 text-mochi" />
           <div className="flex-1">
             <span className="font-bold text-mochi">Altruistic service</span> —
             We act with the best interest and well-being of our users in mind.
@@ -33,7 +33,7 @@ export const Mission = () => (
     </div>
     <div
       className="relative w-48 h-48 mx-auto mt-4 overflow-hidden bg-center bg-cover rounded-lg mb-9"
-      style={{ backgroundImage: "url(/logo.png)" }}
+      style={{ backgroundImage: 'url(/logo.png)' }}
     />
   </div>
-);
+)
