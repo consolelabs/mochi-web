@@ -11,12 +11,13 @@ import {
   useDisconnect,
   useEnsName,
   usePrepareContractWrite,
+  useWaitForTransaction,
 } from 'wagmi'
 import { ConnectKitButton } from 'connectkit'
 import { useRouter } from 'next/router'
 import { address as escrowAddress, abi } from 'contract/escrow'
-import { Address, Item, Offer } from './new'
-import { useMemo } from 'react'
+import { Address, Offer } from './new'
+import { useEffect, useMemo } from 'react'
 import { truncate } from '@dwarvesf/react-utils'
 import { useClipboard } from '@dwarvesf/react-hooks'
 import { SpinnerIcon } from '~components/icons/Spinner'
@@ -34,11 +35,12 @@ import Stepper from '~components/Stepper'
 import { BigNumber, constants } from 'ethers'
 import { ReadContractsContract } from '@wagmi/core/dist/declarations/src/actions/contracts/readContracts'
 import { SwapReceipt } from '~components/SwapReceipt'
+import confetti from 'canvas-confetti'
 
 type ButtonGroupProps = {
   canDeposit: boolean
   disconnect: () => void
-  cancelDeal?: () => Promise<void>
+  cancelDeal?: () => void
   depositAll: () => Promise<void>
   // which button to show spinner
   loadingIndex: number
@@ -58,7 +60,7 @@ const ButtonGroup = ({
     <div className="flex flex-col mt-3">
       <button
         onClick={depositAll}
-        disabled={!canDeposit}
+        // disabled={!canDeposit}
         className={classNames(commonBtnStyle, {
           'text-gray-800': canDeposit,
           'text-gray-400 hover:no-underline': !canDeposit,
@@ -105,7 +107,10 @@ const Avatar = (props: any) => {
             !props.isCancelled && (props.isReady || props.isClosed),
         })}
       >
-        <img src={getAvatar(props?.src ?? '...', { size: 80 })} alt="" />
+        <img
+          src={getAvatar(props?.src?.toLowerCase() ?? '...', { size: 80 })}
+          alt=""
+        />
       </div>
       <p
         className={classNames(
@@ -140,17 +145,18 @@ const ApproveButton = (props: any) => {
     args: [escrowAddress, props.tokenId],
   })
 
-  const { writeAsync: _approve, isLoading } = useContractWrite(config)
+  const { data: approveTx, write: _approve } = useContractWrite(config)
+  const { isLoading: isApproving } = useWaitForTransaction(approveTx)
 
-  const approve = async () => {
+  const approve = () => {
     try {
-      await _approve?.()
+      _approve?.()
     } catch (e) {
       console.error(e)
     }
   }
 
-  if (isLoading) {
+  if (isApproving) {
     return <SpinnerIcon className="my-auto w-3 h-3 inline" />
   }
 
@@ -214,7 +220,8 @@ export default function TradeDetail({ offer }: Props) {
     watch: true,
   })
 
-  const isA = isConnected && address === offer.owner_address
+  const isA =
+    isConnected && address?.toLowerCase() === offer.owner_address.toLowerCase()
   const isB = !isA
 
   const { data: depositedItems = [] } = useContractReads({
@@ -227,7 +234,7 @@ export default function TradeDetail({ offer }: Props) {
       {
         ...escrow,
         functionName: 'depositedItemsOf',
-        args: [id, isConnected && isB ? address : null],
+        args: [id, trade?.recipient],
       },
     ],
     enabled: Boolean(id),
@@ -241,15 +248,16 @@ export default function TradeDetail({ offer }: Props) {
       args: [id],
     })
 
-  const { writeAsync: _cancelDeal, isLoading: isCancelling } =
+  const { data: cancelDealTx, write: _cancelDeal } =
     useContractWrite(_cancelConfig)
+
+  const { isLoading: isCancelling } = useWaitForTransaction(cancelDealTx)
 
   const cancelDeal =
     _cancelDeal &&
-    (async () => {
+    (() => {
       try {
-        const tx = await _cancelDeal?.()
-        await tx?.wait()
+        _cancelDeal()
       } catch (e) {
         console.error(e)
       }
@@ -260,7 +268,7 @@ export default function TradeDetail({ offer }: Props) {
 
     const getDeposited = (deposited: any) => {
       return (deposited ?? []).reduce((acc: any, c: any) => {
-        const list = acc[c.tokenAddress]
+        const list = acc[c.tokenAddress.toLowerCase()]
         if (list) {
           return {
             ...acc,
@@ -351,10 +359,14 @@ export default function TradeDetail({ offer }: Props) {
     return {
       canAdeposit:
         !trade?.isOwnerDeposited &&
-        approvedOpA.map((a) => a?.toString()).every((a) => a === escrowAddress),
+        approvedOpA
+          .map((a) => a?.toString())
+          .every((a) => a.toLowerCase() === escrowAddress.toLowerCase()),
       canBdeposit:
         !trade?.isRecipientDeposited &&
-        approvedOpB.map((a) => a?.toString()).every((a) => a === escrowAddress),
+        approvedOpB
+          .map((a) => a?.toString())
+          .every((a) => a.toLowerCase() === escrowAddress.toLowerCase()),
     }
   }, [
     approvedOpA,
@@ -381,18 +393,42 @@ export default function TradeDetail({ offer }: Props) {
     ),
   })
 
-  const { writeAsync, isLoading: isDepositing } = useContractWrite(config)
+  const { data: depositAllTx, write: _depositAll } = useContractWrite(config)
+
+  const { isLoading: isDepositing } = useWaitForTransaction(depositAllTx)
 
   const depositAll = async () => {
     try {
-      const tx = await writeAsync?.()
-      await tx?.wait()
+      _depositAll?.()
     } catch (e) {
       console.error(e)
     } finally {
       await refetchCancelbility()
     }
   }
+
+  useEffect(() => {
+    if (isCompleted) {
+      confetti({
+        particleCount: 200,
+        angle: -30,
+        spread: 100,
+        origin: {
+          x: 0.2,
+          y: 0,
+        },
+      })
+      confetti({
+        particleCount: 200,
+        angle: -150,
+        spread: 100,
+        origin: {
+          x: 0.8,
+          y: 0,
+        },
+      })
+    }
+  }, [isCompleted])
 
   if (typeof window === 'undefined') {
     return <SEO title={PAGES.TRADE_DETAIL.title} tailTitle />
@@ -422,14 +458,14 @@ export default function TradeDetail({ offer }: Props) {
             <Address
               copyValue={offer.owner_address}
               eth={Boolean(fromEns)}
-              you={isConnected && isA}
+              you={!isCompleted && !isCancelled && isConnected && isA}
             >
               {fromEns ? fromEns : offer.owner_address ?? '...'}
             </Address>
             <div className="mb-2" />
             {!isConnected ? (
               <ConnectKitButton />
-            ) : address === offer.owner_address && isOngoing ? (
+            ) : isA && isOngoing ? (
               <ButtonGroup
                 depositAll={depositAll}
                 canDeposit={canAdeposit}
@@ -487,8 +523,8 @@ export default function TradeDetail({ offer }: Props) {
                                 ' (sent back)'
                               ) : getIsDepositedA(item.token_address, ti) ? (
                                 ' (deposited)'
-                              ) : isA &&
-                                approvedOpA[i]?.toString() === escrowAddress ? (
+                              ) : approvedOpA[i]?.toString().toLowerCase() ===
+                                escrowAddress.toLowerCase() ? (
                                 ' Approved'
                               ) : isA ? (
                                 <ApproveButton
@@ -527,9 +563,8 @@ export default function TradeDetail({ offer }: Props) {
                                 ' (sent back)'
                               ) : getIsDepositedB(item.token_address, ti) ? (
                                 '(deposited) '
-                              ) : isConnected &&
-                                isB &&
-                                approvedOpB[i]?.toString() === escrowAddress ? (
+                              ) : approvedOpB[i]?.toString().toLowerCase() ===
+                                escrowAddress.toLowerCase() ? (
                                 'Approved '
                               ) : isConnected && isB ? (
                                 <ApproveButton
@@ -598,7 +633,11 @@ export default function TradeDetail({ offer }: Props) {
               copyValue={isConnected && isB ? address : constants.AddressZero}
               you={isConnected && isB}
             >
-              {isConnected && isB ? address : constants.AddressZero}
+              {isCompleted || trade?.isRecipientCancelled
+                ? trade?.recipient
+                : isConnected && isB
+                ? address
+                : constants.AddressZero}
             </Address>
             <div className="mb-2" />
             {!isConnected ? (
