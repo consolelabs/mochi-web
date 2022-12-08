@@ -28,11 +28,11 @@ export const Footer = () => (
               Mochi<span className="text-mochi">.</span>
             </span>
           </div>
-          <p className="my-6 text-xs">
+          <span className="inline-block my-6 text-xs">
             Our mission is to build the best growth tool for your Discord
             servers, and help you bring about and connect strong communities,
             active users with the ever-growing blockchain.
-          </p>
+          </span>
           <div className="flex items-center gap-4">
             <a href={SOCIAL_LINKS.TWITTER} target="_blank" rel="noreferrer">
               <TwitterIcon className="w-4 h-4 text-gray-500" />

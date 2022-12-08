@@ -14,8 +14,8 @@ export const CTA = () => {
         }}
         className="relative rounded-lg p-10 flex flex-col items-center justify-center"
       >
-        <p className="text-2xl">Level up your community. For Free ✨</p>
-        <Button appearance="secondary" className="mt-5">
+        <p className="text-3xl">Level up your community. For Free ✨</p>
+        <Button appearance="secondary" className="mt-6">
           <DiscordIcon className="w-5 h-5" />
           <div>Get Mochi</div>
         </Button>

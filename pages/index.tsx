@@ -7,6 +7,7 @@ import { CircledIcon } from '~components/CircledIcon'
 import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { DiscordIcon } from '~components/icons/discord'
+import { RingsBackground } from '~components/RingsBackground'
 import { Stats } from '~components/Stats'
 
 const scale = 2.25
@@ -19,7 +20,7 @@ export default function index() {
       </div>
       <Layout>
         <SEO />
-        <div className="flex justify-between relative body-block h-[800px] px-12">
+        <div className="flex justify-between relative body-block h-[600px] px-12">
           <div className="relative z-10 flex flex-col mt-40">
             <p className="text-5xl">
               Bring <span className="text-[#f17975]">Web3</span> universe to
@@ -40,7 +41,7 @@ export default function index() {
             </div>
           </div>
           <div className="relative flex-1 flex justify-end items-start pt-40">
-            <Image objectFit="contain" layout="fill" src="/rings.png" alt="" />
+            <RingsBackground />
             <Image
               width={1080 / scale}
               height={669 / scale}
@@ -190,9 +191,7 @@ export default function index() {
                 >
                   <CircledIcon src={u.icon} />
                   <p className="text-xl mt-2">{u.title}</p>
-                  <span className="text-base font-extralight mt-1">
-                    {u.desc}
-                  </span>
+                  <span className="text-base mt-1">{u.desc}</span>
                 </div>
               )
             })}
@@ -215,7 +214,7 @@ export default function index() {
           <div className="mt-32 flex justify-between">
             <div className="flex flex-col gap-y-2">
               <p className="text-xl">Rarity ranking tool</p>
-              <span className="text-base font-extralight">
+              <span className="text-base">
                 Instant rarity checker from a huge database, while
                 <br />
                 indexing new collections is quick and easy.
@@ -223,7 +222,7 @@ export default function index() {
             </div>
             <div className="flex flex-col gap-y-2">
               <p className="text-xl">Track NFT Sales</p>
-              <span className="text-base font-extralight">
+              <span className="text-base">
                 Quick catch up on market movement and you might
                 <br />
                 see some steals in there.
@@ -291,9 +290,7 @@ export default function index() {
                 >
                   <CircledIcon src={s.icon} />
                   <p className="text-xl mt-1">{s.title}</p>
-                  <span className="mt-1 text-base font-extralight">
-                    {s.desc}
-                  </span>
+                  <span className="mt-1 text-base">{s.desc}</span>
                 </div>
               )
             })}

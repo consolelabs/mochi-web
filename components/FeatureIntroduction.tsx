@@ -24,8 +24,16 @@ export const FeatureIntroduction = (props: Props) => {
         <Image layout="fill" objectFit="contain" alt="" src={props.image} />
       </div>
       <div className="flex-1">
-        <p className="text-2xl">{props.title}</p>
-        <span>{props.subtitle}</span>
+        {typeof props.title === 'string' ? (
+          <p className="text-2xl">{props.title}</p>
+        ) : (
+          props.title
+        )}
+        {typeof props.subtitle === 'string' ? (
+          <span>{props.subtitle}</span>
+        ) : (
+          props.subtitle
+        )}
       </div>
     </div>
   )
