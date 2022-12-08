@@ -3,7 +3,6 @@ import { DiscordIcon } from '~components/icons/discord'
 import { TwitterIcon } from '~components/icons/twitter'
 import { GitbookIcon } from '~components/icons/gitbook'
 import { SOCIAL_LINKS } from '~constants'
-import s from './footer.module.css'
 
 export const Footer = () => (
   <footer className="pt-16 pb-24 mt-auto">
@@ -11,7 +10,12 @@ export const Footer = () => (
       <div className="flex flex-wrap">
         <div className="w-full text-sm text-gray-500 md:w-2/5">
           <div className="flex items-center gap-4">
-            <div className={s.logoGrow}>
+            <div
+              className="shadow-mochi w-9 h-9 rounded-full"
+              style={{
+                boxShadow: '0 0 3rem var(--tw-shadow-color)',
+              }}
+            >
               <Image
                 src="/logo.png"
                 alt="Logo"

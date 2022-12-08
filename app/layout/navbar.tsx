@@ -1,55 +1,57 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
-import Button from '~components/button'
+import { Button } from '~components/Button'
 import { DiscordIcon } from '~components/icons/discord'
-import { INVITE_LINK, PAGES, SOCIAL_LINKS } from '~constants'
+import { PAGES, SOCIAL_LINKS } from '~constants'
 
 const NavLinks = ({ className }: { className: string }) => (
   <div className={['flex items-center justify-center', className].join(' ')}>
-    <Link href={PAGES.ABOUT.path}>
-      <a className="text-sm font-semibold">{PAGES.ABOUT.title}</a>
-    </Link>
-    {/* <Link href={PAGES.NFT.path}>
-      <a className="text-sm font-semibold">{PAGES.NFT.title}</a>
-    </Link> */}
+    <a
+      className="text-sm font-semibold"
+      href="#"
+      target="_blank"
+      rel="noreferrer"
+    >
+      Feature
+    </a>
     <Link href={PAGES.CHANGE_LOG.path}>
       <a className="text-sm font-semibold">{PAGES.CHANGE_LOG.title}</a>
     </Link>
+    <a
+      className="text-sm font-semibold"
+      href="#"
+      target="_blank"
+      rel="noreferrer"
+    >
+      Community
+    </a>
     <a
       className="text-sm font-semibold"
       href={SOCIAL_LINKS.DISCORD}
       target="_blank"
       rel="noreferrer"
     >
-      Support Server
+      Support
     </a>
     <a
       className="text-sm font-semibold"
-      href={PAGES.TOS.path}
+      href={SOCIAL_LINKS.DISCORD}
       target="_blank"
       rel="noreferrer"
     >
-      ToS
+      Credibility
     </a>
-    <a
-      className="text-sm font-semibold"
-      href={PAGES.PRIVACY.path}
-      target="_blank"
-      rel="noreferrer"
-    >
-      Privacy Policy
-    </a>
-    <Button size="small" href={INVITE_LINK} className="flex items-center gap-4">
+    <Button appearance="secondary">
       <DiscordIcon className="w-5 h-5" />
-      <span>Get Mochi</span>
+      <div>Get Mochi</div>
     </Button>
   </div>
 )
 
 export const Navbar = () => (
   <Fragment>
-    <nav className="sticky top-0 z-10 bg-white bg-opacity-95 backdrop-blur-md backdrop-filter">
+    <nav className="relative z-20 bg-transparent">
       <div className="flex items-center max-w-7xl px-12 py-5 mx-auto">
         <Link href="/">
           <a className="flex items-center gap-4 text-gray-900 group">
@@ -70,7 +72,7 @@ export const Navbar = () => (
         <NavLinks className="hidden gap-10 ml-auto sm:flex" />
       </div>
     </nav>
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white sm:hidden bg-opacity-95 backdrop-blur-md backdrop-filter">
+    <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
       <NavLinks className="gap-10 p-6 text-sm" />
     </div>
   </Fragment>

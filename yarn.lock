@@ -660,20 +660,15 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
-"@fontsource/dela-gothic-one@^4.5.8":
-  version "4.5.8"
-  resolved "https://registry.yarnpkg.com/@fontsource/dela-gothic-one/-/dela-gothic-one-4.5.8.tgz#3346d827a3dd7665534dfdecfd8b913122bb02ff"
-  integrity sha512-Gwa9nfvps1cfh/+LoQNt8lzvwMoEvLeBtu+5oCD7GUZKEQcbn9OLvvg4zQq+QM1z7tnIH5Ev+FoIvjWO6h0xZw==
-
-"@fontsource/dm-serif-display@^4.5.6":
-  version "4.5.6"
-  resolved "https://registry.yarnpkg.com/@fontsource/dm-serif-display/-/dm-serif-display-4.5.6.tgz#de9d31b606dcd5809b54929cab88ad560ce82be4"
-  integrity sha512-ih+CIOzqY0UYH+KMOMqGwGo9acmZOtk+cFbQvfVapRaHds64C2/MiduCoAL1MJWNVkXRPwWoUtHLG6ZPBd3rOg==
-
 "@fontsource/inter@^4.5.7":
   version "4.5.7"
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.7.tgz#f0657c52105ed51e04ac636a25d6016896c5ee9d"
   integrity sha512-25k3thupaOEBexuU+jAkGqieKPbuhSuA+sinDwp1iBNhqQPiJ9QHDvsXgoCgCbZ4sGlE8aCwZmSlDJrPdJHNkw==
+
+"@fontsource/sora@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@fontsource/sora/-/sora-4.5.10.tgz#46554a5a7bbbaa16657398f4071523228c44064a"
+  integrity sha512-hArmXtMRBOXtvY7DzSr+v0hGvRSrpYXMNOLJK/U0AJjhdS23kir+13ZV79CjwMhwsm8dfIV+YWVGDWEvlUic/w==
 
 "@heroicons/react@^1.0.6":
   version "1.0.6"

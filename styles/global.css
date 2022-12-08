@@ -9,7 +9,27 @@
 }
 
 body {
-  @apply font-sans text-gray-900 bg-white;
+  @apply bg-white;
+  font-family: 'Inter', sans-serif;
+}
+
+.display {
+  font-family: 'Sora', sans-serif;
+}
+
+.body-block {
+  @apply max-w-7xl mx-auto relative z-10;
+}
+
+/* p for titles/headings */
+p {
+  font-family: 'Sora', sans-serif;
+  @apply text-foreground;
+}
+
+/* span for normal text */
+span {
+  @apply text-foreground-secondary font-extralight;
 }
 
 a {
@@ -26,9 +46,9 @@ a:hover {
   background: rgba(0, 0, 0, 0)
     linear-gradient(
       99deg,
-      theme("colors.mochi.100") 44.26%,
-      theme("colors.mochi.400") 69.14%,
-      theme("colors.mochi.100") 96.8%
+      theme('colors.mochi.100') 44.26%,
+      theme('colors.mochi.400') 69.14%,
+      theme('colors.mochi.100') 96.8%
     )
     repeat scroll 0% 0%;
 }

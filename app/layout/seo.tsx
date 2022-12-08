@@ -1,19 +1,19 @@
-import Head from "next/head";
-import { PAGES } from "~constants";
+import Head from 'next/head'
+import { PAGES } from '~constants'
 
 interface Props {
-  title?: string;
-  tailTitle?: boolean;
-  description?: string;
-  image?: string;
+  title?: string
+  tailTitle?: boolean
+  description?: string
+  image?: string
 }
 
 export const CONFIG = {
   title: PAGES.HOME.title,
-  description: "Mochi Bot — Bring the Web3 universe to your Discord server",
-  url: "https://getmochi.co/",
-  image: "https://getmochi.co/featured.png",
-};
+  description: 'Mochi Bot — Bring the Web3 universe to your Discord server',
+  url: 'https://getmochi.co/',
+  image: 'https://getmochi.co/featured.png',
+}
 
 export const SEO = ({
   title = CONFIG.title,
@@ -22,7 +22,7 @@ export const SEO = ({
   image,
 }: Props) => (
   <Head>
-    <title>{title + (tailTitle === true ? ` — ${CONFIG.title}` : "")}</title>
+    <title>{title + (tailTitle ? ` — ${CONFIG.title}` : '')}</title>
 
     <meta name="title" content={title} />
     <meta name="description" content={description} />
@@ -39,4 +39,4 @@ export const SEO = ({
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={image || CONFIG.image} />
   </Head>
-);
+)
