@@ -18,21 +18,21 @@ export default function ServerManagement() {
           title="Server Management"
           description="Manage your Discord community with ease!"
         />
-        <div className="body-block px-12 flex flex-col relative items-center justify-center h-[400px]">
-          <div className="scale-[2] absolute top-1/2 left-0 w-full h-full">
+        <div className="mt-10 body-block px-6 md:px-12 flex flex-col relative items-center justify-center h-[400px]">
+          <div className="absolute top-1/2 left-0 w-full h-full">
             <RingsBackground />
           </div>
-          <p className="text-5xl">
+          <p className="text-center relative text-2xl sm:text-3xl md:text-5xl">
             Manage your Discord
             <br />
             community with ease!
           </p>
-          <span className="mt-4 text-xl">
+          <span className="relative mt-4 text-sm sm:text-base md:text-xl text-center">
             Set and forget. Mochi does it all for you, automatically
           </span>
-          <Button className="mt-4">Learn more</Button>
+          <Button className="relative mt-4">Learn more</Button>
         </div>
-        <div className="body-block px-12 flex flex-col gap-y-20">
+        <div className="body-block px-6 md:px-12 flex flex-col gap-y-20">
           <FeatureIntroduction
             image="/feature-1.png"
             title={<p className="text-4xl">Holder Verification</p>}
@@ -89,8 +89,14 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
+            height={{
+              default: 300,
+              md: 350,
+            }}
             image="/feature-3.png"
-            title={<p className="text-4xl">Detailed Server Insights</p>}
+            title={
+              <p className="text-4xl mt-10 md:mt-0">Detailed Server Insights</p>
+            }
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">
                 <CommandText>$stats</CommandText>
@@ -103,6 +109,10 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
+            height={{
+              default: 300,
+              md: 400,
+            }}
             flip
             image="/feature-4.png"
             title={<p className="text-4xl">Smooth Onboarding Experience</p>}
@@ -118,6 +128,10 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
+            height={{
+              default: 500,
+              md: 400,
+            }}
             image="/feature-5.png"
             title={<p className="text-4xl">Facilitate Engagement</p>}
             subtitle={
@@ -138,6 +152,10 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
+            height={{
+              default: 300,
+              md: 400,
+            }}
             flip
             image="/feature-6.png"
             title={
@@ -157,6 +175,10 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
+            height={{
+              default: 300,
+              md: 450,
+            }}
             image="/feature-7.png"
             title={<p className="text-4xl">Automatically clean your server</p>}
             subtitle={

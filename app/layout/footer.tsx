@@ -6,7 +6,7 @@ import { SOCIAL_LINKS } from '~constants'
 
 export const Footer = () => (
   <footer className="pt-16 pb-24 mt-auto">
-    <div className="max-w-7xl px-12 mx-auto">
+    <div className="max-w-7xl px-6 md:px-12 mx-auto">
       <div className="flex flex-wrap">
         <div className="w-full text-sm text-gray-500 md:w-2/5">
           <div className="flex items-center gap-4">
