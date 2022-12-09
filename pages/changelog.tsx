@@ -1,6 +1,12 @@
 import { GetStaticProps } from 'next'
 import { Client, isFullPage } from '@notionhq/client'
-import { CHANGELOG_DATABASE_ID, NOTION_KEY } from '~envs'
+import {
+  CHANGELOG_DATABASE_ID,
+  CHANGELOG_FILTER_PROPERTY_NAME,
+  CHANGELOG_FILTER_PROPERTY_VALUE,
+  CHANGELOG_SORT_PROPERTY_NAME,
+  NOTION_KEY,
+} from '~envs'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
 import { PAGES } from '~constants'
@@ -22,15 +28,28 @@ function toNotionPageId(id: string) {
   )}-${id.slice(20, 32)}`
 }
 
-export const getServerSideProps: GetStaticProps<Props> = async () => {
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const property = CHANGELOG_FILTER_PROPERTY_NAME
+  const propertyVal = CHANGELOG_FILTER_PROPERTY_VALUE
+
+  const sortProperty = CHANGELOG_SORT_PROPERTY_NAME
+
   const notion = new Client({ auth: NOTION_KEY })
   const db = await notion.databases.query({
     database_id: toNotionPageId(CHANGELOG_DATABASE_ID),
+    sorts: [{ property: sortProperty, direction: 'descending' }],
   })
 
   const pages = await Promise.all(
     db.results.map(async (p, i) => {
       if (!isFullPage(p)) return null
+      const filterProp = p.properties[property]
+      if (
+        filterProp.type !== 'select' ||
+        (filterProp.type === 'select' &&
+          filterProp.select?.name !== propertyVal)
+      )
+        return null
       let name = `Changelog #${i + 1}`
       if (
         p.properties.Name.type === 'title' &&
@@ -44,20 +63,20 @@ export const getServerSideProps: GetStaticProps<Props> = async () => {
           block_id: p.id,
         })
         .then((p) => ({ name, content: p }))
-        .catch(() => ({ name, content: null }))
+        .catch(() => null)
     }),
   )
 
   return {
     props: {
-      data: pages,
+      data: pages.filter(Boolean),
     },
   }
 }
 
 const ChangelogItem = ({ name, content }: Page) => (
-  <div className="mb-12 lg:flex gap-9 mx-auto">
-    <div className="flex-shrink-0 max-w-[192px] mb-9 relative lg:pt-2">
+  <div className="mb-16 lg:flex gap-9">
+    <div className="flex-shrink-0 mb-5 relative lg:pt-2 inline-block">
       <div className="lg:sticky top-36">
         <div className="border-gradient">
           <div className="bg-white border-gradient-entry" />
