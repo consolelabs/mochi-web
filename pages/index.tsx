@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
 import { Button } from '~components/Button'
@@ -61,13 +62,14 @@ export default function index() {
             <span className="text-xl">
               Set and forget. Mochi does it all for you, automatically
             </span>
-            <a
-              href="#"
-              className="items-center gap-x-1 flex text-blue-500 underline font-medium"
-            >
-              <span className="text-blue-500 font-medium">Learn more</span>
-              <ExternalLinkIcon width={16} height={16} />
-            </a>
+            <Link href="/server-management">
+              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
+                <span className="hover:text-mochi text-blue-500 font-medium">
+                  Learn more
+                </span>
+                <ExternalLinkIcon width={16} height={16} />
+              </a>
+            </Link>
           </div>
           {/* FEATURES */}
           <FeatureIntroduction
@@ -161,13 +163,14 @@ export default function index() {
             <span className="text-xl">
               Access all thing crypto without having to leave Discord
             </span>
-            <a
-              href="#"
-              className="items-center gap-x-1 flex text-blue-500 underline font-medium"
-            >
-              <span className="text-blue-500 font-medium">Learn more</span>
-              <ExternalLinkIcon width={16} height={16} />
-            </a>
+            <Link href="/crypto-utils">
+              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
+                <span className="hover:text-mochi text-blue-500 font-medium">
+                  Learn more
+                </span>
+                <ExternalLinkIcon width={16} height={16} />
+              </a>
+            </Link>
           </div>
           <div className="mt-10 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-6">
             {[
@@ -211,13 +214,14 @@ export default function index() {
             <span className="text-xl">
               A full set of tools for minters, traders, and collection owners
             </span>
-            <a
-              href="#"
-              className="items-center gap-x-1 flex text-blue-500 underline font-medium"
-            >
-              <span className="text-blue-500 font-medium">Learn more</span>
-              <ExternalLinkIcon width={16} height={16} />
-            </a>
+            <Link href="/nft">
+              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
+                <span className="hover:text-mochi text-blue-500 font-medium">
+                  Learn more
+                </span>
+                <ExternalLinkIcon width={16} height={16} />
+              </a>
+            </Link>
           </div>
           <div className="mt-16 md:mt-32 flex flex-col gap-y-8 md:gap-y-0 md:flex-row justify-between">
             <div className="flex flex-col gap-y-2">
@@ -245,13 +249,14 @@ export default function index() {
             <span className="text-xl">
               Engage with your community and honor members.
             </span>
-            <a
-              href="#"
-              className="items-center gap-x-1 flex text-blue-500 underline font-medium"
-            >
-              <span className="text-blue-500 font-medium">Learn more</span>
-              <ExternalLinkIcon width={16} height={16} />
-            </a>
+            <Link href="/social">
+              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
+                <span className="hover:text-mochi text-blue-500 font-medium">
+                  Learn more
+                </span>
+                <ExternalLinkIcon width={16} height={16} />
+              </a>
+            </Link>
           </div>
           <div className="mt-10 border border-gray-200 bg-white rounded-lg py-5 px-10 flex flex-col md:flex-row gap-y-8 md:gap-y-0 justify-between">
             {[
