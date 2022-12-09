@@ -13,6 +13,7 @@ import 'nprogress/nprogress.css'
 import '~styles/global.css'
 import '~styles/nprogress.css'
 import '../styles/tos.css'
+import 'react-notion/src/styles.css'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
