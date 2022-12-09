@@ -14,20 +14,20 @@ const scale = 2.25
 
 export default function index() {
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
         <Image layout="fill" src="/hero-bg.png" alt="" />
       </div>
       <Layout>
         <SEO />
-        <div className="flex justify-between relative body-block h-[600px] px-12">
-          <div className="relative z-10 flex flex-col mt-40">
-            <p className="text-5xl">
+        <div className="lg:mt-40 flex flex-col-reverse lg:flex-row justify-between relative body-block h-[600px] px-6 md:px-12">
+          <div className="relative z-10 flex flex-col">
+            <p className="text-3xl md:text-5xl">
               Bring <span className="text-[#f17975]">Web3</span> universe to
               <br />
               your <span className="text-[#6875ED]">Discord</span> server
             </p>
-            <span className="mt-5 text-xl">
+            <span className="mt-5 text-sm md:text-xl">
               Smooth onboarding, automated moderation, crypto ticker,
               <br />
               NFT rarity ranking, and much more.
@@ -40,8 +40,10 @@ export default function index() {
               <Button appearance="tertiary">Features</Button>
             </div>
           </div>
-          <div className="relative flex-1 flex justify-end items-start pt-40">
+          <div className="absolute -right-32 -top-1/3 w-2/3 h-full">
             <RingsBackground />
+          </div>
+          <div className="relative flex-1 flex justify-center items-center lg:justify-end lg:items-start">
             <Image
               width={1080 / scale}
               height={669 / scale}
@@ -50,9 +52,11 @@ export default function index() {
             />
           </div>
         </div>
-        <Stats />
-        <div className="body-block flex flex-col px-12">
-          <div className="mx-auto mt-36 flex flex-col items-center gap-y-2">
+        <div className="mt-10">
+          <Stats />
+        </div>
+        <div className="body-block flex flex-col px-6 md:px-12">
+          <div className="mx-auto mt-36 flex flex-col items-start md:items-center gap-y-2">
             <p className="text-4xl">Server management made easy</p>
             <span className="text-xl">
               Set and forget. Mochi does it all for you, automatically
@@ -67,6 +71,10 @@ export default function index() {
           </div>
           {/* FEATURES */}
           <FeatureIntroduction
+            height={{
+              default: 400,
+              md: 400,
+            }}
             title="Holder Verification"
             subtitle={
               <>
@@ -147,8 +155,8 @@ export default function index() {
             />
           </div>
         </div>
-        <div className="body-block px-12 flex flex-col">
-          <div className="mx-auto mt-36 flex flex-col items-center gap-y-2">
+        <div className="body-block px-6 md:px-12 flex flex-col">
+          <div className="mx-auto mt-36 flex flex-col items-start md:items-center gap-y-2">
             <p className="text-4xl">Crypto Utilities</p>
             <span className="text-xl">
               Access all thing crypto without having to leave Discord
@@ -161,7 +169,7 @@ export default function index() {
               <ExternalLinkIcon width={16} height={16} />
             </a>
           </div>
-          <div className="mt-10 grid grid-cols-2 grid-rows-2 gap-6">
+          <div className="mt-10 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-6">
             {[
               {
                 icon: '/util-1.png',
@@ -197,8 +205,8 @@ export default function index() {
             })}
           </div>
         </div>
-        <div className="body-block px-12">
-          <div className="mx-auto mt-36 flex flex-col items-center gap-y-2">
+        <div className="body-block px-6 md:px-12">
+          <div className="mx-auto mt-36 flex flex-col items-start md:items-center gap-y-2">
             <p className="text-4xl">NFT + Discord = WAGMI</p>
             <span className="text-xl">
               A full set of tools for minters, traders, and collection owners
@@ -211,7 +219,7 @@ export default function index() {
               <ExternalLinkIcon width={16} height={16} />
             </a>
           </div>
-          <div className="mt-32 flex justify-between">
+          <div className="mt-16 md:mt-32 flex flex-col gap-y-8 md:gap-y-0 md:flex-row justify-between">
             <div className="flex flex-col gap-y-2">
               <p className="text-xl">Rarity ranking tool</p>
               <span className="text-base">
@@ -231,8 +239,8 @@ export default function index() {
           </div>
           <img className="w-full mt-10" src="/nft-rarity-ranking.png" alt="" />
         </div>
-        <div className="body-block px-12 mt-44 flex flex-col">
-          <div className="mx-auto flex flex-col items-center gap-y-2">
+        <div className="body-block px-6 md:px-12 mt-44 flex flex-col">
+          <div className="mx-auto flex flex-col items-start md:items-center gap-y-2">
             <p className="text-4xl">Social</p>
             <span className="text-xl">
               Engage with your community and honor members.
@@ -245,7 +253,7 @@ export default function index() {
               <ExternalLinkIcon width={16} height={16} />
             </a>
           </div>
-          <div className="mt-10 border border-gray-200 bg-white rounded-lg py-5 px-10 flex justify-between">
+          <div className="mt-10 border border-gray-200 bg-white rounded-lg py-5 px-10 flex flex-col md:flex-row gap-y-8 md:gap-y-0 justify-between">
             {[
               {
                 icon: '/rocket.gif',

@@ -9,7 +9,7 @@ import { RingsBackground } from '~components/RingsBackground'
 
 export default function CryptoUtilities() {
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
         <Image layout="fill" src="/hero-bg.png" alt="" />
       </div>
@@ -18,8 +18,8 @@ export default function CryptoUtilities() {
           title="Crypto Utilities"
           description="Interact with cryptocurrency right on Discord!"
         />
-        <div className="mt-10 body-block px-12 flex flex-col relative items-center justify-center h-[400px]">
-          <div className="absolute top-1/2 left-0 w-full h-full">
+        <div className="mt-10 body-block px-6 md:px-12 flex flex-col relative items-center justify-center h-[400px]">
+          <div className="absolute top-0 left-0 w-full h-full">
             <RingsBackground />
           </div>
           <p className="text-center relative text-2xl sm:text-3xl md:text-5xl">
@@ -32,7 +32,7 @@ export default function CryptoUtilities() {
           </span>
           <Button className="relative mt-4">Learn more</Button>
         </div>
-        <div className="body-block px-12 flex flex-col gap-y-20">
+        <div className="body-block px-6 md:px-12 flex flex-col gap-y-20">
           <FeatureIntroduction
             height={{
               default: 300,

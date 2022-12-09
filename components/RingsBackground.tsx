@@ -1,14 +1,5 @@
-import Image from 'next/image'
 import React from 'react'
 
-export const RingsBackground = (props: {}) => {
-  return (
-    <Image
-      className="scale-[2]"
-      objectFit="contain"
-      layout="fill"
-      src="/rings.png"
-      alt=""
-    />
-  )
+export const RingsBackground = () => {
+  return <img className="absolute top-0 left-0" src="/rings.png" alt="" />
 }
