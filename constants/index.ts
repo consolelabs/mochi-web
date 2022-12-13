@@ -1,3 +1,5 @@
+import { DISCORD_LINK, GITBOOK_LINK, TWITTER_LINK } from '~envs'
+
 export const PAGES = {
   HOME: {
     path: '/',
@@ -30,13 +32,10 @@ export const PAGES = {
 }
 
 export const SOCIAL_LINKS = {
-  DISCORD: 'https://discord.gg/qfgEXWgZUj',
-  TWITTER: 'https://twitter.com/getmochico',
-  GITBOOK: 'https://mochibot.gitbook.io/mochi-bot/introduction/about-mochi-bot',
+  DISCORD: DISCORD_LINK,
+  TWITTER: TWITTER_LINK,
+  GITBOOK: GITBOOK_LINK,
 }
-
-export const INVITE_LINK =
-  'https://discord.com/oauth2/authorize?client_id=963123183131709480&permissions=8&scope=bot'
 
 export const TOKEN_NAME = '$MOCHI'
 

@@ -32,10 +32,6 @@ span {
   @apply text-foreground-secondary font-extralight;
 }
 
-a {
-  @apply text-gray-900;
-}
-
 a:hover {
   @apply text-mochi;
 }

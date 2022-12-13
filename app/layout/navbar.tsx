@@ -3,18 +3,37 @@ import Link from 'next/link'
 import { Fragment } from 'react'
 import { Button } from '~components/Button'
 import { DiscordIcon } from '~components/icons/discord'
+import { Popover } from '~components/Popover'
 import { PAGES, SOCIAL_LINKS } from '~constants'
 
 const NavLinks = ({ className }: { className: string }) => (
   <div className={['flex items-center', className].join(' ')}>
-    <a
-      className="text-sm font-semibold"
-      href="#"
-      target="_blank"
-      rel="noreferrer"
+    <Popover
+      trigger={
+        <a
+          className="text-sm font-semibold"
+          href="#"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Feature
+        </a>
+      }
+      panelClassname="flex flex-col whitespace-nowrap"
     >
-      Feature
-    </a>
+      <Link href="/server-management">
+        <a className="px-3 py-2 hover:bg-mochi-50/30">Server Management</a>
+      </Link>
+      <Link href="/crypto-utils">
+        <a className="px-3 py-2 hover:bg-mochi-50/30">Crypto Utilities</a>
+      </Link>
+      <Link href="/nft">
+        <a className="px-3 py-2 hover:bg-mochi-50/30">NFT</a>
+      </Link>
+      <Link href="/social">
+        <a className="px-3 py-2 hover:bg-mochi-50/30">Social</a>
+      </Link>
+    </Popover>
     <Link href={PAGES.CHANGE_LOG.path}>
       <a className="text-sm font-semibold">{PAGES.CHANGE_LOG.title}</a>
     </Link>
