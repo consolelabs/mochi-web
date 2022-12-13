@@ -5,20 +5,12 @@ import { Button } from '~components/Button'
 import { DiscordIcon } from '~components/icons/discord'
 import { Popover } from '~components/Popover'
 import { PAGES, SOCIAL_LINKS } from '~constants'
+import { INVITE_LINK } from '~envs'
 
 const NavLinks = ({ className }: { className: string }) => (
   <div className={['flex items-center', className].join(' ')}>
     <Popover
-      trigger={
-        <a
-          className="text-sm font-semibold"
-          href="#"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Feature
-        </a>
-      }
+      trigger={<span className="text-sm font-semibold">Feature</span>}
       panelClassname="flex flex-col whitespace-nowrap"
     >
       <Link href="/server-management">
@@ -34,34 +26,42 @@ const NavLinks = ({ className }: { className: string }) => (
         <a className="px-3 py-2 hover:bg-mochi-50/30">Social</a>
       </Link>
     </Popover>
-    <Link href={PAGES.CHANGE_LOG.path}>
-      <a className="text-sm font-semibold">{PAGES.CHANGE_LOG.title}</a>
-    </Link>
-    <a
-      className="text-sm font-semibold"
-      href="#"
-      target="_blank"
-      rel="noreferrer"
+    <Popover
+      trigger={<span className="text-sm font-semibold">Community</span>}
+      panelClassname="flex flex-col whitespace-nowrap"
     >
-      Community
-    </a>
-    <a
-      className="text-sm font-semibold"
-      href={SOCIAL_LINKS.DISCORD}
-      target="_blank"
-      rel="noreferrer"
+      <Link href={PAGES.CHANGE_LOG.path}>
+        <a className="px-3 py-2 hover:bg-mochi-50/30">
+          {PAGES.CHANGE_LOG.title}
+        </a>
+      </Link>
+      <span className="px-3 py-2 text-gray-400">Blog (Coming Soon)</span>
+    </Popover>
+    <Popover
+      trigger={<span className="text-sm font-semibold">Support</span>}
+      panelClassname="flex flex-col whitespace-nowrap"
     >
-      Support
-    </a>
-    <a
-      className="text-sm font-semibold"
-      href={SOCIAL_LINKS.DISCORD}
-      target="_blank"
-      rel="noreferrer"
+      <Link href={SOCIAL_LINKS.DISCORD}>
+        <a className="px-3 py-2 hover:bg-mochi-50/30">Support Server</a>
+      </Link>
+      <Link href={SOCIAL_LINKS.GITBOOK}>
+        <a className="px-3 py-2 hover:bg-mochi-50/30">Instruction</a>
+      </Link>
+    </Popover>
+    <Popover
+      trigger={<span className="text-sm font-semibold">Credibility</span>}
+      panelClassname="flex flex-col whitespace-nowrap"
     >
-      Credibility
-    </a>
-    <Button appearance="secondary">
+      <Link href={SOCIAL_LINKS.TOP_GG}>
+        <a className="px-3 py-2 hover:bg-mochi-50/30">Vote on Top.gg</a>
+      </Link>
+      <Link href={SOCIAL_LINKS.DISCORBOTLIST}>
+        <a className="px-3 py-2 hover:bg-mochi-50/30">
+          Vote on Discordbotlist.com
+        </a>
+      </Link>
+    </Popover>
+    <Button href={INVITE_LINK} appearance="secondary">
       <DiscordIcon className="w-5 h-5" />
       <div className="whitespace-nowrap">Get Mochi</div>
     </Button>

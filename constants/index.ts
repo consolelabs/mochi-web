@@ -15,7 +15,7 @@ export const PAGES = {
   },
   CHANGE_LOG: {
     path: '/changelog',
-    title: 'Changelog',
+    title: 'Update',
   },
   VERIFY: {
     path: '/verify',
@@ -35,6 +35,8 @@ export const SOCIAL_LINKS = {
   DISCORD: DISCORD_LINK,
   TWITTER: TWITTER_LINK,
   GITBOOK: GITBOOK_LINK,
+  TOP_GG: 'https://discordbotlist.com/bots/mochi-bot/upvote',
+  DISCORBOTLIST: 'https://discordbotlist.com/bots/mochi-bot/upvote',
 }
 
 export const TOKEN_NAME = '$MOCHI'

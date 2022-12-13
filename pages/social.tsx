@@ -6,6 +6,7 @@ import { CommandText } from '~components/CommandText'
 import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { RingsBackground } from '~components/RingsBackground'
+import { INVITE_LINK } from '~envs'
 
 export default function NFT() {
   return (
@@ -30,7 +31,9 @@ export default function NFT() {
           <span className="relative mt-4 text-sm sm:text-base md:text-xl text-center">
             Set and forget. Mochi does it all for you, automatically
           </span>
-          <Button className="relative mt-4">Learn more</Button>
+          <Button href={INVITE_LINK} className="relative mt-4">
+            Get Mochi
+          </Button>
         </div>
         <div className="body-block px-6 md:px-12 flex flex-col gap-y-20">
           <FeatureIntroduction
@@ -39,7 +42,7 @@ export default function NFT() {
               md: 400,
             }}
             image="/feature-14.png"
-            title={<p className="text-4xl">Beyon Discord</p>}
+            title={<p className="text-4xl">Beyond Discord</p>}
             subtitle={
               <div className="flex flex-col gap-y-4">
                 <div className="flex flex-col items-start mt-4 gap-y-2">

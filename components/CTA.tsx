@@ -1,4 +1,5 @@
 import React from 'react'
+import { INVITE_LINK } from '~envs'
 import { Button } from './Button'
 import { DiscordIcon } from './icons/discord'
 
@@ -17,7 +18,7 @@ export const CTA = () => {
         <p className="text-lg md:text-3xl text-center">
           Level up your community. For Free ✨
         </p>
-        <Button appearance="secondary" className="mt-6">
+        <Button href={INVITE_LINK} appearance="secondary" className="mt-6">
           <DiscordIcon className="w-5 h-5" />
           <div>Get Mochi</div>
         </Button>

@@ -10,6 +10,7 @@ import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { DiscordIcon } from '~components/icons/discord'
 import { RingsBackground } from '~components/RingsBackground'
 import { Stats } from '~components/Stats'
+import { INVITE_LINK } from '~envs'
 
 const scale = 2.25
 
@@ -34,7 +35,7 @@ export default function index() {
               NFT rarity ranking, and much more.
             </span>
             <div className="mt-10 flex gap-x-5">
-              <Button appearance="primary">
+              <Button href={INVITE_LINK} appearance="primary">
                 <DiscordIcon className="w-5 h-5" />
                 <div>Get Mochi</div>
               </Button>

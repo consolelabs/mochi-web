@@ -29,7 +29,7 @@ export const Popover = (props: Props) => {
       >
         <HeadlessPopover.Panel
           className={cln(
-            'bottom-0 md:bottom-auto -translate-y-3 md:top-full md:translate-y-2 absolute z-50 rounded-lg shadow-2xl bg-white px-3 py-2',
+            'bottom-0 md:bottom-auto -translate-y-3 md:top-full md:translate-y-2 absolute z-50 rounded-md shadow-xl bg-white px-3 py-2',
             props.panelClassname,
           )}
         >
