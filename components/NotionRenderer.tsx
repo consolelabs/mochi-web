@@ -104,6 +104,11 @@ function RichText({
   return <span className={style}>{plain_text}</span>
 }
 
+function fallbackToZeroWidth(renderElements: Array<JSX.Element>) {
+  if (renderElements.length === 0) return <>&#8203;</>
+  return renderElements
+}
+
 export const NotionRenderer = ({ d, first }: Props) => {
   switch (d.type) {
     case 'image':
@@ -111,41 +116,51 @@ export const NotionRenderer = ({ d, first }: Props) => {
     case 'paragraph':
       return (
         <span className={cln('text-base', { 'mt-1': !first })}>
-          {d.paragraph.rich_text.map((rt, i) => (
-            <RichText key={`${d.id}-${i}`} {...rt} />
-          ))}
+          {fallbackToZeroWidth(
+            d.paragraph.rich_text.map((rt, i) => (
+              <RichText key={`${d.id}-${i}`} {...rt} />
+            )),
+          )}
         </span>
       )
     case 'heading_1':
       return (
         <p className={cln('text-3xl', { 'mt-5': !first })}>
-          {d.heading_1.rich_text.map((rt, i) => (
-            <RichText key={`${d.id}-${i}`} {...rt} />
-          ))}
+          {fallbackToZeroWidth(
+            d.heading_1.rich_text.map((rt, i) => (
+              <RichText key={`${d.id}-${i}`} {...rt} />
+            )),
+          )}
         </p>
       )
     case 'heading_2':
       return (
         <p className={cln('text-2xl', { 'mt-5': !first })}>
-          {d.heading_2.rich_text.map((rt, i) => (
-            <RichText key={`${d.id}-${i}`} {...rt} />
-          ))}
+          {fallbackToZeroWidth(
+            d.heading_2.rich_text.map((rt, i) => (
+              <RichText key={`${d.id}-${i}`} {...rt} />
+            )),
+          )}
         </p>
       )
     case 'heading_3':
       return (
         <p className={cln('text-xl', { 'mt-5': !first })}>
-          {d.heading_3.rich_text.map((rt, i) => (
-            <RichText key={`${d.id}-${i}`} {...rt} />
-          ))}
+          {fallbackToZeroWidth(
+            d.heading_3.rich_text.map((rt, i) => (
+              <RichText key={`${d.id}-${i}`} {...rt} />
+            )),
+          )}
         </p>
       )
     case 'bulleted_list_item':
       return (
         <ul className={cln('list-disc list-inside', { 'mt-2': !first })}>
-          {d.bulleted_list_item.rich_text.map((rt, i) => (
-            <RichText key={`${d.id}-${i}`} {...rt} li />
-          ))}
+          {fallbackToZeroWidth(
+            d.bulleted_list_item.rich_text.map((rt, i) => (
+              <RichText key={`${d.id}-${i}`} {...rt} li />
+            )),
+          )}
         </ul>
       )
     default:
