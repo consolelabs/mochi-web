@@ -3,17 +3,22 @@ import { DiscordIcon } from '~components/icons/discord'
 import { TwitterIcon } from '~components/icons/twitter'
 import { GitbookIcon } from '~components/icons/gitbook'
 import { SOCIAL_LINKS } from '~constants'
-import s from './footer.module.css'
+import { logo } from '~utils/image'
 
 export const Footer = () => (
   <footer className="pt-16 pb-24 mt-auto">
-    <div className="max-w-7xl px-12 mx-auto">
+    <div className="max-w-7xl px-6 md:px-12 mx-auto">
       <div className="flex flex-wrap">
         <div className="w-full text-sm text-gray-500 md:w-2/5">
           <div className="flex items-center gap-4">
-            <div className={s.logoGrow}>
+            <div
+              className="shadow-mochi w-9 h-9 rounded-full"
+              style={{
+                boxShadow: '0 0 3rem var(--tw-shadow-color)',
+              }}
+            >
               <Image
-                src="/logo.png"
+                src={logo}
                 alt="Logo"
                 width={36}
                 height={36}
@@ -24,11 +29,11 @@ export const Footer = () => (
               Mochi<span className="text-mochi">.</span>
             </span>
           </div>
-          <p className="my-6 text-xs">
+          <span className="inline-block my-6 text-xs">
             Our mission is to build the best growth tool for your Discord
             servers, and help you bring about and connect strong communities,
             active users with the ever-growing blockchain.
-          </p>
+          </span>
           <div className="flex items-center gap-4">
             <a href={SOCIAL_LINKS.TWITTER} target="_blank" rel="noreferrer">
               <TwitterIcon className="w-4 h-4 text-gray-500" />

@@ -1,4 +1,0 @@
-.logoGrow {
-  @apply w-9 h-9 rounded-full shadow-mochi;
-  box-shadow: 0 0 3rem var(--tw-shadow-color);
-}
