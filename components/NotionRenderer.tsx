@@ -74,18 +74,14 @@ type Props = {
     | BulletedListBlock
 }
 
-function RichText({
-  plain_text,
-  href,
-  annotations,
-  li = false,
-}: RichTextType & { li?: boolean }) {
+function RichText({ plain_text, href, annotations }: RichTextType) {
   const style = cln({
     underline: annotations.underline,
     'line-through': annotations.strikethrough,
     'font-bold': annotations.bold,
     italic: annotations.italic,
-    'text-[#E36864] bg-mochi bg-opacity-[15%] px-1 rounded': annotations.code,
+    'text-[#E36864] bg-mochi bg-opacity-[15%] px-1 py-0.5 text-sm rounded font-medium':
+      annotations.code,
   })
   if (href)
     return (
@@ -98,9 +94,6 @@ function RichText({
         {plain_text}
       </a>
     )
-  if (li) {
-    return <li className={style}>{plain_text}</li>
-  }
   return <span className={style}>{plain_text}</span>
 }
 
@@ -110,12 +103,15 @@ function fallbackToZeroWidth(renderElements: Array<JSX.Element>) {
 }
 
 export const NotionRenderer = ({ d, first }: Props) => {
+  if (d.type === 'bulleted_list_item') {
+    console.log(d)
+  }
   switch (d.type) {
     case 'image':
       return <img src={d.image.file.url} className="mt-2" alt="" />
     case 'paragraph':
       return (
-        <span className={cln('text-base', { 'mt-1': !first })}>
+        <span className={cln('text-base', { 'mt-2': !first })}>
           {fallbackToZeroWidth(
             d.paragraph.rich_text.map((rt, i) => (
               <RichText key={`${d.id}-${i}`} {...rt} />
@@ -155,12 +151,18 @@ export const NotionRenderer = ({ d, first }: Props) => {
       )
     case 'bulleted_list_item':
       return (
-        <ul className={cln('list-disc list-inside', { 'mt-2': !first })}>
-          {fallbackToZeroWidth(
-            d.bulleted_list_item.rich_text.map((rt, i) => (
-              <RichText key={`${d.id}-${i}`} {...rt} li />
-            )),
-          )}
+        <ul
+          className={cln('list-disc list-inside marker:text-mochi marker:w-0', {
+            'mt-2': !first,
+          })}
+        >
+          <li>
+            {fallbackToZeroWidth(
+              d.bulleted_list_item.rich_text.map((rt, i) => (
+                <RichText key={`${d.id}-${i}`} {...rt} />
+              )),
+            )}
+          </li>
         </ul>
       )
     default:
