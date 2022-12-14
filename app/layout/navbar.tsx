@@ -6,60 +6,59 @@ import { DiscordIcon } from '~components/icons/discord'
 import { Popover } from '~components/Popover'
 import { PAGES, SOCIAL_LINKS } from '~constants'
 import { INVITE_LINK } from '~envs'
+import { logo } from '~utils/image'
+
+const NavLink = (props: any) => {
+  return (
+    <Link href={props.href}>
+      <a className="transition-colors duration-75 ease-out bg-transparent px-3 py-2 hover:bg-mochi-50/80 rounded-md">
+        {props.children}
+      </a>
+    </Link>
+  )
+}
 
 const NavLinks = ({ className }: { className: string }) => (
   <div className={['flex items-center', className].join(' ')}>
     <Popover
-      trigger={<span className="text-sm font-semibold">Feature</span>}
-      panelClassname="flex flex-col whitespace-nowrap"
+      trigger={<span className="text-sm font-semibold">Features</span>}
+      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
-      <Link href="/server-management">
-        <a className="px-3 py-2 hover:bg-mochi-50/30">Server Management</a>
-      </Link>
-      <Link href="/crypto-utils">
-        <a className="px-3 py-2 hover:bg-mochi-50/30">Crypto Utilities</a>
-      </Link>
-      <Link href="/nft">
-        <a className="px-3 py-2 hover:bg-mochi-50/30">NFT</a>
-      </Link>
-      <Link href="/social">
-        <a className="px-3 py-2 hover:bg-mochi-50/30">Social</a>
-      </Link>
+      {[
+        { href: '/server-management', text: 'Server Management' },
+        { href: '/crypto-utils', text: 'Crypto Utilities' },
+        { href: '/nft', text: 'NFT' },
+        { href: '/social', text: 'Social' },
+      ].map((l) => {
+        return (
+          <NavLink key={l.href} href={l.href}>
+            {l.text}
+          </NavLink>
+        )
+      })}
     </Popover>
     <Popover
       trigger={<span className="text-sm font-semibold">Community</span>}
-      panelClassname="flex flex-col whitespace-nowrap"
+      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
-      <Link href={PAGES.CHANGE_LOG.path}>
-        <a className="px-3 py-2 hover:bg-mochi-50/30">
-          {PAGES.CHANGE_LOG.title}
-        </a>
-      </Link>
+      <NavLink href={PAGES.CHANGE_LOG.path}>{PAGES.CHANGE_LOG.title}</NavLink>
       <span className="px-3 py-2 text-gray-400">Blog (Coming Soon)</span>
     </Popover>
     <Popover
       trigger={<span className="text-sm font-semibold">Support</span>}
-      panelClassname="flex flex-col whitespace-nowrap"
+      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
-      <Link href={SOCIAL_LINKS.DISCORD}>
-        <a className="px-3 py-2 hover:bg-mochi-50/30">Support Server</a>
-      </Link>
-      <Link href={SOCIAL_LINKS.GITBOOK}>
-        <a className="px-3 py-2 hover:bg-mochi-50/30">Instruction</a>
-      </Link>
+      <NavLink href={SOCIAL_LINKS.DISCORD}>Support Server</NavLink>
+      <NavLink href={SOCIAL_LINKS.GITBOOK}>Instruction</NavLink>
     </Popover>
     <Popover
       trigger={<span className="text-sm font-semibold">Credibility</span>}
-      panelClassname="flex flex-col whitespace-nowrap"
+      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
-      <Link href={SOCIAL_LINKS.TOP_GG}>
-        <a className="px-3 py-2 hover:bg-mochi-50/30">Vote on Top.gg</a>
-      </Link>
-      <Link href={SOCIAL_LINKS.DISCORBOTLIST}>
-        <a className="px-3 py-2 hover:bg-mochi-50/30">
-          Vote on Discordbotlist.com
-        </a>
-      </Link>
+      <NavLink href={SOCIAL_LINKS.TOP_GG}>Vote on Top.gg</NavLink>
+      <NavLink href={SOCIAL_LINKS.DISCORBOTLIST}>
+        Vote on Discordbotlist.com
+      </NavLink>
     </Popover>
     <Button href={INVITE_LINK} appearance="secondary">
       <DiscordIcon className="w-5 h-5" />
@@ -76,7 +75,7 @@ export const Navbar = () => (
           <a className="flex items-center gap-4 text-gray-900 group">
             <div className="transition-shadow duration-200 ease-in-out rounded-full group-hover:shadow-xl w-9 h-9 group-hover:shadow-mochi-200">
               <Image
-                src="/logo.png"
+                src={logo}
                 alt="Logo"
                 width={36}
                 height={36}

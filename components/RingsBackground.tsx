@@ -1,5 +1,11 @@
+import Image from 'next/image'
 import React from 'react'
+import { rings } from '~utils/image'
 
 export const RingsBackground = () => {
-  return <img className="absolute top-0 left-0" src="/rings.png" alt="" />
+  return (
+    <div className="absolute top-0 left-0">
+      <Image src={rings} alt="" />
+    </div>
+  )
 }

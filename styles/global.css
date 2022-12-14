@@ -32,10 +32,6 @@ span {
   @apply text-foreground-secondary font-extralight;
 }
 
-a:hover {
-  @apply text-mochi;
-}
-
 /* Gradient block */
 .border-gradient {
   @apply relative rounded-xl;

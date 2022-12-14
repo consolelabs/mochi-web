@@ -7,12 +7,22 @@ import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { RingsBackground } from '~components/RingsBackground'
 import { INVITE_LINK } from '~envs'
+import {
+  feature1,
+  feature2,
+  feature3,
+  feature4,
+  feature5,
+  feature6,
+  feature7,
+  heroBg,
+} from '~utils/image'
 
 export default function ServerManagement() {
   return (
     <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image layout="fill" src="/hero-bg.png" alt="" />
+        <Image src={heroBg} alt="" />
       </div>
       <Layout>
         <SEO
@@ -35,9 +45,9 @@ export default function ServerManagement() {
             Get Mochi
           </Button>
         </div>
-        <div className="body-block px-6 md:px-12 flex flex-col gap-y-20">
+        <div className="body-block px-6 md:px-12 flex flex-col md:gap-y-10">
           <FeatureIntroduction
-            image="/feature-1.png"
+            image={feature1}
             title={<p className="text-4xl">Holder Verification</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">
@@ -48,7 +58,7 @@ export default function ServerManagement() {
           />
           <FeatureIntroduction
             flip
-            image="/feature-2.png"
+            image={feature2}
             title={<p className="text-4xl">Automatic Role Grant</p>}
             subtitle={
               <div className="grid grid-cols-2 grid-rows-2 gap-2 mt-4">
@@ -92,11 +102,7 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 350,
-            }}
-            image="/feature-3.png"
+            image={feature3}
             title={
               <p className="text-4xl mt-10 md:mt-0">Detailed Server Insights</p>
             }
@@ -112,12 +118,8 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 400,
-            }}
             flip
-            image="/feature-4.png"
+            image={feature4}
             title={<p className="text-4xl">Smooth Onboarding Experience</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">
@@ -131,11 +133,7 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 500,
-              md: 400,
-            }}
-            image="/feature-5.png"
+            image={feature5}
             title={<p className="text-4xl">Facilitate Engagement</p>}
             subtitle={
               <div className="flex flex-col gap-y-4">
@@ -155,12 +153,8 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 400,
-            }}
             flip
-            image="/feature-6.png"
+            image={feature6}
             title={
               <p className="text-4xl">
                 Grow your
@@ -178,11 +172,7 @@ export default function ServerManagement() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 450,
-            }}
-            image="/feature-7.png"
+            image={feature7}
             title={<p className="text-4xl">Automatically clean your server</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">

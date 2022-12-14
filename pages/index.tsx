@@ -11,6 +11,22 @@ import { DiscordIcon } from '~components/icons/discord'
 import { RingsBackground } from '~components/RingsBackground'
 import { Stats } from '~components/Stats'
 import { INVITE_LINK } from '~envs'
+import {
+  diagBg,
+  feature1,
+  feature2,
+  feature3,
+  feature4,
+  feature5,
+  heroBg,
+  mochiTextCircle,
+  nftRarityRanking,
+  rocket,
+  util1,
+  util2,
+  util3,
+  util4,
+} from '~utils/image'
 
 const scale = 2.25
 
@@ -18,7 +34,7 @@ export default function index() {
   return (
     <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image layout="fill" src="/hero-bg.png" alt="" />
+        <Image src={heroBg} alt="" />
       </div>
       <Layout>
         <SEO />
@@ -39,7 +55,6 @@ export default function index() {
                 <DiscordIcon className="w-5 h-5" />
                 <div>Get Mochi</div>
               </Button>
-              <Button appearance="tertiary">Features</Button>
             </div>
           </div>
           <div className="absolute -right-32 -top-1/3 w-2/3 h-full">
@@ -49,7 +64,7 @@ export default function index() {
             <Image
               width={1080 / scale}
               height={669 / scale}
-              src="/rocket.png"
+              src={rocket}
               alt=""
             />
           </div>
@@ -74,88 +89,80 @@ export default function index() {
           </div>
           {/* FEATURES */}
           <FeatureIntroduction
-            height={{
-              default: 400,
-              md: 400,
-            }}
             title="Holder Verification"
             subtitle={
-              <>
+              <span>
                 Manage access to holder-exclusive private channels,
                 <br />
                 multiple collections at once.
-              </>
+              </span>
             }
-            image="/feature-1.png"
+            image={feature1}
+            className="mt-20 md:mt-20"
           />
           {/* ======================= */}
           <FeatureIntroduction
             flip
             title="Automatic Role Grant"
             subtitle={
-              <>
+              <span>
                 Lets users add &amp; remove roles from themselves by
                 <br />
                 simply reacting to a message.
-              </>
+              </span>
             }
-            image="/feature-2.png"
+            image={feature2}
           />
           {/* ======================= */}
           <FeatureIntroduction
             title="Detailed Server Insights"
             subtitle={
-              <>
+              <span>
                 The lastest server stats bot you need to make the right
                 <br />
                 decisions.
-              </>
+              </span>
             }
-            image="/feature-3.png"
+            image={feature3}
           />
           {/* ======================= */}
           <FeatureIntroduction
             flip
             title={
-              <>
+              <p className="text-2xl">
                 Smooth Onboarding
                 <br />
                 Experience
-              </>
+              </p>
             }
             subtitle={
-              <>
-                Give your new members a heartwarmng welcome
+              <span>
+                Give your new members a heartwarming welcome
                 <br />
                 with our ready-to-use and fully customizable designs.
-              </>
+              </span>
             }
-            image="/feature-4.png"
+            image={feature4}
           />
           {/* ======================= */}
           <FeatureIntroduction
             title="Facilitate Engagement"
             subtitle={
-              <>
+              <span>
                 Quick &amp; easy to setup dedicated channels for fun &amp;
                 <br />
                 engaging activities such as GM.
-              </>
+              </span>
             }
-            image="/feature-5.png"
+            image={feature5}
           />
         </div>
         <div className="relative mt-[-800px]">
           <div className="relative h-[1142px]">
-            <Image layout="fill" src="/diag.png" alt="" />
+            <Image layout="fill" src={diagBg} alt="" />
           </div>
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Image
-              width={134}
-              height={136}
-              src="/mochi-text-circle.png"
-              alt=""
-            />
+            <Image width={134} height={136} src={mochiTextCircle} alt="" />
           </div>
         </div>
         <div className="body-block px-6 md:px-12 flex flex-col">
@@ -176,22 +183,22 @@ export default function index() {
           <div className="mt-10 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-6">
             {[
               {
-                icon: '/util-1.png',
+                icon: util1,
                 title: 'Crypto ticker',
                 desc: 'Track real-time price of more than 9,000 tokens supported',
               },
               {
-                icon: '/util-2.png',
+                icon: util2,
                 title: 'Watchlist',
                 desc: 'Save a list of favorite tokens and pairs for a quick update',
               },
               {
-                icon: '/util-3.png',
+                icon: util3,
                 title: 'Tip bot',
                 desc: 'Send and receive any amount of crypto, directly on Discord',
               },
               {
-                icon: '/util-4.png',
+                icon: util4,
                 title: 'Airdrop',
                 desc: 'Airdrops, money rains and other community-engaging activities',
               },
@@ -242,7 +249,9 @@ export default function index() {
               </span>
             </div>
           </div>
-          <img className="w-full mt-10" src="/nft-rarity-ranking.png" alt="" />
+          <div className="mt-10">
+            <Image src={nftRarityRanking} alt="" />
+          </div>
         </div>
         <div className="body-block px-6 md:px-12 mt-44 flex flex-col">
           <div className="mx-auto flex flex-col items-start md:items-center gap-y-2">

@@ -7,12 +7,13 @@ import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { RingsBackground } from '~components/RingsBackground'
 import { INVITE_LINK } from '~envs'
+import { feature10, feature11, feature8, feature9, heroBg } from '~utils/image'
 
 export default function CryptoUtilities() {
   return (
     <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image layout="fill" src="/hero-bg.png" alt="" />
+        <Image src={heroBg} alt="" />
       </div>
       <Layout>
         <SEO
@@ -32,13 +33,9 @@ export default function CryptoUtilities() {
             Get Mochi
           </Button>
         </div>
-        <div className="body-block px-6 md:px-12 flex flex-col gap-y-20">
+        <div className="body-block px-6 md:px-12 flex flex-col">
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 400,
-            }}
-            image="/feature-8.png"
+            image={feature8}
             title={<p className="text-4xl">Crypto Ticker</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">
@@ -52,12 +49,8 @@ export default function CryptoUtilities() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 400,
-            }}
             flip
-            image="/feature-9.png"
+            image={feature9}
             title={<p className="text-4xl">Watchlist</p>}
             subtitle={
               <div className="flex flex-col gap-y-4">
@@ -75,7 +68,7 @@ export default function CryptoUtilities() {
             }
           />
           <FeatureIntroduction
-            image="/feature-10.png"
+            image={feature10}
             title={<p className="text-4xl">Tip bot</p>}
             subtitle={
               <div className="grid grid-cols-2 grid-rows-2 gap-x-2 gap-y-6 mt-4">
@@ -113,12 +106,8 @@ export default function CryptoUtilities() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 400,
-            }}
             flip
-            image="/feature-11.png"
+            image={feature11}
             title={<p className="text-4xl">Airdrop</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">

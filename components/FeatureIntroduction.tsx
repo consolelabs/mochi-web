@@ -1,36 +1,29 @@
 import Image from 'next/image'
 import React from 'react'
 import cln from 'classnames'
-import { useMedia } from '@dwarvesf/react-hooks'
 
 type Props = {
-  image: string
+  image: any
   title: React.ReactNode
   subtitle: React.ReactNode
-  // bottom up
-  height?: {
-    default: number
-    md: number
-  }
   flip?: boolean
+  className?: string
 }
 
 export const FeatureIntroduction = (props: Props) => {
-  const height = useMedia(
-    ['(min-width: 768px)', '(min-width: 0px)'],
-    [props.height?.md ?? 300, props.height?.default ?? 300],
-    400,
-  )
-
   return (
     <div
-      className={cln('flex flex-col items-center justify-between mt-20 gap-3', {
-        'md:flex-row-reverse': props.flip,
-        'md:flex-row': !props.flip,
-      })}
+      className={cln(
+        'flex flex-col items-center justify-between gap-3 mt-20 md:mt-0',
+        props.className,
+        {
+          'md:flex-row-reverse': props.flip,
+          'md:flex-row': !props.flip,
+        },
+      )}
     >
-      <div style={{ height }} className="md:flex-1 relative w-full md:w-auto">
-        <Image layout="fill" objectFit="contain" alt="" src={props.image} />
+      <div className="flex-1">
+        <Image alt="" src={props.image} />
       </div>
       <div className="flex-1">
         {typeof props.title === 'string' ? (

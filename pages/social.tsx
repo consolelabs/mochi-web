@@ -7,12 +7,13 @@ import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { RingsBackground } from '~components/RingsBackground'
 import { INVITE_LINK } from '~envs'
+import { feature14, feature15, feature16, heroBg } from '~utils/image'
 
 export default function NFT() {
   return (
     <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image layout="fill" src="/hero-bg.png" alt="" />
+        <Image src={heroBg} alt="" />
       </div>
       <Layout>
         <SEO
@@ -35,13 +36,9 @@ export default function NFT() {
             Get Mochi
           </Button>
         </div>
-        <div className="body-block px-6 md:px-12 flex flex-col gap-y-20">
+        <div className="body-block px-6 md:px-12 flex flex-col">
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 400,
-            }}
-            image="/feature-14.png"
+            image={feature14}
             title={<p className="text-4xl">Beyond Discord</p>}
             subtitle={
               <div className="flex flex-col gap-y-4">
@@ -64,12 +61,8 @@ export default function NFT() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 450,
-            }}
             flip
-            image="/feature-15.png"
+            image={feature15}
             title={<p className="text-4xl">Starboard</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">
@@ -79,11 +72,7 @@ export default function NFT() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 450,
-            }}
-            image="/feature-16.png"
+            image={feature16}
             title={<p className="text-4xl">Leaderboard</p>}
             subtitle={
               <div className="flex flex-col gap-y-4">

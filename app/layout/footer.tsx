@@ -3,6 +3,7 @@ import { DiscordIcon } from '~components/icons/discord'
 import { TwitterIcon } from '~components/icons/twitter'
 import { GitbookIcon } from '~components/icons/gitbook'
 import { SOCIAL_LINKS } from '~constants'
+import { logo } from '~utils/image'
 
 export const Footer = () => (
   <footer className="pt-16 pb-24 mt-auto">
@@ -17,7 +18,7 @@ export const Footer = () => (
               }}
             >
               <Image
-                src="/logo.png"
+                src={logo}
                 alt="Logo"
                 width={36}
                 height={36}

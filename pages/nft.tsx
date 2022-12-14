@@ -7,12 +7,13 @@ import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { RingsBackground } from '~components/RingsBackground'
 import { INVITE_LINK } from '~envs'
+import { feature12, feature13, heroBg } from '~utils/image'
 
 export default function NFT() {
   return (
     <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image layout="fill" src="/hero-bg.png" alt="" />
+        <Image src={heroBg} alt="" />
       </div>
       <Layout>
         <SEO
@@ -32,13 +33,9 @@ export default function NFT() {
             Get Mochi
           </Button>
         </div>
-        <div className="body-block px-6 md:px-12 flex flex-col gap-y-20">
+        <div className="body-block px-6 md:px-12 flex flex-col">
           <FeatureIntroduction
-            height={{
-              default: 400,
-              md: 500,
-            }}
-            image="/feature-12.png"
+            image={feature12}
             title={<p className="text-4xl">NFT Rarity ranking</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">
@@ -52,12 +49,8 @@ export default function NFT() {
             }
           />
           <FeatureIntroduction
-            height={{
-              default: 300,
-              md: 450,
-            }}
             flip
-            image="/feature-13.png"
+            image={feature13}
             title={<p className="text-4xl">NFT Sales tracker</p>}
             subtitle={
               <div className="flex flex-col items-start mt-4 gap-y-2">
