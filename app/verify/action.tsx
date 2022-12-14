@@ -1,8 +1,8 @@
-import Button from "~components/button";
+import { Button } from '~components/Button'
 
 interface Props {
-  handleVerify: () => void;
-  loading: boolean;
+  handleVerify: () => void
+  loading: boolean
 }
 
 export const VerifyAction = (props: Props) => (
@@ -15,12 +15,12 @@ export const VerifyAction = (props: Props) => (
       exclusive privileges.
     </p>
     <Button
-      className="flex items-center justify-center gap-2 mx-auto"
+      appearance="tertiary"
       onClick={props.handleVerify}
-      color="white"
+      className="mx-auto"
     >
       {props.loading ? (
-        "Verifying..."
+        'Verifying...'
       ) : (
         <>
           <img src="/assets/metamask.svg" className="h-8 mr-2" alt="Metamask" />
@@ -29,4 +29,4 @@ export const VerifyAction = (props: Props) => (
       )}
     </Button>
   </div>
-);
+)

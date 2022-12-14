@@ -1,9 +1,8 @@
-export const StatsSection = () => (
-  <div className="max-w-7xl px-12 py-16 mx-auto">
-    <div className="mr-12 border-gradient lg:mr-0">
-      <div className="bg-white border-gradient-entry" />
+export const Stats = () => (
+  <div className="body-block px-6 md:px-12">
+    <div className="relative bg-white rounded-xl shadow-md">
       <div className="relative p-9 lg:p-12">
-        <div className="flex flex-wrap justify-between gap-4">
+        <div className="flex lg:flex-row flex-col items-center justify-between gap-4">
           <div className="text-center">
             <div className="text-4xl font-bold uppercase text-mochi-gradient">
               1,000+
@@ -26,4 +25,4 @@ export const StatsSection = () => (
       </div>
     </div>
   </div>
-);
+)
