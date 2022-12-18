@@ -103,9 +103,6 @@ function fallbackToZeroWidth(renderElements: Array<JSX.Element>) {
 }
 
 export const NotionRenderer = ({ d, first }: Props) => {
-  if (d.type === 'bulleted_list_item') {
-    console.log(d)
-  }
   switch (d.type) {
     case 'image':
       return <img src={d.image.file.url} className="mt-2" alt="" />
