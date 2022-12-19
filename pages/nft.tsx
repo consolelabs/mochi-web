@@ -13,7 +13,7 @@ export default function NFT() {
   return (
     <div className="relative overflow-hidden">
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image src={heroBg} alt="" />
+        <Image src={heroBg} layout="fill" alt="" />
       </div>
       <Layout>
         <SEO
