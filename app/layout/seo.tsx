@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { PAGES } from '~constants'
+import { HOME_URL } from '~envs'
 
 interface Props {
   title?: string
@@ -11,8 +12,8 @@ interface Props {
 export const CONFIG = {
   title: PAGES.HOME.title,
   description: 'Mochi Bot — Bring the Web3 universe to your Discord server',
-  url: 'https://getmochi.co/',
-  image: 'https://getmochi.co/featured.png',
+  url: HOME_URL,
+  image: `${HOME_URL}/featured.png`,
 }
 
 export const SEO = ({

@@ -1,5 +1,6 @@
-import Document, { Head, Html, Main, NextScript } from "next/document";
-import { CONFIG } from "~app/layout/seo";
+import Document, { Head, Html, Main, NextScript } from 'next/document'
+import { CONFIG } from '~app/layout/seo'
+import { HOME_URL } from '~envs'
 
 class MyDocument extends Document {
   render(): JSX.Element {
@@ -29,7 +30,7 @@ class MyDocument extends Document {
           <meta name="application-name" content={CONFIG.title} />
           <script
             defer
-            data-domain="getmochi.co"
+            data-domain={HOME_URL}
             src="https://plausible.io/js/plausible.js"
           />
         </Head>
@@ -38,8 +39,8 @@ class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }
 
-export default MyDocument;
+export default MyDocument
