@@ -40,15 +40,13 @@ export default function index() {
         <SEO />
         <div className="lg:mt-40 flex flex-col-reverse lg:flex-row justify-between relative body-block h-[600px] px-6 md:px-12">
           <div className="relative z-10 flex flex-col">
-            <p className="text-3xl md:text-5xl">
+            <p className="text-3xl md:text-5xl max-w-xl">
               Bring <span className="text-[#f17975]">Web3</span> universe to
-              <br />
               your <span className="text-[#6875ED]">Discord</span> server
             </p>
-            <span className="mt-5 text-sm md:text-xl">
-              Smooth onboarding, automated moderation, crypto ticker,
-              <br />
-              NFT rarity ranking, and much more.
+            <span className="mt-5 text-sm md:text-xl max-w-xl">
+              Smooth onboarding, automated moderation, crypto ticker, NFT rarity
+              ranking, and much more.
             </span>
             <div className="mt-10 flex gap-x-5">
               <Button href={INVITE_LINK} appearance="primary">
