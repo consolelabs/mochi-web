@@ -71,7 +71,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     props: {
       data: pages.filter(Boolean),
     },
-    revalidate: 60 * 30,
+    revalidate: 60 * 10,
   }
 }
 

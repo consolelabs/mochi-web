@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import Link from 'next/link'
+import Script from 'next/script'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
 import { Button } from '~components/Button'
@@ -10,6 +11,7 @@ import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { DiscordIcon } from '~components/icons/discord'
 import { RingsBackground } from '~components/RingsBackground'
 import { Stats } from '~components/Stats'
+import { Tweets } from '~components/Tweets'
 import { INVITE_LINK } from '~envs'
 import {
   diagBg,
@@ -33,6 +35,7 @@ const scale = 2.25
 export default function index() {
   return (
     <div className="relative overflow-hidden">
+      <Script async src="https://platform.twitter.com/widgets.js" />
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
         <Image src={heroBg} layout="fill" alt="" />
       </div>
@@ -48,11 +51,28 @@ export default function index() {
               Smooth onboarding, automated moderation, crypto ticker, NFT rarity
               ranking, and much more.
             </span>
-            <div className="mt-10 flex gap-x-5">
+            <div className="mt-10 flex gap-x-5 items-center">
               <Button href={INVITE_LINK} appearance="primary">
                 <DiscordIcon className="w-5 h-5" />
                 <div>Get Mochi</div>
               </Button>
+              <div
+                style={{
+                  background: 'linear-gradient(to right top, #9845ff, #1bf79f)',
+                }}
+                className="rounded-full p-1"
+              >
+                <a
+                  href="https://twitter.com/SuperteamVN/status/1605880732416503808"
+                  target="_blank"
+                  className="text-white bg-gray-800 font-medium text-center px-4 py-1 flex rounded-full text-sm"
+                  rel="noreferrer"
+                >
+                  Solana VN CodingCamp
+                  <br />
+                  🏆 2nd place 🏆
+                </a>
+              </div>
             </div>
           </div>
           <div className="absolute -right-32 -top-1/3 w-2/3 h-full">
@@ -316,6 +336,12 @@ export default function index() {
               )
             })}
           </div>
+        </div>
+        <div className="body-block px-6 md:px-12 mt-44 flex flex-col">
+          <div className="mx-auto flex flex-col items-start md:items-center gap-y-2">
+            <p className="text-4xl">Tweets</p>
+          </div>
+          <Tweets />
         </div>
         <div className="mt-20">
           <CTA />
