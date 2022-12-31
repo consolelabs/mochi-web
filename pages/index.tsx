@@ -1,7 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import Link from 'next/link'
-import Script from 'next/script'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
 import { Button } from '~components/Button'
@@ -35,7 +34,6 @@ const scale = 2.25
 export default function index() {
   return (
     <div className="relative overflow-hidden">
-      <Script async src="https://platform.twitter.com/widgets.js" />
       <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
         <Image src={heroBg} layout="fill" alt="" />
       </div>
@@ -68,7 +66,7 @@ export default function index() {
                   className="text-white bg-gray-800 font-medium text-center px-4 py-1 flex rounded-full text-sm"
                   rel="noreferrer"
                 >
-                  Solana VN CodingCamp
+                  Solana CodingCamp
                   <br />
                   🏆 2nd place 🏆
                 </a>

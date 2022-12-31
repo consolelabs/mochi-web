@@ -1,8 +1,10 @@
 import React from 'react'
+import Script from 'next/script'
 
 export const Tweets = () => {
   return (
     <div className="grid grid-cols-12 row-auto gap-x-5 mt-4">
+      <Script src="https://platform.twitter.com/widgets.js" />
       <div className="col-span-4">
         <blockquote className="twitter-tweet">
           <p lang="en" dir="ltr">
@@ -52,7 +54,7 @@ export const Tweets = () => {
           </a>
         </blockquote>
       </div>
-      <div className="col-span-5">
+      <div className="col-span-4">
         <blockquote className="twitter-tweet" data-conversation="none">
           <p lang="en" dir="ltr">
             During the HCMC Award Night we presented the main track award to the
@@ -81,7 +83,7 @@ export const Tweets = () => {
           </a>
         </blockquote>
       </div>
-      <div className="col-span-3">
+      <div className="col-span-4">
         <blockquote className="twitter-tweet" data-conversation="none">
           <p lang="en" dir="ltr">
             2/ Main Track:
@@ -105,34 +107,7 @@ export const Tweets = () => {
           </a>
         </blockquote>
       </div>
-      <div className="col-span-5">
-        <blockquote className="twitter-tweet">
-          <p lang="en" dir="ltr">
-            In Neko bot&#39;s demise arose Mochi Bot and boy was it a smooth
-            transition. Mochi is what any CT discord will ever need again.
-            <a href="https://twitter.com/pod_town?ref_src=twsrc%5Etfw">
-              @pod_town
-            </a>{' '}
-            <a href="https://twitter.com/getmochi_bot?ref_src=twsrc%5Etfw">
-              @getmochi_bot
-            </a>{' '}
-            <a href="https://twitter.com/hashtag/NFTs?src=hash&amp;ref_src=twsrc%5Etfw">
-              #NFTs
-            </a>{' '}
-            <a href="https://twitter.com/hashtag/discordbot?src=hash&amp;ref_src=twsrc%5Etfw">
-              #discordbot
-            </a>{' '}
-            <a href="https://twitter.com/hashtag/web3?src=hash&amp;ref_src=twsrc%5Etfw">
-              #web3
-            </a>
-          </p>
-          &mdash; Hertenbek (@hertenb3k){' '}
-          <a href="https://twitter.com/hertenb3k/status/1573399414747660307?ref_src=twsrc%5Etfw">
-            September 23, 2022
-          </a>
-        </blockquote>
-      </div>
-      <div className="col-span-7">
+      <div className="col-span-4">
         <blockquote className="twitter-tweet" data-conversation="none">
           <p lang="en" dir="ltr">
             5/{' '}
@@ -158,6 +133,33 @@ export const Tweets = () => {
           &mdash; Pod Town Metaverse (🏡, 🐱, 🐰) (@pod_town){' '}
           <a href="https://twitter.com/pod_town/status/1563903359823876097?ref_src=twsrc%5Etfw">
             August 28, 2022
+          </a>
+        </blockquote>
+      </div>
+      <div className="col-span-4">
+        <blockquote className="twitter-tweet">
+          <p lang="en" dir="ltr">
+            In Neko bot&#39;s demise arose Mochi Bot and boy was it a smooth
+            transition. Mochi is what any CT discord will ever need again.
+            <a href="https://twitter.com/pod_town?ref_src=twsrc%5Etfw">
+              @pod_town
+            </a>{' '}
+            <a href="https://twitter.com/getmochi_bot?ref_src=twsrc%5Etfw">
+              @getmochi_bot
+            </a>{' '}
+            <a href="https://twitter.com/hashtag/NFTs?src=hash&amp;ref_src=twsrc%5Etfw">
+              #NFTs
+            </a>{' '}
+            <a href="https://twitter.com/hashtag/discordbot?src=hash&amp;ref_src=twsrc%5Etfw">
+              #discordbot
+            </a>{' '}
+            <a href="https://twitter.com/hashtag/web3?src=hash&amp;ref_src=twsrc%5Etfw">
+              #web3
+            </a>
+          </p>
+          &mdash; Hertenbek (@hertenb3k){' '}
+          <a href="https://twitter.com/hertenb3k/status/1573399414747660307?ref_src=twsrc%5Etfw">
+            September 23, 2022
           </a>
         </blockquote>
       </div>
