@@ -13,6 +13,11 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+.twitter-tweet {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .display {
   font-family: 'Sora', sans-serif;
 }

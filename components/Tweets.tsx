@@ -5,7 +5,7 @@ export const Tweets = () => {
   return (
     <div className="grid grid-cols-12 row-auto gap-x-5 mt-4">
       <Script src="https://platform.twitter.com/widgets.js" />
-      <div className="col-span-4">
+      <div className="col-span-12 md:col-span-6 lg:col-span-4">
         <blockquote className="twitter-tweet">
           <p lang="en" dir="ltr">
             HOORAY!
@@ -54,7 +54,7 @@ export const Tweets = () => {
           </a>
         </blockquote>
       </div>
-      <div className="col-span-4">
+      <div className="col-span-12 md:col-span-6 lg:col-span-4">
         <blockquote className="twitter-tweet" data-conversation="none">
           <p lang="en" dir="ltr">
             During the HCMC Award Night we presented the main track award to the
@@ -83,7 +83,7 @@ export const Tweets = () => {
           </a>
         </blockquote>
       </div>
-      <div className="col-span-4">
+      <div className="col-span-12 md:col-span-6 lg:col-span-4">
         <blockquote className="twitter-tweet" data-conversation="none">
           <p lang="en" dir="ltr">
             2/ Main Track:
@@ -107,7 +107,7 @@ export const Tweets = () => {
           </a>
         </blockquote>
       </div>
-      <div className="col-span-4">
+      <div className="col-span-12 md:col-span-6 lg:col-span-4">
         <blockquote className="twitter-tweet" data-conversation="none">
           <p lang="en" dir="ltr">
             5/{' '}
@@ -136,7 +136,7 @@ export const Tweets = () => {
           </a>
         </blockquote>
       </div>
-      <div className="col-span-4">
+      <div className="col-span-12 md:col-span-6 lg:col-span-4">
         <blockquote className="twitter-tweet">
           <p lang="en" dir="ltr">
             In Neko bot&#39;s demise arose Mochi Bot and boy was it a smooth
