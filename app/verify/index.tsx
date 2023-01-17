@@ -1,60 +1,58 @@
-import { InjectedConnector } from "@web3-react/injected-connector";
-import { useCallback, useEffect, useState } from "react";
-import { Layout } from "~app/layout";
-import { SEO } from "~app/layout/seo";
-import { PAGES } from "~constants";
-import { API } from "~constants/api";
-import { useWeb3React } from "~hooks/useWeb3React";
-import { VerifyAction } from "./action";
+import { InjectedConnector } from '@web3-react/injected-connector'
+import { useCallback, useEffect, useState } from 'react'
+import { Layout } from '~app/layout'
+import { SEO } from '~app/layout/seo'
+import { PAGES } from '~constants'
+import { API } from '~constants/api'
+import { useWeb3React } from '~hooks/useWeb3React'
+import { VerifyAction } from './action'
 
 interface Props {
-  code: string;
+  code: string
 }
 
-export const randomInjected = new InjectedConnector({});
+export const randomInjected = new InjectedConnector({})
 
 export const VerifyPage = ({ code }: Props) => {
-  const [loading, setLoading] = useState(false);
-  const [verified, setVerify] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false)
+  const [verified, setVerify] = useState(false)
+  const [error, setError] = useState('')
 
-  const { activate, active, account, library } = useWeb3React();
+  const { activate, active, account, library } = useWeb3React()
 
   const sign = useCallback(async () => {
-    if (!activate || !account || !library || !code) return;
+    if (!activate || !account || !library || !code) return
     try {
-      setLoading(true);
-      const signer = library.getSigner();
+      setLoading(true)
+      const signer = library.getSigner()
       const signature = await signer.signMessage(
-        `This will help us connect your discord account to the wallet address.\n\nMochiBotCode=${code}`
-      );
-      const response = await API.verify(account, code, signature);
-      if (response) {
-        if (response.status === "ok") {
-          setVerify(true);
-        } else {
-          setError(response.error || "");
-        }
+        `This will help us connect your discord account to the wallet address.\n\nMochiBotCode=${code}`,
+      )
+      const response = await API.verify(account, code, signature)
+      if (response?.data?.status === 'ok') {
+        setVerify(true)
+      } else {
+        setError(response?.error ?? 'Something went wrong')
       }
     } catch (e) {
-      console.error("sign method error", e);
+      console.error('sign method error', e)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [account, activate, code, library]);
+  }, [account, activate, code, library])
 
   const handleVerify = useCallback(async () => {
     try {
-      if (active) await sign();
-      else await activate(randomInjected);
+      if (active) await sign()
+      else await activate(randomInjected)
     } catch (e) {
-      console.error("handleVerify method error", e);
+      console.error('handleVerify method error', e)
     }
-  }, [activate, active, sign]);
+  }, [activate, active, sign])
 
   useEffect(() => {
-    if (!verified && active && !loading) sign();
-  }, [active, verified]);
+    if (!verified && active && !loading) sign()
+  }, [active, verified])
 
   return (
     <Layout>
@@ -68,7 +66,7 @@ export const VerifyPage = ({ code }: Props) => {
                   <div className="text-2xl font-black text-center md:text-3xl">
                     <span className="uppercase text-mochi-gradient">
                       Your wallet verified! You can close this window
-                    </span>{" "}
+                    </span>{' '}
                     ✨
                   </div>
                 </div>
@@ -89,5 +87,5 @@ export const VerifyPage = ({ code }: Props) => {
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}

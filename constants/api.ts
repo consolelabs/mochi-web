@@ -26,11 +26,14 @@ const verify = async (
   code: string,
   signature: string,
 ) =>
-  await fetcher.post<{ error?: string; status?: string }>(`${getGW()}/verify`, {
-    wallet_address,
-    code,
-    signature,
-  })
+  await fetcher.post<{ error?: string; data: { status?: string } | null }>(
+    `${getGW()}/verify`,
+    {
+      wallet_address,
+      code,
+      signature,
+    },
+  )
 
 const getNFTTokenDetails = async (
   address: string,
