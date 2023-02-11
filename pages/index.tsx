@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Layout } from '~app/layout'
@@ -8,6 +8,7 @@ import { CircledIcon } from '~components/CircledIcon'
 import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { DiscordIcon } from '~components/icons/discord'
+import { TelegramIcon } from '~components/icons/telegram'
 import { RingsBackground } from '~components/RingsBackground'
 import { Stats } from '~components/Stats'
 import { Tweets } from '~components/Tweets'
@@ -50,27 +51,21 @@ export default function index() {
               ranking, and much more.
             </span>
             <div className="mt-10 flex gap-x-5 items-center">
-              <Button href={INVITE_LINK} appearance="primary">
+              <Button href={INVITE_LINK} appearance="discord">
                 <DiscordIcon className="w-5 h-5" />
-                <div>Get Mochi</div>
+                <div>Add Discord</div>
               </Button>
-              <div
-                style={{
-                  background: 'linear-gradient(to right top, #9845ff, #1bf79f)',
-                }}
-                className="rounded-full p-1"
+              <Button
+                appearance="secondary"
+                className="text-black shadow"
+                disabled
               >
-                <a
-                  href="https://twitter.com/SuperteamVN/status/1605880732416503808"
-                  target="_blank"
-                  className="text-white bg-gray-800 font-medium text-center px-4 py-1 flex rounded-full text-sm"
-                  rel="noreferrer"
-                >
-                  Solana CodingCamp
-                  <br />
-                  🏆 2nd place 🏆
-                </a>
-              </div>
+                <TelegramIcon className="w-5 h-5" />
+                <div>Telegram</div>
+                <span className="font-medium text-[10px] uppercase rounded-full px-2 py-0.5 bg-gray-300 text-gray-800">
+                  coming soon
+                </span>
+              </Button>
             </div>
           </div>
           <div className="absolute -right-32 -top-1/3 w-2/3 h-full">
@@ -99,7 +94,7 @@ export default function index() {
                 <span className="hover:text-mochi text-blue-500 font-medium">
                   Learn more
                 </span>
-                <ExternalLinkIcon width={16} height={16} />
+                <ArrowTopRightOnSquareIcon width={16} height={16} />
               </a>
             </Link>
           </div>
@@ -192,7 +187,7 @@ export default function index() {
                 <span className="hover:text-mochi text-blue-500 font-medium">
                   Learn more
                 </span>
-                <ExternalLinkIcon width={16} height={16} />
+                <ArrowTopRightOnSquareIcon width={16} height={16} />
               </a>
             </Link>
           </div>
@@ -243,7 +238,7 @@ export default function index() {
                 <span className="hover:text-mochi text-blue-500 font-medium">
                   Learn more
                 </span>
-                <ExternalLinkIcon width={16} height={16} />
+                <ArrowTopRightOnSquareIcon width={16} height={16} />
               </a>
             </Link>
           </div>
@@ -280,7 +275,7 @@ export default function index() {
                 <span className="hover:text-mochi text-blue-500 font-medium">
                   Learn more
                 </span>
-                <ExternalLinkIcon width={16} height={16} />
+                <ArrowTopRightOnSquareIcon width={16} height={16} />
               </a>
             </Link>
           </div>

@@ -8,6 +8,9 @@ module.exports = {
           DEFAULT: '#111827',
           secondary: '#4B5563',
         },
+        discord: {
+          DEFAULT: '#6875ED',
+        },
         mochi: {
           DEFAULT: '#E88B88',
           50: '#FBE9E8',

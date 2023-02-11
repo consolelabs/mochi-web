@@ -1,7 +1,7 @@
 import React from 'react'
-import cln from 'classnames'
+import { cva } from 'class-variance-authority'
 
-type Appearance = 'primary' | 'secondary' | 'tertiary'
+type Appearance = 'primary' | 'secondary' | 'tertiary' | 'discord'
 
 type Props = {
   appearance?: Appearance
@@ -9,11 +9,22 @@ type Props = {
   href?: string
 } & React.ButtonHTMLAttributes<HTMLElement>
 
-const styles: Record<Appearance, string> = {
-  primary: 'text-white bg-mochi',
-  secondary: 'text-mochi bg-white',
-  tertiary: 'text-mochi bg-mochi bg-opacity-[15%]',
-}
+const button = cva(
+  ['flex gap-x-2 items-center rounded-lg px-4 py-2 font-semibold'],
+  {
+    variants: {
+      appearance: {
+        primary: ['text-white', 'bg-mochi'],
+        secondary: ['text-mochi', 'bg-white'],
+        tertiary: ['text-mochi bg-mochi bg-opacity-[15%]'],
+        discord: ['text-white', 'bg-discord'],
+      },
+    },
+    defaultVariants: {
+      appearance: 'primary',
+    },
+  },
+)
 
 export const Button = ({
   appearance,
@@ -29,11 +40,10 @@ export const Button = ({
         href={href}
         target="_blank"
         rel="noreferrer"
-        className={cln(
+        className={button({
           className,
-          styles[appearance ?? 'primary'],
-          'flex gap-x-2 items-center rounded-lg px-4 py-2 font-semibold',
-        )}
+          appearance,
+        })}
       >
         {children}
       </a>
@@ -42,11 +52,10 @@ export const Button = ({
   return (
     <button
       {...props}
-      className={cln(
+      className={button({
         className,
-        styles[appearance ?? 'primary'],
-        'flex gap-x-2 items-center rounded-lg px-4 py-2 font-semibold',
-      )}
+        appearance,
+      })}
     >
       {children}
     </button>
