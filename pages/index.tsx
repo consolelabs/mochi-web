@@ -29,18 +29,20 @@ import {
   util3,
   util4,
 } from '~utils/image'
+import { Partner } from '~components/Partner'
+import { IntegratedChains } from '~components/IntegratedChains'
 
 const scale = 2.25
 
 export default function index() {
   return (
     <div className="relative overflow-hidden">
-      <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
+      <div className="w-full min-h-[80vh] aspect-auto absolute left-0 top-[-80px] z-0">
         <Image src={heroBg} layout="fill" alt="" />
       </div>
       <Layout>
         <SEO />
-        <div className="lg:mt-40 flex flex-col-reverse lg:flex-row justify-between relative body-block h-[600px] px-6 md:px-12">
+        <div className="lg:mt-40 flex flex-col-reverse lg:flex-row justify-between relative body-block h-[450px] px-6 md:px-12">
           <div className="relative z-10 flex flex-col">
             <p className="text-3xl md:text-5xl max-w-xl">
               Bring <span className="text-[#f17975]">Web3</span> universe to
@@ -53,7 +55,7 @@ export default function index() {
             <div className="mt-10 flex gap-x-5 items-center">
               <Button href={INVITE_LINK} appearance="discord">
                 <DiscordIcon className="w-5 h-5" />
-                <div>Add Discord</div>
+                <div className="whitespace-nowrap">Add Discord</div>
               </Button>
               <Button
                 appearance="secondary"
@@ -80,7 +82,13 @@ export default function index() {
             />
           </div>
         </div>
-        <div className="mt-10">
+        <div className="mt-32 lg:mt-5 flex flex-col">
+          <p className="mx-auto text-mochi text-3xl mb-2">Integrated Chains</p>
+          <IntegratedChains />
+          <p className="mx-auto text-mochi text-3xl mt-16 mb-2">Partners</p>
+          <Partner />
+        </div>
+        <div className="mt-20">
           <Stats />
         </div>
         <div className="body-block flex flex-col px-6 md:px-12">
