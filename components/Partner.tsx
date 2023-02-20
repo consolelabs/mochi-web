@@ -25,7 +25,6 @@ export const Partner = () => {
         alt="blue-move-logo"
       />
       <Image className="h-full" src="/partner/okx.png" alt="okx-logo" />
-      <Image className="h-full" src="/partner/onus.webp" alt="onus-logo" />
       <Image
         className="h-full"
         src="/partner/solscan.webp"
