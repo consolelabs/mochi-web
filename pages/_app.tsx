@@ -13,6 +13,7 @@ import 'nprogress/nprogress.css'
 import '~styles/global.css'
 import '~styles/nprogress.css'
 import '../styles/tos.css'
+import { WalletProvider } from '~context/wallet-context'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -25,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
         getLibrary={() => new providers.Web3Provider((window as any).ethereum)}
       >
         <TopProgressBar />
-        <Component {...pageProps} />
+        <WalletProvider>
+          <Component {...pageProps} />
+        </WalletProvider>
       </Web3ReactProvider>
     </StrictMode>
   )

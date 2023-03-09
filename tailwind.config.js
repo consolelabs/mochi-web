@@ -4,6 +4,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        dashboard: {
+          gray: {
+            1: '#F5F5F5',
+            2: '#9399A1',
+            3: '#E4E6E8',
+            4: '#979CA3',
+            5: '#F8F8F8',
+            6: '#DFE0E0',
+            7: '#EBEBEB',
+          },
+          red: {
+            1: '#FD5E59',
+          },
+        },
         foreground: {
           DEFAULT: '#111827',
           secondary: '#4B5563',
