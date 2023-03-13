@@ -1,4 +1,4 @@
-import heading from '~components/Dashboard/heading'
+import { heading } from '~components/Dashboard/Heading'
 
 export const ConnectWalletIntro = () => {
   return (
