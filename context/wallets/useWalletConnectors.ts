@@ -4,6 +4,8 @@ import { WalletName } from '@solana/wallet-adapter-base'
 import { useAppWalletContext } from 'context/wallet-context'
 import { WalletInstance } from './Wallet'
 import { getRecentWalletIds, addRecentWalletId } from './recentWalletIds'
+import { phantom } from './solana/walletAdapters'
+import { omitUndefinedValues } from '~utils/omitUndefinedValues'
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean
@@ -89,11 +91,31 @@ export const useWalletConnectors = () => {
   ).sort((a, b) => a.index - b.index)
 
   const solanaWalletInstances = flatten(
-    wallets.map(
+    wallets.map((wallet, index) => {
+      const {
+        name: phantomName,
+        createConnector,
+        ...phantomMetadata
+      } = phantom()
+      if (wallet.adapter.name === phantomName) {
+        const { adapter, ...connectionMethods } = omitUndefinedValues(
+          createConnector(),
+        )
+        return [
+          {
+            adapter,
+            groupName: 'Solana',
+            index,
+            name: phantomName,
+            ...phantomMetadata,
+            ...connectionMethods,
+          },
+        ] as WalletInstance[]
+      }
       /* eslint-disable no-underscore-dangle */
       // @ts-expect-error
-      (wallet) => (wallet.adapter._wallets as WalletInstance[]) ?? [],
-    ),
+      return (wallet.adapter._wallets as WalletInstance[]) ?? []
+    }),
   ).sort((a, b) => a.index - b.index)
 
   const walletInstances = [...solanaWalletInstances, ...evmWalletInstances]

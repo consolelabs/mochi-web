@@ -1,11 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
-import { Button } from '~components/Button'
 import { DiscordIcon } from '~components/icons/discord'
 import { Popover } from '~components/Popover'
 import { PAGES, SOCIAL_LINKS } from '~constants'
-import { INVITE_LINK } from '~envs'
 import { logo } from '~utils/image'
 import { TrophyIcon } from '@heroicons/react/24/outline'
 import {
@@ -20,27 +18,28 @@ import {
   ArrowUpCircleIcon,
   ArrowSmallRightIcon,
 } from '@heroicons/react/20/solid'
+import ConnectButton from '~components/ConnectButton'
 
 const NavLink = (props: any) => {
   if (!props.href) {
     return (
-      <div className="group flex items-center bg-transparent px-3 py-2 rounded-md">
-        <span className="mr-2 transition-all duration-100 ease-out group-hover:text-mochi group-hover:bg-mochi-50 bg-gray-200 rounded p-1">
+      <div className="flex items-center py-2 px-3 bg-transparent rounded-md group">
+        <span className="p-1 mr-2 bg-gray-200 rounded transition-all duration-100 ease-out group-hover:text-mochi group-hover:bg-mochi-50">
           {props.icon}
         </span>
         <div className="mr-4">{props.children}</div>
-        <ArrowSmallRightIcon className="transition-all duration-100 ease-out ml-auto w-5 h-5 translate-x-1/2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:text-mochi" />
+        <ArrowSmallRightIcon className="ml-auto w-5 h-5 opacity-0 transition-all duration-100 ease-out translate-x-1/2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-mochi" />
       </div>
     )
   }
   return (
     <Link href={props.href}>
-      <a className="group flex items-center bg-transparent px-3 py-2 rounded-md">
-        <span className="mr-2 transition-all duration-100 ease-out group-hover:text-mochi group-hover:bg-mochi-50 bg-gray-200 rounded p-1">
+      <a className="flex items-center py-2 px-3 bg-transparent rounded-md group">
+        <span className="p-1 mr-2 bg-gray-200 rounded transition-all duration-100 ease-out group-hover:text-mochi group-hover:bg-mochi-50">
           {props.icon}
         </span>
         <div className="mr-4">{props.children}</div>
-        <ArrowSmallRightIcon className="transition-all duration-100 ease-out ml-auto w-5 h-5 translate-x-1/2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:text-mochi" />
+        <ArrowSmallRightIcon className="ml-auto w-5 h-5 opacity-0 transition-all duration-100 ease-out translate-x-1/2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-mochi" />
       </a>
     </Link>
   )
@@ -129,20 +128,17 @@ const NavLinks = ({ className }: { className: string }) => (
         Vote on Discordbotlist.com
       </NavLink>
     </Popover>
-    <Button href={INVITE_LINK} appearance="secondary">
-      <DiscordIcon className="w-5 h-5" />
-      <div className="whitespace-nowrap">Get Mochi</div>
-    </Button>
+    <ConnectButton />
   </div>
 )
 
 export const Navbar = () => (
   <Fragment>
-    <nav className="relative z-20 bg-transparent">
-      <div className="flex items-center max-w-7xl px-6 md:px-12 py-5 mx-auto">
+    <nav className="relative z-10 bg-transparent">
+      <div className="flex items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
         <Link href="/">
-          <a className="flex items-center gap-4 text-gray-900 group">
-            <div className="transition-shadow duration-200 ease-in-out rounded-full group-hover:shadow-xl w-9 h-9 group-hover:shadow-mochi-200">
+          <a className="flex gap-4 items-center text-gray-900 group">
+            <div className="w-9 h-9 rounded-full transition-shadow duration-200 ease-in-out group-hover:shadow-xl group-hover:shadow-mochi-200">
               <Image
                 src={logo}
                 alt="Logo"
@@ -159,21 +155,21 @@ export const Navbar = () => (
         <NavLinks className="hidden gap-10 ml-auto md:flex" />
       </div>
     </nav>
-    <div className="flex justify-center items-center w-full bg-black py-2 relative text-sm space-x-2">
-      <span className="text-white font-semibold">Solana Coding Camp</span>
+    <div className="flex relative justify-center items-center py-2 space-x-2 w-full text-sm bg-black">
+      <span className="font-semibold text-white">Solana Coding Camp</span>
       <span
-        className="flex items-center uppercase rounded-full py-1 px-3 text-black text-xs font-semibold"
+        className="flex items-center py-1 px-3 text-xs font-semibold text-black uppercase rounded-full"
         style={{
           background:
             'linear-gradient(90deg, #F4C4C2 0%, #EEC3FD 48.96%, #8FC6E4 100%)',
         }}
       >
-        <TrophyIcon className="w-4 mr-1" />
+        <TrophyIcon className="mr-1 w-4" />
         2nd place
       </span>
     </div>
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t-2 border-t-mochi-100 overflow-auto w-screen">
-      <NavLinks className="gap-7 px-3 py-2 text-sm" />
+    <div className="overflow-auto fixed right-0 bottom-0 left-0 z-50 w-screen bg-white border-t-2 md:hidden border-t-mochi-100">
+      <NavLinks className="gap-7 py-2 px-3 text-sm" />
     </div>
   </Fragment>
 )

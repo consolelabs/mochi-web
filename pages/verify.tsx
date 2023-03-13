@@ -1,15 +1,127 @@
-import { GetServerSideProps } from "next";
-import { VerifyPage } from "~app/verify";
-
-export default function verify({ code }: { code: string }) {
-  return <VerifyPage code={code} />;
-}
+import { isSSR } from '@dwarvesf/react-utils'
+import { GetServerSideProps } from 'next'
+import { useCallback, useEffect, useState } from 'react'
+import { Layout } from '~app/layout'
+import { SEO } from '~app/layout/seo'
+import { button } from '~components/Dashboard/Button'
+import { PAGES } from '~constants'
+import { API } from '~constants/api'
+import { useAppWalletContext } from '~context/wallet-context'
+import { useAccount } from '~hooks/wallets/useAccount'
+import { useSignMessage } from '~hooks/wallets/useSignMessage'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const code = ctx.query.code;
-  if (!code) return { notFound: true };
+  const code = ctx.query.code
+  const discordId = ctx.query.did
+  if (!code || !discordId) return { notFound: true }
+
+  const profileId = await API.getProfileByDiscord(discordId as string)
 
   return {
-    props: { code },
-  };
-};
+    props: { code, profileId: profileId?.id },
+  }
+}
+
+export default function Verify({
+  code,
+  profileId,
+}: {
+  code: string
+  profileId: string
+}) {
+  const [loading, setLoading] = useState(false)
+  const [verified, setVerified] = useState(false)
+  const [error, setError] = useState('')
+  const { connected } = useAppWalletContext()
+  const { address, isSolanaConnected, isEVMConnected } = useAccount()
+  const signMsg = useSignMessage(
+    `This will help us connect your discord account to the wallet address.\n\nMochiBotCode=${code}`,
+  )
+
+  const sign = useCallback(async () => {
+    if (!connected || !code || !address || loading) return
+    try {
+      setLoading(true)
+      const signature = await signMsg()
+      if (signature) {
+        const response = await API.linkAccount(
+          profileId,
+          address,
+          code,
+          signature,
+          isEVMConnected ? 'evm' : 'solana',
+        )
+        if (response?.ok) {
+          setVerified(true)
+        } else {
+          const json = await response?.json()
+          setError(json?.msg ?? 'Something went wrong')
+        }
+      }
+    } catch (e) {
+      console.error('sign method error', e)
+    } finally {
+      setLoading(false)
+    }
+  }, [address, code, connected, isEVMConnected, loading, profileId, signMsg])
+
+  useEffect(() => {
+    if (
+      !verified &&
+      connected &&
+      !loading &&
+      !isSSR() &&
+      (isEVMConnected || isSolanaConnected)
+    )
+      sign()
+  }, [connected, verified, isEVMConnected, isSolanaConnected, signMsg])
+
+  return (
+    <Layout>
+      <SEO title={PAGES.VERIFY.title} tailTitle />
+      <div className="flex relative flex-col items-center">
+        <div className="py-16 px-12 mx-auto max-w-7xl">
+          <div className="py-24 md:py-48">
+            {code && !error ? (
+              verified ? (
+                <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
+                  <div className="text-2xl font-black text-center md:text-3xl">
+                    <span className="uppercase text-mochi-gradient">
+                      Your wallet verified! You can close this window
+                    </span>{' '}
+                    ✨
+                  </div>
+                </div>
+              ) : (
+                <div className="py-8 px-6 mx-auto w-full max-w-xs sm:max-w-7xl">
+                  <h3 className="mb-4 text-3xl font-black text-center uppercase md:text-4xl lg:text-5xl text-mochi-gradient">
+                    Verify your wallet
+                  </h3>
+                  <p className="mx-auto mb-6 max-w-sm font-medium text-center">
+                    Connect your wallet to verify and get full access to Mochi
+                    with more exclusive privileges.
+                  </p>
+                  <button
+                    onClick={sign}
+                    className={button({ className: 'mx-auto', size: 'sm' })}
+                  >
+                    {loading ? 'Verifying...' : 'Verify'}
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
+                <div className="mb-2 font-medium md:text-xl">
+                  Something went wrong with error:
+                </div>
+                <div className="py-2 px-4 w-full font-mono rounded bg-stone-200">
+                  &ldquo;{error}&rdquo;
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </Layout>
+  )
+}

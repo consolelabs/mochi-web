@@ -63,7 +63,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         if (wallet.isSolana) {
           wallet?.connect?.()
         } else {
-          ;(wallet?.connect?.() as Promise<any>).catch((e) => {
+          ; (wallet?.connect?.() as Promise<any>).catch((e) => {
             if (e instanceof ConnectorAlreadyConnectedError) {
               onClose()
             } else {

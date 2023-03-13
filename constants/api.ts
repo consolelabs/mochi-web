@@ -10,24 +10,28 @@ import qs from 'querystring'
 import getUnixTime from 'date-fns/getUnixTime'
 import subDays from 'date-fns/subDays'
 
-const isProd = process.env.NEXT_PUBLIC_ENV === 'production'
-
-const API_GW = {
+const API_URLS = {
   DEV: 'https://develop-api.mochi.pod.town/api/v1',
   PROD: 'https://api.mochi.pod.town/api/v1',
   INDEXER: 'https://api.indexer.console.so/api/v1',
+  MOCHI_PROFILE: 'https://api.mochi-profile.console.so/api/v1',
   // INDEXER: 'http://localhost:8080/api/v1',
 }
 
-const getGW = () => (isProd ? API_GW.PROD : API_GW.DEV)
+const getProfileByDiscord = async (id: string) =>
+  await fetcher.get<any>(
+    `${API_URLS.MOCHI_PROFILE}/profiles/get-by-discord/${id}`,
+  )
 
-const verify = async (
+const linkAccount = async (
+  profile_id: string,
   wallet_address: string,
   code: string,
   signature: string,
+  chain: 'evm' | 'solana',
 ) =>
-  await fetcher.post<{ error?: string; data: { status?: string } | null }>(
-    `${getGW()}/verify`,
+  await fetcher.post(
+    `${API_URLS.MOCHI_PROFILE}/profiles/${profile_id}/accounts/${chain}`,
     {
       wallet_address,
       code,
@@ -40,7 +44,7 @@ const getNFTTokenDetails = async (
   token_id: string | number,
 ) => {
   const data = await fetcher.get<{ error?: string; data?: INFTToken }>(
-    `${API_GW.INDEXER}/nft/${address}/${token_id}`,
+    `${API_URLS.INDEXER}/nft/${address}/${token_id}`,
   )
 
   return data?.data
@@ -48,7 +52,7 @@ const getNFTTokenDetails = async (
 
 const getNFTCollectionDetails = async (address: string) => {
   const data = await fetcher.get<{ error?: string } & INFTCollectionList>(
-    `${API_GW.INDEXER}/nft?address=${address}`,
+    `${API_URLS.INDEXER}/nft?address=${address}`,
   )
 
   return data?.data?.[0]
@@ -61,7 +65,7 @@ const getNFTCollectionPrice = async (address: string) => {
   })
 
   const data = await fetcher.get<{ error?: string; data?: INFTTicker }>(
-    `${API_GW.INDEXER}/nft/ticker/${address}?${q}`,
+    `${API_URLS.INDEXER}/nft/ticker/${address}?${q}`,
   )
   return data?.data
 }
@@ -69,20 +73,21 @@ const getNFTCollectionPrice = async (address: string) => {
 const getAttributeIcons = async (traits: string[]) => {
   const q = qs.stringify({ trait_type: traits })
   const data = await fetcher.get<{ error?: string; data?: IAttributeIcon[] }>(
-    `${API_GW.INDEXER}/nft/metadata/attributes-icon?${q}`,
+    `${API_URLS.INDEXER}/nft/metadata/attributes-icon?${q}`,
   )
   return data?.data
 }
 
 async function getAssetMetadata(collectionAddress: string, tokenId: number) {
   const data = await fetcher.get<{ error?: string; data?: ITokenMetadata }>(
-    `${API_GW.INDEXER}/nft/${collectionAddress}/${tokenId}/metadata`,
+    `${API_URLS.INDEXER}/nft/${collectionAddress}/${tokenId}/metadata`,
   )
   return data?.data
 }
 
 export const API = {
-  verify,
+  linkAccount,
+  getProfileByDiscord,
   getNFTTokenDetails,
   getNFTCollectionDetails,
   getNFTCollectionPrice,

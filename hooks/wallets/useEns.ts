@@ -18,7 +18,6 @@ export const useEns = (address?: string) => {
     enabled: hasMainnet,
   })
 
-  ensName
   return {
     ensName,
     ensAvatar,
