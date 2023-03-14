@@ -10,10 +10,12 @@ export interface Account {
   displayBalance?: string
   decimals?: number
   value?: BigNumber
+  isEVMConnected: boolean
+  isSolanaConnected: boolean
 }
 
 export const useAccount = (): Account => {
-  const { address } = useWagmiAccount()
+  const { address, isConnected } = useWagmiAccount()
   const { data: evmBalanceData } = useBalance({ address })
   const evmDisplayBalance = evmBalanceData
     ? `${abbreviateETHBalance(parseFloat(evmBalanceData.formatted))} ${
@@ -21,7 +23,7 @@ export const useAccount = (): Account => {
       }`
     : undefined
 
-  const { connected: isSolanaConnected, publicKey } = useWallet()
+  const { connected: isSolanaConnected, publicKey, wallet } = useWallet()
   const solBalanceData = useSolanaBalance(publicKey)
   const solDisplayBalance = solBalanceData
     ? `${abbreviateETHBalance(parseFloat(solBalanceData.formatted))} ${
@@ -30,6 +32,8 @@ export const useAccount = (): Account => {
     : undefined
 
   return {
+    isEVMConnected: !isSolanaConnected && isConnected,
+    isSolanaConnected,
     address: isSolanaConnected ? publicKey?.toBase58() : address,
     symbol: isSolanaConnected ? solBalanceData.symbol : evmBalanceData?.symbol,
     displayBalance: isSolanaConnected ? solDisplayBalance : evmDisplayBalance,
