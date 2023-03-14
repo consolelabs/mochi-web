@@ -99,7 +99,7 @@ export default function index() {
             <span className="text-xl">
               Set and forget. Mochi does it all for you, automatically
             </span>
-            <Link href="/server-management">
+            <Link legacyBehavior href="/server-management">
               <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
                 <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more
@@ -195,7 +195,7 @@ export default function index() {
             <span className="text-xl">
               Access all thing crypto without having to leave Discord
             </span>
-            <Link href="/crypto-utils">
+            <Link legacyBehavior href="/crypto-utils">
               <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
                 <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more
@@ -249,7 +249,7 @@ export default function index() {
             <span className="text-xl">
               A full set of tools for minters, traders, and collection owners
             </span>
-            <Link href="/nft">
+            <Link legacyBehavior href="/nft">
               <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
                 <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more
@@ -289,7 +289,7 @@ export default function index() {
             <span className="text-xl">
               Engage with your community and honor members.
             </span>
-            <Link href="/social">
+            <Link legacyBehavior href="/social">
               <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
                 <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more

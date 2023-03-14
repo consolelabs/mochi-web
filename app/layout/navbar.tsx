@@ -23,7 +23,7 @@ const NavLink = (props: any) => {
     )
   }
   return (
-    <Link href={props.href}>
+    <Link legacyBehavior href={props.href}>
       <a className="flex items-center py-2 px-3 bg-transparent rounded-md group">
         <span className="p-1 mr-2 bg-gray-200 rounded transition-all duration-100 ease-out group-hover:text-mochi group-hover:bg-mochi-50">
           {props.icon}
@@ -150,7 +150,7 @@ export const Navbar = () => (
   <Fragment>
     <nav className="relative z-10 bg-transparent">
       <div className="flex items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
-        <Link href="/">
+        <Link legacyBehavior href="/">
           <a className="flex gap-4 items-center text-gray-900 group">
             <div className="w-9 h-9 rounded-full transition-shadow duration-200 ease-in-out group-hover:shadow-xl group-hover:shadow-mochi-200">
               <Image
