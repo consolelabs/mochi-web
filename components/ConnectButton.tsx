@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react'
-import { isSSR, truncate } from '@dwarvesf/react-utils'
+import { truncate } from '@dwarvesf/react-utils'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useEns } from '~hooks/wallets/useEns'
 import ConnectWalletModal from './Wallet/ConnectWalletModal'
-import { useDisclosure } from '@dwarvesf/react-hooks'
+import { useDisclosure, useHasMounted } from '@dwarvesf/react-hooks'
 import { Popover, Transition } from '@headlessui/react'
 import { button } from './Dashboard/Button'
 import { Icon } from '@iconify/react'
 import { INVITE_LINK } from '~envs'
 
 export default function ConnectButton() {
+  const mounted = useHasMounted()
   const { connected, disconnect: _disconnect } = useAppWalletContext()
   const { address } = useAccount()
   const { ensAvatar, ensName } = useEns(address)
@@ -30,16 +31,16 @@ export default function ConnectButton() {
     _disconnect()
   }
 
-  if (isSSR()) return null
+  if (!mounted) return null
 
-  if (!connected && !isSSR())
+  if (!connected)
     return (
-      <>
+      <div>
         <button className={button({ size: 'sm' })} onClick={onOpen}>
           Connect
         </button>
         <ConnectWalletModal isOpen={isOpen} onClose={onClose} />
-      </>
+      </div>
     )
 
   return (

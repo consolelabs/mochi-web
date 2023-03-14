@@ -36,7 +36,7 @@ export default function index() {
   return (
     <div className="overflow-hidden relative">
       <div className="absolute left-0 z-0 w-full min-h-[80vh] aspect-auto top-[-80px]">
-        <Image src={heroBg} layout="fill" alt="" />
+        <Image src={heroBg} fill alt="" />
       </div>
       <Layout>
         <SEO />
@@ -183,7 +183,7 @@ export default function index() {
         </div>
         <div className="relative mt-[-800px]">
           <div className="relative h-[1142px]">
-            <Image layout="fill" src={diagBg} alt="" />
+            <Image fill src={diagBg} alt="" />
           </div>
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <Image width={134} height={136} src={mochiTextCircle} alt="" />

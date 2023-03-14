@@ -22,6 +22,6 @@ export const GITBOOK_LINK =
   'https://mochibot.gitbook.io/mochi-bot/introduction/about-mochi-bot'
 export const INVITE_LINK =
   (process.env.INVITE_LINK as string) ||
-  'https://discord.com/oauth2/authorize?client_id=963123183131709480&permissions=8&scope=bot'
+  'https://discord.com/api/oauth2/authorize?client_id=1062540132269432863&permissions=8&scope=bot%20applications.commands'
 
 export const HOME_URL = process.env.HOME_URL || 'https://mochi.gg'
