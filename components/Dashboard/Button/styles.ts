@@ -3,23 +3,22 @@ import type { VariantProps } from 'class-variance-authority'
 
 const variant = cva(
   [
-    'flex',
-    'gap-x-1',
-    'items-center',
-    'justify-center',
-    'flex-shrink-0',
-    'font-medium',
-    'transition-all',
-    'duration-100',
-    'ease-in-out',
+    'flex gap-x-1 items-center justify-center flex-shrink-0 font-medium transition-all duration-100 ease-in-out',
   ],
   {
     variants: {
       appearance: {
         primary: [
-          'bg-white',
+          'bg-[#FFFFFF]',
           'text-foreground',
           'border-[1.5px] border-black/15%',
+          'shadow-md',
+          'rounded-lg',
+          'active:translate-y-0.5',
+        ],
+        secondary: [
+          'bg-foreground',
+          'text-white',
           'shadow-md',
           'rounded-lg',
           'active:translate-y-0.5',
@@ -31,11 +30,12 @@ const variant = cva(
           'rounded-lg',
           'active:translate-y-0.5',
         ],
-        link: ['bg-transparent', 'text-dashboard-gray-2'],
+        text: ['bg-transparent', 'text-foreground'],
       },
       size: {
         sm: ['text-sm', 'px-3', 'py-1'],
         base: ['text-base', 'px-6', 'py-2'],
+        icon: ['w-8', 'h-8', 'rounded-full'],
       },
     },
     defaultVariants: {
@@ -47,7 +47,5 @@ const variant = cva(
 
 type Props = VariantProps<typeof variant> & { className?: string }
 
-const button = ({ className = '', ...rest }: Props) =>
+export const button = ({ className = '', ...rest }: Props) =>
   variant({ className, ...rest })
-
-export default button

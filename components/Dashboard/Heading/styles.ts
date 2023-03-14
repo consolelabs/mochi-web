@@ -20,7 +20,5 @@ const variant = cva(['display'], {
 
 type Props = VariantProps<typeof variant> & { className?: string }
 
-const heading = ({ className = '', ...rest }: Props) =>
+export const heading = ({ className = '', ...rest }: Props) =>
   variant({ className, ...rest })
-
-export default heading

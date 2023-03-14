@@ -8,8 +8,9 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { useEns } from '~hooks/wallets/useEns'
 import { truncate } from '@dwarvesf/react-utils'
 import { Popover, Transition } from '@headlessui/react'
-import button from './button'
+import { button } from './Button'
 import { Fragment } from 'react'
+import { Menu } from './Menu'
 
 export default function DashboardLayout({
   children,
@@ -76,68 +77,46 @@ export default function DashboardLayout({
                         <Icon icon="mingcute:discord-fill" width={16} />
                         Add Bot
                       </button>
-                      {[
-                        [
-                          {
-                            icon: <Icon icon="mingcute:user-3-fill" />,
-                            text: 'My Profile',
-                            onClick: () => {},
-                          },
-                          {
-                            icon: <Icon icon="majesticons:settings-cog" />,
-                            text: 'Server Management',
-                            onClick: () => {},
-                          },
-                          {
-                            icon: <Icon icon="majesticons:settings-cog" />,
-                            text: 'Settings',
-                            onClick: () => {},
-                          },
-                        ],
-                        [
-                          {
-                            icon: <Icon icon="mingcute:user-add-fill" />,
-                            text: 'Invite Friends',
-                            onClick: () => {},
-                          },
-                          {
-                            icon: <Icon icon="ph:star-fill" />,
-                            text: 'Feedback',
-                            onClick: () => {},
-                          },
-                        ],
-                        [
-                          {
-                            icon: <Icon icon="majesticons:logout" />,
-                            text: 'Logout',
-                            onClick: disconnect,
-                          },
-                        ],
-                      ].map((group, groupIdx) => {
-                        return (
-                          <Fragment key={`user-popover-${groupIdx}`}>
-                            {groupIdx !== 0 ? (
-                              <hr className="w-[90%] mx-auto h-[2px] bg-black/10" />
-                            ) : null}
-                            <div className="flex flex-col">
-                              {group.map((item, itemIdx) => {
-                                return (
-                                  <button
-                                    onClick={() => item.onClick()}
-                                    key={`user-popover-item-${itemIdx}`}
-                                    className="flex gap-x-2 items-center py-2 px-3 whitespace-nowrap text-dashboard-gray-4"
-                                  >
-                                    {item.icon}
-                                    <span className="text-sm font-medium text-foreground">
-                                      {item.text}
-                                    </span>
-                                  </button>
-                                )
-                              })}
-                            </div>
-                          </Fragment>
-                        )
-                      })}
+                      <Menu
+                        items={[
+                          [
+                            {
+                              icon: <Icon icon="mingcute:user-3-fill" />,
+                              text: 'My Profile',
+                              onClick: () => {},
+                            },
+                            {
+                              icon: <Icon icon="majesticons:settings-cog" />,
+                              text: 'Server Management',
+                              onClick: () => {},
+                            },
+                            {
+                              icon: <Icon icon="majesticons:settings-cog" />,
+                              text: 'Settings',
+                              onClick: () => {},
+                            },
+                          ],
+                          [
+                            {
+                              icon: <Icon icon="mingcute:user-add-fill" />,
+                              text: 'Invite Friends',
+                              onClick: () => {},
+                            },
+                            {
+                              icon: <Icon icon="ph:star-fill" />,
+                              text: 'Feedback',
+                              onClick: () => {},
+                            },
+                          ],
+                          [
+                            {
+                              icon: <Icon icon="majesticons:logout" />,
+                              text: 'Logout',
+                              onClick: disconnect,
+                            },
+                          ],
+                        ]}
+                      />
                     </div>
                   </Popover.Panel>
                 </Transition>

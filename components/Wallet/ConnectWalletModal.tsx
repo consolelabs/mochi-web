@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Fragment, useCallback, useEffect, useMemo, useReducer } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
-import heading from '~components/Dashboard/heading'
+import { heading } from '~components/Dashboard/Heading'
 import {
   useWalletConnectors,
   WalletConnector,

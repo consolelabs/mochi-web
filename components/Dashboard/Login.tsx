@@ -1,5 +1,5 @@
-import button from './button'
-import heading from './heading'
+import { button } from './Button'
+import { heading } from './Heading'
 import { Icon } from '@iconify/react'
 import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
