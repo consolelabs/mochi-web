@@ -24,7 +24,7 @@ type Props = Parameters<typeof select>[0] & {
 export const Select = (props: Props) => {
   const {
     name,
-    value,
+    value: _value,
     options,
     multiple = false,
     searchable = false,
@@ -34,6 +34,9 @@ export const Select = (props: Props) => {
     renderOption,
     ...rest
   } = props
+
+  // eslint-disable-next-line
+  const value = !_value ? (multiple ? [] : _value) : _value
 
   const [query, setQuery] = useState('')
 

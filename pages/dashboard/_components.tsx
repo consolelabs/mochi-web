@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react'
 import { button } from '~components/Dashboard/Button'
-import { label } from '~components/Dashboard/Form/styles'
+import { label as labelStyles } from '~components/Dashboard/Form/styles'
 import { heading } from '~components/Dashboard/Heading'
 import { FileInput, Input } from '~components/Dashboard/Input'
 import { Menu } from '~components/Dashboard/Menu'
@@ -9,11 +9,60 @@ import { Select } from '~components/Dashboard/Select'
 import { Switch } from '~components/Dashboard/Switch'
 import { IconDiscord } from '~components/icons/components/IconDiscord'
 import { DiscordIcon } from '~components/icons/discord'
+import {
+  Controller,
+  ControllerProps,
+  FieldError,
+  useForm,
+} from 'react-hook-form'
+
+const Field = ({
+  label,
+  render,
+  ...rest
+}: { label?: string } & ControllerProps) => {
+  return (
+    <div>
+      {label && <label className={labelStyles()}>Default</label>}
+      <Controller
+        {...rest}
+        render={({ field, fieldState, ...renderRest }) => {
+          return (
+            <>
+              {render({
+                field: {
+                  ...field,
+                  ...(fieldState.error ? { appearance: 'invalid' } : {}),
+                },
+                fieldState,
+                ...renderRest,
+              })}
+              {fieldState.error && (
+                <div className="text-xs text-mochi-500 mt-1">
+                  {fieldState.error.message}
+                </div>
+              )}
+            </>
+          )
+        }}
+      />
+    </div>
+  )
+}
 
 export default function Default() {
+  const { control, formState, handleSubmit } = useForm()
+
+  const onSubmit = (values: Record<string, any>) => {
+    console.log(values)
+  }
+
   return (
     <div className="max-w-7xl px-12 py-24 mx-auto">
-      <div className="flex flex-col w-full space-y-8">
+      <form
+        className="flex flex-col w-full space-y-8"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Button</h2>
           <div className="flex flex-wrap gap-2">
@@ -48,135 +97,216 @@ export default function Default() {
         </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Input</h2>
-          <div>
-            <label className={label()}>Default</label>
-            <Input />
-          </div>
-          <div>
-            <label className={label()}>Invalid</label>
-            <Input appearance="invalid" />
-          </div>
-          <div>
-            <label className={label()}>Prefix</label>
-            <Input value="random-url" prefix="mochi.gg/" />
-          </div>
-          <div>
-            <label className={label()}>Suffix</label>
-            <Input suffix="times" suffixProps={{ appearance: 'bgless' }} />
-          </div>
-          <div>
-            <label className={label()}>Number</label>
-            <Input
-              suffix="times"
-              suffixProps={{ appearance: 'bgless' }}
-              type="number"
-            />
-          </div>
-          <div>
-            <label className={label()}>Date</label>
-            <Input type="datetime-local" />
-          </div>
+          <Field
+            name="input-default"
+            label="Default"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return <Input {...field} {...fieldState} />
+            }}
+          />
+          <Field
+            name="input-prefix"
+            label="Prefix"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return <Input {...field} {...fieldState} prefix="mochi.gg/" />
+            }}
+          />
+          <Field
+            name="input-suffix"
+            label="Suffix"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return (
+                <Input
+                  {...field}
+                  {...fieldState}
+                  suffix="times"
+                  suffixProps={{ appearance: 'bgless' }}
+                />
+              )
+            }}
+          />
         </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Select</h2>
-          <div>
-            <label className={label()}>Default</label>
-            <Select
-              options={[
-                { label: 'Option 1', value: '1' },
-                { label: 'Option 2', value: '2' },
-              ]}
-            />
-          </div>
-          <div>
-            <label htmlFor="invalid" className={label()}>
-              Invalid
-            </label>
-            <Select
-              appearance="invalid"
-              options={[
-                { label: 'Option 1', value: '1' },
-                { label: 'Option 2', value: '2' },
-              ]}
-              value="1"
-            />
-          </div>
-          <div>
-            <label className={label()}>Custom Option Render</label>
-            <Select
-              value="2"
-              options={[
-                { label: 'Option 1', value: '1' },
-                { label: 'Option 2', value: '2' },
-              ]}
-              renderOption={(option) => {
-                return (
-                  <div className="flex gap-2 items-center">
-                    <DiscordIcon className="w-4 h-4" />
-                    <span>{option.label}</span>
-                  </div>
-                )
-              }}
-            />
-          </div>
-          <div>
-            <label className={label()}>Searchable</label>
-            <Select
-              searchable
-              options={[
-                { label: 'Option 1', value: '1' },
-                { label: 'Option 2', value: '2' },
-              ]}
-            />
-          </div>
-          <div>
-            <label className={label()}>Multiple</label>
-            <Select
-              value={['1', '2']}
-              searchable
-              multiple
-              options={[
-                { label: 'Option 1', value: '1' },
-                { label: 'Option 2', value: '2' },
-                { label: 'Option 3', value: '3' },
-              ]}
-            />
-          </div>
+          <Field
+            name="select-default"
+            label="Default"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return (
+                <Select
+                  {...field}
+                  {...fieldState}
+                  options={[
+                    { label: 'Option 1', value: '1' },
+                    { label: 'Option 2', value: '2' },
+                  ]}
+                />
+              )
+            }}
+          />
+          <Field
+            name="select-custom"
+            label="Custom Option Render"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return (
+                <Select
+                  {...field}
+                  {...fieldState}
+                  options={[
+                    { label: 'Option 1', value: '1' },
+                    { label: 'Option 2', value: '2' },
+                  ]}
+                  renderOption={(option) => {
+                    return (
+                      <div className="flex gap-2 items-center">
+                        <DiscordIcon className="w-4 h-4" />
+                        <span>{option.label}</span>
+                      </div>
+                    )
+                  }}
+                />
+              )
+            }}
+          />
+          <Field
+            name="select-searchable"
+            label="Searchable"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return (
+                <Select
+                  {...field}
+                  {...fieldState}
+                  options={[
+                    { label: 'Option 1', value: '1' },
+                    { label: 'Option 2', value: '2' },
+                  ]}
+                  searchable
+                />
+              )
+            }}
+          />
+          <Field
+            name="select-multiple"
+            label="Multiple"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return (
+                <Select
+                  {...field}
+                  {...fieldState}
+                  options={[
+                    { label: 'Option 1', value: '1' },
+                    { label: 'Option 2', value: '2' },
+                  ]}
+                  searchable
+                  multiple
+                />
+              )
+            }}
+          />
         </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Radio Group</h2>
-          <div>
-            <label className={label()}>Default</label>
-            <RadioGroup
-              options={[
-                { label: 'Option 1', value: '1' },
-                { label: 'Option 2', value: '2' },
-              ]}
-            />
-          </div>
+          <Field
+            name="radio-group-default"
+            label="Default"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return (
+                <RadioGroup
+                  {...field}
+                  {...fieldState}
+                  options={[
+                    { label: 'Option 1', value: '1' },
+                    { label: 'Option 2', value: '2' },
+                  ]}
+                />
+              )
+            }}
+          />
         </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Switch</h2>
-          <div>
-            <label className={label()}>Default</label>
-            <Switch />
-          </div>
-          <div>
-            <label className={label()}>With Label</label>
-            <Switch label="With Label" checked />
-          </div>
+          <Field
+            name="switch-default"
+            label="Default"
+            control={control}
+            render={({ field, fieldState }) => {
+              return <Switch {...field} {...fieldState} checked={field.value} />
+            }}
+          />
+          <Field
+            name="switch-with-label"
+            label="With Label"
+            control={control}
+            render={({ field, fieldState }) => {
+              return (
+                <Switch
+                  {...field}
+                  {...fieldState}
+                  label="With Label"
+                  checked={field.value}
+                />
+              )
+            }}
+          />
         </div>
+
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>File Input</h2>
-          <div>
-            <label className={label()}>Default</label>
-            <FileInput />
-          </div>
+          <Field
+            name="file-input-default"
+            label="Default"
+            control={control}
+            rules={{
+              required: 'Required',
+            }}
+            render={({ field, fieldState }) => {
+              return (
+                <FileInput
+                  {...field}
+                  {...fieldState}
+                  onChange={(e) => field.onChange(e.target.files)}
+                />
+              )
+            }}
+          />
         </div>
+
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Menu</h2>
           <div>
-            <label className={label()}>Default</label>
+            <label className={labelStyles()}>Default</label>
             <div className="max-w-xl bg-[#FFFFFF] rounded-lg py-4">
               <Menu
                 items={[
@@ -221,7 +351,10 @@ export default function Default() {
             </div>
           </div>
         </div>
-      </div>
+        <button type="submit" className={button({ appearance: 'primary' })}>
+          Submit
+        </button>
+      </form>
     </div>
   )
 }
