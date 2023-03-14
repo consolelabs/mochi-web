@@ -1,23 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
-import { DiscordIcon } from '~components/icons/discord'
 import { Popover } from '~components/Popover'
 import { PAGES, SOCIAL_LINKS } from '~constants'
 import { logo } from '~utils/image'
-import { TrophyIcon } from '@heroicons/react/24/outline'
-import {
-  GlobeAmericasIcon,
-  ViewfinderCircleIcon,
-  CpuChipIcon,
-  UserGroupIcon,
-  BellAlertIcon,
-  NewspaperIcon,
-  HeartIcon,
-  InformationCircleIcon,
-  ArrowUpCircleIcon,
-  ArrowSmallRightIcon,
-} from '@heroicons/react/20/solid'
+import { Icon } from '@iconify/react'
 import ConnectButton from '~components/ConnectButton'
 
 const NavLink = (props: any) => {
@@ -28,7 +15,10 @@ const NavLink = (props: any) => {
           {props.icon}
         </span>
         <div className="mr-4">{props.children}</div>
-        <ArrowSmallRightIcon className="ml-auto w-5 h-5 opacity-0 transition-all duration-100 ease-out translate-x-1/2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-mochi" />
+        <Icon
+          icon="heroicons:arrow-small-right-20-solid"
+          className="ml-auto w-5 h-5 opacity-0 transition-all duration-100 ease-out translate-x-1/2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-mochi"
+        />
       </div>
     )
   }
@@ -39,7 +29,10 @@ const NavLink = (props: any) => {
           {props.icon}
         </span>
         <div className="mr-4">{props.children}</div>
-        <ArrowSmallRightIcon className="ml-auto w-5 h-5 opacity-0 transition-all duration-100 ease-out translate-x-1/2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-mochi" />
+        <Icon
+          icon="heroicons:arrow-small-right-20-solid"
+          className="ml-auto w-5 h-5 opacity-0 transition-all duration-100 ease-out translate-x-1/2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-mochi"
+        />
       </a>
     </Link>
   )
@@ -55,22 +48,34 @@ const NavLinks = ({ className }: { className: string }) => (
         {
           href: '/server-management',
           text: 'DAO Management',
-          icon: <GlobeAmericasIcon className="w-5 h-5" />,
+          icon: (
+            <Icon
+              icon="heroicons:globe-americas-20-solid"
+              className="w-5 h-5"
+            />
+          ),
         },
         {
           href: '/crypto-utils',
           text: 'Crypto Utilities',
-          icon: <ViewfinderCircleIcon className="w-5 h-5" />,
+          icon: (
+            <Icon
+              icon="heroicons:viewfinder-circle-20-solid"
+              className="w-5 h-5"
+            />
+          ),
         },
         {
           href: '/nft',
           text: 'NFT',
-          icon: <CpuChipIcon className="w-5 h-5" />,
+          icon: <Icon icon="heroicons:cpu-chip-20-solid" className="w-5 h-5" />,
         },
         {
           href: '/social',
           text: 'Social',
-          icon: <UserGroupIcon className="w-5 h-5" />,
+          icon: (
+            <Icon icon="heroicons:user-group-20-solid" className="w-5 h-5" />
+          ),
         },
       ].map((l) => {
         return (
@@ -85,12 +90,14 @@ const NavLinks = ({ className }: { className: string }) => (
       panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
-        icon={<BellAlertIcon className="w-5 h-5" />}
+        icon={<Icon icon="heroicons:bell-alert-20-solid" className="w-5 h-5" />}
         href={PAGES.CHANGE_LOG.path}
       >
         {PAGES.CHANGE_LOG.title}
       </NavLink>
-      <NavLink icon={<NewspaperIcon className="w-5 h-5" />}>
+      <NavLink
+        icon={<Icon icon="heroicons:newspaper-20-solid" className="w-5 h-5" />}
+      >
         Blog (Coming Soon)
       </NavLink>
     </Popover>
@@ -99,13 +106,18 @@ const NavLinks = ({ className }: { className: string }) => (
       panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
-        icon={<HeartIcon className="w-5 h-5" />}
+        icon={<Icon icon="heroicons:heart-20-solid" className="w-5 h-5" />}
         href={SOCIAL_LINKS.DISCORD}
       >
         Support Server
       </NavLink>
       <NavLink
-        icon={<InformationCircleIcon className="w-5 h-5" />}
+        icon={
+          <Icon
+            icon="heroicons:information-circle-20-solid"
+            className="w-5 h-5"
+          />
+        }
         href={SOCIAL_LINKS.GITBOOK}
       >
         Instruction
@@ -116,13 +128,15 @@ const NavLinks = ({ className }: { className: string }) => (
       panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
-        icon={<ArrowUpCircleIcon className="w-5 h-5" />}
+        icon={
+          <Icon icon="heroicons:arrow-up-circle-20-solid" className="w-5 h-5" />
+        }
         href={SOCIAL_LINKS.TOP_GG}
       >
         Vote on Top.gg
       </NavLink>
       <NavLink
-        icon={<DiscordIcon className="w-5 h-5" />}
+        icon={<Icon icon="ic:baseline-discord" className="w-5 h-5" />}
         href={SOCIAL_LINKS.DISCORBOTLIST}
       >
         Vote on Discordbotlist.com
@@ -164,7 +178,7 @@ export const Navbar = () => (
             'linear-gradient(90deg, #F4C4C2 0%, #EEC3FD 48.96%, #8FC6E4 100%)',
         }}
       >
-        <TrophyIcon className="mr-1 w-4" />
+        <Icon icon="heroicons:trophy-20-solid" className="mr-1 w-4" />
         2nd place
       </span>
     </div>

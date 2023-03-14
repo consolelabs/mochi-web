@@ -1,4 +1,3 @@
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Layout } from '~app/layout'
@@ -7,8 +6,6 @@ import { Button } from '~components/Button'
 import { CircledIcon } from '~components/CircledIcon'
 import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
-import { DiscordIcon } from '~components/icons/discord'
-import { TelegramIcon } from '~components/icons/telegram'
 import { RingsBackground } from '~components/RingsBackground'
 import { Stats } from '~components/Stats'
 import { Tweets } from '~components/Tweets'
@@ -31,30 +28,35 @@ import {
 } from '~utils/image'
 import { Partner } from '~components/Partner'
 import { IntegratedChains } from '~components/IntegratedChains'
+import { Icon } from '@iconify/react'
 
 const scale = 2.25
 
 export default function index() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="w-full min-h-[80vh] aspect-auto absolute left-0 top-[-80px] z-0">
+    <div className="overflow-hidden relative">
+      <div className="absolute left-0 z-0 w-full min-h-[80vh] aspect-auto top-[-80px]">
         <Image src={heroBg} layout="fill" alt="" />
       </div>
       <Layout>
         <SEO />
-        <div className="lg:mt-40 flex flex-col-reverse lg:flex-row justify-between relative body-block h-[600px] xl:h-[450px] px-6 md:px-12">
-          <div className="relative z-10 flex flex-col">
-            <p className="text-3xl md:text-5xl max-w-xl">
+        <div className="flex relative flex-col-reverse justify-between px-6 md:px-12 lg:flex-row lg:mt-40 body-block h-[600px] xl:h-[450px]">
+          <div className="flex relative z-10 flex-col">
+            <p className="max-w-xl text-3xl md:text-5xl">
               Bring <span className="text-[#f17975]">Web3</span> universe to
               your <span className="text-[#6875ED]">Discord</span> server
             </p>
-            <span className="mt-5 text-sm md:text-xl max-w-xl">
+            <span className="mt-5 max-w-xl text-sm md:text-xl">
               Smooth onboarding, automated moderation, crypto ticker, NFT rarity
               ranking, and much more.
             </span>
-            <div className="mt-10 flex gap-x-5 items-center">
+            <div className="flex gap-x-5 items-center mt-10">
               <Button href={INVITE_LINK} appearance="discord">
-                <DiscordIcon className="w-5 h-5" />
+                <Icon
+                  icon="ic:baseline-discord"
+                  color="white"
+                  className="w-5"
+                />
                 <div className="whitespace-nowrap">Add Discord</div>
               </Button>
               <Button
@@ -62,9 +64,9 @@ export default function index() {
                 className="text-black shadow"
                 disabled
               >
-                <TelegramIcon className="w-5 h-5" />
+                <Icon icon="logos:telegram" color="white" className="w-5" />
                 <div>Telegram</div>
-                <span className="font-medium text-[10px] uppercase rounded-full px-2 py-0.5 bg-gray-300 text-gray-800">
+                <span className="py-0.5 px-2 font-medium text-gray-800 uppercase bg-gray-300 rounded-full text-[10px]">
                   coming soon
                 </span>
               </Button>
@@ -73,7 +75,7 @@ export default function index() {
           <div className="absolute -right-32 -top-1/3 w-2/3 h-full">
             <RingsBackground />
           </div>
-          <div className="relative flex-1 flex justify-center items-center lg:justify-end lg:items-start">
+          <div className="flex relative flex-1 justify-center items-center lg:justify-end lg:items-start">
             <Image
               width={1080 / scale}
               height={669 / scale}
@@ -82,27 +84,30 @@ export default function index() {
             />
           </div>
         </div>
-        <div className="mt-32 lg:mt-5 flex flex-col">
-          <p className="mx-auto text-mochi text-3xl mb-2">Integrated Chains</p>
+        <div className="flex flex-col mt-32 lg:mt-5">
+          <p className="mx-auto mb-2 text-3xl text-mochi">Integrated Chains</p>
           <IntegratedChains />
-          <p className="mx-auto text-mochi text-3xl mt-16 mb-2">Partners</p>
+          <p className="mx-auto mt-16 mb-2 text-3xl text-mochi">Partners</p>
           <Partner />
         </div>
         <div className="mt-20">
           <Stats />
         </div>
-        <div className="body-block flex flex-col px-6 md:px-12">
-          <div className="mx-auto mt-36 flex flex-col items-start md:items-center gap-y-2">
+        <div className="flex flex-col px-6 md:px-12 body-block">
+          <div className="flex flex-col gap-y-2 items-start mx-auto mt-36 md:items-center">
             <p className="text-4xl">Server management made easy</p>
             <span className="text-xl">
               Set and forget. Mochi does it all for you, automatically
             </span>
             <Link href="/server-management">
-              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
-                <span className="hover:text-mochi text-blue-500 font-medium">
+              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
+                <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more
                 </span>
-                <ArrowTopRightOnSquareIcon width={16} height={16} />
+                <Icon
+                  icon="heroicons:arrow-top-right-on-square-solid"
+                  className="w-4"
+                />
               </a>
             </Link>
           </div>
@@ -184,22 +189,25 @@ export default function index() {
             <Image width={134} height={136} src={mochiTextCircle} alt="" />
           </div>
         </div>
-        <div className="body-block px-6 md:px-12 flex flex-col">
-          <div className="mx-auto mt-36 flex flex-col items-start md:items-center gap-y-2">
+        <div className="flex flex-col px-6 md:px-12 body-block">
+          <div className="flex flex-col gap-y-2 items-start mx-auto mt-36 md:items-center">
             <p className="text-4xl">Crypto Utilities</p>
             <span className="text-xl">
               Access all thing crypto without having to leave Discord
             </span>
             <Link href="/crypto-utils">
-              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
-                <span className="hover:text-mochi text-blue-500 font-medium">
+              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
+                <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more
                 </span>
-                <ArrowTopRightOnSquareIcon width={16} height={16} />
+                <Icon
+                  icon="heroicons:arrow-top-right-on-square-solid"
+                  className="w-4"
+                />
               </a>
             </Link>
           </div>
-          <div className="mt-10 grid grid-cols-1 grid-rows-4 md:grid-cols-2 md:grid-rows-2 gap-6">
+          <div className="grid grid-cols-1 grid-rows-4 gap-6 mt-10 md:grid-cols-2 md:grid-rows-2">
             {[
               {
                 icon: util1,
@@ -225,32 +233,35 @@ export default function index() {
               return (
                 <div
                   key={`util-${i}`}
-                  className="rounded-lg bg-white border border-gray-200 p-6 flex flex-col items-start"
+                  className="flex flex-col items-start p-6 bg-white rounded-lg border border-gray-200"
                 >
                   <CircledIcon src={u.icon} />
-                  <p className="text-xl mt-2">{u.title}</p>
-                  <span className="text-base mt-1">{u.desc}</span>
+                  <p className="mt-2 text-xl">{u.title}</p>
+                  <span className="mt-1 text-base">{u.desc}</span>
                 </div>
               )
             })}
           </div>
         </div>
-        <div className="body-block px-6 md:px-12">
-          <div className="mx-auto mt-36 flex flex-col items-start md:items-center gap-y-2">
+        <div className="px-6 md:px-12 body-block">
+          <div className="flex flex-col gap-y-2 items-start mx-auto mt-36 md:items-center">
             <p className="text-4xl">NFT + Discord = WAGMI</p>
             <span className="text-xl">
               A full set of tools for minters, traders, and collection owners
             </span>
             <Link href="/nft">
-              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
-                <span className="hover:text-mochi text-blue-500 font-medium">
+              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
+                <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more
                 </span>
-                <ArrowTopRightOnSquareIcon width={16} height={16} />
+                <Icon
+                  icon="heroicons:arrow-top-right-on-square-solid"
+                  className="w-4"
+                />
               </a>
             </Link>
           </div>
-          <div className="mt-16 md:mt-32 flex flex-col gap-y-8 md:gap-y-0 md:flex-row justify-between">
+          <div className="flex flex-col gap-y-8 justify-between mt-16 md:flex-row md:gap-y-0 md:mt-32">
             <div className="flex flex-col gap-y-2">
               <p className="text-xl">Rarity ranking tool</p>
               <span className="text-base">
@@ -272,22 +283,25 @@ export default function index() {
             <Image src={nftRarityRanking} alt="" />
           </div>
         </div>
-        <div className="body-block px-6 md:px-12 mt-44 flex flex-col">
-          <div className="mx-auto flex flex-col items-start md:items-center gap-y-2">
+        <div className="flex flex-col px-6 mt-44 md:px-12 body-block">
+          <div className="flex flex-col gap-y-2 items-start mx-auto md:items-center">
             <p className="text-4xl">Social</p>
             <span className="text-xl">
               Engage with your community and honor members.
             </span>
             <Link href="/social">
-              <a className="items-center gap-x-1 flex text-blue-500 underline font-medium">
-                <span className="hover:text-mochi text-blue-500 font-medium">
+              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
+                <span className="font-medium text-blue-500 hover:text-mochi">
                   Learn more
                 </span>
-                <ArrowTopRightOnSquareIcon width={16} height={16} />
+                <Icon
+                  icon="heroicons:arrow-top-right-on-square-solid"
+                  className="w-4"
+                />
               </a>
             </Link>
           </div>
-          <div className="mt-10 border border-gray-200 bg-white rounded-lg py-5 px-10 flex flex-col md:flex-row gap-y-8 md:gap-y-0 justify-between">
+          <div className="flex flex-col gap-y-8 justify-between py-5 px-10 mt-10 bg-white rounded-lg border border-gray-200 md:flex-row md:gap-y-0">
             {[
               {
                 icon: '/rocket.gif',
@@ -328,18 +342,18 @@ export default function index() {
               return (
                 <div
                   key={`social-${i}`}
-                  className="flex flex-col text-center items-center"
+                  className="flex flex-col items-center text-center"
                 >
                   <CircledIcon src={s.icon} />
-                  <p className="text-xl mt-1">{s.title}</p>
+                  <p className="mt-1 text-xl">{s.title}</p>
                   <span className="mt-1 text-base">{s.desc}</span>
                 </div>
               )
             })}
           </div>
         </div>
-        <div className="body-block px-6 md:px-12 mt-44 flex flex-col">
-          <div className="mx-auto flex flex-col items-start md:items-center gap-y-2">
+        <div className="flex flex-col px-6 mt-44 md:px-12 body-block">
+          <div className="flex flex-col gap-y-2 items-start mx-auto md:items-center">
             <p className="text-4xl">Tweets</p>
           </div>
           <Tweets />

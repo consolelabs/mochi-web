@@ -1,18 +1,16 @@
 import Image from 'next/image'
-import { DiscordIcon } from '~components/icons/discord'
-import { TwitterIcon } from '~components/icons/twitter'
-import { GitbookIcon } from '~components/icons/gitbook'
 import { SOCIAL_LINKS } from '~constants'
 import { logo } from '~utils/image'
+import { Icon } from '@iconify/react'
 
 export const Footer = () => (
   <footer className="pt-16 pb-24 mt-auto">
-    <div className="max-w-7xl px-6 md:px-12 mx-auto">
+    <div className="px-6 mx-auto max-w-7xl md:px-12">
       <div className="flex flex-wrap">
         <div className="w-full text-sm text-gray-500 md:w-2/5">
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4 items-center">
             <div
-              className="shadow-mochi w-9 h-9 rounded-full"
+              className="w-9 h-9 rounded-full shadow-mochi"
               style={{
                 boxShadow: '0 0 3rem var(--tw-shadow-color)',
               }}
@@ -34,19 +32,25 @@ export const Footer = () => (
             servers, and help you bring about and connect strong communities,
             active users with the ever-growing blockchain.
           </span>
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4 items-center">
             <a href={SOCIAL_LINKS.TWITTER} target="_blank" rel="noreferrer">
-              <TwitterIcon className="w-4 h-4 text-gray-500" />
+              <Icon icon="mdi:twitter" className="w-4 h-4 text-gray-500" />
             </a>
             <a href={SOCIAL_LINKS.DISCORD} target="_blank" rel="noreferrer">
-              <DiscordIcon className="w-4 h-4 text-gray-500" />
+              <Icon
+                icon="ic:baseline-discord"
+                className="w-4 h-4 text-gray-500"
+              />
             </a>
             <a href={SOCIAL_LINKS.GITBOOK} target="_blank" rel="noreferrer">
-              <GitbookIcon className="w-4 h-4 text-gray-500" />
+              <Icon
+                icon="simple-icons:gitbook"
+                className="w-4 h-4 text-gray-500"
+              />
             </a>
           </div>
         </div>
-        <div className="flex w-full gap-6 md:w-3/5"></div>
+        <div className="flex gap-6 w-full md:w-3/5"></div>
       </div>
       <div className="pt-6 text-xs text-gray-500">
         Copyright &copy; 2022+ MochiBot, All rights reserved

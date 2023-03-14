@@ -6,14 +6,13 @@ import {
   INFTToken,
 } from '~types/nft'
 import NFTAttribute from './NFTAttribute'
-import cc from 'classnames'
 import { truncate } from '@dwarvesf/react-utils'
-import { LinkIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
 import { CHAIN_NAMES, EXPLORERS } from '~constants/chain'
 import { getTraitEmoji } from '~constants/emoji'
 import { useFetch } from '~hooks/useFetch'
 import { API } from '~constants/api'
-import { AssetStat } from './NFTStats'
+import clsx from 'clsx'
+import { Icon } from '@iconify/react'
 
 function getChainExplorerLink(chainID: number, address: string) {
   const host = EXPLORERS[chainID]
@@ -35,12 +34,12 @@ const AddressDisplay = memo(function AddressDisplay({
   if (loading || !address) {
     return (
       <div className="flex items-stretch space-x-2">
-        <div className="flex-none paper rounded-full h-9 w-9 bg-gray-300 animate-pulse" />
+        <div className="flex-none w-9 h-9 bg-gray-300 rounded-full animate-pulse paper" />
         <div className="flex flex-col justify-between h-full">
-          <span className="text-xs block leading-tight tracking-wide truncate text-gray-400">
+          <span className="block text-xs tracking-wide leading-tight text-gray-400 truncate">
             {title}
           </span>
-          <p className="h-3 mt-1 w-32 bg-gray-300 rounded animate-pulse" />
+          <p className="mt-1 w-32 h-3 bg-gray-300 rounded animate-pulse" />
         </div>
       </div>
     )
@@ -48,16 +47,16 @@ const AddressDisplay = memo(function AddressDisplay({
 
   return (
     <div className="flex items-stretch space-x-2">
-      <div className="flex-none h-9 w-9">
+      <div className="flex-none w-9 h-9">
         <div className="paper">
           <img src="/logo.png" alt="mochi logo" className="rounded-full" />
         </div>
       </div>
       <div className="flex flex-col justify-between">
-        <span className="text-xs block leading-tight tracking-wide truncate text-gray-400">
+        <span className="block text-xs tracking-wide leading-tight text-gray-400 truncate">
           {title}
         </span>
-        <span className="text-sm font-semibold truncate tracking-wide text-gray-800">
+        <span className="text-sm font-semibold tracking-wide text-gray-800 truncate">
           {truncate(address, 12, true)}
         </span>
       </div>
@@ -68,7 +67,6 @@ const AddressDisplay = memo(function AddressDisplay({
 export default function NFTTokenPage({
   token: data,
   collection,
-  ticker,
   attrIcons,
 }: {
   token: INFTToken
@@ -88,11 +86,11 @@ export default function NFTTokenPage({
 
   return (
     <div
-      className={cc(
+      className={clsx(
         'w-full flex-col lg:flex-row flex mx-auto space-y-5 lg:space-y-0 lg:space-x-12',
       )}
     >
-      <div className="flex-shrink-0 lg:w-96 flex flex-col space-y-3">
+      <div className="flex flex-col flex-shrink-0 space-y-3 lg:w-96">
         <img
           src={
             data.image?.replace(/^(ipfs:\/\/)/, 'https://ipfs.io/ipfs/') ||
@@ -102,7 +100,7 @@ export default function NFTTokenPage({
           className="rounded-2xl"
         />
 
-        <div className="border border-gray-200 rounded-2xl p-3 space-y-2">
+        <div className="p-3 space-y-2 rounded-2xl border border-gray-200">
           {data?.attributes?.length && (
             <div className="grid grid-cols-2 gap-3">
               {data.attributes.map((att) => (
@@ -115,20 +113,20 @@ export default function NFTTokenPage({
             </div>
           )}
 
-          <div className="h-4 flex items-center justify-center relative">
-            <div className="absolute inset-0 flex items-center">
+          <div className="flex relative justify-center items-center h-4">
+            <div className="flex absolute inset-0 items-center">
               <div className="w-full border-t border-gray-200"></div>
             </div>
           </div>
 
-          <div className="flex items-center justify-between capitalize mb-1">
+          <div className="flex justify-between items-center mb-1 capitalize">
             <p className="text-sm tracking-wide text-gray-500">Collection</p>
-            <p className="font-semibold text-sm tracking-wide text-gray-800">
+            <p className="text-sm font-semibold tracking-wide text-gray-800">
               {collection.name}
             </p>
           </div>
           <div className="text-sm text-slate-600">
-            <div className="flex items-center justify-between capitalize mb-1">
+            <div className="flex justify-between items-center mb-1 capitalize">
               <p className="text-sm tracking-wide text-gray-500">Address</p>
               <a
                 href={getChainExplorerLink(
@@ -137,19 +135,19 @@ export default function NFTTokenPage({
                 )}
                 target="_blank"
                 rel="noreferrer"
-                className="font-semibold text-sm tracking-wide text-mochi-500 flex items-center justify-end"
+                className="flex justify-end items-center text-sm font-semibold tracking-wide text-mochi-500"
               >
                 {truncate(data.collection_address, 12, true)}
-                <LinkIcon className="h-4 w-4 ml-2" />
+                <Icon icon="heroicons:link-20-solid" className="ml-2 w-4 h-4" />
               </a>
             </div>
-            <div className="flex items-center justify-between capitalize mb-1">
+            <div className="flex justify-between items-center mb-1 capitalize">
               <p className="text-sm tracking-wide text-gray-500">Token ID</p>
-              <p className="font-semibold text-sm tracking-wide text-gray-800">
+              <p className="text-sm font-semibold tracking-wide text-gray-800">
                 {data.token_id}
               </p>
             </div>
-            <div className="flex items-center justify-between capitalize mb-1">
+            <div className="flex justify-between items-center mb-1 capitalize">
               <p className="text-sm tracking-wide text-gray-500">Rarity</p>
               <p
                 className={`rounded-lg text-nft-${data.rarity.rarity?.toLowerCase()} font-medium`}
@@ -157,34 +155,37 @@ export default function NFTTokenPage({
                 {data.rarity.rarity}
               </p>
             </div>
-            <div className="flex items-center justify-between capitalize mb-1">
+            <div className="flex justify-between items-center mb-1 capitalize">
               <p className="text-sm tracking-wide text-gray-500">
                 Token Standard
               </p>
-              <p className="font-semibold text-sm tracking-wide text-gray-800">
+              <p className="text-sm font-semibold tracking-wide text-gray-800">
                 {collection.erc_format}
               </p>
             </div>
-            <div className="flex items-center justify-between capitalize mb-1">
+            <div className="flex justify-between items-center mb-1 capitalize">
               <p className="text-sm tracking-wide text-gray-500">Chain</p>
-              <p className="font-semibold text-sm tracking-wide text-gray-800">
+              <p className="text-sm font-semibold tracking-wide text-gray-800">
                 {CHAIN_NAMES[collection.chain_id]}
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex-1 flex-col space-y-3">
+      <div className="flex-col flex-1 space-y-3">
         <div className="text-mochi-700">
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between items-center">
             <h1 title={data.name} className="text-4xl font-bold">
               {data.name}
             </h1>
           </div>
-          <div className="flex items-center justify-start text-sm mt-4 space-x-4">
+          <div className="flex justify-start items-center mt-4 space-x-4 text-sm">
             <p className="flex items-center text-gray-500">
               Collection{' '}
-              <CheckCircleIcon className="h-6 w-6 text-green-600 ml-1" />
+              <Icon
+                icon="heroicons:check-circle-solid"
+                className="ml-1 w-6 h-6 text-green-600"
+              />
             </p>
             <p
               className={`rounded-lg bg-nft-${data.rarity.rarity?.toLowerCase()} text-white px-2 py-1 font-medium`}
@@ -192,21 +193,15 @@ export default function NFTTokenPage({
               #{data.rarity.rank}
             </p>
           </div>
-          <p className="text-sm mt-3 text-slate-600 bg-gray-200 p-3 rounded-2xl">
+          <p className="p-3 mt-3 text-sm bg-gray-200 rounded-2xl text-slate-600">
             {data.description}
           </p>
-          <div className="flex items-center space-x-12 mt-3">
+          <div className="flex items-center mt-3 space-x-12">
             <AddressDisplay
               title="Owner"
               address={metadata?.owner?.owner_address}
             />
             <AddressDisplay title="Creator" address={metadata?.creator} />
-          </div>
-          <div className="mt-4">
-            <AssetStat
-              data={metadata}
-              chainTokenSymbol={collection.chain.symbol}
-            />
           </div>
         </div>
       </div>

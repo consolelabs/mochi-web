@@ -1,8 +1,8 @@
-import { RectangleStackIcon, HeartIcon } from '@heroicons/react/24/solid'
+import { Icon } from '@iconify/react'
 
 export const Mission = () => (
-  <div className="relative flex flex-wrap-reverse mb-12 text-lg md:flex-nowrap">
-    <div className="absolute w-24 h-24 rounded-full shadow-xl bg-mochi-400 blur-3xl top-12 right-36 shadow-mochi-400" />
+  <div className="flex relative flex-wrap-reverse mb-12 text-lg md:flex-nowrap">
+    <div className="absolute top-12 right-36 w-24 h-24 rounded-full shadow-xl bg-mochi-400 blur-3xl shadow-mochi-400" />
     <div className="md:flex-1 md:pr-12">
       <p className="mb-4">
         At Mochi, we seek to foster human development, and endeavor to help you
@@ -14,7 +14,10 @@ export const Mission = () => (
       </p>
       <ul className="pl-6">
         <li className="flex gap-2">
-          <HeartIcon className="flex-shrink-0 w-5 h-5 mt-1 text-mochi" />
+          <Icon
+            icon="heroicons-heart-solid"
+            className="flex-shrink-0 mt-1 w-5 h-5 text-mochi"
+          />
           <div className="flex-1">
             <span className="font-bold text-mochi">Built on trust</span> — We
             build our products with care and love for our users, to earn their
@@ -22,7 +25,10 @@ export const Mission = () => (
           </div>
         </li>
         <li className="flex gap-2">
-          <RectangleStackIcon className="flex-shrink-0 w-5 h-5 mt-1 text-mochi" />
+          <Icon
+            icon="heroicons:rectangle-stack-solid"
+            className="flex-shrink-0 mt-1 w-5 h-5 text-mochi"
+          />
           <div className="flex-1">
             <span className="font-bold text-mochi">Altruistic service</span> —
             We act with the best interest and well-being of our users in mind.
@@ -32,7 +38,7 @@ export const Mission = () => (
       </ul>
     </div>
     <div
-      className="relative w-48 h-48 mx-auto mt-4 overflow-hidden bg-center bg-cover rounded-lg mb-9"
+      className="overflow-hidden relative mx-auto mt-4 mb-9 w-48 h-48 bg-center bg-cover rounded-lg"
       style={{ backgroundImage: 'url(/logo.png)' }}
     />
   </div>

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { logo } from '~utils/image'
-import cln from 'classnames'
+import clsx from 'clsx'
 import { SEO } from '~app/layout/seo'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { Icon } from '@iconify/react'
@@ -20,7 +20,7 @@ export default function DashboardLayout({
       <SEO title="Dashboard" description="" />
       <div className="flex flex-col min-h-screen min-w-screen bg-dashboard-gray-1">
         <div
-          className={cln('flex py-4 px-7 flex-shrink-0 justify-between', {
+          className={clsx('flex py-4 px-7 flex-shrink-0 justify-between', {
             'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5': connected,
             'bg-dashboard-gray-1': !connected,
           })}

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import cln from 'classnames'
+import clsx from 'clsx'
 
 type Props = {
   image: any
@@ -13,7 +13,7 @@ type Props = {
 export const FeatureIntroduction = (props: Props) => {
   return (
     <div
-      className={cln(
+      className={clsx(
         'flex flex-col items-center justify-between gap-3 mt-20 md:mt-0',
         props.className,
         {

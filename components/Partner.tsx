@@ -1,6 +1,6 @@
 import React from 'react'
 import Marquee from 'react-fast-marquee'
-import clsx from 'classnames'
+import clsx from 'clsx'
 
 const Image = (props: any) => (
   <img
@@ -18,7 +18,7 @@ const Image = (props: any) => (
 
 export const Partner = () => {
   return (
-    <Marquee className="w-20 h-20 py-3 overflow-hidden flex" pauseOnHover>
+    <Marquee className="flex overflow-hidden py-3 w-20 h-20" pauseOnHover>
       <Image
         className="h-full"
         src="/partner/blue-move.png"

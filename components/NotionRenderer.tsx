@@ -1,5 +1,5 @@
 import React from 'react'
-import cln from 'classnames'
+import clsx from 'clsx'
 
 type RichTextType = {
   annotations: {
@@ -75,7 +75,7 @@ type Props = {
 }
 
 function RichText({ plain_text, href, annotations }: RichTextType) {
-  const style = cln({
+  const style = clsx({
     underline: annotations.underline,
     'line-through': annotations.strikethrough,
     'font-bold': annotations.bold,
@@ -89,7 +89,7 @@ function RichText({ plain_text, href, annotations }: RichTextType) {
         target="_blank"
         rel="noreferrer"
         href={href}
-        className={cln(style, 'text-mochi underline')}
+        className={clsx(style, 'text-mochi underline')}
       >
         {plain_text}
       </a>
@@ -108,7 +108,7 @@ export const NotionRenderer = ({ d, first }: Props) => {
       return <img src={d.image.file.url} className="mt-2" alt="" />
     case 'paragraph':
       return (
-        <span className={cln('text-base', { 'mt-2': !first })}>
+        <span className={clsx('text-base', { 'mt-2': !first })}>
           {fallbackToZeroWidth(
             d.paragraph.rich_text.map((rt, i) => (
               <RichText key={`${d.id}-${i}`} {...rt} />
@@ -118,7 +118,7 @@ export const NotionRenderer = ({ d, first }: Props) => {
       )
     case 'heading_1':
       return (
-        <p className={cln('text-3xl', { 'mt-5': !first })}>
+        <p className={clsx('text-3xl', { 'mt-5': !first })}>
           {fallbackToZeroWidth(
             d.heading_1.rich_text.map((rt, i) => (
               <RichText key={`${d.id}-${i}`} {...rt} />
@@ -128,7 +128,7 @@ export const NotionRenderer = ({ d, first }: Props) => {
       )
     case 'heading_2':
       return (
-        <p className={cln('text-2xl', { 'mt-5': !first })}>
+        <p className={clsx('text-2xl', { 'mt-5': !first })}>
           {fallbackToZeroWidth(
             d.heading_2.rich_text.map((rt, i) => (
               <RichText key={`${d.id}-${i}`} {...rt} />
@@ -138,7 +138,7 @@ export const NotionRenderer = ({ d, first }: Props) => {
       )
     case 'heading_3':
       return (
-        <p className={cln('text-xl', { 'mt-5': !first })}>
+        <p className={clsx('text-xl', { 'mt-5': !first })}>
           {fallbackToZeroWidth(
             d.heading_3.rich_text.map((rt, i) => (
               <RichText key={`${d.id}-${i}`} {...rt} />
@@ -149,9 +149,12 @@ export const NotionRenderer = ({ d, first }: Props) => {
     case 'bulleted_list_item':
       return (
         <ul
-          className={cln('list-disc list-inside marker:text-mochi marker:w-0', {
-            'mt-2': !first,
-          })}
+          className={clsx(
+            'list-disc list-inside marker:text-mochi marker:w-0',
+            {
+              'mt-2': !first,
+            },
+          )}
         >
           <li>
             {fallbackToZeroWidth(

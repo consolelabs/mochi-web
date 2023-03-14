@@ -1,5 +1,5 @@
 import { Popover as HeadlessPopover, Transition } from '@headlessui/react'
-import cln from 'classnames'
+import clsx from 'clsx'
 import { useState } from 'react'
 
 type Props = {
@@ -19,7 +19,7 @@ export const Popover = (props: Props) => {
     >
       <HeadlessPopover.Button
         className={({ open }) =>
-          cln('outline-none h-full', {
+          clsx('outline-none h-full', {
             'text-mochi': open,
           })
         }
@@ -37,7 +37,7 @@ export const Popover = (props: Props) => {
       >
         <HeadlessPopover.Panel
           static
-          className={cln(
+          className={clsx(
             'bottom-0 md:bottom-auto -translate-y-3 md:top-full md:-translate-y-2 absolute z-50 rounded-md shadow-xl bg-white p-2',
             props.panelClassname,
           )}

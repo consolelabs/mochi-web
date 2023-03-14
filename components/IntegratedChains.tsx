@@ -1,6 +1,6 @@
 import React from 'react'
 import Marquee from 'react-fast-marquee'
-import clsx from 'classnames'
+import clsx from 'clsx'
 
 const Image = (props: any) => (
   <img
@@ -19,7 +19,7 @@ const Image = (props: any) => (
 export const IntegratedChains = () => {
   return (
     <Marquee
-      className="w-20 h-20 py-3 overflow-hidden flex"
+      className="flex overflow-hidden py-3 w-20 h-20"
       pauseOnHover
       direction="right"
     >

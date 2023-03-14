@@ -7,14 +7,7 @@ import { Menu } from '~components/Dashboard/Menu'
 import { RadioGroup } from '~components/Dashboard/Radio'
 import { Select } from '~components/Dashboard/Select'
 import { Switch } from '~components/Dashboard/Switch'
-import { IconDiscord } from '~components/icons/components/IconDiscord'
-import { DiscordIcon } from '~components/icons/discord'
-import {
-  Controller,
-  ControllerProps,
-  FieldError,
-  useForm,
-} from 'react-hook-form'
+import { Controller, ControllerProps, useForm } from 'react-hook-form'
 
 const Field = ({
   label,
@@ -38,7 +31,7 @@ const Field = ({
                 ...renderRest,
               })}
               {fieldState.error && (
-                <div className="text-xs text-mochi-500 mt-1">
+                <div className="mt-1 text-xs text-mochi-500">
                   {fieldState.error.message}
                 </div>
               )}
@@ -51,16 +44,16 @@ const Field = ({
 }
 
 export default function Default() {
-  const { control, formState, handleSubmit } = useForm()
+  const { control, handleSubmit } = useForm()
 
   const onSubmit = (values: Record<string, any>) => {
     console.log(values)
   }
 
   return (
-    <div className="max-w-7xl px-12 py-24 mx-auto">
+    <div className="py-24 px-12 mx-auto max-w-7xl">
       <form
-        className="flex flex-col w-full space-y-8"
+        className="flex flex-col space-y-8 w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col space-y-4">
@@ -75,7 +68,7 @@ export default function Default() {
             <button className={button({ appearance: 'mochi' })}>Mochi</button>
             <button className={button({ appearance: 'text' })}>Text</button>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             <button className={button({ appearance: 'primary' })}>Base</button>
             <button className={button({ appearance: 'primary', size: 'sm' })}>
               Small
@@ -83,7 +76,7 @@ export default function Default() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button className={button({ appearance: 'primary', size: 'icon' })}>
-              <IconDiscord />
+              <Icon icon="ic:baseline-discord" />
             </button>
             <button
               className={button({
@@ -91,7 +84,7 @@ export default function Default() {
                 size: 'icon',
               })}
             >
-              <IconDiscord />
+              <Icon icon="ic:baseline-discord" />
             </button>
           </div>
         </div>
@@ -179,7 +172,7 @@ export default function Default() {
                   renderOption={(option) => {
                     return (
                       <div className="flex gap-2 items-center">
-                        <DiscordIcon className="w-4 h-4" />
+                        <Icon icon="ic:baseline-discord" className="w-4 h-4" />
                         <span>{option.label}</span>
                       </div>
                     )
