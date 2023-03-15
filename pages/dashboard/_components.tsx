@@ -60,7 +60,7 @@ export default function Default() {
   if (!mounted) return null
 
   return (
-    <div className="py-24 px-12 mx-auto max-w-7xl overflow-hidden">
+    <div className="overflow-hidden py-24 px-12 mx-auto max-w-7xl">
       <SEO title="Components" description="" />
       <form
         className="flex flex-col space-y-32 w-full"
@@ -382,8 +382,14 @@ export default function Default() {
                         ),
                         text: 'Invite Friends',
                         onClick: () => {},
-                        // @ts-ignore
-                        subItems: ['lorem', 'ipsum', 'dolor'],
+                        subItems: [
+                          {
+                            text: 'Lorem',
+                          },
+                          {
+                            text: 'Ipsum',
+                          },
+                        ],
                       },
                       {
                         id: 'feedback',
@@ -508,7 +514,7 @@ export default function Default() {
           <div>
             <div className={labelStyles()}>Buttons Appear On Hover</div>
             <div className="bg-[#FFFFFF] p-4">
-              <div className="flex items-center mb-4 px-4">
+              <div className="flex items-center px-4 mb-4">
                 <Icon
                   className="w-6 h-6"
                   icon="heroicons:magnifying-glass-20-solid"
@@ -543,13 +549,13 @@ export default function Default() {
                         <span className="w-1/2">{value}</span>
                         <button
                           type="button"
-                          className="w-1/2 flex gap-2 items-center p-2 bg-black/10 h-full"
+                          className="flex gap-2 items-center p-2 w-1/2 h-full bg-black/10"
                         >
                           <Icon
-                            className="w-4 h-4 flex-shrink-0"
+                            className="flex-shrink-0 w-4 h-4"
                             icon="heroicons:star"
                           />
-                          <span className="font-bold text-[8px] leading-tight">
+                          <span className="font-bold leading-tight text-[8px]">
                             Add To Wishlist
                           </span>
                         </button>
@@ -565,8 +571,8 @@ export default function Default() {
           <div>
             <div className={labelStyles()}>Table Groups</div>
             <div className="overflow-auto">
-              <div className="thead inline-block min-w-full text-xs uppercase text-dashboard-gray-2 font-bold px-4 mb-2">
-                <div className="trHead flex">
+              <div className="inline-block px-4 mb-2 min-w-full text-xs font-bold uppercase thead text-dashboard-gray-2">
+                <div className="flex trHead">
                   <div
                     className="th"
                     style={{ flex: '1 1 400px', minWidth: 150 }}
@@ -586,15 +592,15 @@ export default function Default() {
                     Column C
                   </div>
                   <div
-                    className="th text-right"
+                    className="text-right th"
                     style={{ flex: '1 1 150px', minWidth: 150 }}
                   >
                     Column D
                   </div>
                 </div>
               </div>
-              <div className="inline-block min-w-full bg-dashboard-gray-1 rounded-lg p-4 mb-4">
-                <div className="text-xl font-bold mb-4">Group 1</div>
+              <div className="inline-block p-4 mb-4 min-w-full rounded-lg bg-dashboard-gray-1">
+                <div className="mb-4 text-xl font-bold">Group 1</div>
                 <Table
                   data={[
                     { a: 'Lorem Ipsum', b: 1234, c: '#', d: '' },
@@ -622,8 +628,8 @@ export default function Default() {
                   trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
                 />
               </div>
-              <div className="inline-block min-w-full bg-dashboard-gray-1 rounded-lg p-4">
-                <div className="text-xl font-bold mb-4">Group 2</div>
+              <div className="inline-block p-4 min-w-full rounded-lg bg-dashboard-gray-1">
+                <div className="mb-4 text-xl font-bold">Group 2</div>
                 <Table
                   data={[
                     { a: 'Lorem Ipsum', b: 1234, c: '#', d: '' },

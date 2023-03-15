@@ -56,7 +56,7 @@ export default function DashboardLayout({
           {connected ? (
             <div className="flex gap-x-10 mx-auto mt-10 w-full max-w-5xl">
               {showSidebar ? (
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 min-w-[200px]">
                   <Sidebar />
                 </div>
               ) : null}

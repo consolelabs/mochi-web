@@ -21,7 +21,7 @@ export const Menu = (props: Props) => {
   const { items, activeId, activeIdx = -1 } = props
 
   return (
-    <div className="flex flex-col min-w-[200px]">
+    <div className="flex flex-col">
       {items.map((group, groupIdx) => {
         return (
           <div className="flex flex-col gap-y-1" key={`user-menu-${groupIdx}`}>
@@ -53,9 +53,6 @@ export const Menu = (props: Props) => {
                       className={clsx(
                         'transition duration-100 ease-in-out',
                         'flex gap-x-2 items-center py-2 px-3 whitespace-nowrap text-dashboard-gray-4',
-                        {
-                          'hover:bg-dashboard-gray-1': item.id !== activeId,
-                        },
                       )}
                     >
                       <div
@@ -95,8 +92,6 @@ export const Menu = (props: Props) => {
                                 'transition duration-100 ease-in-out',
                                 'flex gap-x-2 py-2 px-3 pl-0 ml-3 rounded-lg text-sm font-medium text-foreground',
                                 {
-                                  'bg-transparent hover:bg-dashboard-gray-1':
-                                    activeId !== item.id || i !== activeIdx,
                                   'bg-dashboard-gray-3':
                                     activeId === item.id && i === activeIdx,
                                 },
