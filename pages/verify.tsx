@@ -9,16 +9,17 @@ import { API } from '~constants/api'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useSignMessage } from '~hooks/wallets/useSignMessage'
+import ConnectButton from '~components/ConnectButton'
+import { useHasMounted } from '@dwarvesf/react-hooks'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const code = ctx.query.code
+  const code = ctx.query.code ?? null
   const discordId = ctx.query.did
-  if (!code || !discordId) return { notFound: true }
 
-  const profileId = await API.getProfileByDiscord(discordId as string)
+  const profile = await API.getProfileByDiscord(discordId as string)
 
   return {
-    props: { code, profileId: profileId?.id },
+    props: { code, profileId: discordId ? profile?.id : null },
   }
 }
 
@@ -29,9 +30,12 @@ export default function Verify({
   code: string
   profileId: string
 }) {
+  const mounted = useHasMounted()
   const [loading, setLoading] = useState(false)
   const [verified, setVerified] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(
+    !code || !profileId ? 'Missing code/profile id' : '',
+  )
   const { connected } = useAppWalletContext()
   const { address, isSolanaConnected, isEVMConnected } = useAccount()
   const signMsg = useSignMessage(
@@ -39,7 +43,7 @@ export default function Verify({
   )
 
   const sign = useCallback(async () => {
-    if (!connected || !code || !address || loading) return
+    if (!code || !profileId || loading || !connected || !address) return
     try {
       setLoading(true)
       const signature = await signMsg()
@@ -76,13 +80,15 @@ export default function Verify({
       sign()
   }, [connected, verified, isEVMConnected, isSolanaConnected, signMsg])
 
+  if (!mounted) return null
+
   return (
     <Layout>
       <SEO title={PAGES.VERIFY.title} tailTitle />
       <div className="flex relative flex-col items-center">
         <div className="py-16 px-12 mx-auto max-w-7xl">
           <div className="py-24 md:py-48">
-            {code && !error ? (
+            {code && profileId && !error ? (
               verified ? (
                 <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
                   <div className="text-2xl font-black text-center md:text-3xl">
@@ -97,16 +103,19 @@ export default function Verify({
                   <h3 className="mb-4 text-3xl font-black text-center uppercase md:text-4xl lg:text-5xl text-mochi-gradient">
                     Verify your wallet
                   </h3>
-                  <p className="mx-auto mb-6 max-w-sm font-medium text-center">
+                  <p className="mx-auto mb-3 max-w-sm font-medium text-center">
                     Connect your wallet to verify and get full access to Mochi
                     with more exclusive privileges.
                   </p>
-                  <button
-                    onClick={sign}
-                    className={button({ className: 'mx-auto', size: 'sm' })}
-                  >
-                    {loading ? 'Verifying...' : 'Verify'}
-                  </button>
+                  <div className="flex justify-center">
+                    {connected ? (
+                      <button onClick={sign} className={button({ size: 'sm' })}>
+                        {loading ? 'Verifying...' : 'Verify'}
+                      </button>
+                    ) : (
+                      <ConnectButton />
+                    )}
+                  </div>
                 </div>
               )
             ) : (
