@@ -111,11 +111,15 @@ export default function ConnectButton() {
                 /*   }, */
                 /* ], */
                 [
-                  {
-                    icon: <Icon icon="majesticons:logout" />,
-                    text: 'Logout',
-                    onClick: () => disconnect(),
-                  },
+                  '',
+                  [
+                    {
+                      id: 'logout',
+                      icon: <Icon icon="majesticons:logout" />,
+                      text: 'Logout',
+                      onClick: () => disconnect(),
+                    },
+                  ],
                 ],
               ]}
             />

@@ -8,6 +8,7 @@ import { useAppWalletContext } from '~context/wallet-context'
 import ConnectButton from '~components/ConnectButton'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import Login from './Login'
+import Sidebar from './Sidebar'
 
 export default function DashboardLayout({
   children,
@@ -53,11 +54,10 @@ export default function DashboardLayout({
         </div>
         <div className="flex flex-1">
           {connected ? (
-            <div className="flex gap-x-10 mx-auto w-full max-w-5xl">
+            <div className="flex gap-x-10 mx-auto mt-10 w-full max-w-5xl">
               {showSidebar ? (
                 <div className="flex-shrink-0">
-                  SIDEBAR
-                  {/* TODO: render sidebar here */}
+                  <Sidebar />
                 </div>
               ) : null}
               <div className="flex-1">{children}</div>

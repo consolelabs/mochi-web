@@ -309,7 +309,7 @@ export default function Default() {
           <h2 className={heading({ size: 'sm' })}>Menu</h2>
           <div>
             <label className={labelStyles()}>Default</label>
-            <div className="max-w-xl bg-[#FFFFFF] rounded-lg py-4">
+            <div className="max-w-xs bg-[#FFFFFF] rounded-lg py-4 flex flex-col gap-y-4">
               <a
                 href={INVITE_LINK}
                 target="_blank"
@@ -327,42 +327,82 @@ export default function Default() {
                 Add Bot
               </a>
               <Menu
+                activeId="invite-friends"
+                activeIdx={0}
                 items={[
                   [
-                    {
-                      icon: <Icon icon="mingcute:user-3-fill" />,
-                      text: 'My Profile',
-                      onClick: () => {},
-                    },
-                    {
-                      icon: <Icon icon="majesticons:settings-cog" />,
-                      text: 'Server Management',
-                      onClick: () => {},
-                    },
-                    {
-                      icon: <Icon icon="majesticons:settings-cog" />,
-                      text: 'Settings',
-                      onClick: () => {},
-                    },
+                    'Account',
+                    [
+                      {
+                        id: 'profile',
+                        icon: (
+                          <Icon
+                            icon="mingcute:user-3-fill"
+                            className="w-5 h-5"
+                          />
+                        ),
+                        text: 'My Profile',
+                        onClick: () => {},
+                      },
+                      {
+                        id: 'server-management',
+                        icon: (
+                          <Icon
+                            icon="majesticons:settings-cog"
+                            className="w-5 h-5"
+                          />
+                        ),
+                        text: 'Server Management',
+                        onClick: () => {},
+                      },
+                      {
+                        id: 'settings',
+                        icon: (
+                          <Icon
+                            icon="majesticons:settings-cog"
+                            className="w-5 h-5"
+                          />
+                        ),
+                        text: 'Settings',
+                        onClick: () => {},
+                      },
+                    ],
                   ],
                   [
-                    {
-                      icon: <Icon icon="mingcute:user-add-fill" />,
-                      text: 'Invite Friends',
-                      onClick: () => {},
-                    },
-                    {
-                      icon: <Icon icon="ph:star-fill" />,
-                      text: 'Feedback',
-                      onClick: () => {},
-                    },
+                    'Social',
+                    [
+                      {
+                        id: 'invite-friends',
+                        icon: (
+                          <Icon
+                            icon="mingcute:user-add-fill"
+                            className="w-5 h-5"
+                          />
+                        ),
+                        text: 'Invite Friends',
+                        onClick: () => {},
+                        subItems: ['lorem', 'ipsum', 'dolor'],
+                      },
+                      {
+                        id: 'feedback',
+                        icon: <Icon icon="ph:star-fill" className="w-5 h-5" />,
+                        text: 'Feedback',
+                        onClick: () => {},
+                      },
+                    ],
                   ],
                   [
-                    {
-                      icon: <Icon icon="majesticons:logout" />,
-                      text: 'Logout',
-                      onClick: () => {},
-                    },
+                    '',
+                    [
+                      {
+                        id: 'logout',
+                        icon: (
+                          <Icon icon="majesticons:logout" className="w-5 h-5" />
+                        ),
+                        text: 'Logout',
+                        onClick: () => {},
+                      },
+                    ],
                   ],
                 ]}
               />
@@ -432,6 +472,7 @@ export default function Default() {
             </Tab>
           </div>
         </div>
+
         <button type="submit" className={button({ appearance: 'primary' })}>
           Submit
         </button>
