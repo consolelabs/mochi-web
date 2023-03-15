@@ -13,6 +13,7 @@ import { SEO } from '~app/layout/seo'
 import { INVITE_LINK } from '~envs'
 import { Tab } from '~components/Dashboard/Tab'
 import { Transition } from '@headlessui/react'
+import { Table } from '~components/Dashboard/Table'
 
 const Field = ({
   label,
@@ -59,7 +60,7 @@ export default function Default() {
   if (!mounted) return null
 
   return (
-    <div className="py-24 px-12 mx-auto max-w-7xl">
+    <div className="py-24 px-12 mx-auto max-w-7xl overflow-hidden">
       <SEO title="Components" description="" />
       <form
         className="flex flex-col space-y-32 w-full"
@@ -381,6 +382,7 @@ export default function Default() {
                         ),
                         text: 'Invite Friends',
                         onClick: () => {},
+                        // @ts-ignore
                         subItems: ['lorem', 'ipsum', 'dolor'],
                       },
                       {
@@ -470,6 +472,186 @@ export default function Default() {
                 }}
               </Tab.Panel>
             </Tab>
+          </div>
+        </div>
+
+        <div className="flex flex-col space-y-4">
+          <h2 className={heading({ size: 'sm' })}>Tables</h2>
+          <div>
+            <div className={labelStyles()}>Default</div>
+            <Table
+              data={[
+                { a: 'Lorem Ipsum', b: 1234, c: '#', d: '' },
+                { a: 'Lorem Ipsum', b: 5678, c: '#', d: '' },
+              ]}
+              columns={[
+                {
+                  accessor: 'a',
+                  title: 'Column A',
+                  width: 400,
+                  tdClassName: 'font-bold',
+                },
+                { accessor: 'b', title: 'Column B' },
+                { accessor: 'c', title: 'Column C' },
+                {
+                  accessor: 'd',
+                  title: 'Column D',
+                  thClassName: 'text-right',
+                  tdClassName: 'flex justify-end',
+                  render: () => <Switch />,
+                },
+              ]}
+              theadClassName="text-xs uppercase text-dashboard-gray-2 font-bold mb-2"
+              trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+            />
+          </div>
+          <div>
+            <div className={labelStyles()}>Buttons Appear On Hover</div>
+            <div className="bg-[#FFFFFF] p-4">
+              <div className="flex items-center mb-4 px-4">
+                <Icon
+                  className="w-6 h-6"
+                  icon="heroicons:magnifying-glass-20-solid"
+                />
+                <Input
+                  className="!border-none"
+                  placeholder="Search..."
+                  allowClear
+                />
+              </div>
+              <Table
+                data={[
+                  { a: 'Lorem Ipsum', b: 1234, c: '#', d: 'Actions' },
+                  { a: 'Lorem Ipsum', b: 5678, c: '#', d: 'Actions' },
+                ]}
+                columns={[
+                  {
+                    accessor: 'a',
+                    title: 'Column A',
+                    width: 400,
+                    tdClassName: 'font-bold',
+                  },
+                  { accessor: 'b', title: 'Column B' },
+                  { accessor: 'c', title: 'Column C' },
+                  {
+                    accessor: 'd',
+                    title: 'Column D',
+                    thClassName: 'text-right',
+                    tdClassName: 'flex justify-end h-full',
+                    render: (value) => (
+                      <div className="flex gap-2 items-center h-full transition translate-x-1/2 group-hover:translate-x-0">
+                        <span className="w-1/2">{value}</span>
+                        <button
+                          type="button"
+                          className="w-1/2 flex gap-2 items-center p-2 bg-black/10 h-full"
+                        >
+                          <Icon
+                            className="w-4 h-4 flex-shrink-0"
+                            icon="heroicons:star"
+                          />
+                          <span className="font-bold text-[8px] leading-tight">
+                            Add To Wishlist
+                          </span>
+                        </button>
+                      </div>
+                    ),
+                  },
+                ]}
+                theadClassName="hidden"
+                trBodyClassName="pl-4 h-[52px] hover:bg-dashboard-gray-1 rounded-lg text-sm mb-2 transition items-center overflow-hidden group"
+              />
+            </div>
+          </div>
+          <div>
+            <div className={labelStyles()}>Table Groups</div>
+            <div className="overflow-auto">
+              <div className="thead inline-block min-w-full text-xs uppercase text-dashboard-gray-2 font-bold px-4 mb-2">
+                <div className="trHead flex">
+                  <div
+                    className="th"
+                    style={{ flex: '1 1 400px', minWidth: 150 }}
+                  >
+                    Column A
+                  </div>
+                  <div
+                    className="th"
+                    style={{ flex: '1 1 150px', minWidth: 150 }}
+                  >
+                    Column B
+                  </div>
+                  <div
+                    className="th"
+                    style={{ flex: '1 1 150px', minWidth: 150 }}
+                  >
+                    Column C
+                  </div>
+                  <div
+                    className="th text-right"
+                    style={{ flex: '1 1 150px', minWidth: 150 }}
+                  >
+                    Column D
+                  </div>
+                </div>
+              </div>
+              <div className="inline-block min-w-full bg-dashboard-gray-1 rounded-lg p-4 mb-4">
+                <div className="text-xl font-bold mb-4">Group 1</div>
+                <Table
+                  data={[
+                    { a: 'Lorem Ipsum', b: 1234, c: '#', d: '' },
+                    { a: 'Lorem Ipsum', b: 5678, c: '#', d: '' },
+                  ]}
+                  columns={[
+                    {
+                      accessor: 'a',
+                      title: 'Column A',
+                      width: 400,
+                      tdClassName: 'font-bold',
+                    },
+                    { accessor: 'b', title: 'Column B' },
+                    { accessor: 'c', title: 'Column C' },
+                    {
+                      accessor: 'd',
+                      title: 'Column D',
+                      thClassName: 'text-right',
+                      tdClassName: 'flex justify-end',
+                      render: () => <Switch />,
+                    },
+                  ]}
+                  tableClassName="!overflow-visible"
+                  theadClassName="hidden"
+                  trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+                />
+              </div>
+              <div className="inline-block min-w-full bg-dashboard-gray-1 rounded-lg p-4">
+                <div className="text-xl font-bold mb-4">Group 2</div>
+                <Table
+                  data={[
+                    { a: 'Lorem Ipsum', b: 1234, c: '#', d: '' },
+                    { a: 'Lorem Ipsum', b: 5678, c: '#', d: '' },
+                  ]}
+                  columns={[
+                    {
+                      accessor: 'a',
+                      title: 'Column A',
+                      width: 400,
+                      tdClassName: 'font-bold',
+                    },
+                    { accessor: 'b', title: 'Column B' },
+                    { accessor: 'c', title: 'Column C' },
+                    {
+                      accessor: 'd',
+                      title: 'Column D',
+                      thClassName: 'text-right',
+                      tdClassName: 'flex justify-end',
+                      render: () => <Switch />,
+                    },
+                  ]}
+                  tableClassName="!overflow-visible"
+                  theadClassName="hidden"
+                  trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
