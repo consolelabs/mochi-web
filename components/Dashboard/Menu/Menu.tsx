@@ -69,13 +69,20 @@ export const Menu = (props: Props) => {
                         {item.text}
                       </span>
                       {item.subItems ? (
-                        <Icon
-                          icon="octicon:chevron-down-12"
-                          className="ml-auto text-foreground"
-                        />
+                        item.id === activeId ? (
+                          <Icon
+                            icon="octicon:chevron-down-16"
+                            className="ml-auto text-foreground"
+                          />
+                        ) : (
+                          <Icon
+                            icon="octicon:chevron-left-16"
+                            className="ml-auto text-foreground"
+                          />
+                        )
                       ) : null}
                     </Link>
-                    {item.subItems ? (
+                    {item.subItems && item.id === activeId ? (
                       <div className="flex flex-col">
                         {item.subItems.map((si, i) => {
                           return (

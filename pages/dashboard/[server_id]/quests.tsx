@@ -1,14 +1,16 @@
-import React from 'react'
-import { ReactElement } from 'react-markdown/lib/react-markdown'
-import DashboardLayout from '~components/Dashboard/Layout'
-import { NextPageWithLayout } from '~pages/_app'
+import { GetServerSideProps } from 'next'
 
-const Quests: NextPageWithLayout = () => {
-  return <span>quests page</span>
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return {
+    redirect: {
+      permanent: false,
+      destination: `/dashboard/${ctx.query.server_id}/quests/recurrence`,
+    },
+  }
 }
 
-Quests.getLayout = function getLayout(page: ReactElement) {
-  return <DashboardLayout showSidebar>{page}</DashboardLayout>
+const Quests = () => {
+  return null
 }
 
 export default Quests
