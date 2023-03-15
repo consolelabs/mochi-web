@@ -11,8 +11,10 @@ import Login from './Login'
 
 export default function DashboardLayout({
   children,
+  showSidebar = false,
 }: {
   children: React.ReactNode
+  showSidebar?: boolean
 }) {
   const mounted = useHasMounted()
   const { connected } = useAppWalletContext()
@@ -49,7 +51,21 @@ export default function DashboardLayout({
             </div>
           ) : null}
         </div>
-        <div className="flex flex-1">{connected ? children : <Login />}</div>
+        <div className="flex flex-1">
+          {connected ? (
+            <div className="flex gap-x-10 mx-auto w-full max-w-5xl">
+              {showSidebar ? (
+                <div className="flex-shrink-0">
+                  SIDEBAR
+                  {/* TODO: render sidebar here */}
+                </div>
+              ) : null}
+              <div className="flex-1">{children}</div>
+            </div>
+          ) : (
+            <Login />
+          )}
+        </div>
         <div className="fixed right-5 bottom-5 text-sm text-dashboard-gray-4">
           &#169; 2022 MochiBot
         </div>
