@@ -11,6 +11,8 @@ import { Controller, ControllerProps, useForm } from 'react-hook-form'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { SEO } from '~app/layout/seo'
 import { INVITE_LINK } from '~envs'
+import { Tab } from '~components/Dashboard/Tab'
+import { Transition } from '@headlessui/react'
 
 const Field = ({
   label,
@@ -365,6 +367,69 @@ export default function Default() {
                 ]}
               />
             </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col space-y-4">
+          <h2 className={heading({ size: 'sm' })}>Tabs</h2>
+          <div>
+            <label className={labelStyles()}>Default</label>
+            <Tab headings={['Setup', 'Participate', 'Rewards']}>
+              <Tab.Panel>
+                {({ selected }) => {
+                  return (
+                    <Transition
+                      appear
+                      show={selected}
+                      enter="transition-all duration-100 ease-in-out"
+                      enterFrom="-translate-x-2 opacity-0"
+                      enterTo="translate-x-0 opacity-100"
+                      leave="transition-all duration-100 ease-in-out"
+                      leaveFrom="translate-x-0 opacity-100"
+                      leaveTo="translate-x-2 opacity-0"
+                    >
+                      Setup panel
+                    </Transition>
+                  )
+                }}
+              </Tab.Panel>
+              <Tab.Panel>
+                {({ selected }) => {
+                  return (
+                    <Transition
+                      appear
+                      show={selected}
+                      enter="transition-all duration-100 ease-in-out"
+                      enterFrom="-translate-x-2 opacity-0"
+                      enterTo="translate-x-0 opacity-100"
+                      leave="transition-all duration-100 ease-in-out"
+                      leaveFrom="translate-x-0 opacity-100"
+                      leaveTo="translate-x-2 opacity-0"
+                    >
+                      Participate panel
+                    </Transition>
+                  )
+                }}
+              </Tab.Panel>
+              <Tab.Panel>
+                {({ selected }) => {
+                  return (
+                    <Transition
+                      appear
+                      show={selected}
+                      enter="transition-all duration-100 ease-in-out"
+                      enterFrom="-translate-x-2 opacity-0"
+                      enterTo="translate-x-0 opacity-100"
+                      leave="transition-all duration-100 ease-in-out"
+                      leaveFrom="translate-x-0 opacity-100"
+                      leaveTo="translate-x-2 opacity-0"
+                    >
+                      Rewards panel
+                    </Transition>
+                  )
+                }}
+              </Tab.Panel>
+            </Tab>
           </div>
         </div>
         <button type="submit" className={button({ appearance: 'primary' })}>
