@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { NextPageWithLayout } from '~pages/_app'
-import Home from './Home'
+import Home from './home'
 
 const Dashboard: NextPageWithLayout = () => {
   return <Home />
