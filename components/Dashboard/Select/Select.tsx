@@ -1,6 +1,6 @@
 import { select } from './styles'
 import { Combobox, Transition } from '@headlessui/react'
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useCallback, useMemo, useState } from 'react'
 import { Input } from '../Input'
 import clsx from 'clsx'
 import { Icon } from '@iconify/react'
@@ -30,23 +30,52 @@ export const Select = (props: Props) => {
     searchable = false,
     placeholder = 'Select an option',
     className,
-    onChange,
+    onChange: _onChange,
     renderOption,
     ...rest
   } = props
+
+  const [customOptions, setCustomOptions] = useState<Array<Option>>([])
 
   // eslint-disable-next-line
   const value = !_value ? (multiple ? [] : _value) : _value
 
   const [query, setQuery] = useState('')
 
+  const onChange = useCallback(
+    (v: Array<string> | string) => {
+      if (Array.isArray(v)) {
+        const customValue = v.find(
+          (value) =>
+            !options.concat(customOptions).some((o) => o.value === value),
+        )
+        if (customValue) {
+          if (customOptions.some((co) => co.value === customValue)) {
+            setCustomOptions((co) => co.filter((c) => c.value !== customValue))
+          } else {
+            setCustomOptions((co) =>
+              co.concat([{ label: customValue, value: customValue }]),
+            )
+          }
+        }
+      }
+
+      _onChange?.(v)
+    },
+    [_onChange, customOptions, options],
+  )
+
   const selectedOption = useMemo(() => {
     if (multiple) {
-      return options.filter((option) => value?.includes(option.value))
+      return options
+        .concat(customOptions)
+        .filter((option) => value?.includes(option.value))
     }
 
-    return options.find((option) => option.value === value)
-  }, [options, value, multiple])
+    return options
+      .concat(customOptions)
+      .find((option) => option.value === value)
+  }, [options, value, multiple, customOptions])
 
   const selectedOptionLabel = useMemo(() => {
     if (
@@ -58,11 +87,11 @@ export const Select = (props: Props) => {
 
     if (Array.isArray(selectedOption)) {
       return (
-        <div className="flex gap-1 flex-wrap text-sm">
+        <div className="flex flex-wrap gap-1 text-sm">
           {selectedOption.map((option) => {
             return (
               <span
-                className="py-0.5 px-2 bg-dashboard-gray-6 rounded"
+                className="py-0.5 px-2 rounded bg-dashboard-gray-6"
                 key={option.value}
               >
                 {renderOption ? renderOption(option) : option.label}
@@ -78,18 +107,18 @@ export const Select = (props: Props) => {
 
   const filteredOptions = useMemo(() => {
     if (!query) {
-      return options
+      return options.concat(customOptions)
     }
 
     try {
       const regexp = new RegExp(query, 'gi')
-      return options.filter((option) => {
+      return options.concat(customOptions).filter((option) => {
         return regexp.test(option.label)
       })
     } catch {
-      return options
+      return options.concat(customOptions)
     }
-  }, [query, options])
+  }, [query, options, customOptions])
 
   return (
     <Combobox
@@ -133,10 +162,11 @@ export const Select = (props: Props) => {
               {value && (
                 <button
                   type="button"
-                  className="w-5 h-5 flex items-center justify-center bg-dashboard-gray-6 rounded-full absolute top-0 right-0 mt-2.5 mr-3"
+                  className="flex absolute top-0 right-0 justify-center items-center mt-2.5 mr-3 w-5 h-5 rounded-full bg-dashboard-gray-6"
                   onClick={(e) => {
                     e.preventDefault()
-                    onChange && onChange({ target: { value: '' } } as any)
+                    onChange(multiple ? [] : '')
+                    setCustomOptions([])
                   }}
                 >
                   <Icon className="w-4 h-4" icon="heroicons:x-mark" />
@@ -144,10 +174,10 @@ export const Select = (props: Props) => {
               )}
             </Combobox.Button>
             <Transition
-              enter="transition duration-100 ease-out"
+              enter="transition duration-75 ease-out"
               enterFrom="opacity-0"
               enterTo="opacity-100"
-              leave="transition duration-100 ease-out"
+              leave="transition duration-75 ease-out"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
@@ -163,13 +193,28 @@ export const Select = (props: Props) => {
                         {({ active, selected }) => {
                           return (
                             <li
-                              className={`px-3 py-2 cursor-pointer hover:bg-mochi-50 transition ${
-                                (active || selected) && 'bg-mochi-50'
-                              }`}
+                              className={clsx(
+                                `flex items-center gap-x-1 px-3 py-2 cursor-pointer hover:bg-mochi-50 transition`,
+                                {
+                                  'bg-mochi-50': active && !renderOption,
+                                },
+                              )}
                             >
-                              {renderOption
-                                ? renderOption(option)
-                                : option.label}
+                              {renderOption ? (
+                                renderOption(option)
+                              ) : (
+                                <>
+                                  {selected ? (
+                                    <Icon
+                                      icon="heroicons:check-20-solid"
+                                      className="w-4 h-4"
+                                    />
+                                  ) : (
+                                    <div className="w-4 h-4" />
+                                  )}{' '}
+                                  {option.label}
+                                </>
+                              )}
                             </li>
                           )
                         }}
@@ -177,7 +222,23 @@ export const Select = (props: Props) => {
                     )
                   })
                 ) : (
-                  <div className="px-3 py-2">No result.</div>
+                  <Combobox.Option value={query} as={Fragment}>
+                    {({ active }) => {
+                      return (
+                        <li
+                          className={`px-3 py-2 cursor-pointer hover:bg-mochi-50 transition ${
+                            active && 'bg-mochi-50'
+                          }`}
+                        >
+                          No result, add{' '}
+                          <code className="py-0.5 px-2 rounded bg-dashboard-gray-6">
+                            {query}
+                          </code>{' '}
+                          as an option
+                        </li>
+                      )
+                    }}
+                  </Combobox.Option>
                 )}
               </Combobox.Options>
             </Transition>
