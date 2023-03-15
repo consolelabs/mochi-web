@@ -11,20 +11,20 @@ import { feature12, feature13, heroBg } from '~utils/image'
 
 export default function NFT() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image src={heroBg} layout="fill" alt="" />
+    <div className="overflow-hidden relative">
+      <div className="absolute left-0 z-0 w-full min-h-screen aspect-auto top-[-80px]">
+        <Image src={heroBg} fill alt="" />
       </div>
       <Layout>
         <SEO
           title="NFT"
           description="Track multiple NFT collections in an instant!"
         />
-        <div className="mt-10 body-block px-6 md:px-12 flex flex-col relative items-center justify-center h-[400px]">
+        <div className="flex relative flex-col justify-center items-center px-6 mt-10 md:px-12 body-block h-[400px]">
           <div className="absolute top-0 left-0 w-full h-full">
             <RingsBackground />
           </div>
-          <p className="text-center relative text-2xl sm:text-3xl md:text-5xl">
+          <p className="relative text-2xl text-center sm:text-3xl md:text-5xl">
             Track multiple NFT
             <br />
             collections in an instant!
@@ -33,12 +33,12 @@ export default function NFT() {
             Get Mochi
           </Button>
         </div>
-        <div className="body-block px-6 md:px-12 flex flex-col">
+        <div className="flex flex-col px-6 md:px-12 body-block">
           <FeatureIntroduction
             image={feature12}
             title={<p className="text-4xl">NFT Rarity ranking</p>}
             subtitle={
-              <div className="flex flex-col items-start mt-4 gap-y-2">
+              <div className="flex flex-col gap-y-2 items-start mt-4">
                 <CommandText>$nft</CommandText>
                 <span>
                   Instant rarity checker from a huge database, plus
@@ -53,7 +53,7 @@ export default function NFT() {
             image={feature13}
             title={<p className="text-4xl">NFT Sales tracker</p>}
             subtitle={
-              <div className="flex flex-col items-start mt-4 gap-y-2">
+              <div className="flex flex-col gap-y-2 items-start mt-4">
                 <CommandText>$sales</CommandText>
                 <span>
                   Quickly catch up on market movement for potential

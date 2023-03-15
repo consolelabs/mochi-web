@@ -6,14 +6,19 @@ import { useAccount } from '~hooks/wallets/useAccount'
 import { Icon } from '@iconify/react'
 import { useAppWalletContext } from '~context/wallet-context'
 import ConnectButton from '~components/ConnectButton'
+import { useHasMounted } from '@dwarvesf/react-hooks'
+import Login from './Login'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const mounted = useHasMounted()
   const { connected } = useAppWalletContext()
   const { address } = useAccount()
+
+  if (!mounted) return null
 
   return (
     <>
@@ -44,7 +49,7 @@ export default function DashboardLayout({
             </div>
           ) : null}
         </div>
-        <div className="flex flex-1">{children}</div>
+        <div className="flex flex-1">{connected ? children : <Login />}</div>
         <div className="fixed right-5 bottom-5 text-sm text-dashboard-gray-4">
           &#169; 2022 MochiBot
         </div>

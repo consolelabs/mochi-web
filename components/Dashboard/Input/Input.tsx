@@ -30,7 +30,7 @@ export const Input = forwardRef(
     const [suffixWidth, setSuffixWidth] = useState(0)
 
     return (
-      <div className="relative overflow-hidden">
+      <div className="overflow-hidden relative w-full">
         {prefix && (
           <span
             ref={(ref) => {
@@ -69,7 +69,7 @@ export const Input = forwardRef(
         {allowClear && value && (
           <button
             type="button"
-            className="w-5 h-5 flex items-center justify-center bg-dashboard-gray-6 rounded-full absolute top-0 right-0 mt-2 mr-3"
+            className="flex absolute top-0 right-0 justify-center items-center mt-2 mr-3 w-5 h-5 rounded-full bg-dashboard-gray-6"
             onClick={(e) => {
               e.preventDefault()
               onChange && onChange({ target: { value: '' } } as any)

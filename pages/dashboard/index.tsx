@@ -1,16 +1,14 @@
-import { isSSR } from '@dwarvesf/react-utils'
-import { SEO } from '~app/layout/seo'
-import Home from '~components/Dashboard/Home'
+import type { ReactElement } from 'react'
 import DashboardLayout from '~components/Dashboard/Layout'
-import Login from '~components/Dashboard/Login'
-import { useAppWalletContext } from '~context/wallet-context'
+import { NextPageWithLayout } from '~pages/_app'
+import Home from './Home'
 
-export default function Dashboard() {
-  const { connected } = useAppWalletContext()
-
-  if (isSSR()) {
-    return <SEO title="Mochi Profile" description="Mochi Profile" />
-  }
-
-  return <DashboardLayout>{connected ? <Home /> : <Login />}</DashboardLayout>
+const Dashboard: NextPageWithLayout = () => {
+  return <Home />
 }
+
+Dashboard.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>
+}
+
+export default Dashboard

@@ -3,6 +3,7 @@ import { heading } from './Heading'
 import { Icon } from '@iconify/react'
 import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import { Input } from './Input'
 
 export default function Login() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -38,6 +39,7 @@ export default function Login() {
         <span className="self-start text-xs font-semibold uppercase text-dashboard-gray-2">
           your email
         </span>
+        <Input className="mt-2" />
         <button
           className={button({
             appearance: 'mochi',

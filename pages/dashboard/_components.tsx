@@ -8,6 +8,9 @@ import { RadioGroup } from '~components/Dashboard/Radio'
 import { Select } from '~components/Dashboard/Select'
 import { Switch } from '~components/Dashboard/Switch'
 import { Controller, ControllerProps, useForm } from 'react-hook-form'
+import { useHasMounted } from '@dwarvesf/react-hooks'
+import { SEO } from '~app/layout/seo'
+import { INVITE_LINK } from '~envs'
 
 const Field = ({
   label,
@@ -44,16 +47,20 @@ const Field = ({
 }
 
 export default function Default() {
+  const mounted = useHasMounted()
   const { control, handleSubmit } = useForm()
 
   const onSubmit = (values: Record<string, any>) => {
     console.log(values)
   }
 
+  if (!mounted) return null
+
   return (
     <div className="py-24 px-12 mx-auto max-w-7xl">
+      <SEO title="Components" description="" />
       <form
-        className="flex flex-col space-y-8 w-full"
+        className="flex flex-col space-y-32 w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col space-y-4">
@@ -301,6 +308,22 @@ export default function Default() {
           <div>
             <label className={labelStyles()}>Default</label>
             <div className="max-w-xl bg-[#FFFFFF] rounded-lg py-4">
+              <a
+                href={INVITE_LINK}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  boxShadow: '0px 4px 16px rgba(249, 164, 180, 0.8)',
+                }}
+                className={button({
+                  appearance: 'mochi',
+                  size: 'sm',
+                  className: 'whitespace-nowrap mx-3',
+                })}
+              >
+                <Icon icon="mingcute:discord-fill" width={16} />
+                Add Bot
+              </a>
               <Menu
                 items={[
                   [

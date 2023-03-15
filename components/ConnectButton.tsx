@@ -9,6 +9,7 @@ import { Popover, Transition } from '@headlessui/react'
 import { button } from './Dashboard/Button'
 import { Icon } from '@iconify/react'
 import { INVITE_LINK } from '~envs'
+import { Menu } from './Dashboard/Menu'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
@@ -61,7 +62,7 @@ export default function ConnectButton() {
         leaveTo="opacity-0 translate-y-1"
       >
         <Popover.Panel className="absolute right-0 z-40 mt-2">
-          <div className="flex flex-col gap-y-1 p-2 rounded-md shadow-md bg-dashboard-gray-7">
+          <div className="flex flex-col gap-y-1 py-2 rounded-md shadow-md bg-dashboard-gray-7">
             <a
               href={INVITE_LINK}
               target="_blank"
@@ -72,74 +73,52 @@ export default function ConnectButton() {
               className={button({
                 appearance: 'mochi',
                 size: 'sm',
-                className: 'whitespace-nowrap',
+                className: 'whitespace-nowrap mx-3',
               })}
             >
               <Icon icon="mingcute:discord-fill" width={16} />
               Add Bot
             </a>
-            {[
-              /* [ */
-              /*   { */
-              /*     icon: <Icon icon="mingcute:user-3-fill" />, */
-              /*     text: 'My Profile', */
-              /*     onClick: () => { }, */
-              /*   }, */
-              /*   { */
-              /*     icon: <Icon icon="majesticons:settings-cog" />, */
-              /*     text: 'Server Management', */
-              /*     onClick: () => { }, */
-              /*   }, */
-              /*   { */
-              /*     icon: <Icon icon="majesticons:settings-cog" />, */
-              /*     text: 'Settings', */
-              /*     onClick: () => { }, */
-              /*   }, */
-              /* ], */
-              /* [ */
-              /*   { */
-              /*     icon: <Icon icon="mingcute:user-add-fill" />, */
-              /*     text: 'Invite Friends', */
-              /*     onClick: () => { }, */
-              /*   }, */
-              /*   { */
-              /*     icon: <Icon icon="ph:star-fill" />, */
-              /*     text: 'Feedback', */
-              /*     onClick: () => { }, */
-              /*   }, */
-              /* ], */
-              [
-                {
-                  icon: <Icon icon="majesticons:logout" />,
-                  text: 'Logout',
-                  onClick: disconnect,
-                },
-              ],
-            ].map((group, groupIdx) => {
-              return (
-                <React.Fragment key={`user-popover-${groupIdx}`}>
-                  {groupIdx !== 0 ? (
-                    <hr className="w-[90%] mx-auto h-[2px] bg-black/10" />
-                  ) : null}
-                  <div className="flex flex-col">
-                    {group.map((item, itemIdx) => {
-                      return (
-                        <button
-                          onClick={() => item.onClick()}
-                          key={`user-popover-item-${itemIdx}`}
-                          className="flex gap-x-2 items-center py-2 px-3 whitespace-nowrap text-dashboard-gray-4"
-                        >
-                          {item.icon}
-                          <span className="text-sm font-medium text-foreground">
-                            {item.text}
-                          </span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </React.Fragment>
-              )
-            })}
+            <Menu
+              items={[
+                /* [ */
+                /*   { */
+                /*     icon: <Icon icon="mingcute:user-3-fill" />, */
+                /*     text: 'My Profile', */
+                /*     onClick: () => {}, */
+                /*   }, */
+                /*   { */
+                /*     icon: <Icon icon="majesticons:settings-cog" />, */
+                /*     text: 'Server Management', */
+                /*     onClick: () => {}, */
+                /*   }, */
+                /*   { */
+                /*     icon: <Icon icon="majesticons:settings-cog" />, */
+                /*     text: 'Settings', */
+                /*     onClick: () => {}, */
+                /*   }, */
+                /* ], */
+                /* [ */
+                /*   { */
+                /*     icon: <Icon icon="mingcute:user-add-fill" />, */
+                /*     text: 'Invite Friends', */
+                /*     onClick: () => {}, */
+                /*   }, */
+                /*   { */
+                /*     icon: <Icon icon="ph:star-fill" />, */
+                /*     text: 'Feedback', */
+                /*     onClick: () => {}, */
+                /*   }, */
+                /* ], */
+                [
+                  {
+                    icon: <Icon icon="majesticons:logout" />,
+                    text: 'Logout',
+                    onClick: () => disconnect(),
+                  },
+                ],
+              ]}
+            />
           </div>
         </Popover.Panel>
       </Transition>

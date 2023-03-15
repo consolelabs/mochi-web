@@ -20,37 +20,37 @@ import {
 
 export default function ServerManagement() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="w-full min-h-screen aspect-auto absolute left-0 top-[-80px] z-0">
-        <Image src={heroBg} layout="fill" alt="" />
+    <div className="overflow-hidden relative">
+      <div className="absolute left-0 z-0 w-full min-h-screen aspect-auto top-[-80px]">
+        <Image src={heroBg} fill alt="" />
       </div>
       <Layout>
         <SEO
           title="Server Management"
           description="Manage your Discord community with ease!"
         />
-        <div className="mt-10 body-block px-6 md:px-12 flex flex-col relative items-center justify-center h-[400px]">
+        <div className="flex relative flex-col justify-center items-center px-6 mt-10 md:px-12 body-block h-[400px]">
           <div className="absolute top-0 left-0 w-full h-full">
             <RingsBackground />
           </div>
-          <p className="text-center relative text-2xl sm:text-3xl md:text-5xl">
+          <p className="relative text-2xl text-center sm:text-3xl md:text-5xl">
             Manage your Discord
             <br />
             community with ease!
           </p>
-          <span className="relative mt-4 text-sm sm:text-base md:text-xl text-center">
+          <span className="relative mt-4 text-sm text-center sm:text-base md:text-xl">
             Set and forget. Mochi does it all for you, automatically
           </span>
           <Button href={INVITE_LINK} className="relative mt-4">
             Get Mochi
           </Button>
         </div>
-        <div className="body-block px-6 md:px-12 flex flex-col md:gap-y-10">
+        <div className="flex flex-col px-6 md:gap-y-10 md:px-12 body-block">
           <FeatureIntroduction
             image={feature1}
             title={<p className="text-4xl">Holder Verification</p>}
             subtitle={
-              <div className="flex flex-col items-start mt-4 gap-y-2">
+              <div className="flex flex-col gap-y-2 items-start mt-4">
                 <CommandText>$verify</CommandText>
                 <span>Manage role and channel for verified users.</span>
               </div>
@@ -104,10 +104,10 @@ export default function ServerManagement() {
           <FeatureIntroduction
             image={feature3}
             title={
-              <p className="text-4xl mt-10 md:mt-0">Detailed Server Insights</p>
+              <p className="mt-10 text-4xl md:mt-0">Detailed Server Insights</p>
             }
             subtitle={
-              <div className="flex flex-col items-start mt-4 gap-y-2">
+              <div className="flex flex-col gap-y-2 items-start mt-4">
                 <CommandText>$stats</CommandText>
                 <span>
                   Updated server stats, including channels, members,
@@ -122,7 +122,7 @@ export default function ServerManagement() {
             image={feature4}
             title={<p className="text-4xl">Smooth Onboarding Experience</p>}
             subtitle={
-              <div className="flex flex-col items-start mt-4 gap-y-2">
+              <div className="flex flex-col gap-y-2 items-start mt-4">
                 <CommandText>$welcome</CommandText>
                 <span>
                   Give your new members a heartwarming welcome
@@ -137,11 +137,11 @@ export default function ServerManagement() {
             title={<p className="text-4xl">Facilitate Engagement</p>}
             subtitle={
               <div className="flex flex-col gap-y-4">
-                <div className="flex flex-col items-start mt-4 gap-y-2">
+                <div className="flex flex-col gap-y-2 items-start mt-4">
                   <CommandText>$log</CommandText>
                   <span>Record all users&apos; activities in a channel.</span>
                 </div>
-                <div className="flex flex-col items-start mt-4 gap-y-2">
+                <div className="flex flex-col gap-y-2 items-start mt-4">
                   <CommandText>$gm</CommandText>
                   <span>
                     Create a good morning/good night channel for users
@@ -163,7 +163,7 @@ export default function ServerManagement() {
               </p>
             }
             subtitle={
-              <div className="flex flex-col items-start mt-4 gap-y-2">
+              <div className="flex flex-col gap-y-2 items-start mt-4">
                 <CommandText>$invite</CommandText>
                 <span>
                   A quick &amp; easy way to catch up with invite activity.
@@ -175,7 +175,7 @@ export default function ServerManagement() {
             image={feature7}
             title={<p className="text-4xl">Automatically clean your server</p>}
             subtitle={
-              <div className="flex flex-col items-start mt-4 gap-y-2">
+              <div className="flex flex-col gap-y-2 items-start mt-4">
                 <CommandText>$prune</CommandText>
                 <span>Instantly remove inactive users from your server.</span>
               </div>
