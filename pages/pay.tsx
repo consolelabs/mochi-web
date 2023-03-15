@@ -1,9 +1,12 @@
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { Layout } from '~app/layout'
-import { button } from '~components/Dashboard/Button'
 import { heading } from '~components/Dashboard/Heading'
 import { SEO } from '~app/layout/seo'
+import QRCodeButton from '~components/Pay/QRCodeButton'
+import CopyLinkButton from '~components/Pay/CopyLinkButton'
+import ShareButton from '~components/Pay/ShareButton'
+import WithdrawButton from '~components/Pay/WithdrawButton'
 
 export default function Pay() {
   return (
@@ -12,43 +15,11 @@ export default function Pay() {
       <div className="text-center md:mt-32 md:mb-40 my-8 mx-auto max-w-[410px] flex flex-col gap-y-6 bg-[#FFFFFF] rounded-2xl p-8">
         <h1 className={heading({ size: 'base' })}>Pay Link</h1>
         <div className="grid grid-cols-3 gap-x-2">
-          <button
-            className={button({
-              size: 'sm',
-              className: '!py-2 !px-0 !shadow-none font-semibold',
-            })}
-          >
-            <Icon
-              icon="fluent:qr-code-20-regular"
-              className="text-dashboard-gray-4"
-            />
-            <div>QR Code</div>
-          </button>
-          <button
-            className={button({
-              size: 'sm',
-              className: '!py-2 !px-0 !shadow-none font-semibold',
-            })}
-          >
-            <Icon
-              icon="mingcute:copy-2-fill"
-              className="text-dashboard-gray-4"
-            />
-            <div>Copy Link</div>
-          </button>
-          <button
-            className={button({
-              size: 'sm',
-              className: '!py-2 !px-0 !shadow-none font-semibold',
-            })}
-          >
-            <Icon
-              icon="mingcute:share-forward-fill"
-              className="text-dashboard-gray-4"
-            />
-            <div>Share</div>
-          </button>
+          <QRCodeButton uri="https://mochi.gg/server-management" />
+          <CopyLinkButton link="TODO later" />
+          <ShareButton />
         </div>
+
         {/* card */}
         <div className="relative overflow-hidden pay-card flex flex-col min-h-[200px] p-8 border-solid border-2 border-black/15% rounded-2xl text-[#FFFFFF]">
           <div className="flex justify-between items-center">
@@ -74,15 +45,8 @@ export default function Pay() {
             Powered by Mochi
           </div>
         </div>
-        {/* withdraw */}
-        <button
-          className={button({
-            appearance: 'secondary',
-          })}
-        >
-          <Icon icon="jam:arrow-square-down-f" />
-          <div>Withdraw</div>
-        </button>
+
+        <WithdrawButton />
       </div>
     </Layout>
   )
