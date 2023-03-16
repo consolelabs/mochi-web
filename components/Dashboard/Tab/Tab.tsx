@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tab as HeadlessTab } from '@headlessui/react'
+import { Tab as HeadlessTab, TabGroupProps } from '@headlessui/react'
 import { tab } from './styles'
 import clsx from 'clsx'
 
@@ -8,10 +8,14 @@ type Props = {
   children?: React.ReactNode
 }
 
-export const Tab = ({ children, headings }: Props) => {
+export const Tab = ({
+  children,
+  headings,
+  ...rest
+}: Props & TabGroupProps<'div'>) => {
   return (
     <div className={tab({})}>
-      <HeadlessTab.Group>
+      <HeadlessTab.Group {...rest}>
         <HeadlessTab.List className="flex gap-x-8">
           {headings.map((h, i) => {
             return (
