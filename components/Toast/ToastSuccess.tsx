@@ -9,7 +9,7 @@ export default function ToastSuccess({
   description?: React.ReactNode | string
 }) {
   return (
-    <div className="top-20 flex gap-x-3 p-3 pr-4 bg-[#FFFFFF] rounded-lg shadow-2xl">
+    <div className="top-20 flex gap-x-3 p-3 pr-4 bg-[#FFFFFF] rounded-lg shadow-full">
       <Icon
         icon="tabler:square-rounded-check-filled"
         color="green"

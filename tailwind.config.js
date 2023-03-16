@@ -13,6 +13,7 @@ module.exports = {
             5: '#F8F8F8',
             6: '#DFE0E0',
             7: '#EBEBEB',
+            8: '#7A7E85',
           },
           red: {
             1: '#FD5E59',
@@ -51,6 +52,9 @@ module.exports = {
       },
       blur: {
         '4xl': '128px',
+      },
+      boxShadow: {
+        full: '0px 4px 16px rgba(0, 0, 0, 0.15)',
       },
     },
   },

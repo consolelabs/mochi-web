@@ -27,7 +27,8 @@ export const Tab = ({
                         'font-medium pb-1 border-b-2 transition-colors duration-100 ease-in',
                         {
                           'text-foreground border-b-foreground': selected,
-                          'text-[#7A7E85] border-b-transparent': !selected,
+                          'text-dashboard-gray-8 border-b-transparent':
+                            !selected,
                         },
                       )}
                     >

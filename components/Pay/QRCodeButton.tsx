@@ -31,7 +31,7 @@ export default function QRCodeInfo({ uri }: Props) {
         <div className="flex flex-col gap-y-1 p-[14px] pb-2">
           <div className="text-center">
             <div className="font-bold">Pay Link&#39;s QR Code</div>
-            <div className="mt-[2px] font-medium text-xs text-[#7A7E85]">
+            <div className="mt-[2px] font-medium text-xs text-dashboard-gray-8">
               Scan to open directly to this pay link:
             </div>
           </div>

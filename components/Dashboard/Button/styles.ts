@@ -30,7 +30,7 @@ const variant = cva(
           'rounded-lg',
           'active:translate-y-0.5',
         ],
-        gray: ['bg-[#D1D2D4]', 'text-black', 'shadow-md'],
+        gray: ['bg-[#D1D2D4]', 'text-black', 'shadow-md', 'rounded-lg'],
         mochi: [
           'bg-mochi',
           'text-white',
