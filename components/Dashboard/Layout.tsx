@@ -26,12 +26,16 @@ export default function DashboardLayout({
   return (
     <>
       <SEO title="Dashboard" description="" />
-      <div className="flex flex-col min-h-screen min-w-screen bg-dashboard-gray-1">
+      <div className="flex flex-col min-h-screen bg-dashboard-gray-1">
         <div
-          className={clsx('flex py-4 px-7 flex-shrink-0 justify-between', {
-            'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5': connected,
-            'bg-dashboard-gray-1': !connected,
-          })}
+          className={clsx(
+            'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between',
+            {
+              'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
+                connected,
+              'bg-dashboard-gray-1': !connected,
+            },
+          )}
         >
           <div className="flex gap-x-3 items-center">
             <Image
@@ -54,7 +58,7 @@ export default function DashboardLayout({
         </div>
         <div className="flex flex-1">
           {connected ? (
-            <div className="flex gap-x-10 mx-auto mt-10 w-full max-w-5xl">
+            <div className="flex gap-x-24 my-10 mx-auto w-full max-w-5xl">
               {showSidebar ? (
                 <div className="flex-shrink-0 min-w-[200px]">
                   <Sidebar />
@@ -66,9 +70,11 @@ export default function DashboardLayout({
             <Login />
           )}
         </div>
-        <div className="fixed right-5 bottom-5 text-sm text-dashboard-gray-4">
-          &#169; 2022 MochiBot
-        </div>
+        {!connected ? (
+          <div className="fixed right-5 bottom-5 text-sm text-dashboard-gray-4">
+            &#169; 2022 MochiBot
+          </div>
+        ) : null}
       </div>
     </>
   )
