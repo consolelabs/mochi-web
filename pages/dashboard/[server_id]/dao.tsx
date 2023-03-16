@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactElement } from 'react-markdown/lib/react-markdown'
+import type { ReactElement } from 'react'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { NextPageWithLayout } from '~pages/_app'
 

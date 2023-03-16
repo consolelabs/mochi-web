@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -11,10 +10,10 @@ const CreateRecurrenceQuest = () => {
   return (
     <DashboardLayout
       header={
-        <div className="flex items-center gap-2">
+        <div className="flex gap-2 items-center">
           <Link
             href={`/dashboard/${query.server_id}/quests/recurrence`}
-            className="text-dashboard-gray-2 text-lg"
+            className="text-lg text-dashboard-gray-2"
           >
             Recurrence Quests /
           </Link>
@@ -22,7 +21,7 @@ const CreateRecurrenceQuest = () => {
         </div>
       }
       footer={
-        <div className="py-4 max-w-5xl mx-auto flex justify-between">
+        <div className="flex justify-between py-4 mx-auto max-w-5xl">
           <button
             type="button"
             className={button({ appearance: 'text' })}

@@ -3,12 +3,12 @@ import type { ReactElement } from 'react'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { NextPageWithLayout } from '~pages/_app'
 
-const QuestsEvent: NextPageWithLayout = () => {
+const QuestsOneTime: NextPageWithLayout = () => {
   return <span>quests event page</span>
 }
 
-QuestsEvent.getLayout = function getLayout(page: ReactElement) {
+QuestsOneTime.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout showSidebar>{page}</DashboardLayout>
 }
 
-export default QuestsEvent
+export default QuestsOneTime

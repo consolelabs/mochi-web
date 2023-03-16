@@ -10,9 +10,12 @@ import { button } from './Dashboard/Button'
 import { Icon } from '@iconify/react'
 import { INVITE_LINK } from '~envs'
 import { Menu } from './Dashboard/Menu'
+import { useRouter } from 'next/router'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
+  const { query } = useRouter()
+  const serverId = query.server_id
   const { connected, disconnect: _disconnect } = useAppWalletContext()
   const { address } = useAccount()
   const { ensAvatar, ensName } = useEns(address)
@@ -62,68 +65,133 @@ export default function ConnectButton() {
         leaveTo="opacity-0 translate-y-1"
       >
         <Popover.Panel className="absolute right-0 z-40 mt-2">
-          <div className="flex flex-col gap-y-1 py-2 rounded-md shadow-md bg-dashboard-gray-7">
-            <a
-              href={INVITE_LINK}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                boxShadow: '0px 4px 16px rgba(249, 164, 180, 0.8)',
-              }}
-              className={button({
-                appearance: 'mochi',
-                size: 'sm',
-                className: 'whitespace-nowrap mx-3',
-              })}
-            >
-              <Icon icon="mingcute:discord-fill" width={16} />
-              Add Bot
-            </a>
-            <Menu
-              items={[
-                /* [ */
-                /*   { */
-                /*     icon: <Icon icon="mingcute:user-3-fill" />, */
-                /*     text: 'My Profile', */
-                /*     onClick: () => {}, */
-                /*   }, */
-                /*   { */
-                /*     icon: <Icon icon="majesticons:settings-cog" />, */
-                /*     text: 'Server Management', */
-                /*     onClick: () => {}, */
-                /*   }, */
-                /*   { */
-                /*     icon: <Icon icon="majesticons:settings-cog" />, */
-                /*     text: 'Settings', */
-                /*     onClick: () => {}, */
-                /*   }, */
-                /* ], */
-                /* [ */
-                /*   { */
-                /*     icon: <Icon icon="mingcute:user-add-fill" />, */
-                /*     text: 'Invite Friends', */
-                /*     onClick: () => {}, */
-                /*   }, */
-                /*   { */
-                /*     icon: <Icon icon="ph:star-fill" />, */
-                /*     text: 'Feedback', */
-                /*     onClick: () => {}, */
-                /*   }, */
-                /* ], */
-                [
-                  '',
-                  [
-                    {
-                      id: 'logout',
-                      icon: <Icon icon="majesticons:logout" />,
-                      text: 'Logout',
-                      onClick: () => disconnect(),
-                    },
-                  ],
-                ],
-              ]}
-            />
-          </div>
+          {({ close }) => {
+            return (
+              <div className="flex flex-col gap-y-1 py-2 rounded-md shadow-md bg-dashboard-gray-7">
+                <a
+                  href={INVITE_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    boxShadow: '0px 4px 16px rgba(249, 164, 180, 0.8)',
+                  }}
+                  className={button({
+                    appearance: 'mochi',
+                    size: 'sm',
+                    className: 'whitespace-nowrap mx-3',
+                  })}
+                >
+                  <Icon icon="mingcute:discord-fill" width={16} />
+                  Add Bot
+                </a>
+                <Menu
+                  onClick={() => close()}
+                  items={[
+                    [
+                      '',
+                      [
+                        {
+                          id: 'my-profile',
+                          icon: (
+                            <Icon
+                              icon="mingcute:user-3-fill"
+                              className="w-5 h-5"
+                            />
+                          ),
+                          text: 'My Profile',
+                          url: '/dashboard',
+                        },
+                        {
+                          id: 'quests',
+                          icon: (
+                            <Icon icon="mdi:bookmark-box" className="w-5 h-5" />
+                          ),
+                          text: 'Quests',
+                          url: serverId
+                            ? `/dashboard/${serverId}/quests`
+                            : '/dashboard',
+                        },
+                        {
+                          id: 'game-store',
+                          icon: (
+                            <Icon
+                              icon="teenyicons:game-controller-solid"
+                              className="w-5 h-5"
+                            />
+                          ),
+                          text: 'Game Store',
+                        },
+                        {
+                          id: 'server-management',
+                          icon: (
+                            <Icon
+                              icon="heroicons:cog-6-tooth-solid"
+                              className="w-5 h-5"
+                            />
+                          ),
+                          text: 'Server Management',
+                          url: '/dashboard',
+                        },
+                        {
+                          id: 'settings',
+                          icon: (
+                            <Icon
+                              icon="heroicons:cog-6-tooth-solid"
+                              className="w-5 h-5"
+                            />
+                          ),
+                          text: 'Settings',
+                          url: '/dashboard/settings/account',
+                        },
+                      ],
+                    ],
+                    [
+                      '',
+                      [
+                        {
+                          id: 'invite-friends',
+                          icon: (
+                            <Icon
+                              icon="mingcute:user-add-fill"
+                              className="w-5 h-5"
+                            />
+                          ),
+                          text: 'Invite Friends',
+                        },
+                        {
+                          id: 'feedback',
+                          icon: (
+                            <Icon
+                              icon="mingcute:star-fill"
+                              className="w-5 h-5"
+                            />
+                          ),
+                          text: 'Feedback',
+                        },
+                      ],
+                    ],
+                    [
+                      '',
+                      [
+                        {
+                          id: 'logout',
+                          icon: (
+                            <Icon
+                              icon="majesticons:logout"
+                              className="w-5 h-5"
+                            />
+                          ),
+                          text: 'Logout',
+                          onClick: () => disconnect(),
+                          url: '/dashboard',
+                        },
+                      ],
+                    ],
+                  ]}
+                />
+              </div>
+            )
+          }}
         </Popover.Panel>
       </Transition>
     </Popover>

@@ -15,10 +15,11 @@ type Props = {
   items: [string, MenuItem[]][]
   activeId?: string
   activeIdx?: number
+  onClick?: (id: string, idx?: number) => void
 }
 
 export const Menu = (props: Props) => {
-  const { items, activeId, activeIdx = -1 } = props
+  const { items, activeId, activeIdx = -1, onClick } = props
 
   return (
     <div className="flex flex-col">
@@ -26,11 +27,11 @@ export const Menu = (props: Props) => {
         return (
           <div className="flex flex-col gap-y-1" key={`user-menu-${groupIdx}`}>
             {groupIdx != 0 && !group[0] ? (
-              <hr className="my-2 mx-auto w-full h-[1px] bg-black/5" />
+              <hr className="my-2 mx-auto w-[85%] bg-black/20 h-[2px]" />
             ) : (
               <span
                 className={clsx(
-                  'uppercase mx-3 text-xs font-semibold text-dashboard-gray-4',
+                  'uppercase mx-5 text-[10px] font-semibold text-dashboard-gray-4',
                   {
                     'mt-6': groupIdx !== 0,
                   },
@@ -48,11 +49,13 @@ export const Menu = (props: Props) => {
                   >
                     <Link
                       href={item.url ?? '#'}
-                      {...(item.onClick ? { as: 'button' } : {})}
-                      onClick={() => item.onClick?.()}
+                      onClick={() => {
+                        item.onClick?.()
+                        onClick?.(item.id)
+                      }}
                       className={clsx(
                         'transition duration-100 ease-in-out',
-                        'flex gap-x-2 items-center py-2 px-3 whitespace-nowrap text-dashboard-gray-4',
+                        'flex gap-x-2 items-center py-2 px-5 pr-7 whitespace-nowrap text-dashboard-gray-4',
                       )}
                     >
                       <div
@@ -85,8 +88,10 @@ export const Menu = (props: Props) => {
                           return (
                             <Link
                               href={si.url ?? '#'}
-                              {...(si.onClick ? { as: 'button' } : {})}
-                              onClick={() => si.onClick?.()}
+                              onClick={() => {
+                                si.onClick?.()
+                                onClick?.(item.id, i)
+                              }}
                               key={`user-menu-subitem-${item.id}-${i}`}
                               className={clsx(
                                 'transition duration-100 ease-in-out',

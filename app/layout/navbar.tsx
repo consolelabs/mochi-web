@@ -148,7 +148,7 @@ const NavLinks = ({ className }: { className: string }) => (
 
 export const Navbar = () => (
   <Fragment>
-    <nav className="relative z-10 bg-transparent">
+    <nav className="relative z-20 bg-transparent">
       <div className="flex items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
         <Link legacyBehavior href="/">
           <a className="flex gap-4 items-center text-gray-900 group">
