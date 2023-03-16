@@ -13,9 +13,17 @@ import Sidebar from './Sidebar'
 export default function DashboardLayout({
   children,
   showSidebar = false,
+  fullWidth = false,
+  header,
+  headerExtraRight,
+  footer,
 }: {
   children: React.ReactNode
   showSidebar?: boolean
+  fullWidth?: boolean
+  header?: React.ReactNode
+  headerExtraRight?: React.ReactNode
+  footer?: React.ReactNode
 }) {
   const mounted = useHasMounted()
   const { connected } = useAppWalletContext()
@@ -58,13 +66,27 @@ export default function DashboardLayout({
         </div>
         <div className="flex flex-1">
           {connected ? (
-            <div className="flex gap-x-24 my-10 mx-auto w-full max-w-5xl">
+            <div
+              className={clsx('flex gap-x-24 mx-auto w-full', {
+                'max-w-5xl my-10': !fullWidth,
+              })}
+            >
               {showSidebar ? (
                 <div className="flex-shrink-0 min-w-[200px]">
                   <Sidebar />
                 </div>
               ) : null}
-              <div className="flex-1">{children}</div>
+              <div className="flex-1">
+                {(header || headerExtraRight) && (
+                  <div className="flex justify-between mb-4">
+                    <h2 className="text-[22px] font-bold">
+                      {header && header}
+                    </h2>
+                    {headerExtraRight && headerExtraRight}
+                  </div>
+                )}
+                {children}
+              </div>
             </div>
           ) : (
             <Login />
@@ -75,6 +97,11 @@ export default function DashboardLayout({
             &#169; 2022 MochiBot
           </div>
         ) : null}
+        {footer && (
+          <div className="fixed bottom-0 left-0 border-t border-dashboard-gray-6 w-full">
+            {footer}
+          </div>
+        )}
       </div>
     </>
   )
