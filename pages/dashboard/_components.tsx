@@ -7,47 +7,14 @@ import { Menu } from '~components/Dashboard/Menu'
 import { RadioGroup } from '~components/Dashboard/Radio'
 import { Select } from '~components/Dashboard/Select'
 import { Switch } from '~components/Dashboard/Switch'
-import { Controller, ControllerProps, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { SEO } from '~app/layout/seo'
 import { INVITE_LINK } from '~envs'
 import { Tab } from '~components/Dashboard/Tab'
 import { Transition } from '@headlessui/react'
 import { Table } from '~components/Dashboard/Table'
-
-const Field = ({
-  label,
-  render,
-  ...rest
-}: { label?: string } & ControllerProps) => {
-  return (
-    <div>
-      {label && <label className={labelStyles()}>Default</label>}
-      <Controller
-        {...rest}
-        render={({ field, fieldState, ...renderRest }) => {
-          return (
-            <>
-              {render({
-                field: {
-                  ...field,
-                  ...(fieldState.error ? { appearance: 'invalid' } : {}),
-                },
-                fieldState,
-                ...renderRest,
-              })}
-              {fieldState.error && (
-                <div className="mt-1 text-xs text-mochi-500">
-                  {fieldState.error.message}
-                </div>
-              )}
-            </>
-          )
-        }}
-      />
-    </div>
-  )
-}
+import Field from '~components/Dashboard/Form/Field'
 
 export default function Default() {
   const mounted = useHasMounted()
@@ -107,10 +74,9 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return <Input {...field} {...fieldState} />
-            }}
-          />
+          >
+            <Input />
+          </Field>
           <Field
             name="input-prefix"
             label="Prefix"
@@ -118,10 +84,9 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return <Input {...field} {...fieldState} prefix="mochi.gg/" />
-            }}
-          />
+          >
+            <Input prefix="mochi.gg/" />
+          </Field>
           <Field
             name="input-suffix"
             label="Suffix"
@@ -129,17 +94,9 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return (
-                <Input
-                  {...field}
-                  {...fieldState}
-                  suffix="times"
-                  suffixProps={{ appearance: 'bgless' }}
-                />
-              )
-            }}
-          />
+          >
+            <Input suffix="times" suffixProps={{ appearance: 'bgless' }} />
+          </Field>
         </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Select</h2>
@@ -150,19 +107,14 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return (
-                <Select
-                  {...field}
-                  {...fieldState}
-                  options={[
-                    { label: 'Option 1', value: '1' },
-                    { label: 'Option 2', value: '2' },
-                  ]}
-                />
-              )
-            }}
-          />
+          >
+            <Select
+              options={[
+                { label: 'Option 1', value: '1' },
+                { label: 'Option 2', value: '2' },
+              ]}
+            />
+          </Field>
           <Field
             name="select-custom"
             label="Custom Option Render"
@@ -170,27 +122,22 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return (
-                <Select
-                  {...field}
-                  {...fieldState}
-                  options={[
-                    { label: 'Option 1', value: '1' },
-                    { label: 'Option 2', value: '2' },
-                  ]}
-                  renderOption={(option) => {
-                    return (
-                      <div className="flex gap-2 items-center">
-                        <Icon icon="ic:baseline-discord" className="w-4 h-4" />
-                        <span>{option.label}</span>
-                      </div>
-                    )
-                  }}
-                />
-              )
-            }}
-          />
+          >
+            <Select
+              options={[
+                { label: 'Option 1', value: '1' },
+                { label: 'Option 2', value: '2' },
+              ]}
+              renderOption={(option) => {
+                return (
+                  <div className="flex gap-2 items-center">
+                    <Icon icon="ic:baseline-discord" className="w-4 h-4" />
+                    <span>{option.label}</span>
+                  </div>
+                )
+              }}
+            />
+          </Field>
           <Field
             name="select-searchable"
             label="Searchable"
@@ -198,20 +145,15 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return (
-                <Select
-                  {...field}
-                  {...fieldState}
-                  options={[
-                    { label: 'Option 1', value: '1' },
-                    { label: 'Option 2', value: '2' },
-                  ]}
-                  searchable
-                />
-              )
-            }}
-          />
+          >
+            <Select
+              options={[
+                { label: 'Option 1', value: '1' },
+                { label: 'Option 2', value: '2' },
+              ]}
+              searchable
+            />
+          </Field>
           <Field
             name="select-multiple"
             label="Multiple"
@@ -219,21 +161,16 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return (
-                <Select
-                  {...field}
-                  {...fieldState}
-                  options={[
-                    { label: 'Option 1', value: '1' },
-                    { label: 'Option 2', value: '2' },
-                  ]}
-                  searchable
-                  multiple
-                />
-              )
-            }}
-          />
+          >
+            <Select
+              options={[
+                { label: 'Option 1', value: '1' },
+                { label: 'Option 2', value: '2' },
+              ]}
+              searchable
+              multiple
+            />
+          </Field>
         </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Radio Group</h2>
@@ -244,35 +181,24 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
-              return (
-                <RadioGroup
-                  {...field}
-                  {...fieldState}
-                  options={[
-                    { label: 'Option 1', value: '1' },
-                    { label: 'Option 2', value: '2' },
-                  ]}
-                />
-              )
-            }}
-          />
+          >
+            <RadioGroup
+              options={[
+                { label: 'Option 1', value: '1' },
+                { label: 'Option 2', value: '2' },
+              ]}
+            />
+          </Field>
         </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Switch</h2>
-          <Field
-            name="switch-default"
-            label="Default"
-            control={control}
-            render={({ field, fieldState }) => {
-              return <Switch {...field} {...fieldState} checked={field.value} />
+          <Field name="switch-default" label="Default" control={control}>
+            {({ field, fieldState }) => {
+              return <Switch {...fieldState} {...field} checked={field.value} />
             }}
-          />
-          <Field
-            name="switch-with-label"
-            label="With Label"
-            control={control}
-            render={({ field, fieldState }) => {
+          </Field>
+          <Field name="switch-with-label" label="With Label" control={control}>
+            {({ field, fieldState }) => {
               return (
                 <Switch
                   {...field}
@@ -282,7 +208,7 @@ export default function Default() {
                 />
               )
             }}
-          />
+          </Field>
         </div>
 
         <div className="flex flex-col space-y-4">
@@ -294,7 +220,8 @@ export default function Default() {
             rules={{
               required: 'Required',
             }}
-            render={({ field, fieldState }) => {
+          >
+            {({ field, fieldState }) => {
               return (
                 <FileInput
                   {...field}
@@ -303,7 +230,7 @@ export default function Default() {
                 />
               )
             }}
-          />
+          </Field>
         </div>
 
         <div className="flex flex-col space-y-4">

@@ -14,7 +14,7 @@ type Props = JSX.IntrinsicElements['input'] &
 export const Input = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
     const {
-      value,
+      value = '',
       suffix,
       prefix,
       className,
@@ -22,8 +22,8 @@ export const Input = forwardRef(
       suffixProps,
       prefixProps,
       allowClear = true,
-      onChange,
-      ...rest
+      onChange = () => {},
+      onBlur,
     } = props
 
     const [prefixWidth, setPrefixWidth] = useState(0)
@@ -48,7 +48,7 @@ export const Input = forwardRef(
           className={input({ className, appearance })}
           value={value}
           onChange={onChange}
-          {...rest}
+          onBlur={onBlur}
           style={{
             paddingLeft: prefixWidth + 12,
             paddingRight: suffixWidth + 12,

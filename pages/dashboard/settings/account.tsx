@@ -6,42 +6,34 @@ import { heading } from '~components/Dashboard/Heading'
 import { Input } from '~components/Dashboard/Input'
 import { button } from '~components/Dashboard/Button'
 import { Icon } from '@iconify/react'
-
-const Field = ({
-  label,
-  children,
-  description,
-}: {
-  label: string
-  children: React.ReactNode
-  description?: React.ReactNode
-}) => {
-  return (
-    <div className="flex flex-col gap-y-1">
-      <div className="flex flex-col">
-        <label className={heading({ size: 'xs' })}>{label}</label>
-        {description}
-      </div>
-      <div>{children}</div>
-    </div>
-  )
-}
+import Field from '~components/Dashboard/Form/Field'
+import { useForm } from 'react-hook-form'
 
 const Account: NextPageWithLayout = () => {
+  const { control, handleSubmit } = useForm()
+
+  const onSubmit = (values: Record<string, any>) => {
+    console.log(values)
+  }
+
   return (
-    <div className="flex flex-col">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       <p className={heading({ size: 'sm' })}>Account</p>
       <div className="flex flex-col gap-y-10 mt-10 max-w-sm">
-        <Field label="Email">
+        <Field control={control} name="email" label="Email">
           <Input className="max-w-[280px]" />
         </Field>
-        <Field label="Username">
-          <div className="flex gap-x-1">
-            <Input prefix="mochi.gg/" />
-            <button className={button({ appearance: 'secondary' })}>
-              Update
-            </button>
-          </div>
+        <Field control={control} name="" label="Username">
+          {({ field, fieldState }) => {
+            return (
+              <div className="flex gap-x-1">
+                <Input {...field} {...fieldState} prefix="mochi.gg/" />
+                <button className={button({ appearance: 'secondary' })}>
+                  Update
+                </button>
+              </div>
+            )
+          }}
         </Field>
       </div>
       <hr className="my-10 w-full h-[1.5px] bg-[#DFDFDF]" />
@@ -91,7 +83,7 @@ const Account: NextPageWithLayout = () => {
           </button>
         </Field>
       </div>
-    </div>
+    </form>
   )
 }
 
