@@ -27,10 +27,17 @@ type Props = {
   ecl?: QRCodeUtil.QRCodeErrorCorrectionLevel
   logoBackground?: string
   logoUrl?: string
+  logoPadding?: number
   uri: string
 }
 
-export const QRCode = ({ ecl = 'M', logoBackground, logoUrl, uri }: Props) => {
+export const QRCode = ({
+  ecl = 'M',
+  logoBackground,
+  logoPadding = 7,
+  logoUrl,
+  uri,
+}: Props) => {
   const size = QR_SIZE - LOGO_MARGIN * 2
 
   const dots = useMemo(() => {
@@ -62,7 +69,7 @@ export const QRCode = ({ ecl = 'M', logoBackground, logoUrl, uri }: Props) => {
       }
     })
 
-    const clearArenaSize = Math.floor((LOGO_SIZE + 25) / cellSize)
+    const clearArenaSize = Math.floor((LOGO_SIZE + 25 + logoPadding) / cellSize)
     const matrixMiddleStart = matrix.length / 2 - clearArenaSize / 2
     const matrixMiddleEnd = matrix.length / 2 + clearArenaSize / 2 - 1
 
@@ -100,7 +107,7 @@ export const QRCode = ({ ecl = 'M', logoBackground, logoUrl, uri }: Props) => {
     })
 
     return dots
-  }, [ecl, size, uri])
+  }, [ecl, logoPadding, size, uri])
 
   const logoWrapperSize = LOGO_SIZE + LOGO_MARGIN * 2
 
@@ -113,7 +120,7 @@ export const QRCode = ({ ecl = 'M', logoBackground, logoUrl, uri }: Props) => {
             height: LOGO_SIZE,
             background: logoBackground,
           }}
-          className="overflow-hidden absolute top-1/2 left-1/2 rounded-lg -translate-x-1/2 -translate-y-1/2 w-[72px] h-[72px]"
+          className="flex overflow-hidden absolute top-1/2 left-1/2 justify-center items-center rounded-lg -translate-x-1/2 -translate-y-1/2 aspect-square"
         >
           <img
             className="object-cover"

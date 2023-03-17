@@ -34,10 +34,10 @@ export default function DashboardLayout({
   return (
     <>
       <SEO title="Dashboard" description="" />
-      <div className="flex flex-col min-h-screen bg-dashboard-gray-1 overflow-auto">
+      <div className="flex overflow-auto flex-col min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(
-            'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between',
+            'z-50 sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between',
             {
               'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
                 connected,
@@ -64,7 +64,7 @@ export default function DashboardLayout({
             </div>
           ) : null}
         </div>
-        <div className="flex flex-1">
+        <div className="flex relative z-10 flex-1">
           {connected ? (
             <div
               className={clsx('flex gap-x-24 mx-auto w-full', {
@@ -79,7 +79,7 @@ export default function DashboardLayout({
               <div className="flex-1">
                 {(header || headerExtraRight) && (
                   <div className="flex justify-between mb-4">
-                    <h2 className="text-[22px] font-bold">
+                    <h2 className="font-bold text-[22px]">
                       {header && header}
                     </h2>
                     {headerExtraRight && headerExtraRight}

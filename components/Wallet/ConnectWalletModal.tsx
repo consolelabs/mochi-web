@@ -202,7 +202,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
 
   return (
     <Transition show={isOpen} as={Fragment}>
-      <Dialog as="div" onClose={onClose} className="relative z-10">
+      <Dialog as="div" onClose={onClose} className="relative z-50">
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-200"

@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
-  const { query } = useRouter()
+  const { query, reload } = useRouter()
   const serverId = query.server_id
   const { connected, disconnect: _disconnect } = useAppWalletContext()
   const { address } = useAccount()
@@ -183,7 +183,6 @@ export default function ConnectButton() {
                           ),
                           text: 'Logout',
                           onClick: () => disconnect(),
-                          url: '/dashboard',
                         },
                       ],
                     ],

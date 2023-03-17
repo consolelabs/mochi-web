@@ -16,7 +16,7 @@ const Server = () => {
       )}
     >
       <div className="rounded-full w-20 h-20 bg-[#D9D9D9]" />
-      <span className="font-semibold text-xs uppercase text-dashboard-gray-8">
+      <span className="text-xs font-semibold uppercase text-dashboard-gray-8">
         server name
       </span>
     </Link>

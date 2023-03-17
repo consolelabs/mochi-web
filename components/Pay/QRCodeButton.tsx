@@ -28,15 +28,19 @@ export default function QRCodeInfo({ uri }: Props) {
       </button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
-        <div className="flex flex-col gap-y-1 p-[14px] pb-2">
+        <div className="flex flex-col gap-y-1 pb-2 p-[14px]">
           <div className="text-center">
             <div className="font-bold">Pay Link&#39;s QR Code</div>
-            <div className="mt-[2px] font-medium text-xs text-dashboard-gray-8">
+            <div className="text-xs font-medium mt-[2px] text-dashboard-gray-8">
               Scan to open directly to this pay link:
             </div>
           </div>
 
-          <QRCodeGenerator logoUrl={'/assets/mochi-gray.png'} uri={uri} />
+          <QRCodeGenerator
+            logoBackground="white"
+            logoUrl={'/assets/mochi-gray.png'}
+            uri={uri}
+          />
         </div>
       </Modal>
     </>
