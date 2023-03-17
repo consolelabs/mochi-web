@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { truncate } from '@dwarvesf/react-utils'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useAccount } from '~hooks/wallets/useAccount'
@@ -11,24 +11,16 @@ import { Icon } from '@iconify/react'
 import { INVITE_LINK } from '~envs'
 import { Menu } from './Dashboard/Menu'
 import { useRouter } from 'next/router'
+import Avatar from './Dashboard/Avatar'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
-  const { query, reload } = useRouter()
+  const { query } = useRouter()
   const serverId = query.server_id
   const { connected, disconnect: _disconnect } = useAppWalletContext()
   const { address } = useAccount()
-  const { ensAvatar, ensName } = useEns(address)
+  const { ensName } = useEns(address)
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const avatar = useMemo(() => {
-    return (
-      ensAvatar ??
-      `https://source.boringavatars.com/beam/120/${
-        ensName ?? address
-      }?colors=665c52,74b3a7,a3ccaf,E6E1CF,CC5B14`
-    )
-  }, [address, ensAvatar, ensName])
 
   const disconnect = () => {
     onClose()
@@ -50,7 +42,7 @@ export default function ConnectButton() {
   return (
     <Popover className="relative">
       <Popover.Button className="flex gap-x-2 items-center p-1 pr-2 rounded-full border outline-none bg-mochi/10 border-dashboard-red-1">
-        <img className="w-6 rounded-full" src={avatar} alt="" />
+        <Avatar className="w-6 rounded-full" />
         <span className="text-sm font-semibold text-foreground">
           {ensName ?? truncate(address ?? '', 5, true, '.')}
         </span>
@@ -99,7 +91,7 @@ export default function ConnectButton() {
                             />
                           ),
                           text: 'My Profile',
-                          url: '/dashboard',
+                          url: '/dashboard/profile',
                         },
                         {
                           id: 'quests',

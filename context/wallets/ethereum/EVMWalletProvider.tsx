@@ -10,7 +10,7 @@ const { chains, provider } = configureChains(
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'RarePepe',
+  appName: 'Mochi',
   chains,
 })
 

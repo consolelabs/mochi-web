@@ -43,7 +43,8 @@ const variant = cva(
       size: {
         sm: ['text-sm', 'px-3', 'py-1'],
         base: ['text-base', 'px-6', 'py-2'],
-        icon: ['w-8', 'h-8', 'rounded-full'],
+        icon: ['w-8', 'h-8', '!rounded-full'],
+        'icon-sm': ['w-6', 'h-6', '!rounded-md'],
       },
     },
     defaultVariants: {
@@ -55,5 +56,5 @@ const variant = cva(
 
 type Props = VariantProps<typeof variant> & { className?: string }
 
-export const button = ({ className = '', ...rest }: Props) =>
+export const button = ({ className = '', ...rest }: Props = {}) =>
   variant({ className, ...rest })
