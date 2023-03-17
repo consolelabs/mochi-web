@@ -21,7 +21,7 @@ const CreateRecurrenceQuest = () => {
         </div>
       }
       footer={
-        <div className="flex justify-between py-4 mx-auto max-w-5xl">
+        <div className="flex justify-between py-4 mx-auto w-full max-w-5xl">
           <button
             type="button"
             className={button({ appearance: 'text' })}
@@ -46,7 +46,7 @@ const CreateRecurrenceQuest = () => {
         </div>
       }
     >
-      recurrence create
+      {/* TODO: create recurrence quest */}
     </DashboardLayout>
   )
 }
