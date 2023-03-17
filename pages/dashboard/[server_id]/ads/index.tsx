@@ -27,7 +27,7 @@ const Ads = () => {
         </Link>
       }
     >
-      ads page
+      {/* TODO: list of ads */}
     </DashboardLayout>
   )
 }
