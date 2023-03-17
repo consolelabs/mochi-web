@@ -34,7 +34,7 @@ export default function DashboardLayout({
   return (
     <>
       <SEO title="Dashboard" description="" />
-      <div className="flex flex-col min-h-screen bg-dashboard-gray-1">
+      <div className="flex flex-col min-h-screen bg-dashboard-gray-1 overflow-auto">
         <div
           className={clsx(
             'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between',
@@ -92,16 +92,7 @@ export default function DashboardLayout({
             <Login />
           )}
         </div>
-        {!connected ? (
-          <div className="fixed right-5 bottom-5 text-sm text-dashboard-gray-4">
-            &#169; 2022 MochiBot
-          </div>
-        ) : null}
-        {footer && (
-          <div className="fixed bottom-0 left-0 border-t border-dashboard-gray-6 w-full">
-            {footer}
-          </div>
-        )}
+        {footer}
       </div>
     </>
   )
