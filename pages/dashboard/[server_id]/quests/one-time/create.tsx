@@ -21,7 +21,7 @@ const CreateOneTimeQuest = () => {
         </div>
       }
       footer={
-        <div className="flex justify-between py-4 mx-auto max-w-5xl">
+        <div className="flex justify-between py-4 mx-auto w-full max-w-5xl">
           <button
             type="button"
             className={button({ appearance: 'text' })}
@@ -46,7 +46,7 @@ const CreateOneTimeQuest = () => {
         </div>
       }
     >
-      one time create
+      {/* TODO: create one-time quest */}
     </DashboardLayout>
   )
 }
