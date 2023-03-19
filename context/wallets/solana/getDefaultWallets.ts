@@ -1,9 +1,9 @@
 import { WalletAdapterNetwork, Adapter } from '@solana/wallet-adapter-base'
 import { omitUndefinedValues } from 'utils/omitUndefinedValues'
 import { WalletInstance, WalletList } from 'context/wallets/Wallet'
-import { solflare, glow } from './walletAdapters'
+import { glow, phantom, solflare } from './walletAdapters'
 
-export const adaptersForWallets = (wallets: WalletList) => {
+const adaptersForWallets = (wallets: WalletList) => {
   let index = -1
   const adapters: Adapter[] = []
   wallets.forEach(({ groupName, wallets }) => {
@@ -37,7 +37,7 @@ export const adaptersForWallets = (wallets: WalletList) => {
 }
 
 export const getDefaultSolanaWallets = (network: WalletAdapterNetwork) => {
-  const supportedWallets = [solflare(network), glow()]
+  const supportedWallets = [phantom(), solflare(network), glow()]
 
   const walletsList: WalletList = [
     {

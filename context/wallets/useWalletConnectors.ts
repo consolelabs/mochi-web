@@ -1,11 +1,10 @@
 import { Connector, useConnect } from 'wagmi'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletName } from '@solana/wallet-adapter-base'
+import { WalletName, WalletReadyState } from '@solana/wallet-adapter-base'
 import { useAppWalletContext } from 'context/wallet-context'
 import { WalletInstance } from './Wallet'
 import { getRecentWalletIds, addRecentWalletId } from './recentWalletIds'
-import { phantom } from './solana/walletAdapters'
-import { omitUndefinedValues } from '~utils/omitUndefinedValues'
+import { walletDownloadUrls } from './solana/walletAdapters'
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean
@@ -92,23 +91,24 @@ export const useWalletConnectors = () => {
 
   const solanaWalletInstances = flatten(
     wallets.map((wallet, index) => {
-      const {
-        name: phantomName,
-        createConnector,
-        ...phantomMetadata
-      } = phantom()
-      if (wallet.adapter.name === phantomName) {
-        const { adapter, ...connectionMethods } = omitUndefinedValues(
-          createConnector(),
-        )
+      // @ts-ignore
+      if (wallet.adapter.standard) {
         return [
           {
-            adapter,
+            adapter: wallet.adapter,
             groupName: 'Solana',
             index,
-            name: phantomName,
-            ...phantomMetadata,
-            ...connectionMethods,
+            name: wallet.adapter.name,
+            id: wallet.adapter.name,
+            shortName: wallet.adapter.name,
+            isSolana: true,
+            iconUrl: wallet.adapter.icon,
+            iconBackground: '#FFF',
+            installed: [
+              WalletReadyState.Installed,
+              WalletReadyState.Loadable,
+            ].includes(wallet.adapter.readyState),
+            downloadUrls: walletDownloadUrls[wallet.adapter.name],
           },
         ] as WalletInstance[]
       }

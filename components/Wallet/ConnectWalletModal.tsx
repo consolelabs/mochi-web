@@ -146,21 +146,23 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         changeWalletStep(WalletStep.Connect)
       }
       if (!wallet.isSolana) {
-        const uri = await sWallet?.qrCode?.getUri()
-        setState({
-          qrCodeUri: uri,
-          selectedWallet: sWallet,
-        })
-        changeWalletStep(WalletStep.Connect)
-        // We need to guard against "onConnecting" callbacks being fired
-        // multiple times since connector instances can be shared between
-        // wallets. Ideally wagmi would let us scope the callback to the
-        // specific "connect" call, but this will work in the meantime.
-        let callbackFired = false
-        wallet.onConnecting(async () => {
-          if (callbackFired) return
-          callbackFired = true
-        })
+        setTimeout(async () => {
+          const uri = await sWallet?.qrCode?.getUri()
+          setState({
+            qrCodeUri: uri,
+            selectedWallet: sWallet,
+          })
+          changeWalletStep(WalletStep.Connect)
+          // We need to guard against "onConnecting" callbacks being fired
+          // multiple times since connector instances can be shared between
+          // wallets. Ideally wagmi would let us scope the callback to the
+          // specific "connect" call, but this will work in the meantime.
+          let callbackFired = false
+          wallet.onConnecting(async () => {
+            if (callbackFired) return
+            callbackFired = true
+          })
+        }, 0)
       }
     } else {
       setState({
@@ -257,7 +259,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                         return (
                           <div
                             key={`connect-wallet-group-${groupName}`}
-                            className="flex flex-col flex-shrink-0 lg:gap-y-2"
+                            className="flex flex-col flex-shrink-0 gap-y-0.5 lg:gap-y-2"
                           >
                             <span className="text-xs font-semibold text-dashboard-gray-4">
                               {groupName}
@@ -268,7 +270,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                                   <button
                                     onClick={() => onSelectWallet(c)}
                                     type="button"
-                                    className="flex flex-col gap-x-2 gap-y-2 items-center p-2 rounded-md lg:flex-row lg:gap-y-0 hover:bg-dashboard-gray-3"
+                                    className="flex flex-col gap-y-1 gap-x-2 items-center p-2 rounded-md lg:flex-row lg:gap-y-0 hover:bg-dashboard-gray-3"
                                     key={`connect-wallet-connector-${c.id}`}
                                   >
                                     <img
