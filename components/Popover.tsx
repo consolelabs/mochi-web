@@ -1,5 +1,6 @@
-import { Popover as HeadlessPopover, Transition } from '@headlessui/react'
+import { Popover as HeadlessPopover } from '@headlessui/react'
 import clsx from 'clsx'
+import { Float } from '@headlessui-float/react'
 import { useState } from 'react'
 
 type Props = {
@@ -15,36 +16,38 @@ export const Popover = (props: Props) => {
     <HeadlessPopover
       onMouseEnter={() => setIsShowing(true)}
       onMouseLeave={() => setIsShowing(false)}
-      className="relative z-50"
+      className="relative"
     >
-      <HeadlessPopover.Button
-        className={({ open }) =>
-          clsx('outline-none h-full', {
-            'text-mochi': open,
-          })
-        }
-      >
-        {props.trigger}
-      </HeadlessPopover.Button>
-      <Transition
+      <Float
         show={isShowing}
         enter="transition duration-150 ease-out"
-        enterFrom="fixed md:static transform md:translate-y-3 -translate-y-4 opacity-0"
-        enterTo="fixed md:static transform md:translate-y-2 -translate-y-3 opacity-100"
+        enterFrom="transform translate-y-3 opacity-0"
+        enterTo="transform translate-y-2 opacity-100"
         leave="transition duration-150 ease-out"
-        leaveFrom="fixed md:static transform md:translate-y-2 -translate-y-3 opacity-100"
-        leaveTo="fixed md:static transform md:translate-y-3 -translate-y-4 opacity-0"
+        leaveFrom="transform translate-y-2 opacity-100"
+        leaveTo="transform translate-y-3 opacity-0"
+        placement="bottom-start"
+        flip
+        offset={0}
       >
+        <HeadlessPopover.Button
+          className={({ open }) =>
+            clsx('outline-none h-full', {
+              'text-mochi': open,
+            })
+          }
+        >
+          {props.trigger}
+        </HeadlessPopover.Button>
         <HeadlessPopover.Panel
-          static
           className={clsx(
-            'bottom-0 md:bottom-auto -translate-y-3 md:top-full md:-translate-y-2 absolute z-50 rounded-md shadow-xl bg-white p-2',
+            'relative z-50 rounded-md shadow-xl bg-white p-2',
             props.panelClassname,
           )}
         >
           {props.children}
         </HeadlessPopover.Panel>
-      </Transition>
+      </Float>
     </HeadlessPopover>
   )
 }

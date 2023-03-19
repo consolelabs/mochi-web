@@ -14,6 +14,7 @@
     "@fnando/sparkline": "^0.3.10",
     "@fontsource/inter": "^4.5.7",
     "@fontsource/sora": "^4.5.10",
+    "@headlessui-float/react": "^0.11.0",
     "@headlessui/react": "^1.7.5",
     "@notionhq/client": "^2.2.2",
     "@solana/wallet-adapter-base": "^0.9.22",

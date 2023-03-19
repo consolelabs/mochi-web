@@ -39,7 +39,9 @@ const NavLink = (props: any) => {
 }
 
 const NavLinks = ({ className }: { className: string }) => (
-  <div className={['flex items-stretch', className].join(' ')}>
+  <div
+    className={['flex flex-wrap items-stretch gap-y-2', className].join(' ')}
+  >
     <Popover
       trigger={<span className="text-sm font-semibold">Features</span>}
       panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
@@ -142,14 +144,16 @@ const NavLinks = ({ className }: { className: string }) => (
         Vote on Discordbotlist.com
       </NavLink>
     </Popover>
-    <ConnectButton />
+    <div className="hidden md:block">
+      <ConnectButton />
+    </div>
   </div>
 )
 
 export const Navbar = () => (
   <Fragment>
     <nav className="relative z-20 bg-transparent">
-      <div className="flex items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
+      <div className="flex flex-wrap gap-y-5 items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
         <Link legacyBehavior href="/">
           <a className="flex gap-4 items-center text-gray-900 group">
             <div className="w-9 h-9 rounded-full transition-shadow duration-200 ease-in-out group-hover:shadow-xl group-hover:shadow-mochi-200">
@@ -166,7 +170,10 @@ export const Navbar = () => (
             </span>
           </a>
         </Link>
-        <NavLinks className="hidden gap-10 ml-auto md:flex" />
+        <div className="ml-auto md:hidden">
+          <ConnectButton />
+        </div>
+        <NavLinks className="flex gap-x-10 justify-center mx-auto md:justify-start md:mx-0 md:ml-auto basis-full md:basis-[auto]" />
       </div>
     </nav>
     <div className="flex relative justify-center items-center py-2 space-x-2 w-full text-sm bg-black">
@@ -181,9 +188,6 @@ export const Navbar = () => (
         <Icon icon="heroicons:trophy-20-solid" className="mr-1 w-4" />
         2nd place
       </span>
-    </div>
-    <div className="overflow-auto fixed right-0 bottom-0 left-0 z-50 w-screen bg-white border-t-2 md:hidden border-t-mochi-100">
-      <NavLinks className="gap-7 py-2 px-3 text-sm" />
     </div>
   </Fragment>
 )
