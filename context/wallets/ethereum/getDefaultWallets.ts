@@ -1,6 +1,6 @@
 import { Connector, Chain } from 'wagmi'
 import { isMobile } from 'utils/isMobile'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { WalletConnectLegacyConnector as WalletConnectConnector } from 'wagmi/connectors/walletConnectLegacy'
 import { WalletInstance, WalletList } from 'context/wallets/Wallet'
 import { omitUndefinedValues } from 'utils/omitUndefinedValues'
 import {
