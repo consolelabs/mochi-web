@@ -24,7 +24,7 @@ export function getWalletConnectConnector({
   const options: WalletConnectConnectorOptions = {
     chains,
     options: {
-      projectId: 'ea40c87e9d6a1e53bc6c6893626ea0ed',
+      projectId: 'e9f8a905b4d5c924cec1a740623be776',
       showQrModal,
     },
   }

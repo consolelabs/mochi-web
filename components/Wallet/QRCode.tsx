@@ -38,6 +38,7 @@ export const QRCode = ({
   logoUrl,
   uri,
 }: Props) => {
+  console.log(uri)
   const size = QR_SIZE - LOGO_MARGIN * 2
 
   const dots = useMemo(() => {

@@ -10,6 +10,7 @@ import { heading } from '~components/Dashboard/Heading'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { NextPageWithLayout } from '~pages/_app'
+// @ts-ignore
 import { Sparklines, SparklinesCurve } from 'react-sparklines'
 
 const sampleSparklineData = [
@@ -181,7 +182,7 @@ const Profile: NextPageWithLayout = () => {
                   <div
                     key={`profile-watchlist-${i}`}
                     className={card({
-                      className: 'flex justify-between gwap-x-20',
+                      className: 'flex justify-between gap-x-10',
                     })}
                   >
                     <div className="flex flex-col gap-y-2">
@@ -237,7 +238,7 @@ const Profile: NextPageWithLayout = () => {
           </div>
 
           <div className="flex flex-col p-2 rounded-xl bg-dashboard-gray-3">
-            <div className="flex justify-between p-3">
+            <div className="flex gap-x-10 justify-between p-3">
               <div className="flex flex-col gap-y-1">
                 <span className="font-semibold">Ongoing Quests</span>
                 <div className="flex gap-x-2 items-center">
