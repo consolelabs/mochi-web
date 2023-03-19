@@ -19,7 +19,7 @@ const generateMatrix = (
   )
 }
 
-const QR_SIZE = 360
+const QR_SIZE = 300
 const LOGO_SIZE = 64
 const LOGO_MARGIN = 8
 
@@ -28,6 +28,7 @@ type Props = {
   logoBackground?: string
   logoUrl?: string
   logoPadding?: number
+  qrSize?: number
   uri: string
 }
 
@@ -36,10 +37,10 @@ export const QRCode = ({
   logoBackground,
   logoPadding = 7,
   logoUrl,
+  qrSize = QR_SIZE,
   uri,
 }: Props) => {
-  console.log(uri)
-  const size = QR_SIZE - LOGO_MARGIN * 2
+  const size = qrSize - LOGO_MARGIN * 2
 
   const dots = useMemo(() => {
     const dots: ReactElement[] = []

@@ -3,10 +3,12 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { Fragment, useCallback, useEffect, useMemo, useReducer } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
+import { metaMask } from '~context/wallets/ethereum/walletConnectors'
 import {
   useWalletConnectors,
   WalletConnector,
 } from '~context/wallets/useWalletConnectors'
+import { isMobile } from '~utils/isMobile'
 import { ConnectDetail } from './ConnectDetail'
 import { ConnectWalletIntro } from './ConnectWalletIntro'
 
@@ -74,17 +76,30 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           })
         }
 
-        const getDesktopDeepLink = wallet.desktop?.getUri
-        if (getDesktopDeepLink) {
-          // if desktop deep link, wait for uri
-          setTimeout(async () => {
-            const uri = await getDesktopDeepLink()
-            window.open(uri, false ? '_blank' : '_self')
-          }, 0)
-        }
+        setTimeout(async () => {
+          const getDesktopDeepLink = wallet.desktop?.getUri
+          const getMobileURI = wallet.mobile?.getUri
+          let uri
+          if (isMobile()) {
+            if (getMobileURI) {
+              uri = await getMobileURI()
+            } else if (wallet.id === metaMask({ chains: [] }).id) {
+              // https://github.com/MetaMask/metamask-mobile/issues/3965#issuecomment-1122505112
+              uri = `dapp://${window.location.host}${window.location.search}`
+            }
+          } else if (getDesktopDeepLink) {
+            uri = await getDesktopDeepLink()
+          }
+          if (uri) {
+            const a = document.createElement('a')
+            a.rel = 'noreferrer'
+            a.href = uri
+            a.click()
+          }
+        }, 0)
       }
     },
-    [setState, onClose],
+    [onClose],
   )
 
   const changeWalletStep = (
@@ -131,6 +146,12 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         changeWalletStep(WalletStep.Connect)
       }
       if (!wallet.isSolana) {
+        const uri = await sWallet?.qrCode?.getUri()
+        setState({
+          qrCodeUri: uri,
+          selectedWallet: sWallet,
+        })
+        changeWalletStep(WalletStep.Connect)
         // We need to guard against "onConnecting" callbacks being fired
         // multiple times since connector instances can be shared between
         // wallets. Ideally wagmi would let us scope the callback to the
@@ -139,12 +160,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         wallet.onConnecting(async () => {
           if (callbackFired) return
           callbackFired = true
-          const uri = await sWallet?.qrCode?.getUri()
-          setState({
-            qrCodeUri: uri,
-            selectedWallet: sWallet,
-          })
-          changeWalletStep(WalletStep.Connect)
         })
       }
     } else {
@@ -215,52 +230,53 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         </Transition.Child>
         <div className="fixed inset-0">
-          <div className="flex justify-center items-center w-full min-h-full">
+          <div className="flex relative justify-center items-center w-full min-h-full">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-200"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-100"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+              enter="ease-out duration-200 ease-in-out"
+              enterFrom="lg:opacity-0 lg:scale-95 lg:translate-y-0 translate-y-full"
+              enterTo="lg:opacity-100 lg:scale-100 translate-y-0"
+              leave="ease-in duration-300 ease-in-out"
+              leaveFrom="lg:opacity-100 lg:scale-100 translate-y-0"
+              leaveTo="lg:opacity-0 lg:scale-95 lg:translate-y-0 translate-y-full"
             >
-              <Dialog.Panel className="flex mx-auto bg-white rounded-lg shadow-lg">
-                <div className="flex flex-col flex-shrink-0 p-5 border-r border-dashboard-gray-3">
+              <Dialog.Panel className="flex overflow-hidden absolute bottom-0 flex-col w-full bg-white rounded-t-2xl md:max-w-md lg:relative lg:flex-row lg:mx-auto lg:w-auto lg:max-w-none lg:rounded-lg lg:shadow-lg">
+                <div className="flex flex-col flex-shrink-0 max-w-full border-b lg:p-5 lg:border-b-0 lg:border-r bg-dashboard-gray-9 border-dashboard-gray-3">
                   <h1
                     className={heading({
-                      size: 'sm',
-                      className: 'whitespace-nowrap',
+                      size: isMobile() ? 'xs' : 'sm',
+                      className:
+                        'whitespace-nowrap text-center font-semibold p-4 lg:p-0 lg:text-left',
                     })}
                   >
                     Choose your wallet
                   </h1>
-                  <div className="flex flex-col gap-y-5 mt-5">
+                  <div className="flex overflow-x-auto flex-row gap-x-10 p-4 pt-0 lg:flex-col lg:gap-x-0 lg:gap-y-5 lg:p-0 lg:mt-5">
                     {Object.entries(groupedWallets).map(
                       ([groupName, connectors]) => {
                         return (
                           <div
                             key={`connect-wallet-group-${groupName}`}
-                            className="flex flex-col gap-y-2"
+                            className="flex flex-col flex-shrink-0 lg:gap-y-2"
                           >
                             <span className="text-xs font-semibold text-dashboard-gray-4">
                               {groupName}
                             </span>
-                            <div className="flex flex-col gap-y-1">
+                            <div className="flex flex-row gap-x-4 -ml-2 lg:flex-col lg:gap-x-0 lg:gap-y-1 lg:m-0">
                               {connectors.map((c) => {
                                 return (
                                   <button
                                     onClick={() => onSelectWallet(c)}
                                     type="button"
-                                    className="flex gap-x-2 items-center p-2 rounded-md hover:bg-dashboard-gray-3"
+                                    className="flex flex-col gap-x-2 gap-y-2 items-center p-2 rounded-md lg:flex-row lg:gap-y-0 hover:bg-dashboard-gray-3"
                                     key={`connect-wallet-connector-${c.id}`}
                                   >
                                     <img
-                                      className="w-6"
+                                      className="flex-shrink-0 w-12 rounded-xl lg:w-6 lg:rounded-none"
                                       src={c.iconUrl}
                                       alt=""
                                     />
-                                    <span className="text-sm font-medium text-foreground">
+                                    <span className="text-xs font-medium lg:text-sm text-foreground">
                                       {c.name}
                                     </span>
                                   </button>
@@ -273,7 +289,9 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                     )}
                   </div>
                 </div>
-                <div className="flex-1 p-5 min-w-[500px]">{walletContent}</div>
+                <div className="flex-1 p-5 lg:min-w-[500px]">
+                  {walletContent}
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

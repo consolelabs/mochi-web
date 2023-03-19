@@ -6,65 +6,6 @@ import { isAndroid, isIOS, isMobile } from 'utils/isMobile'
 import { Wallet } from 'context/wallets/Wallet'
 import { getWalletConnectConnector } from './getWalletConnectConnector'
 
-export interface ArgentOptions {
-  chains: Chain[]
-}
-
-export const argent = ({ chains }: ArgentOptions): Wallet => ({
-  id: 'argent',
-  name: 'Argent',
-  iconUrl: '/svg/wallet-icons/argent.svg',
-  iconBackground: '#fff',
-  downloadUrls: {
-    android:
-      'https://play.google.com/store/apps/details?id=im.argent.contractwalletclient',
-    ios: 'https://apps.apple.com/us/app/argent/id1358741926',
-    qrCode: 'https://argent.link/app',
-  },
-  createConnector: () => {
-    const connector = getWalletConnectConnector({ chains })
-
-    return {
-      connector,
-      mobile: {
-        getUri: async () => {
-          const { uri = '' } = (await connector.getProvider()).signer
-
-          return isAndroid()
-            ? uri
-            : `https://argent.link/app/wc?uri=${encodeURIComponent(uri)}`
-        },
-      },
-      qrCode: {
-        getUri: async () => (await connector.getProvider()).signer.uri ?? '',
-        instructions: {
-          learnMoreUrl: 'https://www.argent.xyz/learn/what-is-a-crypto-wallet/',
-          steps: [
-            {
-              description:
-                'Put Argent on your home screen for faster access to your wallet.',
-              step: 'install',
-              title: 'Open the Argent app',
-            },
-            {
-              description:
-                'Create a wallet and username, or import an existing wallet.',
-              step: 'create',
-              title: 'Create or Import a Wallet',
-            },
-            {
-              description:
-                'After you scan, a connection prompt will appear for you to connect your wallet.',
-              step: 'scan',
-              title: 'Tap the Scan QR button',
-            },
-          ],
-        },
-      },
-    }
-  },
-})
-
 export interface BraveOptions {
   chains: Chain[]
   shimDisconnect?: boolean
@@ -164,64 +105,6 @@ export const coinbase = ({ appName, chains }: CoinbaseOptions): Wallet => {
   }
 }
 
-export interface ImTokenOptions {
-  chains: Chain[]
-}
-
-export const imToken = ({ chains }: ImTokenOptions): Wallet => ({
-  id: 'imToken',
-  name: 'imToken',
-  iconUrl: '/svg/wallet-icons/imToken.svg',
-  iconBackground: '#098de6',
-  downloadUrls: {
-    android: 'https://play.google.com/store/apps/details?id=im.token.app',
-    ios: 'https://itunes.apple.com/us/app/imtoken2/id1384798940',
-    qrCode: 'https://token.im/download',
-  },
-  createConnector: () => {
-    const connector = getWalletConnectConnector({ chains })
-
-    return {
-      connector,
-      mobile: {
-        getUri: async () => {
-          const { uri = '' } = (await connector.getProvider()).signer
-          return `imtokenv2://wc?uri=${encodeURIComponent(uri)}`
-        },
-      },
-      qrCode: {
-        getUri: async () => (await connector.getProvider()).signer.uri ?? '',
-        instructions: {
-          learnMoreUrl:
-            typeof window !== 'undefined' &&
-            window.navigator.language.includes('zh')
-              ? 'https://support.token.im/hc/zh-cn/categories/360000925393'
-              : 'https://support.token.im/hc/en-us/categories/360000925393',
-          steps: [
-            {
-              description:
-                'Put imToken app on your home screen for faster access to your wallet.',
-              step: 'install',
-              title: 'Open the imToken app',
-            },
-            {
-              description: 'Create a new wallet or import an existing one.',
-              step: 'create',
-              title: 'Create or Import a Wallet',
-            },
-            {
-              description:
-                'Choose New Connection, then scan the QR code and confirm the prompt to connect.',
-              step: 'scan',
-              title: 'Tap Scanner Icon in top right corner',
-            },
-          ],
-        },
-      },
-    }
-  },
-})
-
 export interface InjectedOptions {
   chains: Chain[]
   shimDisconnect?: boolean
@@ -243,50 +126,13 @@ export const injected = ({
   }),
 })
 
-export interface LedgerOptions {
-  chains: Chain[]
-}
-
-export const ledger = ({ chains }: LedgerOptions): Wallet => ({
-  id: 'ledger',
-  iconBackground: '#000',
-  name: 'Ledger Live',
-  iconUrl: '/svg/wallet-icons/ledger.svg',
-  downloadUrls: {
-    android: 'https://play.google.com/store/apps/details?id=com.ledger.live',
-    ios: 'https://apps.apple.com/us/app/ledger-live-web3-wallet/id1361671700',
-    qrCode: 'https://www.ledger.com/ledger-live/download#download-device-2',
-  },
-  createConnector: () => {
-    const connector = getWalletConnectConnector({ chains })
-
-    return {
-      connector,
-      mobile: {
-        getUri: async () => {
-          const { uri = '' } = (await connector.getProvider()).signer
-          return isAndroid()
-            ? uri
-            : `ledgerlive://wc?uri=${encodeURIComponent(uri)}`
-        },
-      },
-      desktop: {
-        getUri: async () => {
-          const { uri = '' } = (await connector.getProvider()).signer
-          return `ledgerlive://wc?uri=${encodeURIComponent(uri)}`
-        },
-      },
-    }
-  },
-})
-
 export interface MetaMaskOptions {
   chains: Chain[]
   shimDisconnect?: boolean
 }
 
-export function isMetaMask(ethereum: NonNullable<typeof window['ethereum']>) {
-  // Logic borrowed from wagmi's MetaMaskConnector
+export function isMetaMask(ethereum: NonNullable<(typeof window)['ethereum']>) {
+  // Logic borrowed from agmi's MetaMaskConnector
   // https://github.com/tmm/wagmi/blob/main/packages/core/src/connectors/metaMask.ts
   const isMetaMask = Boolean(ethereum.isMetaMask)
 
@@ -340,20 +186,6 @@ export const metaMask = ({
           })
       return {
         connector,
-        mobile: {
-          getUri: shouldUseWalletConnect
-            ? async () => {
-                // @ts-ignore
-                const { uri = '' } = (await connector.getProvider()).signer
-
-                return isAndroid()
-                  ? uri
-                  : `https://metamask.app.link/wc?uri=${encodeURIComponent(
-                      uri,
-                    )}`
-              }
-            : undefined,
-        },
       }
     },
   }
@@ -380,7 +212,7 @@ export const rainbow = ({ chains }: RainbowOptions): Wallet => ({
       connector,
       mobile: {
         getUri: async () => {
-          const { uri = '' } = (await connector.getProvider()).signer
+          const uri = await connector.getURI()
 
           return isAndroid()
             ? uri
@@ -388,7 +220,7 @@ export const rainbow = ({ chains }: RainbowOptions): Wallet => ({
         },
       },
       qrCode: {
-        getUri: async () => (await connector.getProvider()).signer.uri ?? '',
+        getUri: async () => await connector.getURI(),
         instructions: {
           learnMoreUrl:
             'https://learn.rainbow.me/connect-your-wallet-to-a-website-or-app',
@@ -439,14 +271,14 @@ export const steak = ({ chains }: SteakOptions): Wallet => ({
       connector,
       mobile: {
         getUri: async () => {
-          const { uri = '' } = (await connector.getProvider()).signer
+          const uri = await connector.getURI()
           return isAndroid()
             ? uri
             : `https://links.steakwallet.fi/wc?uri=${encodeURIComponent(uri)}`
         },
       },
       qrCode: {
-        getUri: async () => (await connector.getProvider()).signer.uri ?? '',
+        getUri: async () => await connector.getURI(),
         instructions: {
           learnMoreUrl:
             'https://blog.steakwallet.fi/introducing-the-steakwallet-beta/',
@@ -511,14 +343,14 @@ export const trust = ({ chains, shimDisconnect }: TrustOptions): Wallet => ({
       connector,
       mobile: {
         getUri: async () => {
-          const { uri = '' } = (await connector.getProvider()).signer
+          const uri = await connector.getURI()
           return isAndroid()
             ? uri
             : `https://link.trustwallet.com/wc?uri=${encodeURIComponent(uri)}`
         },
       },
       qrCode: {
-        getUri: async () => (await connector.getProvider()).signer.uri ?? '',
+        getUri: async () => await connector.getURI(),
         instructions: {
           learnMoreUrl:
             'https://trustwallet.com/blog/an-introduction-to-trustwallet',
@@ -564,7 +396,7 @@ export const walletConnect = ({ chains }: WalletConnectOptions): Wallet => ({
       showQrModal: ios,
     })
 
-    const getUri = async () => (await connector.getProvider()).signer.uri ?? ''
+    const getUri = async () => await connector.getURI()
 
     return {
       connector,

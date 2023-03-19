@@ -43,9 +43,9 @@ export const ConnectDetail = ({
     return (
       <div className="relative h-full">
         <div className="flex justify-center items-center w-full h-full">
-          <div className="mx-auto w-full max-w-xs text-center">
+          <div className="mx-auto w-full text-center max-w-[200px]">
             <div className="flex justify-center items-center">
-              <div className="w-20 h-20 rounded-full">
+              <div className="w-14 h-14 rounded-full lg:w-20 lg:h-20">
                 <img
                   alt="Logo"
                   className="object-cover w-full"
@@ -57,11 +57,11 @@ export const ConnectDetail = ({
                 style={{
                   boxShadow: '0px 0px 16.5517px rgba(0, 0, 0, 0.18)',
                 }}
-                className="overflow-hidden p-4 w-20 h-20 rounded-full"
+                className="overflow-hidden p-3 w-14 h-14 rounded-full lg:w-20 lg:h-20"
               >
                 <img
                   alt={wallet.name}
-                  className="object-cover w-full"
+                  className="object-cover w-full rounded-md lg:rounded-none"
                   src={iconUrl}
                 />
               </div>
@@ -80,7 +80,7 @@ export const ConnectDetail = ({
             )}
           </div>
         </div>
-        <div className="flex absolute inset-x-0 bottom-1 justify-between items-center">
+        <div className="flex inset-x-0 justify-between items-center mt-10 lg:absolute lg:bottom-1 lg:mt-0">
           <span className="text-xs font-medium text-foreground">
             If the connection failed, please try again.
           </span>
