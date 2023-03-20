@@ -1,17 +1,17 @@
-import { Layout } from "~app/layout";
-import { SEO } from "~app/layout/seo";
+import { Layout } from '~app/layout'
+import { SEO } from '~app/layout/seo'
 
 export default function NotFoundPage() {
   return (
     <Layout>
       <SEO title="404" tailTitle />
-      <div className="max-w-7xl px-12 py-48 mx-auto">
+      <div className="py-48 px-12 mx-auto max-w-7xl">
         <h2 className="text-4xl font-bold text-center">
           🍡
           <br />
-          not found!
+          Not Found!
         </h2>
       </div>
     </Layout>
-  );
+  )
 }

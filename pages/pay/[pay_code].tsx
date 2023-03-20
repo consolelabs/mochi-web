@@ -15,6 +15,7 @@ import { button } from '~components/Dashboard/Button'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { isSSR } from '@dwarvesf/react-utils'
+import { HOME_URL } from '~envs'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -38,6 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 type Props = {
   payRequest?: {
+    code: string
     amount: string
     status: 'submitted' | 'claimed' | 'expired'
     token: {
@@ -51,7 +53,12 @@ export default function PayCode({ payRequest }: Props) {
   if (!payRequest) {
     return (
       <Layout footer={<Footer />}>
-        <SEO title="Pay Link" tailTitle />
+        <SEO
+          title="Pay Link"
+          tailTitle
+          image={`${HOME_URL}/api/pay-og`}
+          description="We couldn't find the Pay Link you were looking for."
+        />
         <div
           className={clsx(
             'flex flex-col p-8 pt-4 mx-auto text-center bg-white rounded-2xl md:mb-64 max-w-[450px]',
@@ -80,7 +87,15 @@ export default function PayCode({ payRequest }: Props) {
 
   return (
     <Layout footer={<Footer />}>
-      <SEO title="Pay Link" tailTitle />
+      <SEO
+        title="Pay Link"
+        tailTitle
+        image={`${HOME_URL}/api/pay-og?code=${payRequest.code}`}
+        description={`Visit this Pay Link to withdraw ${utils.formatUnits(
+          payRequest.amount,
+          payRequest.token.decimal,
+        )} ${payRequest.token.symbol} to your wallet!`}
+      />
       <div
         className={clsx(
           'flex flex-col p-8 pt-4 mx-auto text-center bg-white rounded-2xl md:mb-64',
