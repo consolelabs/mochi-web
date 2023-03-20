@@ -152,7 +152,10 @@ const QuestsRecurrence = () => {
               className: 'text-sm',
             })}
           >
-            <Icon className="w-4 h-4 text-white" icon="heroicons:plus" />
+            <Icon
+              className="w-4 h-4 text-white"
+              icon="heroicons:plus-20-solid"
+            />
             <div>Create quest</div>
           </button>
         </Link>

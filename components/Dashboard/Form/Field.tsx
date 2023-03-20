@@ -12,7 +12,7 @@ import { heading } from '../Heading'
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>
 
 type Props<T extends FieldValues> = {
-  label: string
+  label?: string
   children:
     | ((p: {
         field: ControllerRenderProps<FieldValues, string>
@@ -21,6 +21,7 @@ type Props<T extends FieldValues> = {
       }) => React.ReactNode)
     | React.ReactElement<any>
   description?: React.ReactNode
+  valueProps?: string
 } & Omit<Optional<ControllerProps<T>, 'name'>, 'render'>
 
 export default function Field<T extends FieldValues = FieldValues>({
@@ -29,12 +30,18 @@ export default function Field<T extends FieldValues = FieldValues>({
   children,
   control,
   name,
+  valueProps,
   ...rest
 }: Props<T>) {
   return (
     <div className="flex flex-col gap-y-1">
       <div className="flex flex-col">
-        <label className={heading({ size: 'xs' })}>{label}</label>
+        {label && (
+          <label className={heading({ size: 'xs' })}>
+            {label}
+            {rest.rules?.required && <span className="text-mochi-900"> *</span>}
+          </label>
+        )}
         {description}
       </div>
       {!control || !name ? (
@@ -52,6 +59,7 @@ export default function Field<T extends FieldValues = FieldValues>({
                       field: {
                         ...field,
                         ...(fieldState.error ? { appearance: 'invalid' } : {}),
+                        ...(valueProps ? { [valueProps]: field.value } : {}),
                       },
                       fieldState,
                       ...renderRest,
@@ -62,6 +70,7 @@ export default function Field<T extends FieldValues = FieldValues>({
                       ...field,
                       ...fieldState,
                       ...renderRest,
+                      ...(valueProps ? { [valueProps]: field.value } : {}),
                     })
                   : null}
                 {fieldState.error && (
