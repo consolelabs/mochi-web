@@ -93,7 +93,7 @@ export default function Verify({
                 <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
                   <div className="text-2xl font-black text-center md:text-3xl">
                     <span className="uppercase text-mochi-gradient">
-                      Your wallet verified! You can close this window
+                      Your wallet is verified! You can close this window
                     </span>{' '}
                     ✨
                   </div>
@@ -107,11 +107,22 @@ export default function Verify({
                     Connect your wallet to verify and get full access to Mochi
                     with more exclusive privileges.
                   </p>
-                  <div className="flex justify-center">
+                  <div className="flex gap-x-2 justify-center">
                     {connected ? (
-                      <button onClick={sign} className={button({ size: 'sm' })}>
-                        {loading ? 'Verifying...' : 'Verify'}
-                      </button>
+                      <>
+                        <button
+                          onClick={sign}
+                          className={button({ size: 'sm' })}
+                        >
+                          {loading ? 'Verifying...' : 'Verify'}
+                        </button>
+                        <button
+                          onClick={() => setLoading(false)}
+                          className={button({ size: 'sm' })}
+                        >
+                          Cancel
+                        </button>
+                      </>
                     ) : (
                       <ConnectButton />
                     )}

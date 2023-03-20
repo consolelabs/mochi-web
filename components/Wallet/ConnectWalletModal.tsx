@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { Fragment, useCallback, useEffect, useMemo, useReducer } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
+import { useAppWalletContext } from '~context/wallet-context'
 import { metaMask } from '~context/wallets/ethereum/walletConnectors'
 import {
   useWalletConnectors,
@@ -36,6 +37,7 @@ type State = {
 }
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
+  const { openInApp } = useAppWalletContext()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
       return {
@@ -93,16 +95,11 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           } else if (getDesktopDeepLink) {
             uri = await getDesktopDeepLink()
           }
-          if (uri) {
-            const a = document.createElement('a')
-            a.rel = 'noreferrer'
-            a.href = uri
-            a.click()
-          }
+          if (uri) openInApp(uri)
         }, 0)
       }
     },
-    [onClose],
+    [onClose, openInApp],
   )
 
   const changeWalletStep = (
@@ -137,6 +134,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     setState({
       selectedOptionId: wallet.id,
     })
+
     connectToWallet(wallet)
 
     if (wallet.ready) {

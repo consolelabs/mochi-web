@@ -23,7 +23,7 @@ export const useAccount = (): Account => {
       }`
     : undefined
 
-  const { connected: isSolanaConnected, publicKey, wallet } = useWallet()
+  const { connected: isSolanaConnected, publicKey } = useWallet()
   const solBalanceData = useSolanaBalance(publicKey)
   const solDisplayBalance = solBalanceData
     ? `${abbreviateETHBalance(parseFloat(solBalanceData.formatted))} ${

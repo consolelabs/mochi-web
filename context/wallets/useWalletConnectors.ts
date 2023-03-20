@@ -78,7 +78,13 @@ export const useWalletConnectors = () => {
   const { connectAsync, connectors: defaultConnectors_untyped } = useConnect({
     chainId: initialChainId,
   })
-  const { select, connecting, wallets } = useWallet()
+  const {
+    select,
+    connecting,
+    wallets,
+    wallet: selectedWallet,
+    connect,
+  } = useWallet()
   const defaultConnectors = defaultConnectors_untyped as Connector[]
 
   const evmWalletInstances = flatten(
@@ -163,7 +169,11 @@ export const useWalletConnectors = () => {
       ...wallet,
       connect: async () => {
         if (wallet.isSolana) {
-          select(wallet.adapter?.name as WalletName)
+          if (selectedWallet?.adapter.name === wallet.name) {
+            await connect()
+          } else {
+            select(wallet.adapter?.name as WalletName)
+          }
           addRecentWalletId(wallet.adapter?.name as string)
         } else {
           return evmConnectWallet(wallet.id, wallet.connector!)

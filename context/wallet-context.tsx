@@ -33,6 +33,7 @@ export interface AppWalletContextValues {
   chains: Chain[]
   initialChainId?: number
   getChainById: (id: number) => Chain | undefined
+  openInApp: (wcUrl: string) => void
 }
 
 const [Provider, useAppWalletContext] = createContext<AppWalletContextValues>()
@@ -78,6 +79,13 @@ export const AppWalletContextProvider = ({
     [decoratedChains],
   )
 
+  const openInApp = useCallback((wcUrl: string) => {
+    const a = document.createElement('a')
+    a.href = wcUrl
+    a.rel = 'noreferrer noopener'
+    a.click()
+  }, [])
+
   return (
     <Provider
       value={{
@@ -87,6 +95,7 @@ export const AppWalletContextProvider = ({
         chains: [...decoratedChains, solanaChain],
         initialChainId: chains.length > 0 ? chains[0].id : undefined,
         getChainById,
+        openInApp,
       }}
     >
       {children}
