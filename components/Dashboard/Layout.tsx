@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { logo } from '~utils/image'
 import clsx from 'clsx'
-import { SEO } from '~app/layout/seo'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { Icon } from '@iconify/react'
 import { useAppWalletContext } from '~context/wallet-context'
@@ -17,7 +16,9 @@ export default function DashboardLayout({
   header,
   headerExtraRight,
   footer,
+  childSEO,
 }: {
+  childSEO?: React.ReactNode
   children: React.ReactNode
   showSidebar?: boolean
   fullWidth?: boolean
@@ -29,11 +30,10 @@ export default function DashboardLayout({
   const { connected } = useAppWalletContext()
   const { address } = useAccount()
 
-  if (!mounted) return null
+  if (!mounted) return <>{childSEO}</>
 
   return (
     <>
-      <SEO title="Dashboard" description="" />
       <div className="flex overflow-auto flex-col min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(

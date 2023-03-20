@@ -52,13 +52,18 @@ type Props = {
 export default function PayCode({ payRequest }: Props) {
   if (!payRequest) {
     return (
-      <Layout footer={<Footer />}>
-        <SEO
-          title="Pay Link"
-          tailTitle
-          image={`${HOME_URL}/api/pay-og`}
-          description="We couldn't find the Pay Link you were looking for."
-        />
+      <Layout
+        childSEO={
+          <SEO
+            title="Pay Link"
+            tailTitle
+            image={`${HOME_URL}/api/pay-og`}
+            description="We couldn't find the Pay Link you were looking for."
+            url={`${HOME_URL}/pay`}
+          />
+        }
+        footer={<Footer />}
+      >
         <div
           className={clsx(
             'flex flex-col p-8 pt-4 mx-auto text-center bg-white rounded-2xl md:mb-64 max-w-[450px]',
@@ -86,16 +91,21 @@ export default function PayCode({ payRequest }: Props) {
   }
 
   return (
-    <Layout footer={<Footer />}>
-      <SEO
-        title="Pay Link"
-        tailTitle
-        image={`${HOME_URL}/api/pay-og?code=${payRequest.code}`}
-        description={`Visit this Pay Link to withdraw ${utils.formatUnits(
-          payRequest.amount,
-          payRequest.token.decimal,
-        )} ${payRequest.token.symbol} to your wallet!`}
-      />
+    <Layout
+      childSEO={
+        <SEO
+          title="Pay Link"
+          tailTitle
+          image={`${HOME_URL}/api/pay-og?code=${payRequest.code}`}
+          description={`Visit this Pay Link to withdraw ${utils.formatUnits(
+            payRequest.amount,
+            payRequest.token.decimal,
+          )} ${payRequest.token.symbol} to your wallet!`}
+          url={`${HOME_URL}/pay/${payRequest.code}`}
+        />
+      }
+      footer={<Footer />}
+    >
       <div
         className={clsx(
           'flex flex-col p-8 pt-4 mx-auto text-center bg-white rounded-2xl md:mb-64',
