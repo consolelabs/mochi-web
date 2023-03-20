@@ -16,7 +16,9 @@ export const useSignMessage = (messageToSign: string) => {
 
   const signEVM = useCallback(async () => {
     const provider = await connector?.getProvider()
-    openInApp(provider.connector.uri)
+    if (provider?.connector?.uri) {
+      openInApp(provider.connector.uri)
+    }
     const signature = await signer?.signMessage(messageToSign)
     return signature
   }, [connector, messageToSign, openInApp, signer])
