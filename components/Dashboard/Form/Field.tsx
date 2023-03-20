@@ -11,7 +11,7 @@ import { heading } from '../Heading'
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>
 
-type Props = {
+type Props<T extends FieldValues> = {
   label: string
   children:
     | ((p: {
@@ -21,16 +21,16 @@ type Props = {
       }) => React.ReactNode)
     | React.ReactElement<any>
   description?: React.ReactNode
-} & Omit<Optional<ControllerProps, 'name'>, 'render'>
+} & Omit<Optional<ControllerProps<T>, 'name'>, 'render'>
 
-export default function Field({
+export default function Field<T extends FieldValues = FieldValues>({
   label,
   description,
   children,
   control,
   name,
   ...rest
-}: Props) {
+}: Props<T>) {
   return (
     <div className="flex flex-col gap-y-1">
       <div className="flex flex-col">

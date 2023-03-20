@@ -15,7 +15,7 @@ import '~styles/global.css'
 import '~styles/nprogress.css'
 import '../styles/tos.css'
 import { WalletProvider } from '~context/wallet-context'
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from 'sonner'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -34,7 +34,8 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <StrictMode>
-      <Toaster />
+      {/* @ts-ignore */}
+      <Toaster position="top-right" closeButton />
       <TopProgressBar />
       <WalletProvider>{getLayout(<Component {...pageProps} />)}</WalletProvider>
     </StrictMode>

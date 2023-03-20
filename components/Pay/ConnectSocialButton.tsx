@@ -1,5 +1,4 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
-import { Icon } from '@iconify/react'
 import { button } from '~components/Dashboard/Button'
 import Modal from '~components/Modal'
 import SocialButton from './components/SocialButton'
@@ -19,7 +18,7 @@ export default function ConnectSocialButton() {
       </button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
-        <div className="p-3 min-w-[340px]">
+        <div className="p-3 bg-white rounded-lg min-w-[340px]">
           <div className="font-semibold">Connect social links</div>
           <div className="mt-4">
             <SocialButton

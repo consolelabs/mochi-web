@@ -34,7 +34,6 @@ export const ConnectDetail = ({
             uri={qrCodeUri}
           />
         </div>
-        <button className={button({ size: 'sm' })}>Copy to clipboard</button>
       </div>
     )
   }, [wallet, qrCodeUri])

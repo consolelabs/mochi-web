@@ -44,4 +44,29 @@ const post = async (
   }
 }
 
-export const fetcher = { get, post }
+const put = async (
+  endpoint: string,
+  body: Record<string, any>,
+  initHeaders?: HeadersInit,
+): Promise<Response | null> => {
+  try {
+    const headers: Record<string, any> = {
+      'Content-Type': 'application/json',
+      ...initHeaders,
+    }
+
+    return await fetch(endpoint, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      method: 'PUT',
+      body: JSON.stringify(body),
+    })
+  } catch (e) {
+    console.error(`Call to ${endpoint} error\n`, e)
+    return null
+  }
+}
+
+export const fetcher = { get, post, put }

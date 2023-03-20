@@ -6,14 +6,14 @@ export default function ShareButton() {
     <button
       className={button({
         size: 'sm',
-        className: '!py-2 !px-0 !shadow-none font-semibold',
+        className: 'flex-1',
       })}
     >
       <Icon
         icon="mingcute:share-forward-fill"
-        className="text-dashboard-gray-4"
+        className="w-4 h-4 text-dashboard-gray-4"
       />
-      <div>Share</div>
+      <div className="whitespace-nowrap">Share</div>
     </button>
   )
 }

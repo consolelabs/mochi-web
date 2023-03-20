@@ -11,7 +11,7 @@ export default function Login() {
   return (
     <div className="flex flex-1 justify-center items-center w-full">
       <div className="flex flex-col items-center">
-        <h2 className={heading({ className: 'mb-6' })}>Log in</h2>
+        <h2 className={heading({ className: 'mb-6', size: 'lg' })}>Log in</h2>
         <div className="grid grid-cols-2 grid-rows-2 gap-3">
           <button className={button({})}>
             <Icon icon="mingcute:discord-fill" className="text-foreground" />

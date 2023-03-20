@@ -15,8 +15,17 @@ const API_URLS = {
   PROD: 'https://api.mochi.pod.town/api/v1',
   INDEXER: 'https://api.indexer.console.so/api/v1',
   MOCHI_PROFILE: 'https://api.mochi-profile.console.so/api/v1',
+  MOCHI_PAY: `https://api-develop.mochi-pay.console.so/api/v1`,
   // INDEXER: 'http://localhost:8080/api/v1',
 }
+
+const claimPayRequest = async (code: string, profile_id: string) =>
+  await fetcher.put(`${API_URLS.MOCHI_PAY}/pay-requests/${code}/claim`, {
+    profile_id,
+  })
+
+const getPayRequestInfo = async (code: string) =>
+  await fetcher.get<any>(`${API_URLS.MOCHI_PAY}/pay-requests/${code}`)
 
 const getProfileByDiscord = async (id: string) =>
   await fetcher.get<any>(
@@ -93,4 +102,6 @@ export const API = {
   getNFTCollectionPrice,
   getAttributeIcons,
   getAssetMetadata,
+  getPayRequestInfo,
+  claimPayRequest,
 }

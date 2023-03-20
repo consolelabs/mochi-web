@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { button } from '~components/Dashboard/Button'
+import Field from '~components/Dashboard/Form/Field'
 import { Input } from '~components/Dashboard/Input'
 
 type FormValue = {
@@ -7,34 +8,30 @@ type FormValue = {
 }
 
 export default function WalletAddressForm({
+  onSubmit,
   onCancel,
-  onAfterSubmit,
 }: {
+  onSubmit: (values: FormValue) => Promise<void>
   onCancel: () => void
-  onAfterSubmit: (values: any) => void
 }) {
-  const { register, handleSubmit } = useForm<FormValue>()
-
-  const onSubmit = async (values: FormValue) => {
-    console.log('walletAddress: ', values.walletAddress)
-
-    onAfterSubmit(values.walletAddress)
-    onCancel()
-  }
+  const { handleSubmit, control } = useForm<FormValue>()
 
   return (
-    <div className="p-4 md:p-8 flex flex-col min-w-[380px] bg-[#FFFFFF] rounded-lg">
+    <div className="flex flex-col p-4 bg-white rounded-2xl md:p-8 min-w-[300px]">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="font-semibold">Recipient&#39;s public key</div>
-        <Input
-          className="mt-2 mb-6"
-          placeholder="Enter wallet address"
-          {...register('walletAddress', {
-            required: 'required',
-          })}
-        />
-        <div className="flex justify-end gap-x-2">
+        <div className="mt-2 mb-6">
+          <Field
+            name="walletAddress"
+            rules={{ required: 'required' }}
+            label="Recipient's public key"
+            control={control}
+          >
+            <Input placeholder="Enter wallet address" />
+          </Field>
+        </div>
+        <div className="flex gap-x-2 justify-end">
           <button
+            type="button"
             className={button({
               appearance: 'gray',
             })}

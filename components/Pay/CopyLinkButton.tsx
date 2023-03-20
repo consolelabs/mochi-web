@@ -9,15 +9,17 @@ export default function CopyLink({ link }: { link: string }) {
     <button
       className={button({
         size: 'sm',
-        className: '!py-2 !px-0 !shadow-none font-semibold',
+        className: 'flex-1',
       })}
       onClick={onCopy}
     >
       <Icon
         icon={hasCopied ? 'mdi:success' : 'mingcute:copy-2-fill'}
-        className="text-dashboard-gray-4"
+        className="w-4 h-4 text-dashboard-gray-4"
       />
-      <div>{hasCopied ? 'Copied' : 'Copy Link'}</div>
+      <div className="whitespace-nowrap">
+        {hasCopied ? 'Link Copied' : 'Copy Link'}
+      </div>
     </button>
   )
 }

@@ -5,6 +5,9 @@ module.exports = {
     extend: {
       colors: {
         dashboard: {
+          green: {
+            1: '#3BA55C',
+          },
           gray: {
             1: '#F5F5F5',
             2: '#9399A1',

@@ -28,6 +28,7 @@ type Props = {
   logoBackground?: string
   logoUrl?: string
   logoPadding?: number
+  logoSize?: number
   qrSize?: number
   uri: string
 }
@@ -38,9 +39,12 @@ export const QRCode = ({
   logoPadding = 7,
   logoUrl,
   qrSize = QR_SIZE,
+  logoSize: _logoSize = LOGO_SIZE,
   uri,
 }: Props) => {
   const size = qrSize - LOGO_MARGIN * 2
+  const logoSize =
+    qrSize <= 200 ? _logoSize / 3 : qrSize <= 250 ? _logoSize / 2 : _logoSize
 
   const dots = useMemo(() => {
     const dots: ReactElement[] = []
@@ -71,7 +75,7 @@ export const QRCode = ({
       }
     })
 
-    const clearArenaSize = Math.floor((LOGO_SIZE + 25 + logoPadding) / cellSize)
+    const clearArenaSize = Math.floor((logoSize + 25 + logoPadding) / cellSize)
     const matrixMiddleStart = matrix.length / 2 - clearArenaSize / 2
     const matrixMiddleEnd = matrix.length / 2 + clearArenaSize / 2 - 1
 
@@ -109,26 +113,26 @@ export const QRCode = ({
     })
 
     return dots
-  }, [ecl, logoPadding, size, uri])
+  }, [ecl, logoPadding, logoSize, size, uri])
 
-  const logoWrapperSize = LOGO_SIZE + LOGO_MARGIN * 2
+  const logoWrapperSize = logoSize + LOGO_MARGIN * 2
 
   return (
     <div className="p-4 bg-white rounded-2xl border border-theme">
       <div className="relative w-full h-full select-none">
         <div
           style={{
-            width: LOGO_SIZE,
-            height: LOGO_SIZE,
+            width: logoSize,
+            height: logoSize,
             background: logoBackground,
           }}
           className="flex overflow-hidden absolute top-1/2 left-1/2 justify-center items-center rounded-lg -translate-x-1/2 -translate-y-1/2 aspect-square"
         >
           <img
             className="object-cover"
-            height={LOGO_SIZE}
+            height={logoSize}
             src={logoUrl}
-            width={LOGO_SIZE}
+            width={logoSize}
             alt="Logo"
           />
         </div>
@@ -138,7 +142,7 @@ export const QRCode = ({
               <rect height={logoWrapperSize} width={logoWrapperSize} />
             </clipPath>
             <clipPath id="clip-logo">
-              <rect height={LOGO_SIZE} width={LOGO_SIZE} />
+              <rect height={logoSize} width={logoSize} />
             </clipPath>
           </defs>
           <rect fill="transparent" height={size} width={size} />
