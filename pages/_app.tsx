@@ -34,7 +34,6 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <StrictMode>
-      {/* @ts-ignore */}
       <Toaster position="top-right" closeButton />
       <TopProgressBar />
       <WalletProvider>{getLayout(<Component {...pageProps} />)}</WalletProvider>

@@ -14,6 +14,7 @@ import clsx from 'clsx'
 import { button } from '~components/Dashboard/Button'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
+import { isSSR } from '@dwarvesf/react-utils'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -117,8 +118,8 @@ export default function PayCode({ payRequest }: Props) {
         ) : (
           <>
             <div className="flex flex-wrap gap-2">
-              <QRCodeButton uri={window.location.href} />
-              <CopyLinkButton link={window.location.href} />
+              <QRCodeButton uri={isSSR() ? '' : window.location.href} />
+              <CopyLinkButton link={isSSR() ? '' : window.location.href} />
               <ShareButton />
             </div>
 
