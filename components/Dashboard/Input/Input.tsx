@@ -26,6 +26,7 @@ export const Input = forwardRef(
       placeholder,
       onChange = () => {},
       onBlur,
+      ...rest
     } = props
 
     const [prefixWidth, setPrefixWidth] = useState(0)
@@ -46,6 +47,7 @@ export const Input = forwardRef(
           </span>
         )}
         <input
+          {...rest}
           ref={ref}
           type={type}
           placeholder={placeholder}
