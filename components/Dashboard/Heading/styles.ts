@@ -9,7 +9,8 @@ const variant = cva(['display'], {
     size: {
       xs: ['text-base', 'font-medium'],
       sm: ['text-xl', 'font-semibold'],
-      base: ['text-3xl', 'font-semibold'],
+      base: ['text-2xl', 'font-semibold'],
+      lg: ['text-3xl', 'font-semibold'],
     },
   },
   defaultVariants: {

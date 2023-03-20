@@ -35,11 +35,7 @@ export default function Modal({ isOpen, onClose, children }: Props) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel>
-                <div className="min-w-[200px] bg-white rounded-lg shadow-lg mx-auto">
-                  {children}
-                </div>
-              </Dialog.Panel>
+              <Dialog.Panel>{children}</Dialog.Panel>
             </Transition.Child>
           </div>
         </div>

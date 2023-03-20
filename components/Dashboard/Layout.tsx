@@ -37,7 +37,7 @@ export default function DashboardLayout({
       <div className="flex overflow-auto flex-col min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(
-            'z-50 sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between',
+            'z-50 sticky top-0 flex p-3 md:py-4 md:px-7 flex-shrink-0 justify-between',
             {
               'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
                 connected,

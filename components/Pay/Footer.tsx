@@ -4,20 +4,43 @@ import { SOCIAL_LINKS } from '~constants'
 
 export default function Footer() {
   return (
-    <div className="p-4 md:p-6 flex flex-col md:flex-row gap-x-2 justify-center items-center text-sm text-dashboard-gray-4">
+    <div className="flex flex-col gap-y-2 gap-x-3 justify-center items-center p-4 text-sm md:flex-row md:p-6 text-dashboard-gray-4">
       <div>Mochi &#169; {new Date().getFullYear()}</div>
-      <div className="flex flex-row gap-x-2">
-        <Link href="/">Feature</Link>
-        <Link href="/">Community</Link>
-        <Link href="/">Support</Link>
-        <Link href="/">Credibility</Link>
-        <a href={SOCIAL_LINKS.TWITTER} target="_blank" rel="noreferrer">
+      <div className="grid flex-row grid-cols-4 auto-rows-auto gap-1 gap-x-2 place-items-center sm:flex">
+        <Link href="/" className="col-span-2">
+          Feature
+        </Link>
+        <Link href="/" className="col-span-2">
+          Community
+        </Link>
+        <Link href="/" className="col-span-2">
+          Support
+        </Link>
+        <Link href="/" className="col-span-2">
+          Credibility
+        </Link>
+        <a
+          href={SOCIAL_LINKS.TWITTER}
+          target="_blank"
+          rel="noreferrer"
+          className="ml-auto"
+        >
           <Icon icon="mdi:twitter" className="w-4 h-4 text-gray-500" />
         </a>
-        <a href={SOCIAL_LINKS.DISCORD} target="_blank" rel="noreferrer">
+        <a
+          href={SOCIAL_LINKS.DISCORD}
+          target="_blank"
+          rel="noreferrer"
+          className="col-span-2"
+        >
           <Icon icon="ic:baseline-discord" className="w-4 h-4 text-gray-500" />
         </a>
-        <a href={SOCIAL_LINKS.GITBOOK} target="_blank" rel="noreferrer">
+        <a
+          href={SOCIAL_LINKS.GITBOOK}
+          target="_blank"
+          rel="noreferrer"
+          className="mr-auto"
+        >
           <Icon icon="simple-icons:gitbook" className="w-4 h-4 text-gray-500" />
         </a>
       </div>

@@ -5,20 +5,18 @@ export default function ToastSuccess({
   message,
   description,
 }: {
-  message: React.ReactNode | string
-  description?: React.ReactNode | string
+  message: React.ReactNode
+  description?: React.ReactNode
 }) {
   return (
-    <div className="top-20 flex gap-x-3 p-3 pr-4 bg-[#FFFFFF] rounded-lg shadow-full">
+    <div className="flex gap-x-3 p-3 pr-4 bg-white rounded-lg shadow-full">
       <Icon
         icon="tabler:square-rounded-check-filled"
-        color="green"
-        width={20}
-        height={20}
+        className="w-5 h-5 text-dashboard-green-1"
       />
-      <div className="text-green-400">
-        <div className="font-semibold text-sm">{message}</div>
-        <div className="mt-1 font-medium text-xs">{description}</div>
+      <div className="text-dashboard-green-1">
+        <div className="text-sm font-semibold">{message}</div>
+        <div className="mt-1 text-xs font-medium">{description}</div>
       </div>
     </div>
   )
