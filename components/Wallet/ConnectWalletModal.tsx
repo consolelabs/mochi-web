@@ -85,7 +85,10 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
               uri = await getMobileURI()
             } else if (wallet.id === metaMask({ chains: [] }).id) {
               // https://github.com/MetaMask/metamask-mobile/issues/3965#issuecomment-1122505112
-              uri = `dapp://${window.location.host}${window.location.search}`
+              uri = `dapp://${window.location.href.replace(
+                `${window.location.protocol}//`,
+                '',
+              )}`
             }
           } else if (getDesktopDeepLink) {
             uri = await getDesktopDeepLink()
