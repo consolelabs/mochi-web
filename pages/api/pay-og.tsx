@@ -19,6 +19,11 @@ const extraboldFont = fetch(
   new URL('../../assets/Inter-ExtraBold.ttf', import.meta.url),
 ).then((res) => res.arrayBuffer())
 
+const w = 340
+const h = 200
+
+const scale = 2
+
 const og = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl
   const code = searchParams.get('code')
@@ -38,13 +43,15 @@ const og = async (req: NextRequest) => {
     (
       <div
         style={{
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
           position: 'relative',
           background:
             'radial-gradient(circle at 250px 150px, #6f4353, #42373c)',
           display: 'flex',
           flexDirection: 'column',
-          height: 200,
-          width: 340,
+          height: h,
+          width: w,
           padding: '32px 32px 24px 32px',
           border: '2px solid rgba(0, 0, 0, 0.15)',
           borderRadius: 16,
@@ -99,7 +106,11 @@ const og = async (req: NextRequest) => {
             }}
           >
             <img
-              style={{ position: 'absolute', width: '100%', height: '100%' }}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+              }}
               src="https://mochi.gg/assets/coin.png"
               alt=""
             />
@@ -161,8 +172,8 @@ const og = async (req: NextRequest) => {
       </div>
     ),
     {
-      width: 340,
-      height: 200,
+      width: w * scale,
+      height: h * scale,
       fonts: [
         {
           name: 'Inter',
