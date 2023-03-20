@@ -50,6 +50,7 @@ const og = async (req: NextRequest) => {
           borderRadius: 16,
           color: 'white',
           fontFamily: '"Inter"',
+          overflow: 'hidden',
         }}
       >
         <div
