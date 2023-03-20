@@ -25,7 +25,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  const { data: payRequest } = await API.getPayRequestInfo(pay_code as string)
+  const payRequest = await API.MOCHI_PAY.get(`/pay-requests/${pay_code}`)
+    .notFound(() => null)
+    .json((r) => r.data)
 
   return {
     props: {

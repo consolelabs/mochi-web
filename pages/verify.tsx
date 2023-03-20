@@ -11,15 +11,21 @@ import { useAccount } from '~hooks/wallets/useAccount'
 import { useSignMessage } from '~hooks/wallets/useSignMessage'
 import ConnectButton from '~components/ConnectButton'
 import { useHasMounted } from '@dwarvesf/react-hooks'
+import { WretchError } from 'wretch'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const code = ctx.query.code ?? null
   const discordId = ctx.query.did
 
-  const profile = await API.getProfileByDiscord(discordId as string)
+  let profile
+  try {
+    profile = (await API.MOCHI_PROFILE.get(
+      `/profiles/get-by-discord/${discordId}`,
+    ).json()) as { id?: number }
+  } catch {}
 
   return {
-    props: { code, profileId: discordId ? profile?.id : null },
+    props: { code, profileId: discordId ? profile?.id ?? null : null },
   }
 }
 
@@ -48,19 +54,20 @@ export default function Verify({
       setLoading(true)
       const signature = await signMsg()
       if (signature) {
-        const response = await API.linkAccount(
-          profileId,
-          address,
-          code,
-          signature,
-          isEVMConnected ? 'evm' : 'solana',
+        API.MOCHI_PROFILE.post(
+          {
+            wallet_address: address,
+            code,
+            signature,
+          },
+          `/profiles/${profileId}/accounts/${
+            isEVMConnected ? 'evm' : 'solana'
+          }`,
         )
-        if (response?.ok) {
-          setVerified(true)
-        } else {
-          const json = await response?.json()
-          setError(json?.msg ?? 'Something went wrong')
-        }
+          .json(() => setVerified(true))
+          .catch((e: WretchError) => {
+            setError(e.json.msg ?? 'Something went wrong')
+          })
       }
     } catch (e) {
       console.error('sign method error', e)
@@ -78,6 +85,7 @@ export default function Verify({
       (isEVMConnected || isSolanaConnected)
     )
       sign()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, verified, isEVMConnected, isSolanaConnected, signMsg])
 
   if (!mounted) return null
@@ -131,8 +139,8 @@ export default function Verify({
               )
             ) : (
               <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
-                <div className="mb-2 font-medium md:text-xl">
-                  Something went wrong with error:
+                <div className="mb-2 font-medium text-center md:text-xl">
+                  Something went wrong with error
                 </div>
                 <div className="py-2 px-4 w-full font-mono rounded bg-stone-200">
                   &ldquo;{error}&rdquo;
