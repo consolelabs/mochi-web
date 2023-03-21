@@ -153,28 +153,31 @@ export function AdsForm() {
 
             <Field
               name="adName"
-              rules={{ required: 'required' }}
+              rules={{ required: 'Required' }}
               label="Ad Name"
               control={control}
             >
-              <Input placeholder="Enter the ads name" />
+              <Input
+                placeholder="Enter the ads name"
+                className="bg-dashboard-gray-5"
+              />
             </Field>
 
             <div className="flex flex-col gap-3">
               <Field
                 name="startDate"
                 rules={{
-                  required: 'required',
+                  required: 'Required',
                 }}
                 label="Start Date"
                 control={control}
               >
-                <Input type="date" />
+                <Input type="date" className="bg-dashboard-gray-5" />
               </Field>
               <Field
                 name="endDate"
                 rules={{
-                  required: 'required',
+                  required: 'Required',
                   validate: (value) =>
                     isAfter(new Date(value), new Date(startDate)) ||
                     'End date must be after start date',
@@ -182,33 +185,39 @@ export function AdsForm() {
                 label="End"
                 control={control}
               >
-                <Input type="date" />
+                <Input type="date" className="bg-dashboard-gray-5" />
               </Field>
             </div>
 
             <div className="flex flex-col gap-y-4 max-w-[90%]">
               <Field name="image" label="Upload your image" control={control}>
-                <FileInput placeholder="Select a file" />
+                <FileInput
+                  placeholder="Select a file"
+                  className="bg-dashboard-gray-5"
+                />
               </Field>
               <Field name="headline" label="Headline" control={control}>
-                <Input />
+                <Input className="bg-dashboard-gray-5" />
               </Field>
               <Field name="description" label="Description" control={control}>
-                <Input />
+                <Input className="bg-dashboard-gray-5" />
               </Field>
               <Field
                 name="landingUrl"
                 label="Landing page to run ad"
                 control={control}
               >
-                <Input placeholder="Enter url" />
+                <Input
+                  placeholder="Enter url"
+                  className="bg-dashboard-gray-5"
+                />
               </Field>
               <Field
                 name="callToActionUrl"
                 label="Call-to-action url"
                 control={control}
               >
-                <Input />
+                <Input className="bg-dashboard-gray-5" />
               </Field>
             </div>
 
@@ -218,7 +227,7 @@ export function AdsForm() {
                   className={button({
                     appearance: 'text',
                     size: 'sm',
-                    className: 'md:px-[14px] md:py-[6px]',
+                    className: 'md:px-[14px] md:py-[8px]',
                   })}
                 >
                   Back
@@ -228,7 +237,7 @@ export function AdsForm() {
                     className={button({
                       appearance: 'gray',
                       size: 'sm',
-                      className: 'md:px-[14px] md:py-[6px]',
+                      className: 'md:px-[14px] md:py-[8px]',
                     })}
                   >
                     Cancel
@@ -238,7 +247,7 @@ export function AdsForm() {
                     className={button({
                       appearance: 'secondary',
                       size: 'sm',
-                      className: 'md:px-[14px] md:py-[6px]',
+                      className: 'md:px-[14px] md:py-[8px]',
                     })}
                   >
                     Save
