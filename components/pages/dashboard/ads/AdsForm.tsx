@@ -7,6 +7,7 @@ import Field from '~components/Dashboard/Form/Field'
 import { FileInput, Input } from '~components/Dashboard/Input'
 import { RadioGroup } from '~components/Dashboard/Radio'
 import Image from 'next/image'
+import { isAfter } from 'date-fns'
 
 type FormValue = {
   adName: string
@@ -17,14 +18,20 @@ type FormValue = {
   description: string
   landingUrl: string
   callToActionUrl: string
-  discordPlacement: number
-  telegramPlacement: number
-  metaversePlacement: number
+  discordPlacement: string
+  telegramPlacement: string
+  metaversePlacement: string
 }
 
 export function AdsForm() {
   const { back } = useRouter()
-  const { handleSubmit, control } = useForm<FormValue>()
+  const { handleSubmit, control, watch } = useForm<FormValue>({
+    defaultValues: {
+      discordPlacement: '',
+    },
+  })
+
+  const startDate = watch('startDate')
 
   const onSubmit = (values: FormValue) => {
     console.log(values)
@@ -44,7 +51,7 @@ export function AdsForm() {
     {
       src: '/assets/ads/no-img.png',
       label: 'No image',
-      value: '',
+      value: '3',
     },
   ]
 
@@ -62,7 +69,7 @@ export function AdsForm() {
     {
       src: '/assets/ads/no-img.png',
       label: 'No image',
-      value: '',
+      value: '3',
     },
   ]
 
@@ -87,6 +94,49 @@ export function AdsForm() {
   const radioOptionClassName =
     'flex flex-col w-fit p-[10px] gap-y-[10px] rounded-lg border-solid border-[3px] border-transparent cursor-pointer'
 
+  const renderCustomRadioGroup = ({
+    options,
+    optionClassName,
+  }: {
+    options: Record<string, any>[]
+    optionClassName: string
+  }) => {
+    return (
+      <RadioGroup
+        options={options.map(({ label, value }) => ({
+          label,
+          value,
+        }))}
+        radioGroupClassName="flex flex-row justify-between"
+        renderOption={(option, selectedValue) => {
+          return (
+            <div
+              className={clsx(radioOptionClassName, {
+                ' !border-mochi':
+                  selectedValue && option.value === selectedValue,
+              })}
+            >
+              <div className={optionClassName}>
+                {option.value && (
+                  <Image
+                    fill
+                    className="object-contain"
+                    alt={option.value}
+                    src={
+                      options.find((item) => item.value === option.value)
+                        ?.src || ''
+                    }
+                  />
+                )}
+              </div>
+              {!!option.label && <div className="text-sm">{option.label}</div>}
+            </div>
+          )
+        }}
+      />
+    )
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex h-full">
@@ -97,7 +147,7 @@ export function AdsForm() {
                 <button type="button" onClick={back}>
                   <Icon className="w-6 h-6" icon="heroicons:chevron-left" />
                 </button>
-                <div className="text-[22px] font-bold">Ad Name 1</div>
+                <div className="text-[22px] font-bold">Create new Ad</div>
               </div>
             </h2>
 
@@ -113,7 +163,9 @@ export function AdsForm() {
             <div className="flex flex-col gap-3">
               <Field
                 name="startDate"
-                rules={{ required: 'required' }}
+                rules={{
+                  required: 'required',
+                }}
                 label="Start Date"
                 control={control}
               >
@@ -121,7 +173,12 @@ export function AdsForm() {
               </Field>
               <Field
                 name="endDate"
-                rules={{ required: 'required' }}
+                rules={{
+                  required: 'required',
+                  validate: (value) =>
+                    isAfter(new Date(value), new Date(startDate)) ||
+                    'End date must be after start date',
+                }}
                 label="End"
                 control={control}
               >
@@ -130,33 +187,17 @@ export function AdsForm() {
             </div>
 
             <div className="flex flex-col gap-y-4 max-w-[90%]">
-              <Field
-                name="image"
-                rules={{ required: 'required' }}
-                label="Upload your image"
-                control={control}
-              >
+              <Field name="image" label="Upload your image" control={control}>
                 <FileInput placeholder="Select a file" />
               </Field>
-              <Field
-                name="headline"
-                rules={{ required: 'required' }}
-                label="Headline"
-                control={control}
-              >
+              <Field name="headline" label="Headline" control={control}>
                 <Input />
               </Field>
-              <Field
-                name="description"
-                rules={{ required: 'required' }}
-                label="Description"
-                control={control}
-              >
+              <Field name="description" label="Description" control={control}>
                 <Input />
               </Field>
               <Field
                 name="landingUrl"
-                rules={{ required: 'required' }}
                 label="Landing page to run ad"
                 control={control}
               >
@@ -164,7 +205,6 @@ export function AdsForm() {
               </Field>
               <Field
                 name="callToActionUrl"
-                rules={{ required: 'required' }}
                 label="Call-to-action url"
                 control={control}
               >
@@ -194,6 +234,7 @@ export function AdsForm() {
                     Cancel
                   </button>
                   <button
+                    type="submit"
                     className={button({
                       appearance: 'secondary',
                       size: 'sm',
@@ -207,52 +248,23 @@ export function AdsForm() {
             </div>
           </div>
         </div>
-        <div className="hidden md:flex md:w-3/5 bg-dashboard-gray-6 h-full py-10 px-5 flex-col md:gap-y-8">
+        <div className="hidden md:flex md:w-3/5 bg-dashboard-gray-6 h-full pt-4 pb-10 px-5 flex-col md:gap-y-8">
           <div className="font-semibold text-foreground">Placements</div>
           {/* Discord section */}
           <div>
             <Field
               name="discordPlacement"
               control={control}
-              rules={{
-                required: 'Required',
-              }}
               label="In Discord"
               labelProps={{
                 className:
                   '!text-dashboard-gray-8 !font-semibold !text-sm mb-2',
               }}
             >
-              <RadioGroup
-                options={discordOptions.map(({ label, value }) => ({
-                  label,
-                  value,
-                }))}
-                radioGroupClassName="flex flex-row justify-between"
-                renderOption={(option, selectedValue) => {
-                  return (
-                    <div
-                      className={clsx(radioOptionClassName, {
-                        ' !border-mochi': option.value === selectedValue,
-                      })}
-                    >
-                      <div className="h-44 w-[212px] relative">
-                        <Image
-                          fill
-                          className="object-contain"
-                          alt={option.value}
-                          src={
-                            discordOptions.find(
-                              (item) => item.value === option.value,
-                            )?.src || ''
-                          }
-                        />
-                      </div>
-                      <div className="text-sm">{option.label}</div>
-                    </div>
-                  )
-                }}
-              />
+              {renderCustomRadioGroup({
+                options: discordOptions,
+                optionClassName: 'h-44 w-[212px] relative',
+              })}
             </Field>
           </div>
 
@@ -261,45 +273,16 @@ export function AdsForm() {
             <Field
               name="telegramPlacement"
               control={control}
-              rules={{
-                required: 'Required',
-              }}
               label="In Telegram"
               labelProps={{
                 className:
                   '!text-dashboard-gray-8 !font-semibold !text-sm mb-2',
               }}
             >
-              <RadioGroup
-                options={telegramOptions.map(({ label, value }) => ({
-                  label,
-                  value,
-                }))}
-                radioGroupClassName="flex flex-row justify-between"
-                renderOption={(option, selectedValue) => {
-                  return (
-                    <div
-                      className={clsx(radioOptionClassName, {
-                        ' !border-mochi': option.value === selectedValue,
-                      })}
-                    >
-                      <div className="h-[212px] w-[212px] relative">
-                        <Image
-                          fill
-                          className="object-contain"
-                          alt={option.value}
-                          src={
-                            telegramOptions.find(
-                              (item) => item.value === option.value,
-                            )?.src || ''
-                          }
-                        />
-                      </div>
-                      <div className="text-sm">{option.label}</div>
-                    </div>
-                  )
-                }}
-              />
+              {renderCustomRadioGroup({
+                options: telegramOptions,
+                optionClassName: 'h-[212px] w-[212px] relative',
+              })}
             </Field>
           </div>
 
@@ -308,46 +291,16 @@ export function AdsForm() {
             <Field
               name="metaversePlacement"
               control={control}
-              rules={{
-                required: 'Required',
-              }}
               label="In Metaverse"
               labelProps={{
                 className:
                   '!text-dashboard-gray-8 !font-semibold !text-sm mb-2',
               }}
             >
-              <RadioGroup
-                options={metaverseOptions.map(({ label, value }) => ({
-                  label,
-                  value,
-                }))}
-                radioGroupClassName="flex flex-row justify-between"
-                // radioGroupClassName="grid grid-cols-3 justify-between"
-                renderOption={(option, selectedValue) => {
-                  return (
-                    <div
-                      className={clsx(radioOptionClassName, {
-                        ' !border-mochi': option.value === selectedValue,
-                      })}
-                    >
-                      <div className="h-[136px] w-[212px] relative">
-                        <Image
-                          fill
-                          className="object-contain"
-                          alt={option.value}
-                          src={
-                            metaverseOptions.find(
-                              (item) => item.value === option.value,
-                            )?.src || ''
-                          }
-                        />
-                      </div>
-                      <div className="text-sm">{option.label}</div>
-                    </div>
-                  )
-                }}
-              />
+              {renderCustomRadioGroup({
+                options: metaverseOptions,
+                optionClassName: 'h-[136px] w-[212px] relative',
+              })}
             </Field>
           </div>
         </div>
