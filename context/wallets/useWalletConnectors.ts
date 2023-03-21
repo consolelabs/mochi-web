@@ -87,7 +87,7 @@ export const useWalletConnectors = () => {
     connect,
     autoConnect,
   } = useWallet()
-  const [errorMsg, setErrorMsg] = useState()
+  const [errorMsg, setErrorMsg] = useState('')
   const defaultConnectors = defaultConnectors_untyped as Connector[]
 
   const evmWalletInstances = flatten(
