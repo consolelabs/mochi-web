@@ -49,7 +49,7 @@ export default function Field<T extends FieldValues = FieldValues>({
         {description}
       </div>
       {!control || !name ? (
-        <div>{children}</div>
+        <div>{children as React.ReactElement<any>}</div>
       ) : (
         <Controller
           {...rest}

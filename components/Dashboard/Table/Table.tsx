@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react'
 import clsx from 'clsx'
-import { useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 import {
   useTable,
   Column as RTColumn,
@@ -106,7 +106,7 @@ export const Table: <T extends object = {}>(props: Props<T>) => JSX.Element = (
                   },
                 })}
               >
-                <div>{column.Header}</div>
+                <div>{column.Header as ReactNode}</div>
                 {defaultCanSort && (
                   <Icon
                     className="w-4 h-4"
