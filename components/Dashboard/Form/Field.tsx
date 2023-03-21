@@ -39,7 +39,9 @@ export default function Field<T extends FieldValues = FieldValues>({
         {label && (
           <label className={heading({ size: 'xs' })}>
             {label}
-            {rest.rules?.required && <span className="text-mochi-900"> *</span>}
+            {rest.rules?.required && (
+              <span className="text-mochi-900 text-xs"> *</span>
+            )}
           </label>
         )}
         {description}
