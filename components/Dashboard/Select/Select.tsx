@@ -171,7 +171,7 @@ export const Select = forwardRef(
               >
                 {selectedOptionLabel}
                 <Icon className="w-4 h-4" icon="heroicons:chevron-down" />
-                {value && (
+                {(Array.isArray(value) ? value.length > 0 : !!value) && (
                   <div
                     className="flex absolute top-0 right-0 justify-center items-center mt-2.5 mr-3 w-5 h-5 rounded-full bg-dashboard-gray-6"
                     onClick={(e) => {
@@ -232,7 +232,7 @@ export const Select = forwardRef(
                         </Combobox.Option>
                       )
                     })
-                  ) : (
+                  ) : searchable && query ? (
                     <Combobox.Option value={query} as={Fragment}>
                       {({ active }) => {
                         return (
@@ -250,6 +250,10 @@ export const Select = forwardRef(
                         )
                       }}
                     </Combobox.Option>
+                  ) : (
+                    <li className="px-3 py-2 cursor-pointer hover:bg-mochi-50 transition">
+                      No result.
+                    </li>
                   )}
                 </Combobox.Options>
               </Transition>
