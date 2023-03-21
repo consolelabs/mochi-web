@@ -1,9 +1,12 @@
+import clsx from 'clsx'
 import { Icon } from '@iconify/react'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { button } from '~components/Dashboard/Button'
 import Field from '~components/Dashboard/Form/Field'
 import { FileInput, Input } from '~components/Dashboard/Input'
+import { RadioGroup } from '~components/Dashboard/Radio'
+import Image from 'next/image'
 
 type FormValue = {
   adName: string
@@ -14,9 +17,9 @@ type FormValue = {
   description: string
   landingUrl: string
   callToActionUrl: string
-  discordPlacements: number
-  telegramPlacements: number
-  metaversePlacements: number
+  discordPlacement: number
+  telegramPlacement: number
+  metaversePlacement: number
 }
 
 export function AdsForm() {
@@ -27,10 +30,67 @@ export function AdsForm() {
     console.log(values)
   }
 
+  const discordOptions = [
+    {
+      src: '/assets/ads/discord-1546x423.png',
+      label: '1546 x 423',
+      value: '1',
+    },
+    {
+      src: '/assets/ads/512x512.png',
+      label: '512 x 512',
+      value: '2',
+    },
+    {
+      src: '/assets/ads/no-img.png',
+      label: 'No image',
+      value: '',
+    },
+  ]
+
+  const telegramOptions = [
+    {
+      src: '/assets/ads/tele-1546x423.png',
+      label: '1546 x 423',
+      value: '1',
+    },
+    {
+      src: '/assets/ads/512x512.png',
+      label: '512 x 512',
+      value: '2',
+    },
+    {
+      src: '/assets/ads/no-img.png',
+      label: 'No image',
+      value: '',
+    },
+  ]
+
+  const metaverseOptions = [
+    {
+      src: '/assets/ads/big-ad.png',
+      label: '1546 x 423',
+      value: '1',
+    },
+    {
+      src: '/assets/ads/small-ad.png',
+      label: '512 x 512',
+      value: '2',
+    },
+    {
+      src: '',
+      label: '',
+      value: '',
+    },
+  ]
+
+  const radioOptionClassName =
+    'flex flex-col w-fit p-[10px] gap-y-[10px] rounded-lg border-solid border-[3px] border-transparent cursor-pointer'
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex h-full">
-        <div className="w-2/5 pt-4 pb-8 md:pt-8 md:pb-12">
+        <div className="w-full md:w-2/5 pt-4 pb-8 md:pt-8 md:pb-12">
           <div className="flex flex-col gap-y-6 max-w-sm mx-auto">
             <h2>
               <div className="flex items-center gap-2">
@@ -57,7 +117,7 @@ export function AdsForm() {
                 label="Start Date"
                 control={control}
               >
-                <Input placeholder="Enter the ads name" type="date" />
+                <Input type="date" />
               </Field>
               <Field
                 name="endDate"
@@ -65,7 +125,7 @@ export function AdsForm() {
                 label="End"
                 control={control}
               >
-                <Input placeholder="Enter the ads name" type="date" />
+                <Input type="date" />
               </Field>
             </div>
 
@@ -147,8 +207,149 @@ export function AdsForm() {
             </div>
           </div>
         </div>
-        <div className="w-3/5 bg-dashboard-gray-6 h-full py-10 px-5">
-          ads page
+        <div className="hidden md:flex md:w-3/5 bg-dashboard-gray-6 h-full py-10 px-5 flex-col md:gap-y-8">
+          <div className="font-semibold text-foreground">Placements</div>
+          {/* Discord section */}
+          <div>
+            <Field
+              name="discordPlacement"
+              control={control}
+              rules={{
+                required: 'Required',
+              }}
+              label="In Discord"
+              labelProps={{
+                className:
+                  '!text-dashboard-gray-8 !font-semibold !text-sm mb-2',
+              }}
+            >
+              <RadioGroup
+                options={discordOptions.map(({ label, value }) => ({
+                  label,
+                  value,
+                }))}
+                radioGroupClassName="flex flex-row justify-between"
+                renderOption={(option, selectedValue) => {
+                  return (
+                    <div
+                      className={clsx(radioOptionClassName, {
+                        ' !border-mochi': option.value === selectedValue,
+                      })}
+                    >
+                      <div className="h-44 w-[212px] relative">
+                        <Image
+                          fill
+                          className="object-contain"
+                          alt={option.value}
+                          src={
+                            discordOptions.find(
+                              (item) => item.value === option.value,
+                            )?.src || ''
+                          }
+                        />
+                      </div>
+                      <div className="text-sm">{option.label}</div>
+                    </div>
+                  )
+                }}
+              />
+            </Field>
+          </div>
+
+          {/* Telegram section */}
+          <div>
+            <Field
+              name="telegramPlacement"
+              control={control}
+              rules={{
+                required: 'Required',
+              }}
+              label="In Telegram"
+              labelProps={{
+                className:
+                  '!text-dashboard-gray-8 !font-semibold !text-sm mb-2',
+              }}
+            >
+              <RadioGroup
+                options={telegramOptions.map(({ label, value }) => ({
+                  label,
+                  value,
+                }))}
+                radioGroupClassName="flex flex-row justify-between"
+                renderOption={(option, selectedValue) => {
+                  return (
+                    <div
+                      className={clsx(radioOptionClassName, {
+                        ' !border-mochi': option.value === selectedValue,
+                      })}
+                    >
+                      <div className="h-[212px] w-[212px] relative">
+                        <Image
+                          fill
+                          className="object-contain"
+                          alt={option.value}
+                          src={
+                            telegramOptions.find(
+                              (item) => item.value === option.value,
+                            )?.src || ''
+                          }
+                        />
+                      </div>
+                      <div className="text-sm">{option.label}</div>
+                    </div>
+                  )
+                }}
+              />
+            </Field>
+          </div>
+
+          {/* Metaverse section */}
+          <div>
+            <Field
+              name="metaversePlacement"
+              control={control}
+              rules={{
+                required: 'Required',
+              }}
+              label="In Metaverse"
+              labelProps={{
+                className:
+                  '!text-dashboard-gray-8 !font-semibold !text-sm mb-2',
+              }}
+            >
+              <RadioGroup
+                options={metaverseOptions.map(({ label, value }) => ({
+                  label,
+                  value,
+                }))}
+                radioGroupClassName="flex flex-row justify-between"
+                // radioGroupClassName="grid grid-cols-3 justify-between"
+                renderOption={(option, selectedValue) => {
+                  return (
+                    <div
+                      className={clsx(radioOptionClassName, {
+                        ' !border-mochi': option.value === selectedValue,
+                      })}
+                    >
+                      <div className="h-[136px] w-[212px] relative">
+                        <Image
+                          fill
+                          className="object-contain"
+                          alt={option.value}
+                          src={
+                            metaverseOptions.find(
+                              (item) => item.value === option.value,
+                            )?.src || ''
+                          }
+                        />
+                      </div>
+                      <div className="text-sm">{option.label}</div>
+                    </div>
+                  )
+                }}
+              />
+            </Field>
+          </div>
         </div>
       </div>
     </form>

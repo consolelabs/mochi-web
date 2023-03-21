@@ -22,6 +22,7 @@ type Props<T extends FieldValues> = {
     | React.ReactElement<any>
   description?: React.ReactNode
   valueProps?: string
+  labelProps?: JSX.IntrinsicElements['label']
 } & Omit<Optional<ControllerProps<T>, 'name'>, 'render'>
 
 export default function Field<T extends FieldValues = FieldValues>({
@@ -31,13 +32,19 @@ export default function Field<T extends FieldValues = FieldValues>({
   control,
   name,
   valueProps,
+  labelProps,
   ...rest
 }: Props<T>) {
   return (
     <div className="flex flex-col gap-y-1">
       <div className="flex flex-col">
         {label && (
-          <label className={heading({ size: 'xs' })}>
+          <label
+            className={heading({
+              size: 'xs',
+              className: labelProps?.className,
+            })}
+          >
             {label}
             {rest.rules?.required && (
               <span className="text-mochi-900 text-xs"> *</span>

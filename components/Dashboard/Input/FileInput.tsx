@@ -26,7 +26,7 @@ export const FileInput = forwardRef(
       >
         <button
           type="button"
-          className="py-0.5 px-2 font-medium rounded-lg bg-dashboard-gray-6"
+          className="py-0.5 px-2 font-medium rounded-lg bg-dashboard-gray-6 cursor-pointer"
         >
           Upload
         </button>
