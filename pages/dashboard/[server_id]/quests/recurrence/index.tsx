@@ -201,14 +201,14 @@ const QuestsRecurrence = () => {
                     accessor: 'name',
                     width: 400,
                     tdClassName: 'font-bold',
-                    render: (value, record) => {
+                    Cell: ({ cell: { value }, row: { original } }: any) => {
                       return (
                         <div
                           className={clsx('flex items-center gap-2', {
-                            'text-dashboard-gray-3': !record.publish,
+                            'text-dashboard-gray-3': !original.publish,
                           })}
                         >
-                          <img src={record.icon} className="w-4 h-4" alt="" />
+                          <img src={original.icon} className="w-4 h-4" alt="" />
                           <div>{value}</div>
                         </div>
                       )
@@ -216,12 +216,12 @@ const QuestsRecurrence = () => {
                   },
                   {
                     accessor: 'rewards',
-                    render: (value, record) => {
+                    Cell: ({ cell: { value }, row: { original } }: any) => {
                       return (
                         <div
                           className={clsx(
                             'flex items-center justify-center gap-2',
-                            { 'text-dashboard-gray-8': !record.publish },
+                            { 'text-dashboard-gray-8': !original.publish },
                           )}
                         >
                           {value.map((reward: any) => {
@@ -247,11 +247,11 @@ const QuestsRecurrence = () => {
                   {
                     accessor: 'times',
                     tdClassName: 'justify-center',
-                    render: (value, record) => {
+                    Cell: ({ cell: { value }, row: { original } }: any) => {
                       return (
                         <div
                           className={
-                            !record.publish ? 'text-dashboard-gray-8' : ''
+                            !original.publish ? 'text-dashboard-gray-8' : ''
                           }
                         >
                           {value}
@@ -263,7 +263,7 @@ const QuestsRecurrence = () => {
                     accessor: 'publish',
                     thClassName: 'text-right',
                     tdClassName: 'justify-end gap-2',
-                    render: (value) => (
+                    Cell: ({ cell: { value } }: any) => (
                       <>
                         <div className="flex gap-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition">
                           <button
