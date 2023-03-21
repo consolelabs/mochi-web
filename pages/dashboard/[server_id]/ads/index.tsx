@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { button } from '~components/Dashboard/Button'
 import DashboardLayout from '~components/Dashboard/Layout'
+import ListAds from '~components/pages/dashboard/ads/ListAds'
 
 const Ads = () => {
   const { query } = useRouter()
@@ -27,7 +28,7 @@ const Ads = () => {
         </Link>
       }
     >
-      {/* TODO: list of ads */}
+      <ListAds />
     </DashboardLayout>
   )
 }
