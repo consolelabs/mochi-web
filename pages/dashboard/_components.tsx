@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { SEO } from '~app/layout/seo'
 import { INVITE_LINK } from '~envs'
-import { Tab } from '~components/Dashboard/Tab'
+import { Tabs } from '~components/Dashboard/Tabs'
 import { Transition } from '@headlessui/react'
 import { Table } from '~components/Dashboard/Table'
 import Field from '~components/Dashboard/Form/Field'
@@ -349,8 +349,14 @@ export default function Default() {
           <h2 className={heading({ size: 'sm' })}>Tabs</h2>
           <div>
             <label className={labelStyles()}>Default</label>
-            <Tab headings={['Setup', 'Participate', 'Rewards']}>
-              <Tab.Panel>
+            <Tabs
+              headings={[
+                { label: 'Setup' },
+                { label: 'Participate' },
+                { label: 'Rewards' },
+              ]}
+            >
+              <Tabs.Panel>
                 {({ selected }) => {
                   return (
                     <Transition
@@ -367,8 +373,8 @@ export default function Default() {
                     </Transition>
                   )
                 }}
-              </Tab.Panel>
-              <Tab.Panel>
+              </Tabs.Panel>
+              <Tabs.Panel>
                 {({ selected }) => {
                   return (
                     <Transition
@@ -385,8 +391,8 @@ export default function Default() {
                     </Transition>
                   )
                 }}
-              </Tab.Panel>
-              <Tab.Panel>
+              </Tabs.Panel>
+              <Tabs.Panel>
                 {({ selected }) => {
                   return (
                     <Transition
@@ -403,8 +409,8 @@ export default function Default() {
                     </Transition>
                   )
                 }}
-              </Tab.Panel>
-            </Tab>
+              </Tabs.Panel>
+            </Tabs>
           </div>
         </div>
 

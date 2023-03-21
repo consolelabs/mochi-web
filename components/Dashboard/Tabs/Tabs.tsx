@@ -4,11 +4,14 @@ import { tab } from './styles'
 import clsx from 'clsx'
 
 type Props = {
-  headings: string[]
+  headings: {
+    label: string
+    disabled?: boolean
+  }[]
   children?: React.ReactNode
 }
 
-export const Tab = ({
+export const Tabs = ({
   children,
   headings,
   ...rest
@@ -16,10 +19,14 @@ export const Tab = ({
   return (
     <div className={tab({})}>
       <HeadlessTab.Group {...rest}>
-        <HeadlessTab.List className="flex gap-x-8">
+        <HeadlessTab.List className="flex gap-x-8 text-sm">
           {headings.map((h, i) => {
             return (
-              <HeadlessTab className="outline-none" key={`tab-${h}-${i}`}>
+              <HeadlessTab
+                className="outline-none"
+                key={`tab-${h.label}-${i}`}
+                disabled={h.disabled}
+              >
                 {({ selected }) => {
                   return (
                     <span
@@ -29,10 +36,11 @@ export const Tab = ({
                           'text-foreground border-b-foreground': selected,
                           'text-dashboard-gray-8 border-b-transparent':
                             !selected,
+                          'opacity-50': h.disabled,
                         },
                       )}
                     >
-                      {h}
+                      {h.label}
                     </span>
                   )
                 }}
@@ -46,4 +54,4 @@ export const Tab = ({
   )
 }
 
-Tab.Panel = HeadlessTab.Panel
+Tabs.Panel = HeadlessTab.Panel
