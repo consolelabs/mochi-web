@@ -29,6 +29,7 @@ export default function WithdrawButton() {
   }) => {
     return (
       <button
+        type="button"
         className={button({
           appearance: 'text',
           className: '!p-0 gap-x-2',
@@ -117,6 +118,7 @@ export default function WithdrawButton() {
               placement="bottom"
               offset={8}
               flip
+              show={isOpen ? true : undefined}
             >
               <Popover.Button
                 className={button({

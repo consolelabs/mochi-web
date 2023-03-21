@@ -51,7 +51,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       isConnectionError: false,
     },
   )
-  const { wallets, groupedWallets } = useWalletConnectors()
+  const { errorMsg, wallets, groupedWallets } = useWalletConnectors()
   const { wallet: solWallet } = useWallet()
 
   const filteredWallets = wallets.filter(
@@ -68,13 +68,9 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           wallet?.connect?.()
         } else {
           ;(wallet?.connect?.() as Promise<any>).catch((e) => {
-            if (e instanceof ConnectorAlreadyConnectedError) {
-              onClose()
-            } else {
-              setState({
-                isConnectionError: true,
-              })
-            }
+            setState({
+              isConnectionError: true,
+            })
           })
         }
 
@@ -99,7 +95,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         }, 0)
       }
     },
-    [onClose, openInApp],
+    [openInApp],
   )
 
   const changeWalletStep = (
@@ -148,12 +144,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       }
       if (!wallet.isSolana) {
         setTimeout(async () => {
-          const uri = await sWallet?.qrCode?.getUri()
-          setState({
-            qrCodeUri: uri,
-            selectedWallet: sWallet,
-          })
-          changeWalletStep(WalletStep.Connect)
           // We need to guard against "onConnecting" callbacks being fired
           // multiple times since connector instances can be shared between
           // wallets. Ideally wagmi would let us scope the callback to the
@@ -161,7 +151,15 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           let callbackFired = false
           wallet.onConnecting(async () => {
             if (callbackFired) return
+
             callbackFired = true
+            const uri = await sWallet?.qrCode?.getUri()
+            setState({
+              qrCodeUri: uri,
+              selectedWallet: sWallet,
+            })
+            changeWalletStep(WalletStep.Connect)
+            callbackFired = false
           })
         }, 0)
       }
@@ -181,6 +179,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         return state.selectedWallet ? (
           <ConnectDetail
             connectionError={state.isConnectionError}
+            connectionErrorMsg={errorMsg}
             qrCodeUri={state.qrCodeUri}
             reconnect={connectToWallet}
             wallet={state.selectedWallet}
@@ -191,6 +190,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     }
   }, [
     connectToWallet,
+    errorMsg,
     state.isConnectionError,
     state.qrCodeUri,
     state.selectedWallet,

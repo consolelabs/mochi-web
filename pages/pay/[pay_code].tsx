@@ -53,6 +53,7 @@ export default function PayCode({ payRequest }: Props) {
   if (!payRequest) {
     return (
       <Layout
+        skipAuth
         childSEO={
           <SEO
             title="Pay Link"
@@ -92,6 +93,7 @@ export default function PayCode({ payRequest }: Props) {
 
   return (
     <Layout
+      skipAuth
       childSEO={
         <SEO
           title="Pay Link"

@@ -6,6 +6,7 @@ import { button } from '~components/Dashboard/Button'
 
 export type ConnectDetailProps = {
   connectionError: boolean
+  connectionErrorMsg: string
   qrCodeUri?: string
   reconnect: (wallet: WalletConnector) => void
   wallet: WalletConnector
@@ -16,6 +17,7 @@ export const ConnectDetail = ({
   qrCodeUri,
   connectionError,
   reconnect,
+  connectionErrorMsg,
 }: ConnectDetailProps) => {
   const { downloadUrls, iconUrl, qrCode, ready } = wallet
 
@@ -70,7 +72,7 @@ export const ConnectDetail = ({
             </h1>
             {connectionError ? (
               <span className="text-sm font-semibold text-red-400">
-                Error connecting, please retry!
+                {connectionErrorMsg}
               </span>
             ) : (
               <span className="mt-px text-xs font-semibold text-foreground">

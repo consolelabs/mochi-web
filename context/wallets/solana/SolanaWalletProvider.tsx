@@ -24,7 +24,7 @@ export const SolanaWalletProvider = ({
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <SolWalletProvider autoConnect wallets={wallets}>
+      <SolWalletProvider autoConnect={false} wallets={wallets}>
         {children}
       </SolWalletProvider>
     </ConnectionProvider>

@@ -5,6 +5,7 @@ import { useAppWalletContext } from 'context/wallet-context'
 import { WalletInstance } from './Wallet'
 import { getRecentWalletIds, addRecentWalletId } from './recentWalletIds'
 import { walletDownloadUrls } from './solana/walletAdapters'
+import { useEffect, useState } from 'react'
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean
@@ -84,7 +85,9 @@ export const useWalletConnectors = () => {
     wallets,
     wallet: selectedWallet,
     connect,
+    autoConnect,
   } = useWallet()
+  const [errorMsg, setErrorMsg] = useState()
   const defaultConnectors = defaultConnectors_untyped as Connector[]
 
   const evmWalletInstances = flatten(
@@ -146,13 +149,34 @@ export const useWalletConnectors = () => {
   const walletConnectors: WalletConnector[] = []
 
   async function evmConnectWallet(walletId: string, connector: Connector) {
-    const result = await connectAsync({ connector })
-    if (result) {
-      addRecentWalletId(walletId)
-    }
+    try {
+      const result = await connectAsync({ connector })
+      if (result) {
+        addRecentWalletId(walletId)
+      }
 
-    return result
+      return result
+    } catch (e: any) {
+      setErrorMsg(e.message || 'Something went wrong')
+
+      // so that the outer handler function can catch it and set the flag
+      throw e
+    }
   }
+
+  useEffect(() => {
+    select(null)
+    // because solana wallet hook is stupid
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (!autoConnect && selectedWallet) {
+      connect().catch((e) => {
+        setErrorMsg(e.message || 'Something went wrong')
+      })
+    }
+  }, [autoConnect, connect, selectedWallet])
 
   groupedWallets.forEach((wallet: WalletInstance) => {
     if (!wallet) {
@@ -169,9 +193,7 @@ export const useWalletConnectors = () => {
       ...wallet,
       connect: async () => {
         if (wallet.isSolana) {
-          if (selectedWallet?.adapter.name === wallet.name) {
-            await connect()
-          } else {
+          if (selectedWallet?.adapter.name !== wallet.name) {
             select(wallet.adapter?.name as WalletName)
           }
           addRecentWalletId(wallet.adapter?.name as string)
@@ -212,6 +234,7 @@ export const useWalletConnectors = () => {
   })
 
   return {
+    errorMsg,
     wallets: walletConnectors,
     groupedWallets: groupBy(
       walletConnectors.filter(

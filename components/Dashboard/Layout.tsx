@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { logo } from '~utils/image'
 import clsx from 'clsx'
-import { useAccount } from '~hooks/wallets/useAccount'
 import { Icon } from '@iconify/react'
 import { useAppWalletContext } from '~context/wallet-context'
 import ConnectButton from '~components/ConnectButton'
@@ -17,6 +16,7 @@ export default function DashboardLayout({
   headerExtraRight,
   footer,
   childSEO,
+  skipAuth = false,
 }: {
   childSEO?: React.ReactNode
   children: React.ReactNode
@@ -25,10 +25,10 @@ export default function DashboardLayout({
   header?: React.ReactNode
   headerExtraRight?: React.ReactNode
   footer?: React.ReactNode
+  skipAuth?: boolean
 }) {
   const mounted = useHasMounted()
   const { connected } = useAppWalletContext()
-  const { address } = useAccount()
 
   if (!mounted) return <>{childSEO}</>
 
@@ -57,15 +57,13 @@ export default function DashboardLayout({
               Mochi<span className="text-mochi">.</span>
             </span>
           </div>
-          {connected && address ? (
-            <div className="flex gap-x-3 items-center">
-              <Icon icon="mdi:bell" width={20} />
-              <ConnectButton />
-            </div>
-          ) : null}
+          <div className="flex gap-x-3 items-center">
+            {connected && <Icon icon="mdi:bell" width={20} />}
+            <ConnectButton />
+          </div>
         </div>
         <div className="flex relative z-10 flex-1">
-          {connected ? (
+          {connected || skipAuth ? (
             <div
               className={clsx('flex gap-x-24 mx-auto w-full', {
                 'max-w-5xl my-10': !fullWidth,
@@ -85,6 +83,7 @@ export default function DashboardLayout({
                     {headerExtraRight && headerExtraRight}
                   </div>
                 )}
+                {childSEO}
                 {children}
               </div>
             </div>
