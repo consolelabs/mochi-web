@@ -23,8 +23,13 @@ yarn
 
 Run development server:
 
+NOTE: this will run the localhost on a _**secure**_ protocol so the url is
+https://localhost:3000, the reason for this extra setup is because in order to
+debug wallet connect to mobile locally the origin must be a secure protocol in
+order to generate the connection URI.
+
 ```
-yarn dev
+yarn dev:https
 ```
 
 ### Development for Profile Dashboard
