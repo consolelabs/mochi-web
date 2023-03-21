@@ -23,9 +23,9 @@ export const Input = forwardRef(
       prefixProps,
       allowClear = true,
       type,
+      placeholder,
       onChange = () => {},
       onBlur,
-      placeholder,
     } = props
 
     const [prefixWidth, setPrefixWidth] = useState(0)

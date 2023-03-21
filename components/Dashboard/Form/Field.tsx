@@ -39,12 +39,7 @@ export default function Field<T extends FieldValues = FieldValues>({
     <div className="flex flex-col gap-y-1">
       <div className="flex flex-col">
         {label && (
-          <label
-            className={heading({
-              size: 'xs',
-              className: labelProps?.className,
-            })}
-          >
+          <label className={labelProps?.className ?? 'text-base font-medium'}>
             {label}
             {rest.rules?.required && (
               <span className="text-mochi-900 text-xs"> *</span>

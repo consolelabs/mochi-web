@@ -77,7 +77,7 @@ export default function DashboardLayout({
                   <Sidebar />
                 </div>
               ) : null}
-              <div className="flex-1 overflow-x-hidden">
+              <div className="flex-1 overflow-x-hidden h-full">
                 {(header || headerExtraRight) && (
                   <div className="flex justify-between mb-6">
                     <h2 className="font-bold text-[22px]">
