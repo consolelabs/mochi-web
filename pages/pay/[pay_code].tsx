@@ -5,7 +5,6 @@ import CopyLinkButton from '~components/Pay/CopyLinkButton'
 import ShareButton from '~components/Pay/ShareButton'
 import WithdrawButton from '~components/Pay/WithdrawButton'
 import Layout from '~components/Dashboard/Layout'
-import Card from '~components/Pay/Card'
 import Footer from '~components/Pay/Footer'
 import { GetServerSideProps } from 'next'
 import { API } from '~constants/api'
@@ -14,8 +13,11 @@ import clsx from 'clsx'
 import { button } from '~components/Dashboard/Button'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
-import { isSSR } from '@dwarvesf/react-utils'
+import { isSSR, truncate } from '@dwarvesf/react-utils'
 import { HOME_URL } from '~envs'
+import dynamic from 'next/dynamic'
+
+const Card = dynamic(() => import('~components/Pay/Card'))
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -42,6 +44,7 @@ type Props = {
     code: string
     amount: string
     status: 'submitted' | 'claimed' | 'expired'
+    note?: string
     token: {
       decimal: number
       symbol: string
@@ -159,6 +162,13 @@ export default function PayCode({ payRequest }: Props) {
               )}
               coin={payRequest.token.symbol}
             />
+            {payRequest.note ? (
+              <span>
+                <span className="font-medium">Message: </span>&ldquo;
+                {truncate(payRequest.note, 100, false)}
+                &rdquo;
+              </span>
+            ) : null}
             <WithdrawButton />
           </>
         )}

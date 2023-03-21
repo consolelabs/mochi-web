@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { Fragment, useCallback, useEffect, useMemo, useReducer } from 'react'
-import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
 import { useAppWalletContext } from '~context/wallet-context'
 import { metaMask } from '~context/wallets/ethereum/walletConnectors'
@@ -67,7 +66,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         if (wallet.isSolana) {
           wallet?.connect?.()
         } else {
-          ;(wallet?.connect?.() as Promise<any>).catch((e) => {
+          ;(wallet?.connect?.() as Promise<any>).catch(() => {
             setState({
               isConnectionError: true,
             })
