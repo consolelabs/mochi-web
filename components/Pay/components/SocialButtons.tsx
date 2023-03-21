@@ -1,35 +1,26 @@
 import { Icon } from '@iconify/react'
 import { button } from '~components/Dashboard/Button'
+import { AUTH_DISCORD_URL } from '~envs'
 
-export default function SocialButton({
-  discordLink,
-  telegramLink,
-  twitterLink,
-  googleLink,
-}: {
-  discordLink: string
-  telegramLink: string
-  twitterLink: string
-  googleLink: string
-}) {
+export default function SocialButtons() {
   const data = [
     {
-      link: discordLink,
+      link: AUTH_DISCORD_URL,
       icon: 'ic:baseline-discord',
       name: 'Discord',
     },
     {
-      link: telegramLink,
+      link: '',
       icon: 'ic:baseline-telegram',
       name: 'Telegram',
     },
     {
-      link: twitterLink,
+      link: '',
       icon: 'mdi:twitter',
       name: 'Twitter',
     },
     {
-      link: googleLink,
+      link: '',
       icon: 'mingcute:google-fill',
       name: 'Google',
     },
@@ -44,8 +35,6 @@ export default function SocialButton({
             className: '!shadow-none font-semibold',
           })}
           href={item.link}
-          target="_blank"
-          rel="noreferrer"
         >
           <Icon icon={item.icon} />
           <div>{item.name}</div>

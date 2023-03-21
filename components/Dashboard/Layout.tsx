@@ -7,6 +7,8 @@ import ConnectButton from '~components/ConnectButton'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import Login from './Login'
 import Sidebar from './Sidebar'
+import { SEO } from '~app/layout/seo'
+import { HOME_URL } from '~envs'
 
 export default function DashboardLayout({
   children,
@@ -30,7 +32,13 @@ export default function DashboardLayout({
   const mounted = useHasMounted()
   const { connected } = useAppWalletContext()
 
-  if (!mounted) return <>{childSEO}</>
+  if (!mounted)
+    return (
+      <>
+        <SEO title="Dashboard" tailTitle url={`${HOME_URL}/dashboard`} />
+        {childSEO}
+      </>
+    )
 
   return (
     <>
@@ -88,7 +96,10 @@ export default function DashboardLayout({
               </div>
             </div>
           ) : (
-            <Login />
+            <>
+              <SEO title="Dashboard" tailTitle url={`${HOME_URL}/dashboard`} />
+              <Login />
+            </>
           )}
         </div>
         {footer}

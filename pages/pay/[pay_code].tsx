@@ -16,6 +16,7 @@ import { Icon } from '@iconify/react'
 import { isSSR, truncate } from '@dwarvesf/react-utils'
 import { HOME_URL } from '~envs'
 import dynamic from 'next/dynamic'
+import { useDisclosure } from '@dwarvesf/react-hooks'
 
 const Card = dynamic(() => import('~components/Pay/Card'))
 
@@ -46,6 +47,7 @@ type Props = {
     status: 'submitted' | 'claimed' | 'expired'
     note?: string
     token: {
+      chain: string
       decimal: number
       symbol: string
     }
@@ -53,6 +55,8 @@ type Props = {
 }
 
 export default function PayCode({ payRequest }: Props) {
+  const { isOpen: isDone, onOpen: setDone } = useDisclosure()
+
   if (!payRequest) {
     return (
       <Layout
@@ -156,10 +160,14 @@ export default function PayCode({ payRequest }: Props) {
             </div>
 
             <Card
-              balance={utils.formatUnits(
-                payRequest.amount,
-                payRequest.token.decimal,
-              )}
+              balance={
+                isDone
+                  ? '0.0'
+                  : utils.formatUnits(
+                      payRequest.amount,
+                      payRequest.token.decimal,
+                    )
+              }
               coin={payRequest.token.symbol}
             />
             {payRequest.note ? (
@@ -169,7 +177,11 @@ export default function PayCode({ payRequest }: Props) {
                 &rdquo;
               </span>
             ) : null}
-            <WithdrawButton />
+            <WithdrawButton
+              isDone={isDone}
+              setDone={setDone}
+              payLinkChain={payRequest.token.chain ?? '???'}
+            />
           </>
         )}
       </div>

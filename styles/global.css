@@ -70,6 +70,10 @@ span {
   touch-action: none;
 }
 
+.pay-card-front {
+  backface-visibility: hidden;
+}
+
 .pay-card::after {
   content: '';
   top: 76%;

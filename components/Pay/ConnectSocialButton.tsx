@@ -1,7 +1,7 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { button } from '~components/Dashboard/Button'
 import Modal from '~components/Modal'
-import SocialButton from './components/SocialButton'
+import SocialButtons from './components/SocialButtons'
 
 export default function ConnectSocialButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -21,12 +21,7 @@ export default function ConnectSocialButton() {
         <div className="p-3 bg-white rounded-lg min-w-[340px]">
           <div className="font-semibold">Connect social links</div>
           <div className="mt-4">
-            <SocialButton
-              discordLink=""
-              telegramLink=""
-              twitterLink=""
-              googleLink=""
-            />
+            <SocialButtons />
           </div>
         </div>
       </Modal>

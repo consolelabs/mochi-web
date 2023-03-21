@@ -1,11 +1,11 @@
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { useGesture } from '@use-gesture/react'
-import { useSpring, animated, to } from '@react-spring/web'
-import { useRef } from 'react'
+import { useSpring, animated, to, config } from '@react-spring/web'
+import { useEffect, useRef } from 'react'
 
-const calcX = (y: number) => -(y - window.innerHeight / 2.5) / 10
-const calcY = (x: number) => (x - window.innerWidth / 2) / 10
+const calcX = (y: number) => -(y - window.innerHeight / 4) / 20
+const calcY = (x: number) => (x - window.innerWidth / 2) / 20
 
 type Props = {
   balance: string
@@ -14,14 +14,20 @@ type Props = {
 
 export default function Card({ balance, coin }: Props) {
   const domTarget = useRef(null)
-  const [{ rotateX, rotateY, rotateZ, zoom, scale }, api] = useSpring(() => ({
-    rotateX: 0,
-    rotateY: 0,
-    rotateZ: 0,
-    scale: 1,
-    zoom: 0,
-    config: { mass: 5, tension: 350, friction: 40 },
-  }))
+  const [{ height, opacity, rotateX, rotateY, rotateZ, zoom, scale }, api] =
+    useSpring(() => ({
+      rotateX: 0,
+      rotateY: 0,
+      rotateZ: 0,
+      scale: 1,
+      zoom: 0,
+      opacity: 0,
+      height: 0,
+    }))
+
+  const { balance: bal } = useSpring({
+    balance,
+  })
 
   useGesture(
     {
@@ -37,36 +43,79 @@ export default function Card({ balance, coin }: Props) {
     { target: domTarget },
   )
 
+  useEffect(() => {
+    api.start({
+      from: {
+        rotateY: 360,
+        opacity: 0,
+        height: 0,
+      },
+      to: [
+        {
+          delay: 350,
+          height: 200,
+        },
+        {
+          rotateY: 0,
+          opacity: 1,
+          config: config.slow,
+        },
+      ],
+    })
+  }, [api])
+
   return (
     <animated.div
       style={{
-        transform: 'perspective(600px)',
-        scale: to([scale, zoom], (s, z) => s + z),
-        rotateX,
-        rotateY,
-        rotateZ,
+        height,
+        width: 336,
       }}
-      className="relative shadow-lg hover:shadow-xl transition-shadow overflow-hidden pay-card flex flex-col min-h-[200px] p-8 pb-6 border-solid border-2 border-black/15% rounded-2xl text-white"
-      ref={domTarget}
+      className="relative"
     >
-      <div className="flex justify-between items-center">
-        <div className="font-semibold">Total Balance</div>
-        <Icon icon="mdi:contactless-payment" width={24} height={24} />
-      </div>
-      <div className="flex gap-x-1.5 items-center">
-        <div className="relative w-9 h-9 rounded-full">
-          <Image fill={true} src="/assets/coin.png" alt="card logo" />
+      <animated.div
+        style={{
+          transform: 'perspective(600px)',
+          scale: to([scale, zoom], (s, z) => s + z),
+          rotateX,
+          rotateY,
+          rotateZ,
+          opacity,
+        }}
+        className="absolute top-0 left-0 w-full h-full rounded-2xl pay-card"
+      />
+      <animated.div
+        style={{
+          transform: 'perspective(600px)',
+          scale: to([scale, zoom], (s, z) => s + z),
+          rotateX,
+          rotateY,
+          rotateZ,
+          opacity,
+        }}
+        className="relative shadow-lg hover:shadow-xl transition-shadow overflow-hidden pay-card pay-card-front flex flex-col min-h-[200px] p-8 pb-6 border-solid border-2 border-black/15% rounded-2xl text-white"
+        ref={domTarget}
+      >
+        <div className="flex justify-between items-center">
+          <div className="font-semibold">Total Balance</div>
+          <Icon icon="mdi:contactless-payment" width={24} height={24} />
         </div>
-        <div>
-          <span className="text-[#FFFFFF] font-semibold text-[32px]">
-            {balance}
-          </span>
-          <span className="text-[#FFFFFF] ml-1 font-bold text-sm">{coin}</span>
+        <div className="flex gap-x-1.5 items-center">
+          <div className="relative flex-shrink-0 w-9 h-9 rounded-full">
+            <Image fill={true} src="/assets/coin.png" alt="card logo" />
+          </div>
+          <div className="flex items-baseline pr-2 w-full">
+            <animated.span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">
+              {bal.to((b) => b)}
+            </animated.span>
+            <span className="ml-1 text-sm font-bold text-white whitespace-nowrap">
+              {coin}
+            </span>
+          </div>
         </div>
-      </div>
-      <div className="mt-auto text-xs font-normal text-right">
-        Powered by Mochi
-      </div>
+        <div className="mt-auto text-xs font-normal text-right">
+          Powered by Mochi
+        </div>
+      </animated.div>
     </animated.div>
   )
 }
