@@ -65,6 +65,9 @@ span {
 .pay-card {
   background-color: #42373c;
   background: radial-gradient(circle at 100% 60%, #6f4353, #42373c);
+
+  will-change: transform;
+  touch-action: none;
 }
 
 .pay-card::after {
