@@ -227,7 +227,7 @@ export function AdsForm() {
                   className={button({
                     appearance: 'text',
                     size: 'sm',
-                    className: 'md:px-[14px] md:py-[8px]',
+                    className: 'md:px-3.5 md:py-2',
                   })}
                 >
                   Back
@@ -237,7 +237,7 @@ export function AdsForm() {
                     className={button({
                       appearance: 'gray',
                       size: 'sm',
-                      className: 'md:px-[14px] md:py-[8px]',
+                      className: 'md:px-3.5 md:py-2',
                     })}
                   >
                     Cancel
@@ -247,7 +247,7 @@ export function AdsForm() {
                     className={button({
                       appearance: 'secondary',
                       size: 'sm',
-                      className: 'md:px-[14px] md:py-[8px]',
+                      className: 'md:px-3.5 md:py-2',
                     })}
                   >
                     Save
