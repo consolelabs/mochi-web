@@ -37,11 +37,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
-    if (pathname.startsWith('/dashboard') && !isLoadingSession && !isLoggedIn) {
+    if (
+      pathname.startsWith('/dashboard') &&
+      !isLoadingSession &&
+      !isLoggedIn &&
+      query.token
+    ) {
       getSession(query.token as string)
-      replace('', undefined, { shallow: true })
+      replace(pathname, undefined, { shallow: true })
     }
-  }, [pathname])
+  }, [pathname]) // eslint-disable-line
 
   return (
     <StrictMode>

@@ -106,7 +106,7 @@ export const Table: <T extends object = {}>(props: Props<T>) => JSX.Element = (
                   },
                 })}
               >
-                <div>{column.Header as ReactNode}</div>
+                <div>{column.render('Header')}</div>
                 {defaultCanSort && (
                   <Icon
                     className="w-4 h-4"
@@ -129,7 +129,7 @@ export const Table: <T extends object = {}>(props: Props<T>) => JSX.Element = (
           className: clsx('tbody inline-block min-w-full', tbodyClassName),
         })}
       >
-        {rows.map((row, index) => {
+        {rows.map((row) => {
           prepareRow(row)
 
           return (
