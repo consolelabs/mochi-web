@@ -137,8 +137,8 @@ export function AdsForm() {
   return (
     <form className="h-full w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex h-full">
-        <div className="w-full md:w-2/5 pt-4 pb-8 md:pt-8 md:pb-12">
-          <div className="flex flex-col gap-y-6 max-w-sm mx-auto">
+        <div className="w-full h-full md:w-2/5 pt-4 pb-8 md:pt-8 md:pb-12">
+          <div className="h-full flex flex-col gap-y-6 max-w-sm mx-auto">
             <h2>
               <div className="flex items-center gap-2">
                 <button type="button" onClick={back}>
@@ -220,7 +220,7 @@ export function AdsForm() {
               </Field>
             </div>
 
-            <div className="mt-6 md:mt-12">
+            <div className="mt-6 md:mt-auto">
               <div className="flex justify-between">
                 <button
                   className={button({
