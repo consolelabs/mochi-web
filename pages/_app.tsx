@@ -33,20 +33,18 @@ type AppPropsWithLayout = AppProps & {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { pathname, query, replace } = useRouter()
-  const { getSession, isLoadingSession, isLoggedIn } = useAuthStore((s) => s)
+  const { getSession, isLoadingSession, token, isLoggedIn } = useAuthStore()
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
-    if (
-      pathname.startsWith('/dashboard') &&
-      !isLoadingSession &&
-      !isLoggedIn &&
-      query.token
-    ) {
+    if (pathname.startsWith('/dashboard') && !isLoadingSession && !isLoggedIn) {
       getSession(query.token as string)
       replace(pathname, undefined, { shallow: true })
+      if (query.url_location && typeof query.url_location === 'string') {
+        replace(query.url_location, undefined)
+      }
     }
-  }, [pathname]) // eslint-disable-line
+  }, [pathname, query.token]) // eslint-disable-line
 
   return (
     <StrictMode>

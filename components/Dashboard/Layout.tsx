@@ -59,10 +59,12 @@ export default function DashboardLayout({
               Mochi<span className="text-mochi">.</span>
             </span>
           </div>
-          <div className="flex gap-x-3 items-center">
-            {connected && <Icon icon="mdi:bell" width={20} />}
-            <ConnectButton />
-          </div>
+          {connected || skipAuth ? (
+            <div className="flex gap-x-3 items-center">
+              {connected && <Icon icon="mdi:bell" width={20} />}
+              <ConnectButton />
+            </div>
+          ) : null}
         </div>
         <div className="flex relative flex-1">
           {connected || skipAuth ? (

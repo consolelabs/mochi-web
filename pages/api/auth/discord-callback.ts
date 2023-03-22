@@ -5,6 +5,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { token } = req.query
-  return res.redirect(`${HOME_URL}/dashboard?token=${token}`)
+  const { token, url_location } = req.query
+  return res.redirect(
+    `${HOME_URL}/dashboard?token=${token}&url_location=${url_location}`,
+  )
 }

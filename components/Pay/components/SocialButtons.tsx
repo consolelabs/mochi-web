@@ -5,7 +5,7 @@ import { AUTH_DISCORD_URL } from '~envs'
 export default function SocialButtons() {
   const data = [
     {
-      link: AUTH_DISCORD_URL,
+      link: `${AUTH_DISCORD_URL}?url_location=${window.location.href}`,
       icon: 'ic:baseline-discord',
       name: 'Discord',
     },
