@@ -26,10 +26,6 @@ export default function Card({ payRequest }: Props) {
       height: 0,
     }))
 
-  const { balance: bal } = useSpring({
-    balance: utils.formatUnits(payRequest.amount, payRequest.token.decimal),
-  })
-
   useGesture(
     {
       onMove: ({ xy: [px, py] }) =>
@@ -104,14 +100,19 @@ export default function Card({ payRequest }: Props) {
           <div className="relative flex-shrink-0 w-9 h-9 rounded-full">
             <Image
               fill={true}
-              src={payRequest.token.chain.icon}
+              src={payRequest.token.chain.icon || '/assets/coin.png'}
               alt="token logo"
             />
           </div>
           <div className="flex items-baseline pr-2 w-full">
-            <animated.span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">
-              {bal.to((b) => b)}
-            </animated.span>
+            <span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">
+              {payRequest.status === 'claimed'
+                ? 0
+                : utils.formatUnits(
+                    payRequest.amount,
+                    payRequest.token.decimal,
+                  )}
+            </span>
             <span className="ml-1 text-sm font-bold text-white whitespace-nowrap">
               {payRequest.token.symbol}
             </span>

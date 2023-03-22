@@ -26,10 +26,11 @@ export default function WalletAddressForm({
             name="walletAddress"
             rules={{
               required: 'Required',
-              validate: (v) =>
-                !utils.isAddress(v) &&
-                !isSolAddress(v) &&
-                'Enter EVM/Solana address',
+              validate: (v) => {
+                if (!utils.isAddress(v) && !isSolAddress(v))
+                  return 'Enter EVM/Solana address'
+                return true
+              },
             }}
             label="Recipient's public key"
             control={control}

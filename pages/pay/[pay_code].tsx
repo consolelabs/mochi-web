@@ -18,6 +18,7 @@ import { HOME_URL } from '~envs'
 import dynamic from 'next/dynamic'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import useSWR from 'swr'
+import { useCallback } from 'react'
 
 const Card = dynamic(() => import('~components/Pay/Card'))
 
@@ -61,12 +62,22 @@ type Props = {
 }
 
 export default function PayCode({ payRequest: initialPayRequest }: Props) {
-  const { data: payRequest = initialPayRequest } = useSWR(
+  const { data: payRequest = initialPayRequest, mutate } = useSWR<PayRequest>(
     `/pay-requests/${initialPayRequest?.code}`,
     (url) => API.MOCHI_PAY.get(url).json((r) => r.data),
   )
 
-  const { isOpen: isDone, onOpen: setDone } = useDisclosure()
+  const { isOpen: isDone, onOpen: _setDone } = useDisclosure({
+    defaultIsOpen: payRequest?.status !== 'submitted',
+  })
+
+  const setDone = useCallback(() => {
+    mutate({
+      ...payRequest,
+      status: 'claimed',
+    })
+    _setDone()
+  }, [_setDone, mutate, payRequest])
 
   if (!payRequest) {
     return (
@@ -177,6 +188,9 @@ export default function PayCode({ payRequest: initialPayRequest }: Props) {
                 {truncate(payRequest.note, 100, false)}
                 &rdquo;
               </span>
+            ) : null}
+            {payRequest.status === 'claimed' ? (
+              <span>This Pay Link has been claimed</span>
             ) : null}
             <WithdrawButton
               isDone={isDone}

@@ -250,11 +250,11 @@ export default function WithdrawButton({ payRequest, isDone, setDone }: Props) {
           <span className="mt-2 font-light text-center text-dashboard-gray-8">
             For the safety of your funds, the network you selected is{' '}
             <span className="font-semibold">
-              {payRequest?.token.chain.symbol.toUpperCase() ?? '???'}
+              {payRequest?.token.chain.symbol.toUpperCase() || '???'}
             </span>
             , please confirm that your withdrawal address supports the{' '}
             <span className="font-semibold">
-              {payRequest?.token.chain.symbol.toUpperCase() ?? '???'}
+              {payRequest?.token.chain.symbol.toUpperCase() || '???'}
             </span>{' '}
             chain network.
           </span>

@@ -32,13 +32,7 @@ export default function DashboardLayout({
   const mounted = useHasMounted()
   const { connected } = useAppWalletContext()
 
-  if (!mounted)
-    return (
-      <>
-        {childSEO}
-        <SEO title="Dashboard" tailTitle url={`${HOME_URL}/dashboard`} />
-      </>
-    )
+  if (!mounted) return <>{childSEO}</>
 
   return (
     <>
