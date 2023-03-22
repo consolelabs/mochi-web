@@ -25,3 +25,10 @@ export const INVITE_LINK =
   'https://discord.com/api/oauth2/authorize?client_id=1062540132269432863&permissions=8&scope=bot%20applications.commands'
 
 export const HOME_URL = process.env.HOME_URL || 'https://mochi.gg'
+
+export const MOCHI_PROFILE_API =
+  process.env.NEXT_PUBLIC_MOCHI_PROFILE_API || 'mochi-profile-api'
+export const MOCHI_PAY_API =
+  process.env.NEXT_PUBLIC_MOCHI_PAY_API || 'mochi-pay-api'
+
+export const AUTH_DISCORD_URL = `${MOCHI_PROFILE_API}/profiles/auth/discord`

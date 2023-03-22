@@ -17,7 +17,7 @@ export default function WalletAddressForm({
   const { handleSubmit, control } = useForm<FormValue>()
 
   return (
-    <div className="flex flex-col p-4 bg-white rounded-2xl md:p-8 min-w-[300px]">
+    <div className="flex flex-col p-4 bg-white rounded-2xl md:p-6 min-w-[300px] md:min-w-[400px]">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-2 mb-6">
           <Field
