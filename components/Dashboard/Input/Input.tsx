@@ -1,11 +1,11 @@
 import { Icon } from '@iconify/react'
-import { ForwardedRef, forwardRef, useState } from 'react'
+import { ForwardedRef, forwardRef, ReactNode, useState } from 'react'
 import { affix, input } from './styles'
 
-type Props = JSX.IntrinsicElements['input'] &
+type Props = Omit<JSX.IntrinsicElements['input'], 'prefix' | 'suffix'> &
   Parameters<typeof input>[0] & {
-    suffix?: string
-    prefix?: string
+    suffix?: ReactNode
+    prefix?: ReactNode
     suffixProps?: Parameters<typeof affix>[0]
     prefixProps?: Parameters<typeof affix>[0]
     allowClear?: boolean
@@ -22,6 +22,8 @@ export const Input = forwardRef(
       suffixProps,
       prefixProps,
       allowClear = true,
+      type,
+      placeholder,
       onChange = () => {},
       onBlur,
     } = props
@@ -45,6 +47,8 @@ export const Input = forwardRef(
         )}
         <input
           ref={ref}
+          type={type}
+          placeholder={placeholder}
           className={input({ className, appearance })}
           value={value}
           onChange={onChange}
@@ -66,7 +70,7 @@ export const Input = forwardRef(
             {suffix}
           </span>
         )}
-        {allowClear && value && (
+        {allowClear && value ? (
           <button
             type="button"
             className="flex absolute right-0 top-1/2 justify-center items-center mr-3 w-5 h-5 rounded-full -translate-y-1/2 bg-dashboard-gray-6"
@@ -77,6 +81,8 @@ export const Input = forwardRef(
           >
             <Icon className="w-4 h-4" icon="heroicons:x-mark" />
           </button>
+        ) : (
+          ''
         )}
       </div>
     )

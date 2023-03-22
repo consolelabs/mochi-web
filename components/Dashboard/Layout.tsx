@@ -36,10 +36,10 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div className="flex overflow-auto flex-col min-h-screen bg-dashboard-gray-1">
+      <div className="flex flex-col min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(
-            'z-50 sticky top-0 flex p-3 md:py-4 md:px-7 flex-shrink-0 justify-between',
+            'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between z-10',
             {
               'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
                 connected,
@@ -64,21 +64,24 @@ export default function DashboardLayout({
             <ConnectButton />
           </div>
         </div>
-        <div className="flex relative z-10 flex-1">
-          {connected || skipAuth ? (
+        <div className="flex relative flex-1">
+          {connected ? (
             <div
-              className={clsx('flex gap-x-24 mx-auto w-full', {
-                'max-w-5xl my-10': !fullWidth,
-              })}
+              className={clsx(
+                'flex items-start gap-x-24 mx-auto w-full relative',
+                {
+                  'max-w-5xl my-10 px-5': !fullWidth,
+                },
+              )}
             >
               {showSidebar ? (
-                <div className="flex-shrink-0 min-w-[200px]">
+                <div className="sticky flex-shrink-0 min-w-[200px] top-[108px]">
                   <Sidebar />
                 </div>
               ) : null}
-              <div className="flex-1">
+              <div className="flex-1 overflow-x-hidden h-full">
                 {(header || headerExtraRight) && (
-                  <div className="flex justify-between mb-4">
+                  <div className="flex justify-between mb-6">
                     <h2 className="font-bold text-[22px]">
                       {header && header}
                     </h2>

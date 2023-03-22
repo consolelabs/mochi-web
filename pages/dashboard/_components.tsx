@@ -11,10 +11,12 @@ import { useForm } from 'react-hook-form'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { SEO } from '~app/layout/seo'
 import { INVITE_LINK } from '~envs'
-import { Tab } from '~components/Dashboard/Tab'
+import { Tabs } from '~components/Dashboard/Tabs'
 import { Transition } from '@headlessui/react'
 import { Table } from '~components/Dashboard/Table'
 import Field from '~components/Dashboard/Form/Field'
+import { useMemo, useState } from 'react'
+import { UseSortByState } from 'react-table'
 
 export default function Default() {
   const mounted = useHasMounted()
@@ -23,6 +25,27 @@ export default function Default() {
   const onSubmit = (values: Record<string, any>) => {
     console.log(values)
   }
+
+  // For Table with manual sort
+  const [sortBy, setSortBy] = useState<UseSortByState<any>['sortBy']>([])
+  const tableWithManualSortData = useMemo(() => {
+    const data = [
+      { a: 'Lorem Ipsum', b: 1234, c: '#', d: '' },
+      { a: 'Lorem Ipsum', b: 5678, c: '#', d: '' },
+      { a: 'Lorem Ipsum', b: 9101, c: '#', d: '' },
+    ]
+
+    const sortByB = sortBy.find((s) => s.id === 'b')
+    if (sortByB) {
+      return data.sort((a: any, b: any) => {
+        return sortByB.desc
+          ? b[sortByB.id] - a[sortByB.id]
+          : a[sortByB.id] - b[sortByB.id]
+      })
+    }
+
+    return data
+  }, [sortBy])
 
   if (!mounted) return null
 
@@ -349,8 +372,14 @@ export default function Default() {
           <h2 className={heading({ size: 'sm' })}>Tabs</h2>
           <div>
             <label className={labelStyles()}>Default</label>
-            <Tab headings={['Setup', 'Participate', 'Rewards']}>
-              <Tab.Panel>
+            <Tabs
+              headings={[
+                { label: 'Setup' },
+                { label: 'Participate' },
+                { label: 'Rewards' },
+              ]}
+            >
+              <Tabs.Panel>
                 {({ selected }) => {
                   return (
                     <Transition
@@ -367,8 +396,8 @@ export default function Default() {
                     </Transition>
                   )
                 }}
-              </Tab.Panel>
-              <Tab.Panel>
+              </Tabs.Panel>
+              <Tabs.Panel>
                 {({ selected }) => {
                   return (
                     <Transition
@@ -385,8 +414,8 @@ export default function Default() {
                     </Transition>
                   )
                 }}
-              </Tab.Panel>
-              <Tab.Panel>
+              </Tabs.Panel>
+              <Tabs.Panel>
                 {({ selected }) => {
                   return (
                     <Transition
@@ -403,8 +432,8 @@ export default function Default() {
                     </Transition>
                   )
                 }}
-              </Tab.Panel>
-            </Tab>
+              </Tabs.Panel>
+            </Tabs>
           </div>
         </div>
 
@@ -419,22 +448,22 @@ export default function Default() {
               ]}
               columns={[
                 {
+                  Header: 'Column A',
                   accessor: 'a',
-                  title: 'Column A',
                   width: 400,
                   tdClassName: 'font-bold',
                 },
-                { accessor: 'b', title: 'Column B' },
-                { accessor: 'c', title: 'Column C' },
+                { accessor: 'b', Header: 'Column B', defaultCanSort: true },
+                { accessor: 'c', Header: 'Column C' },
                 {
+                  Header: 'Column D',
                   accessor: 'd',
-                  title: 'Column D',
                   thClassName: 'text-right',
                   tdClassName: 'flex justify-end',
-                  render: () => <Switch />,
+                  Cell: () => <Switch />,
                 },
               ]}
-              theadClassName="text-xs uppercase text-dashboard-gray-2 font-bold mb-2"
+              theadClassName="text-[11px] uppercase text-dashboard-gray-2 font-bold mb-2"
               trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
             />
           </div>
@@ -460,18 +489,18 @@ export default function Default() {
                 columns={[
                   {
                     accessor: 'a',
-                    title: 'Column A',
+                    Header: 'Column A',
                     width: 400,
                     tdClassName: 'font-bold',
                   },
-                  { accessor: 'b', title: 'Column B' },
-                  { accessor: 'c', title: 'Column C' },
+                  { accessor: 'b', Header: 'Column B' },
+                  { accessor: 'c', Header: 'Column C' },
                   {
                     accessor: 'd',
-                    title: 'Column D',
+                    Header: 'Column D',
                     thClassName: 'text-right',
                     tdClassName: 'flex justify-end h-full',
-                    render: (value) => (
+                    Cell: ({ cell: { value } }: any) => (
                       <div className="flex gap-2 items-center h-full transition translate-x-1/2 group-hover:translate-x-0">
                         <span className="w-1/2">{value}</span>
                         <button
@@ -498,7 +527,7 @@ export default function Default() {
           <div>
             <div className={labelStyles()}>Table Groups</div>
             <div className="overflow-auto">
-              <div className="inline-block px-4 mb-2 min-w-full text-xs font-bold uppercase thead text-dashboard-gray-2">
+              <div className="inline-block px-8 mb-2 min-w-full text-xs font-bold uppercase thead text-dashboard-gray-2">
                 <div className="flex trHead">
                   <div
                     className="th"
@@ -536,18 +565,21 @@ export default function Default() {
                   columns={[
                     {
                       accessor: 'a',
-                      title: 'Column A',
+                      Header: 'Column A',
                       width: 400,
                       tdClassName: 'font-bold',
                     },
-                    { accessor: 'b', title: 'Column B' },
-                    { accessor: 'c', title: 'Column C' },
+                    {
+                      accessor: 'b',
+                      Header: 'Column B',
+                    },
+                    { accessor: 'c', Header: 'Column C' },
                     {
                       accessor: 'd',
-                      title: 'Column D',
+                      Header: 'Column D',
                       thClassName: 'text-right',
                       tdClassName: 'flex justify-end',
-                      render: () => <Switch />,
+                      Cell: () => <Switch />,
                     },
                   ]}
                   tableClassName="!overflow-visible"
@@ -565,18 +597,18 @@ export default function Default() {
                   columns={[
                     {
                       accessor: 'a',
-                      title: 'Column A',
+                      Header: 'Column A',
                       width: 400,
                       tdClassName: 'font-bold',
                     },
-                    { accessor: 'b', title: 'Column B' },
-                    { accessor: 'c', title: 'Column C' },
+                    { accessor: 'b', Header: 'Column B' },
+                    { accessor: 'c', Header: 'Column C' },
                     {
                       accessor: 'd',
-                      title: 'Column D',
+                      Header: 'Column D',
                       thClassName: 'text-right',
                       tdClassName: 'flex justify-end',
-                      render: () => <Switch />,
+                      Cell: () => <Switch />,
                     },
                   ]}
                   tableClassName="!overflow-visible"
@@ -585,6 +617,35 @@ export default function Default() {
                 />
               </div>
             </div>
+          </div>
+          <div>
+            <div className={labelStyles()}>With Manual Sort</div>
+            <Table
+              data={tableWithManualSortData}
+              columns={[
+                {
+                  Header: 'Column A',
+                  accessor: 'a',
+                  width: 400,
+                  tdClassName: 'font-bold',
+                },
+                { accessor: 'b', Header: 'Column B', defaultCanSort: true },
+                { accessor: 'c', Header: 'Column C' },
+                {
+                  Header: 'Column D',
+                  accessor: 'd',
+                  thClassName: 'text-right',
+                  tdClassName: 'flex justify-end',
+                  Cell: () => <Switch />,
+                },
+              ]}
+              manualSortBy
+              theadClassName="text-xs uppercase text-dashboard-gray-2 font-bold mb-2"
+              trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+              onChange={({ sortBy }) => {
+                setSortBy(sortBy)
+              }}
+            />
           </div>
         </div>
 
