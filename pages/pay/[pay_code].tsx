@@ -17,6 +17,7 @@ import { isSSR, truncate } from '@dwarvesf/react-utils'
 import { HOME_URL } from '~envs'
 import dynamic from 'next/dynamic'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import useSWR from 'swr'
 
 const Card = dynamic(() => import('~components/Pay/Card'))
 
@@ -40,21 +41,31 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 }
 
-type Props = {
-  payRequest?: {
-    code: string
-    amount: string
-    status: 'submitted' | 'claimed' | 'expired'
-    note?: string
-    token: {
-      chain: string
-      decimal: number
+export type PayRequest = {
+  code: string
+  amount: string
+  status: 'submitted' | 'claimed' | 'expired'
+  note?: string
+  token: {
+    chain: {
       symbol: string
+      icon: string
     }
+    decimal: number
+    symbol: string
   }
 }
 
-export default function PayCode({ payRequest }: Props) {
+type Props = {
+  payRequest?: PayRequest
+}
+
+export default function PayCode({ payRequest: initialPayRequest }: Props) {
+  const { data: payRequest = initialPayRequest } = useSWR(
+    `/pay-requests/${initialPayRequest?.code}`,
+    (url) => API.MOCHI_PAY.get(url).json((r) => r.data),
+  )
+
   const { isOpen: isDone, onOpen: setDone } = useDisclosure()
 
   if (!payRequest) {
@@ -156,20 +167,10 @@ export default function PayCode({ payRequest }: Props) {
             <div className="flex flex-wrap gap-2">
               <QRCodeButton uri={isSSR() ? '' : window.location.href} />
               <CopyLinkButton link={isSSR() ? '' : window.location.href} />
-              <ShareButton />
+              <ShareButton link={isSSR() ? '' : window.location.href} />
             </div>
 
-            <Card
-              balance={
-                isDone
-                  ? '0.0'
-                  : utils.formatUnits(
-                      payRequest.amount,
-                      payRequest.token.decimal,
-                    )
-              }
-              coin={payRequest.token.symbol}
-            />
+            <Card payRequest={payRequest} />
             {payRequest.note ? (
               <span>
                 <span className="font-medium">Message: </span>&ldquo;
@@ -180,7 +181,7 @@ export default function PayCode({ payRequest }: Props) {
             <WithdrawButton
               isDone={isDone}
               setDone={setDone}
-              payLinkChain={payRequest.token.chain ?? '???'}
+              payRequest={payRequest}
             />
           </>
         )}

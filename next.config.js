@@ -3,6 +3,15 @@ module.exports = {
   experimental: {
     appDir: false,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.discordapp.com',
+        port: '',
+      },
+    ],
+  },
   async redirects() {
     return [
       {

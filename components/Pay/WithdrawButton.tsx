@@ -12,6 +12,9 @@ import { Popover } from '@headlessui/react'
 import SocialButtons from './components/SocialButtons'
 import { Float } from '@headlessui-float/react'
 import ToastLoading from '~components/Toast/ToastLoading'
+import { API } from '~constants/api'
+import { PayRequest } from '~pages/pay/[pay_code]'
+import ToastError from '~components/Toast/ToastError'
 
 const DropdownButton = ({
   icon,
@@ -55,16 +58,12 @@ type WithdrawOption = {
 }
 
 type Props = {
-  payLinkChain: string
+  payRequest?: PayRequest
   isDone: boolean
   setDone: () => void
 }
 
-export default function WithdrawButton({
-  payLinkChain,
-  isDone,
-  setDone,
-}: Props) {
+export default function WithdrawButton({ payRequest, isDone, setDone }: Props) {
   const {
     isOpen: isShowingReminder,
     onOpen: showReminder,
@@ -81,36 +80,50 @@ export default function WithdrawButton({
     id: 'none',
   })
 
-  const handleSubmit = useCallback(
+  const handleWithdrawOnChain = useCallback(
     async (values: { walletAddress: string }) => {
-      const promise = () => new Promise((r) => setTimeout(r, 3000))
-      toast.custom(
-        (t) => {
-          promise().then(() => {
-            toast.dismiss(t)
-            setDone()
-            toast.custom(() => (
-              <ToastSuccess
-                message="Withdraw Successful!"
-                description={
-                  <>
-                    You&#39;ve successfully withdrawn all to wallet{' '}
-                    <span className="font-bold text-dashboard-green-1">
-                      {truncate(values.walletAddress, 8, true, '.')}.
-                    </span>
-                  </>
-                }
-              />
-            ))
-          })
+      if (payRequest?.code) {
+        toast.custom(
+          (t) => {
+            API.MOCHI_PAY.json({
+              public_key: values.walletAddress,
+            })
+              .url(`/pay-requests/${payRequest.code}/claim/onchain`)
+              .put()
+              .notFound(() =>
+                toast.custom(() => (
+                  <ToastError
+                    message="Withdrawal Error"
+                    description="The Pay Link couldn't be found"
+                  />
+                )),
+              )
+              .res(() => {
+                setDone()
+                toast.custom(() => (
+                  <ToastSuccess
+                    message="Withdraw Successful!"
+                    description={
+                      <>
+                        You&#39;ve successfully withdrawn all to wallet{' '}
+                        <span className="font-bold text-dashboard-green-1">
+                          {truncate(values.walletAddress, 8, true, '.')}.
+                        </span>
+                      </>
+                    }
+                  />
+                ))
+              })
+              .finally(() => toast.dismiss(t))
 
-          return <ToastLoading text="Processing your withdrawal request..." />
-        },
-        { duration: Infinity },
-      )
-      hidePublicKeyWithdraw()
+            return <ToastLoading text="Processing your withdrawal request..." />
+          },
+          { duration: Infinity },
+        )
+        hidePublicKeyWithdraw()
+      }
     },
-    [setDone, hidePublicKeyWithdraw],
+    [hidePublicKeyWithdraw, payRequest?.code, setDone],
   )
 
   const wallets = [
@@ -236,8 +249,14 @@ export default function WithdrawButton({
           <span className="text-lg font-semibold">Reminder</span>
           <span className="mt-2 font-light text-center text-dashboard-gray-8">
             For the safety of your funds, the network you selected is{' '}
-            {payLinkChain.toUpperCase()}, please confirm that your withdrawal
-            address supports the {payLinkChain.toUpperCase()} chain network.
+            <span className="font-semibold">
+              {payRequest?.token.chain.symbol.toUpperCase() ?? '???'}
+            </span>
+            , please confirm that your withdrawal address supports the{' '}
+            <span className="font-semibold">
+              {payRequest?.token.chain.symbol.toUpperCase() ?? '???'}
+            </span>{' '}
+            chain network.
           </span>
           <div className="flex gap-x-2 self-stretch mt-5">
             <button
@@ -268,7 +287,7 @@ export default function WithdrawButton({
       </Modal>
       <Modal isOpen={isShowingPulicKeyWithdraw} onClose={hidePublicKeyWithdraw}>
         <WalletAddressForm
-          onSubmit={handleSubmit}
+          onSubmit={handleWithdrawOnChain}
           onCancel={hidePublicKeyWithdraw}
         />
       </Modal>

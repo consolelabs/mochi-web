@@ -3,16 +3,17 @@ import Image from 'next/image'
 import { useGesture } from '@use-gesture/react'
 import { useSpring, animated, to, config } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
+import { utils } from 'ethers'
+import { PayRequest } from '~pages/pay/[pay_code]'
 
 const calcX = (y: number) => -(y - window.innerHeight / 4) / 20
 const calcY = (x: number) => (x - window.innerWidth / 2) / 20
 
 type Props = {
-  balance: string
-  coin: string
+  payRequest: PayRequest
 }
 
-export default function Card({ balance, coin }: Props) {
+export default function Card({ payRequest }: Props) {
   const domTarget = useRef(null)
   const [{ height, opacity, rotateX, rotateY, rotateZ, zoom, scale }, api] =
     useSpring(() => ({
@@ -26,7 +27,7 @@ export default function Card({ balance, coin }: Props) {
     }))
 
   const { balance: bal } = useSpring({
-    balance,
+    balance: utils.formatUnits(payRequest.amount, payRequest.token.decimal),
   })
 
   useGesture(
@@ -101,14 +102,18 @@ export default function Card({ balance, coin }: Props) {
         </div>
         <div className="flex gap-x-1.5 items-center">
           <div className="relative flex-shrink-0 w-9 h-9 rounded-full">
-            <Image fill={true} src="/assets/coin.png" alt="card logo" />
+            <Image
+              fill={true}
+              src={payRequest.token.chain.icon}
+              alt="token logo"
+            />
           </div>
           <div className="flex items-baseline pr-2 w-full">
             <animated.span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">
               {bal.to((b) => b)}
             </animated.span>
             <span className="ml-1 text-sm font-bold text-white whitespace-nowrap">
-              {coin}
+              {payRequest.token.symbol}
             </span>
           </div>
         </div>
