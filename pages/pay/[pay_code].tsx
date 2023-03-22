@@ -72,10 +72,14 @@ export default function PayCode({ payRequest: initialPayRequest }: Props) {
   })
 
   const setDone = useCallback(() => {
-    mutate({
-      ...payRequest,
-      status: 'claimed',
-    })
+    if (payRequest) {
+      mutate({
+        ...payRequest,
+        status: 'claimed',
+      })
+    } else {
+      mutate()
+    }
     _setDone()
   }, [_setDone, mutate, payRequest])
 
