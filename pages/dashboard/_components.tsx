@@ -463,7 +463,7 @@ export default function Default() {
                   Cell: () => <Switch />,
                 },
               ]}
-              theadClassName="text-xs uppercase text-dashboard-gray-2 font-bold mb-2"
+              theadClassName="text-[11px] uppercase text-dashboard-gray-2 font-bold mb-2"
               trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
             />
           </div>

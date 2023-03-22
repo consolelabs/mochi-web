@@ -26,7 +26,7 @@ export const input = ({ className = '', ...rest }: Props = {}) =>
 
 const affixVariant = cva(
   [
-    'text-sm absolute h-[calc(100% - 2px)] px-3 py-2 text-dashboard-gray-2 top-[1px] leading-relaxed',
+    'text-sm absolute h-[calc(100%-2px)] px-3 py-2 text-dashboard-gray-2 top-[1px] leading-relaxed',
   ],
   {
     variants: {

@@ -121,10 +121,10 @@ const getSettingItems = (): [string, MenuItem[]][] => [
         url: `/dashboard/settings/quests`,
       },
       {
-        id: 'settings-registered-game',
+        id: 'settings-activities',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
-        text: 'Registered Game',
-        url: `/dashboard/settings/registered-game`,
+        text: 'Activities',
+        url: `/dashboard/settings/activities`,
       },
       {
         id: 'settings-game-overlay',
@@ -141,6 +141,7 @@ const settingRoutesMap: Record<
   { activeId: string; activeIdx?: number }
 > = {
   '/dashboard/settings/account': { activeId: 'settings-account' },
+  '/dashboard/settings/activities': { activeId: 'settings-activities' },
 }
 
 export default function Sidebar() {
