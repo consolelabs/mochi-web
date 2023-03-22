@@ -42,7 +42,7 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div className="flex overflow-auto flex-col min-h-screen bg-dashboard-gray-1">
+      <div className="flex flex-col min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(
             'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between z-10',
@@ -70,7 +70,7 @@ export default function DashboardLayout({
             <ConnectButton />
           </div>
         </div>
-        <div className="flex relative z-10 flex-1">
+        <div className="flex relative flex-1">
           {connected ? (
             <div
               className={clsx(
