@@ -1,11 +1,11 @@
 import { Icon } from '@iconify/react'
-import { ForwardedRef, forwardRef, useState } from 'react'
+import { ForwardedRef, forwardRef, ReactNode, useState } from 'react'
 import { affix, input } from './styles'
 
-type Props = JSX.IntrinsicElements['input'] &
+type Props = Omit<JSX.IntrinsicElements['input'], 'prefix' | 'suffix'> &
   Parameters<typeof input>[0] & {
-    suffix?: string
-    prefix?: string
+    suffix?: ReactNode
+    prefix?: ReactNode
     suffixProps?: Parameters<typeof affix>[0]
     prefixProps?: Parameters<typeof affix>[0]
     allowClear?: boolean
