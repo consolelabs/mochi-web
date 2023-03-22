@@ -63,6 +63,7 @@ export default function ListAds() {
             {
               Header: 'Schedule',
               accessor: 'schedule',
+              defaultCanSort: true,
               Cell: ({ cell: { value }, row: { original } }: any) => {
                 return (
                   <span
