@@ -20,6 +20,7 @@ const routesMap: Record<string, { activeId: string; activeIdx?: number }> = {
   },
   '/dashboard/[server_id]/quests/event': { activeId: 'quests', activeIdx: 2 },
   '/dashboard/[server_id]/dao': { activeId: 'dao' },
+  '/dashboard/[server_id]/members': { activeId: 'members' },
 }
 
 const getDefaultItems = (query: ParsedUrlQuery): [string, MenuItem[]][] => [
@@ -63,6 +64,12 @@ const getDefaultItems = (query: ParsedUrlQuery): [string, MenuItem[]][] => [
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'DAO',
         url: `/dashboard/${query.server_id}/dao`,
+      },
+      {
+        id: 'members',
+        icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
+        text: 'Members',
+        url: `/dashboard/${query.server_id}/members`,
       },
     ],
   ],
