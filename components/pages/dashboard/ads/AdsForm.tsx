@@ -228,6 +228,7 @@ export function AdsForm() {
                     size: 'sm',
                     className: 'md:px-3.5 md:py-2',
                   })}
+                  onClick={back}
                 >
                   Back
                 </button>
@@ -238,6 +239,7 @@ export function AdsForm() {
                       size: 'sm',
                       className: 'md:px-3.5 md:py-2',
                     })}
+                    onClick={back}
                   >
                     Cancel
                   </button>

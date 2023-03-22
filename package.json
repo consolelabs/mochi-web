@@ -4,6 +4,7 @@
   "scripts": {
     "proxy-ssl": "local-ssl-proxy --config proxy-config.json",
     "dev:https": "(trap 'kill 0' SIGINT; yarn proxy-ssl & next dev -p 3001)",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
