@@ -5,6 +5,7 @@ import { useSpring, animated, to, config } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
 import { utils } from 'ethers'
 import { PayRequest } from '~pages/pay/[pay_code]'
+import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 
 const calcX = (y: number) => -(y - window.innerHeight / 4) / 20
 const calcY = (x: number) => (x - window.innerWidth / 2) / 20
@@ -98,11 +99,16 @@ export default function Card({ payRequest }: Props) {
         </div>
         <div className="flex gap-x-1.5 items-center">
           <div className="relative flex-shrink-0 w-9 h-9 rounded-full">
-            <Image
-              fill={true}
+            <CutoutAvatar
               src={payRequest.token.chain.icon || '/assets/coin.png'}
-              alt="token logo"
+              cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+              size="xs"
             />
+            {/* <Image */}
+            {/*   fill={true} */}
+            {/*   src={payRequest.token.chain.icon || '/assets/coin.png'} */}
+            {/*   alt="token logo" */}
+            {/* /> */}
           </div>
           <div className="flex items-baseline pr-2 w-full">
             <span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">

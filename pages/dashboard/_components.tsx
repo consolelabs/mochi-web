@@ -17,6 +17,7 @@ import { Table } from '~components/Dashboard/Table'
 import Field from '~components/Dashboard/Form/Field'
 import { useMemo, useState } from 'react'
 import { UseSortByState } from 'react-table'
+import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 
 export default function Default() {
   const mounted = useHasMounted()
@@ -56,6 +57,35 @@ export default function Default() {
         className="flex flex-col space-y-32 w-full"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <div className="flex flex-col space-y-4">
+          <h2 className={heading({ size: 'sm' })}>Cut-out Avatar</h2>
+          <div className="flex gap-2">
+            <CutoutAvatar
+              src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
+              cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+              size="xl"
+            />
+            <CutoutAvatar
+              src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
+              cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+              size="lg"
+            />
+            <CutoutAvatar
+              src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
+              cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+            />
+            <CutoutAvatar
+              src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
+              cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+              size="sm"
+            />
+            <CutoutAvatar
+              src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
+              cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+              size="xs"
+            />
+          </div>
+        </div>
         <div className="flex flex-col space-y-4">
           <h2 className={heading({ size: 'sm' })}>Button</h2>
           <div className="flex flex-wrap gap-2">

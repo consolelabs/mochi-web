@@ -65,7 +65,7 @@ export default function DashboardLayout({
           </div>
         </div>
         <div className="flex relative flex-1">
-          {connected ? (
+          {connected || skipAuth ? (
             <div
               className={clsx(
                 'flex items-start gap-x-24 mx-auto w-full relative',
@@ -79,7 +79,7 @@ export default function DashboardLayout({
                   <Sidebar />
                 </div>
               ) : null}
-              <div className="flex-1 overflow-x-hidden h-full">
+              <div className="overflow-x-hidden flex-1 h-full">
                 {(header || headerExtraRight) && (
                   <div className="flex justify-between mb-6">
                     <h2 className="font-bold text-[22px]">
