@@ -1,7 +1,9 @@
+import { utils } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { button } from '~components/Dashboard/Button'
 import Field from '~components/Dashboard/Form/Field'
 import { Input } from '~components/Dashboard/Input'
+import { isSolAddress } from '~utils/sol'
 
 type FormValue = {
   walletAddress: string
@@ -22,7 +24,13 @@ export default function WalletAddressForm({
         <div className="mt-2 mb-6">
           <Field
             name="walletAddress"
-            rules={{ required: 'required' }}
+            rules={{
+              required: 'Required',
+              validate: (v) =>
+                !utils.isAddress(v) &&
+                !isSolAddress(v) &&
+                'Enter EVM/Solana address',
+            }}
             label="Recipient's public key"
             control={control}
           >

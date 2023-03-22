@@ -35,8 +35,8 @@ export default function DashboardLayout({
   if (!mounted)
     return (
       <>
-        <SEO title="Dashboard" tailTitle url={`${HOME_URL}/dashboard`} />
         {childSEO}
+        <SEO title="Dashboard" tailTitle url={`${HOME_URL}/dashboard`} />
       </>
     )
 
