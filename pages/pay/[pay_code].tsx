@@ -15,12 +15,9 @@ import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { isSSR, truncate } from '@dwarvesf/react-utils'
 import { HOME_URL } from '~envs'
-import dynamic from 'next/dynamic'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import useSWR from 'swr'
-import { useCallback } from 'react'
-
-const Card = dynamic(() => import('~components/Pay/Card'))
+import Card from '~components/Pay/Card'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query

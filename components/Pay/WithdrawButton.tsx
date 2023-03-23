@@ -248,7 +248,6 @@ export default function WithdrawButton({
             leaveTo="opacity-0 translate-y-1"
             placement="bottom"
             offset={8}
-            flip
             show={keepPopover ? true : undefined}
           >
             <Popover.Button
