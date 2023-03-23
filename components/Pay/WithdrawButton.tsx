@@ -1,6 +1,6 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { button } from '~components/Dashboard/Button'
 import Modal from '~components/Modal'
 import { toast } from 'sonner'
@@ -61,9 +61,15 @@ type Props = {
   payRequest?: PayRequest
   isDone: boolean
   setDone: () => void
+  refresh: () => void
 }
 
-export default function WithdrawButton({ payRequest, isDone, setDone }: Props) {
+export default function WithdrawButton({
+  payRequest,
+  isDone,
+  setDone,
+  refresh,
+}: Props) {
   const {
     isOpen: isShowingReminder,
     onOpen: showReminder,
@@ -76,15 +82,23 @@ export default function WithdrawButton({ payRequest, isDone, setDone }: Props) {
     onClose: hidePublicKeyWithdraw,
   } = useDisclosure()
 
+  const [onChainWallet, setOnChainWallet] = useState<string>()
+
   const [option, setOption] = useState<WithdrawOption>({
     id: 'none',
   })
+
+  const { isOpen: isShowSubmittedToast, onOpen: showSubmittedToast } =
+    useDisclosure()
+
+  const [processingToastId, setProcessingToastId] = useState<number>()
 
   const handleWithdrawOnChain = useCallback(
     async (values: { walletAddress: string }) => {
       if (payRequest?.code) {
         toast.custom(
           (t) => {
+            setProcessingToastId(t)
             API.MOCHI_PAY.json({
               public_key: values.walletAddress,
             })
@@ -93,28 +107,16 @@ export default function WithdrawButton({ payRequest, isDone, setDone }: Props) {
               .notFound(() =>
                 toast.custom(() => (
                   <ToastError
+                    key="withdraw-error-not-found"
                     message="Withdrawal Error"
                     description="The Pay Link couldn't be found"
                   />
                 )),
               )
               .res(() => {
-                setDone()
-                toast.custom(() => (
-                  <ToastSuccess
-                    message="Withdraw Successful!"
-                    description={
-                      <>
-                        You&#39;ve successfully withdrawn all to wallet{' '}
-                        <span className="font-bold text-dashboard-green-1">
-                          {truncate(values.walletAddress, 8, true, '.')}.
-                        </span>
-                      </>
-                    }
-                  />
-                ))
+                setOnChainWallet(values.walletAddress)
+                setTimeout(refresh, 3000)
               })
-              .finally(() => toast.dismiss(t))
 
             return <ToastLoading text="Processing your withdrawal request..." />
           },
@@ -123,8 +125,73 @@ export default function WithdrawButton({ payRequest, isDone, setDone }: Props) {
         hidePublicKeyWithdraw()
       }
     },
-    [hidePublicKeyWithdraw, payRequest?.code, setDone],
+    [hidePublicKeyWithdraw, payRequest?.code, refresh],
   )
+
+  useEffect(() => {
+    if (!onChainWallet) return
+    if (payRequest?.claim_tx && !isShowSubmittedToast) {
+      toast.custom(
+        () => {
+          toast.dismiss(processingToastId)
+          setTimeout(showSubmittedToast, 3000)
+          return (
+            <ToastSuccess
+              message="Request submitted"
+              description={
+                <>
+                  Track the transaction{' '}
+                  <a
+                    className="underline"
+                    href={`${
+                      new URL(payRequest.token.chain.explorer).origin
+                    }/tx/${payRequest.claim_tx}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here
+                  </a>
+                </>
+              }
+            />
+          )
+        },
+        { duration: 10000 },
+      )
+      return
+    }
+    if (!isShowSubmittedToast) return
+    if (payRequest?.status === 'claimed') {
+      toast.custom(() => (
+        <ToastSuccess
+          message="Withdraw Successful!"
+          description={
+            <>
+              You&#39;ve successfully withdrawn all to wallet{' '}
+              <span className="font-bold text-dashboard-green-1">
+                {truncate(onChainWallet, 8, true, '.')}.
+              </span>
+            </>
+          }
+        />
+      ))
+    } else if (payRequest?.status === 'failed') {
+      toast.custom(() => (
+        <ToastError
+          key="withdraw-error"
+          message="Withdrawal Error"
+          description="Something went wrong"
+        />
+      ))
+    }
+    setDone()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    payRequest?.status,
+    payRequest?.claim_tx,
+    isShowSubmittedToast,
+    onChainWallet,
+  ])
 
   const wallets = [
     {

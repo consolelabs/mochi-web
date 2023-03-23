@@ -11,9 +11,10 @@ const calcY = (x: number) => (x - window.innerWidth / 2) / 20
 
 type Props = {
   payRequest: PayRequest
+  isDone: boolean
 }
 
-export default function Card({ payRequest }: Props) {
+export default function Card({ payRequest, isDone }: Props) {
   const domTarget = useRef(null)
   const [{ height, opacity, rotateX, rotateY, rotateZ, zoom, scale }, api] =
     useSpring(() => ({
@@ -100,13 +101,13 @@ export default function Card({ payRequest }: Props) {
           <div className="relative flex-shrink-0 w-9 h-9 rounded-full">
             <CutoutAvatar
               cutoutSrc={payRequest.token.chain.icon || '/assets/coin.png'}
-              src="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+              src={payRequest.token.icon}
               size="xs"
             />
           </div>
           <div className="flex items-baseline pr-2 w-full">
             <span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">
-              {payRequest.status === 'claimed'
+              {payRequest.status === 'claimed' && isDone
                 ? 0
                 : utils.formatUnits(
                     payRequest.amount,
