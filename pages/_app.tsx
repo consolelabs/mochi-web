@@ -6,7 +6,7 @@ import '@fontsource/inter/900.css'
 import '@fontsource/sora/500.css'
 import '@fontsource/sora/700.css'
 import dynamic from 'next/dynamic'
-import { StrictMode, useEffect } from 'react'
+import { StrictMode, useEffect, useRef } from 'react'
 import type { ReactNode, ReactElement } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
@@ -32,18 +32,22 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const debounceRef = useRef(-1)
   const { asPath, query, replace } = useRouter()
   const { getSession, isLoadingSession, isLoggedIn } = useAuthStore()
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
-    if (!isLoadingSession && !isLoggedIn) {
-      getSession(query.token as string)
-      replace(asPath, undefined, { shallow: true })
-      if (query.url_location && typeof query.url_location === 'string') {
-        replace(query.url_location, undefined, { shallow: true })
+    window.clearTimeout(debounceRef.current)
+    debounceRef.current = window.setTimeout(() => {
+      if (!isLoadingSession && !isLoggedIn) {
+        getSession(query.token as string)
+        replace(asPath, undefined, { shallow: true })
+        if (query.url_location && typeof query.url_location === 'string') {
+          replace(query.url_location, undefined, { shallow: true })
+        }
       }
-    }
+    }, 100)
   }, [asPath, query.token]) // eslint-disable-line
 
   return (

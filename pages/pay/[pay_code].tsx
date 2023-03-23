@@ -44,13 +44,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export type PayRequest = {
   code: string
+  claim_tx: string
   amount: string
-  status: 'submitted' | 'claimed' | 'expired'
+  status: 'submitted' | 'claimed' | 'expired' | 'failed'
   note?: string
   token: {
+    icon: string
     chain: {
       symbol: string
       icon: string
+      explorer: string
     }
     decimal: number
     symbol: string
@@ -67,21 +70,9 @@ export default function PayCode({ payRequest: initialPayRequest }: Props) {
     (url) => API.MOCHI_PAY.get(url).json((r) => r.data),
   )
 
-  const { isOpen: isDone, onOpen: _setDone } = useDisclosure({
+  const { isOpen: isDone, onOpen: setDone } = useDisclosure({
     defaultIsOpen: payRequest?.status !== 'submitted',
   })
-
-  const setDone = useCallback(() => {
-    if (payRequest) {
-      mutate({
-        ...payRequest,
-        status: 'claimed',
-      })
-    } else {
-      mutate()
-    }
-    _setDone()
-  }, [_setDone, mutate, payRequest])
 
   if (!payRequest) {
     return (
@@ -185,7 +176,7 @@ export default function PayCode({ payRequest: initialPayRequest }: Props) {
               <ShareButton link={isSSR() ? '' : window.location.href} />
             </div>
 
-            <Card payRequest={payRequest} />
+            <Card isDone={isDone} payRequest={payRequest} />
             {payRequest.note ? (
               <span>
                 <span className="font-medium">Message: </span>&ldquo;
@@ -193,12 +184,13 @@ export default function PayCode({ payRequest: initialPayRequest }: Props) {
                 &rdquo;
               </span>
             ) : null}
-            {payRequest.status === 'claimed' ? (
+            {payRequest.status === 'claimed' && isDone ? (
               <span>This Pay Link has been claimed</span>
             ) : null}
             <WithdrawButton
               isDone={isDone}
               setDone={setDone}
+              refresh={mutate}
               payRequest={payRequest}
             />
           </>
