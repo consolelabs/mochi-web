@@ -32,16 +32,12 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const firstRender = useRef(true)
-  const { asPath, query, replace } = useRouter()
+  const { asPath, query, replace, isReady } = useRouter()
   const { getSession } = useAuthStore()
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
+    if (!isReady) return
 
     getSession(query.token as string).then(() => {
       replace(asPath, undefined, { shallow: true })
