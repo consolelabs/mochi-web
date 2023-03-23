@@ -16,7 +16,7 @@ import { shallow } from 'zustand/shallow'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
-  const { query } = useRouter()
+  const { query, replace } = useRouter()
   const serverId = query.server_id
   const { isLoggedIn, logout } = useAuthStore(
     (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
@@ -29,6 +29,7 @@ export default function ConnectButton() {
   const disconnect = () => {
     onClose()
     logout()
+    replace('/dashboard')
   }
 
   if (!mounted) return null
