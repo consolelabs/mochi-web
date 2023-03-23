@@ -12,6 +12,7 @@ import { useSignMessage } from '~hooks/wallets/useSignMessage'
 import ConnectButton from '~components/ConnectButton'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { WretchError } from 'wretch'
+import { getWalletLoginSignMessage } from '~utils/string'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const code = ctx.query.code ?? null
@@ -44,9 +45,7 @@ export default function Verify({
   )
   const { connected } = useAppWalletContext()
   const { address, isSolanaConnected, isEVMConnected } = useAccount()
-  const signMsg = useSignMessage(
-    `This will help us connect your discord account to the wallet address.\n\nMochiBotCode=${code}`,
-  )
+  const signMsg = useSignMessage(getWalletLoginSignMessage(code))
 
   const sign = useCallback(async () => {
     if (!code || !profileId || loading || !connected || !address) return

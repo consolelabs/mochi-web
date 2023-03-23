@@ -1,14 +1,27 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Fragment, useCallback, useEffect, useMemo, useReducer } from 'react'
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react'
+import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
+import { API } from '~constants/api'
 import { useAppWalletContext } from '~context/wallet-context'
 import { metaMask } from '~context/wallets/ethereum/walletConnectors'
 import {
   useWalletConnectors,
   WalletConnector,
 } from '~context/wallets/useWalletConnectors'
+import { useAccount } from '~hooks/wallets/useAccount'
+import { useSignMessage } from '~hooks/wallets/useSignMessage'
+import { useAuthStore } from '~store'
 import { isMobile } from '~utils/isMobile'
+import { getWalletLoginSignMessage } from '~utils/string'
 import { ConnectDetail } from './ConnectDetail'
 import { ConnectWalletIntro } from './ConnectWalletIntro'
 
@@ -36,7 +49,12 @@ type State = {
 }
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
-  const { openInApp } = useAppWalletContext()
+  const debounceRef = useRef(-1)
+  const login = useAuthStore((s) => s.login)
+  const code = useMemo(() => Date.now().toString(), [])
+  const _signMsg = useSignMessage(getWalletLoginSignMessage(code))
+  const { connected, openInApp } = useAppWalletContext()
+  const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
       return {
@@ -57,6 +75,26 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     (wallet) => wallet.ready || wallet.downloadUrls?.browserExtension,
   )
 
+  const signMsg = useCallback(async () => {
+    _signMsg()
+      .then((signature) => {
+        if (signature) {
+          API.MOCHI_PROFILE.post(
+            {
+              wallet_address: address,
+              code,
+              signature,
+            },
+            `/profiles/auth/${isEVMConnected ? 'evm' : 'solana'}`,
+          )
+            .json((r) => login(r.data.access_token))
+            .finally(() => disconnect())
+        }
+      })
+      .catch(() => null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_signMsg, address, code, isEVMConnected])
+
   const connectToWallet = useCallback(
     async (wallet: WalletConnector) => {
       setState({
@@ -64,12 +102,16 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       })
       if (wallet.ready) {
         if (wallet.isSolana) {
-          wallet?.connect?.()
+          await wallet?.connect?.()
         } else {
-          ;(wallet?.connect?.() as Promise<any>).catch(() => {
-            setState({
-              isConnectionError: true,
-            })
+          await (wallet?.connect?.() as Promise<any>).catch((e) => {
+            if (e instanceof ConnectorAlreadyConnectedError) {
+              /* signMsg() */
+            } else {
+              setState({
+                isConnectionError: true,
+              })
+            }
           })
         }
 
@@ -90,7 +132,9 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           } else if (getDesktopDeepLink) {
             uri = await getDesktopDeepLink()
           }
-          if (uri) openInApp(uri)
+          if (uri) {
+            openInApp(uri)
+          }
         }, 0)
       }
     },
@@ -126,6 +170,10 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   }
 
   const onSelectWallet = async (wallet: WalletConnector) => {
+    if (state.selectedOptionId === wallet.id) {
+      signMsg()
+      return
+    }
     setState({
       selectedOptionId: wallet.id,
     })
@@ -216,6 +264,16 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       }
     }
   }, [solWallet])
+
+  useEffect(() => {
+    window.clearTimeout(debounceRef.current)
+    debounceRef.current = window.setTimeout(() => {
+      if (connected) {
+        signMsg()
+      }
+    }, 200)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, signMsg])
 
   return (
     <Transition show={isOpen} as={Fragment}>
