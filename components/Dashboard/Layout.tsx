@@ -66,7 +66,7 @@ export default function DashboardLayout({
             </div>
           ) : null}
         </div>
-        <div className="flex relative flex-1">
+        <div className="flex relative z-10 flex-1">
           {connected || skipAuth ? (
             <div
               className={clsx(
