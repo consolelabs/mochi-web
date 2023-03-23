@@ -30,7 +30,7 @@ export default function DashboardLayout({
   skipAuth?: boolean
 }) {
   const mounted = useHasMounted()
-  const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
+  const { isLoggedIn, isLoadingSession } = useAuthStore()
 
   if (!mounted) return <>{childSEO}</>
 
@@ -67,37 +67,45 @@ export default function DashboardLayout({
           ) : null}
         </div>
         <div className="flex relative z-10 flex-1">
-          {isLoggedIn || skipAuth ? (
-            <div
-              className={clsx(
-                'flex items-start gap-x-24 mx-auto w-full relative',
-                {
-                  'max-w-5xl my-10 px-5': !fullWidth,
-                },
-              )}
-            >
-              {showSidebar ? (
-                <div className="sticky flex-shrink-0 min-w-[200px] top-[108px]">
-                  <Sidebar />
-                </div>
-              ) : null}
-              <div className="overflow-x-hidden flex-1 h-full">
-                {(header || headerExtraRight) && (
-                  <div className="flex justify-between mb-6">
-                    <h2 className="font-bold text-[22px]">
-                      {header && header}
-                    </h2>
-                    {headerExtraRight && headerExtraRight}
-                  </div>
-                )}
-                {childSEO}
-                {children}
-              </div>
-            </div>
-          ) : (
+          {isLoadingSession ? null : (
             <>
-              <SEO title="Dashboard" tailTitle url={`${HOME_URL}/dashboard`} />
-              <Login />
+              {isLoggedIn || skipAuth ? (
+                <div
+                  className={clsx(
+                    'flex items-start gap-x-24 mx-auto w-full relative',
+                    {
+                      'max-w-5xl my-10 px-5': !fullWidth,
+                    },
+                  )}
+                >
+                  {showSidebar ? (
+                    <div className="sticky flex-shrink-0 min-w-[200px] top-[108px]">
+                      <Sidebar />
+                    </div>
+                  ) : null}
+                  <div className="overflow-x-hidden flex-1 h-full">
+                    {(header || headerExtraRight) && (
+                      <div className="flex justify-between mb-6">
+                        <h2 className="font-bold text-[22px]">
+                          {header && header}
+                        </h2>
+                        {headerExtraRight && headerExtraRight}
+                      </div>
+                    )}
+                    {childSEO}
+                    {children}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <SEO
+                    title="Dashboard"
+                    tailTitle
+                    url={`${HOME_URL}/dashboard`}
+                  />
+                  <Login />
+                </>
+              )}
             </>
           )}
         </div>

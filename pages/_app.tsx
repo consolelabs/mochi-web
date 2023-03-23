@@ -32,22 +32,23 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const debounceRef = useRef(-1)
+  const firstRender = useRef(true)
   const { asPath, query, replace } = useRouter()
-  const { getSession, isLoadingSession, isLoggedIn } = useAuthStore()
+  const { getSession } = useAuthStore()
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
-    window.clearTimeout(debounceRef.current)
-    debounceRef.current = window.setTimeout(() => {
-      if (!isLoadingSession && !isLoggedIn) {
-        getSession(query.token as string)
-        replace(asPath, undefined, { shallow: true })
-        if (query.url_location && typeof query.url_location === 'string') {
-          replace(query.url_location, undefined, { shallow: true })
-        }
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+
+    getSession(query.token as string).then(() => {
+      replace(asPath, undefined, { shallow: true })
+      if (query.url_location && typeof query.url_location === 'string') {
+        replace(query.url_location, undefined, { shallow: true })
       }
-    }, 100)
+    })
   }, [asPath, query.token]) // eslint-disable-line
 
   return (

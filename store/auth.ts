@@ -15,7 +15,7 @@ type State = {
 export const useAuthStore = create<State>((set, get) => ({
   token: null,
   isLoggedIn: false,
-  isLoadingSession: false,
+  isLoadingSession: true,
   getSession: async (tokenParam?: string) => {
     const { login, logout } = get()
     // on load, try to get token first from storage
@@ -23,7 +23,7 @@ export const useAuthStore = create<State>((set, get) => ({
 
     // if not found, this user has properly logged out
     if (!token) {
-      set({ token: null, isLoggedIn: false })
+      set({ token: null, isLoggedIn: false, isLoadingSession: false })
     } else {
       // if found, this token could still be outdated or malformed -> try to call the /@me api with this token
 
