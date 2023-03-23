@@ -1,6 +1,5 @@
 import React from 'react'
 import { truncate } from '@dwarvesf/react-utils'
-import { useAppWalletContext } from '~context/wallet-context'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useEns } from '~hooks/wallets/useEns'
 import ConnectWalletModal from './Wallet/ConnectWalletModal'
@@ -12,24 +11,29 @@ import { INVITE_LINK } from '~envs'
 import { Menu } from './Dashboard/Menu'
 import { useRouter } from 'next/router'
 import Avatar from './Dashboard/Avatar'
+import { useAuthStore } from '~store'
+import { shallow } from 'zustand/shallow'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
   const { query } = useRouter()
   const serverId = query.server_id
-  const { connected, disconnect: _disconnect } = useAppWalletContext()
+  const { isLoggedIn, logout } = useAuthStore(
+    (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
+    shallow,
+  )
   const { address } = useAccount()
   const { ensName } = useEns(address)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const disconnect = () => {
     onClose()
-    _disconnect()
+    logout()
   }
 
   if (!mounted) return null
 
-  if (!connected)
+  if (!isLoggedIn)
     return (
       <div>
         <button className={button({ size: 'sm' })} onClick={onOpen}>

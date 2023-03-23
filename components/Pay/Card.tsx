@@ -1,5 +1,4 @@
 import { Icon } from '@iconify/react'
-import Image from 'next/image'
 import { useGesture } from '@use-gesture/react'
 import { useSpring, animated, to, config } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
@@ -100,15 +99,10 @@ export default function Card({ payRequest }: Props) {
         <div className="flex gap-x-1.5 items-center">
           <div className="relative flex-shrink-0 w-9 h-9 rounded-full">
             <CutoutAvatar
-              src={payRequest.token.chain.icon || '/assets/coin.png'}
-              cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+              cutoutSrc={payRequest.token.chain.icon || '/assets/coin.png'}
+              src="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
               size="xs"
             />
-            {/* <Image */}
-            {/*   fill={true} */}
-            {/*   src={payRequest.token.chain.icon || '/assets/coin.png'} */}
-            {/*   alt="token logo" */}
-            {/* /> */}
           </div>
           <div className="flex items-baseline pr-2 w-full">
             <span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">

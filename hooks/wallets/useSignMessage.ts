@@ -1,16 +1,15 @@
-import { useSigner, useAccount as useWagmiAccount } from 'wagmi'
+import {
+  useSignMessage as useWagmiSignMessage,
+  useAccount as useWagmiAccount,
+} from 'wagmi'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { utils } from 'ethers'
 import { useCallback } from 'react'
 import { useAppWalletContext } from '~context/wallet-context'
 
-function noop() {
-  return ''
-}
-
 export const useSignMessage = (messageToSign: string) => {
   const { openInApp } = useAppWalletContext()
-  const { data: signer } = useSigner()
+  const { signMessageAsync } = useWagmiSignMessage({ message: messageToSign })
   const { connector } = useWagmiAccount()
   const { connected: isSolanaConnected, signMessage } = useWallet()
 
@@ -19,9 +18,9 @@ export const useSignMessage = (messageToSign: string) => {
     if (provider?.connector?.uri) {
       openInApp(provider.connector.uri)
     }
-    const signature = await signer?.signMessage(messageToSign)
-    return signature
-  }, [connector, messageToSign, openInApp, signer])
+    const signature = await signMessageAsync()
+    return signature ?? ''
+  }, [connector, openInApp, signMessageAsync])
 
   const signSOL = useCallback(async () => {
     const messageEncoded = new TextEncoder().encode(messageToSign)
@@ -30,9 +29,6 @@ export const useSignMessage = (messageToSign: string) => {
 
     return utils.base58.encode(signature as any)
   }, [messageToSign, signMessage])
-
-  if ((isSolanaConnected && !signMessage) || (!isSolanaConnected && !signer))
-    return noop
 
   return isSolanaConnected ? signSOL : signEVM
 }

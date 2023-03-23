@@ -2,13 +2,13 @@ import Image from 'next/image'
 import { logo } from '~utils/image'
 import clsx from 'clsx'
 import { Icon } from '@iconify/react'
-import { useAppWalletContext } from '~context/wallet-context'
 import ConnectButton from '~components/ConnectButton'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import Login from './Login'
 import Sidebar from './Sidebar'
 import { SEO } from '~app/layout/seo'
 import { HOME_URL } from '~envs'
+import { useAuthStore } from '~store'
 
 export default function DashboardLayout({
   children,
@@ -30,7 +30,7 @@ export default function DashboardLayout({
   skipAuth?: boolean
 }) {
   const mounted = useHasMounted()
-  const { connected } = useAppWalletContext()
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
 
   if (!mounted) return <>{childSEO}</>
 
@@ -39,11 +39,11 @@ export default function DashboardLayout({
       <div className="flex flex-col min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(
-            'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between z-10',
+            'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between z-20',
             {
               'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
-                connected,
-              'bg-dashboard-gray-1': !connected,
+                isLoggedIn,
+              'bg-dashboard-gray-1': !isLoggedIn,
             },
           )}
         >
@@ -59,15 +59,15 @@ export default function DashboardLayout({
               Mochi<span className="text-mochi">.</span>
             </span>
           </div>
-          {connected || skipAuth ? (
+          {isLoggedIn || skipAuth ? (
             <div className="flex gap-x-3 items-center">
-              {connected && <Icon icon="mdi:bell" width={20} />}
+              {isLoggedIn && <Icon icon="mdi:bell" width={20} />}
               <ConnectButton />
             </div>
           ) : null}
         </div>
         <div className="flex relative z-10 flex-1">
-          {connected || skipAuth ? (
+          {isLoggedIn || skipAuth ? (
             <div
               className={clsx(
                 'flex items-start gap-x-24 mx-auto w-full relative',

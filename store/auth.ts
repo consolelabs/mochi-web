@@ -30,13 +30,19 @@ export const useAuthStore = create<State>((set, get) => ({
       set({ isLoadingSession: true })
       await API.MOCHI_PROFILE.auth(`Bearer ${token}`)
         .get('/profiles/@me')
-        .badRequest(() => logout())
-        .unauthorized(() => logout())
-        .res()
-
-      set({ isLoadingSession: false })
-      // if the code makes it here means the token is valid
-      login(token)
+        .badRequest(() => {
+          set({ isLoadingSession: false })
+          logout()
+        })
+        .unauthorized(() => {
+          set({ isLoadingSession: false })
+          logout()
+        })
+        .res(() => {
+          set({ isLoadingSession: false })
+          // if the code makes it here means the token is valid
+          login(token)
+        })
     }
   },
   login: (token: string) => {
