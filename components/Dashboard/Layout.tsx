@@ -10,6 +10,8 @@ import { SEO } from '~app/layout/seo'
 import { HOME_URL } from '~envs'
 import { useAuthStore } from '~store'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useDashboardStore } from '~store/dashboard'
 
 export default function DashboardLayout({
   children,
@@ -30,9 +32,19 @@ export default function DashboardLayout({
   footer?: React.ReactNode
   skipAuth?: boolean
 }) {
-  const { pathname } = useRouter()
+  const {
+    pathname,
+    query: { server_id },
+  } = useRouter()
   const mounted = useHasMounted()
   const { isLoggedIn, isLoadingSession } = useAuthStore()
+  const { getServer } = useDashboardStore()
+
+  useEffect(() => {
+    if (server_id && isLoggedIn) {
+      getServer(server_id as string)
+    }
+  }, [isLoggedIn, server_id]) // eslint-disable-line
 
   if (!mounted) return <>{childSEO}</>
 

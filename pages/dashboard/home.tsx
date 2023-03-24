@@ -9,7 +9,7 @@ import { useDashboardStore } from '~store/dashboard'
 import useSWR from 'swr'
 import { GET_PATHS } from '~constants/api'
 import { useAuthStore } from '~store'
-import { ViewDiscordGuild } from '~types/schema'
+import { ViewDiscordGuild } from '~types/mochi-profile-schema'
 
 const Server = (props: ViewDiscordGuild) => {
   const { id, icon, name } = props
@@ -41,7 +41,7 @@ const Server = (props: ViewDiscordGuild) => {
 const Home: NextPageWithLayout = () => {
   const { token } = useAuthStore()
   const { getServerList } = useDashboardStore()
-  const { data, isLoading } = useSWR([GET_PATHS.DISCORD_SERVERS, token], () =>
+  const { data, isLoading } = useSWR([GET_PATHS.GUILDS, token], () =>
     getServerList(),
   )
   const servers = data?.data || {}
