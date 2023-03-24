@@ -13,7 +13,7 @@ import { TIMESTAMP_FORMAT } from '~constants/date'
 import { Pagination } from '~components/Dashboard/Pagination'
 import { shallow } from 'zustand/shallow'
 
-const LIMIT = 10
+const LIMIT = 20
 
 const Members: NextPageWithLayout = () => {
   const { me } = useAuthStore(({ me }) => ({ me }), shallow)
@@ -127,7 +127,7 @@ const Members: NextPageWithLayout = () => {
                 Header: 'Roles',
                 accessor: 'roles',
                 id: 'roles',
-                minWidth: 200,
+                minWidth: 250,
                 Cell: () => {
                   return (
                     <div className="flex flex-wrap gap-1">
@@ -190,7 +190,7 @@ const Members: NextPageWithLayout = () => {
               },
             ]}
             theadClassName="text-[11px] uppercase text-dashboard-gray-2 font-bold mb-2 px-4"
-            trBodyClassName="p-4 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition flex items-center"
+            trBodyClassName="px-4 py-3 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition flex items-center"
             manualSortBy
             onChange={({ sortBy }) => {
               setQuery((o: any) => ({ ...o, sortBy }))
