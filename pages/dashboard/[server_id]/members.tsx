@@ -11,12 +11,16 @@ import { useAuthStore } from '~store'
 import { format } from 'date-fns'
 import { TIMESTAMP_FORMAT } from '~constants/date'
 import { Pagination } from '~components/Dashboard/Pagination'
+import { shallow } from 'zustand/shallow'
 
 const LIMIT = 10
 
 const Members: NextPageWithLayout = () => {
-  const { me } = useAuthStore()
-  const { server, getServerMemberList } = useDashboardStore()
+  const { me } = useAuthStore(({ me }) => ({ me }), shallow)
+  const { server, getServerMemberList } = useDashboardStore(
+    ({ server, getServerMemberList }) => ({ server, getServerMemberList }),
+    shallow,
+  )
 
   // TODO: Use official interface from Mochi API schema
   const [query, setQuery] = useState({
@@ -26,14 +30,19 @@ const Members: NextPageWithLayout = () => {
     sortBy: [],
   })
 
-  const { data, isLoading } = useSWR([GET_PATHS.USERS_TOP, query], () =>
-    getServerMemberList({ ...query, guild_id: server.id, user_id: me?.id }),
-  )
-  const members = useMemo(() => data?.data.leaderboard || [], [data])
-  const totalPage = useMemo(
-    () => (data?.data.metadata.total || 0) / LIMIT,
-    [data],
-  )
+  const { data, isLoading } = useSWR([GET_PATHS.USERS_TOP, query], () => {
+    return getServerMemberList({
+      ...query,
+      guild_id: server.id,
+      user_id: me?.id,
+    })
+  })
+  const members = useMemo(() => {
+    return data?.data.leaderboard || []
+  }, [data])
+  const totalPage = useMemo(() => {
+    return Math.ceil((data?.data.metadata.total || 0) / LIMIT)
+  }, [data])
 
   const skeletonRender = (
     <div className="flex flex-col gap-2">
@@ -159,6 +168,8 @@ const Members: NextPageWithLayout = () => {
                 accessor: 'joined',
                 id: 'joined',
                 minWidth: 100,
+                tdClassName: 'text-right',
+                thClassName: 'text-right',
                 Cell: ({ cell: { value } }: any) => {
                   return (
                     <div className="text-xs text-dashboard-gray-8">
