@@ -68,7 +68,7 @@ export const Table: <T extends object = {}>(props: Props<T>) => JSX.Element = (
     if (state) {
       onChange(state as any)
     }
-  }, [state]) // eslint-disable-line
+  }, [JSON.stringify(state)]) // eslint-disable-line
 
   return (
     <div

@@ -10,16 +10,20 @@ import useSWR from 'swr'
 import { GET_PATHS } from '~constants/api'
 import { useAuthStore } from '~store'
 import { ViewDiscordGuild } from '~types/mochi-profile-schema'
+import { button } from '~components/Dashboard/Button'
+
+const ADD_BOT_LINK =
+  'https://discord.com/oauth2/authorize?client_id=1062540132269432863&permissions=8&scope=bot%20applications.commands'
 
 const Server = (props: ViewDiscordGuild) => {
-  const { id, icon, name } = props
+  // @ts-ignore
+  const { id, icon, name, mochi_supported } = props
 
   return (
-    <Link
-      href={`/dashboard/${id}`}
+    <div
       className={clsx(
         'transition hover:-translate-y-2',
-        'flex flex-col gap-y-4 items-center p-6 rounded-md border shadow border-black/10',
+        'flex flex-col gap-y-4 items-center p-6 rounded-md border shadow border-black/10 bg-white-pure',
       )}
     >
       <img
@@ -34,7 +38,26 @@ const Server = (props: ViewDiscordGuild) => {
       <span className="text-xs font-semibold uppercase text-dashboard-gray-8">
         {name}
       </span>
-    </Link>
+      {mochi_supported ? (
+        <Link href={`/dashboard/${id}`}>
+          <button
+            type="button"
+            className={button({ appearance: 'secondary', size: 'sm' })}
+          >
+            Manage
+          </button>
+        </Link>
+      ) : (
+        <a target="_blank" href={ADD_BOT_LINK}>
+          <button
+            type="button"
+            className={button({ appearance: 'primary', size: 'sm' })}
+          >
+            Add Mochi
+          </button>
+        </a>
+      )}
+    </div>
   )
 }
 
@@ -47,7 +70,7 @@ const Home: NextPageWithLayout = () => {
   const servers = data?.data || {}
 
   const skeletonRender = new Array(4).fill(0).map((_, index) => {
-    return <div className="bg-white-pure animate-pulse h-40" key={index} />
+    return <div className="bg-white-pure animate-pulse h-48" key={index} />
   })
 
   return (
