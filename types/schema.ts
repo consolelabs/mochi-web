@@ -49,6 +49,15 @@ export interface ViewAuthResponse {
   access_token?: string
 }
 
+export interface ViewDiscordGuild {
+  features?: string[]
+  icon?: string
+  id?: string
+  name?: string
+  owner?: boolean
+  permissions?: string
+}
+
 export interface ViewMarkReadActivitiesResponse {
   message?: string
 }
@@ -64,4 +73,9 @@ export interface ViewProfile {
   created_at?: string
   id?: string
   updated_at?: string
+}
+
+export interface ViewUserDiscordGuilds {
+  others?: ViewDiscordGuild[]
+  owning?: ViewDiscordGuild[]
 }
