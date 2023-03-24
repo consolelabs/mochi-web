@@ -57,7 +57,7 @@ export const RadioGroup = forwardRef(
                         'rounded-l-lg': index === 0,
                         'rounded-r-lg border-r': index === options.length - 1,
                         'bg-black text-white': checked,
-                        'bg-[#FFFFFF]': !checked,
+                        'bg-white-pure': !checked,
                       },
                     )}
                   >

@@ -192,7 +192,7 @@ export const Select = forwardRef(
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-[#FFFFFF] py-1 text-sm shadow-lg focus:outline-none border border-black/10 z-10">
+                <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white-pure py-1 text-sm shadow-lg focus:outline-none border border-black/10 z-10">
                   {filteredOptions.length > 0 ? (
                     filteredOptions.map((option) => {
                       return (

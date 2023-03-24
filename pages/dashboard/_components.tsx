@@ -290,7 +290,7 @@ export default function Default() {
           <h2 className={heading({ size: 'sm' })}>Menu</h2>
           <div>
             <label className={labelStyles()}>Default</label>
-            <div className="max-w-xs bg-[#FFFFFF] rounded-lg py-4 flex flex-col gap-y-4">
+            <div className="max-w-xs bg-white-pure rounded-lg py-4 flex flex-col gap-y-4">
               <a
                 href={INVITE_LINK}
                 target="_blank"
@@ -494,12 +494,12 @@ export default function Default() {
                 },
               ]}
               theadClassName="text-[11px] uppercase text-dashboard-gray-2 font-bold mb-2"
-              trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+              trBodyClassName="p-4 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
             />
           </div>
           <div>
             <div className={labelStyles()}>Buttons Appear On Hover</div>
-            <div className="bg-[#FFFFFF] p-4">
+            <div className="bg-white-pure p-4">
               <div className="flex items-center px-4 mb-4">
                 <Icon
                   className="w-6 h-6"
@@ -614,7 +614,7 @@ export default function Default() {
                   ]}
                   tableClassName="!overflow-visible"
                   theadClassName="hidden"
-                  trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+                  trBodyClassName="p-4 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
                 />
               </div>
               <div className="inline-block p-4 min-w-full rounded-lg bg-dashboard-gray-1">
@@ -643,7 +643,7 @@ export default function Default() {
                   ]}
                   tableClassName="!overflow-visible"
                   theadClassName="hidden"
-                  trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+                  trBodyClassName="p-4 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
                 />
               </div>
             </div>
@@ -671,7 +671,7 @@ export default function Default() {
               ]}
               manualSortBy
               theadClassName="text-xs uppercase text-dashboard-gray-2 font-bold mb-2"
-              trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
+              trBodyClassName="p-4 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition"
               onChange={({ sortBy }) => {
                 setSortBy(sortBy)
               }}

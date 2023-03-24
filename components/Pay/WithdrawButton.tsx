@@ -261,7 +261,7 @@ export default function WithdrawButton({
               <div>Withdraw</div>
             </Popover.Button>
             <div className="w-full">
-              <Popover.Panel className="bg-[#FFFFFF] z-40 rounded-lg shadow-full">
+              <Popover.Panel className="bg-white-pure z-40 rounded-lg shadow-full">
                 <div className="flex flex-col gap-y-2 p-3 md:gap-y-4">
                   <div className="text-left">
                     <div className="text-sm font-semibold">Login & Claim</div>

@@ -25,11 +25,11 @@ export const useAuthStore = create<State>((set, get) => ({
     if (!token) {
       set({ token: null, isLoggedIn: false, isLoadingSession: false })
     } else {
-      // if found, this token could still be outdated or malformed -> try to call the /@me api with this token
+      // if found, this token could still be outdated or malformed -> try to call the /me api with this token
 
       set({ isLoadingSession: true })
       await API.MOCHI_PROFILE.auth(`Bearer ${token}`)
-        .get('/profiles/@me')
+        .get('/profiles/me')
         .badRequest(() => {
           set({ isLoadingSession: false })
           logout()

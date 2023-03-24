@@ -299,7 +299,7 @@ const QuestsRecurrence = () => {
                 tableClassName="!overflow-visible"
                 theadClassName="hidden"
                 tdClassName="flex items-center"
-                trBodyClassName="p-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition group"
+                trBodyClassName="p-4 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition group"
               />
             </div>
           )

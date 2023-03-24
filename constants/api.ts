@@ -25,3 +25,7 @@ export const apiLogout = () => {
   API.MOCHI_PROFILE = MOCHI_PROFILE
   API.MOCHI_PAY = MOCHI_PAY
 }
+
+export const GET_PATHS = {
+  DISCORD_SERVERS: '/discord/users/me/guilds',
+}

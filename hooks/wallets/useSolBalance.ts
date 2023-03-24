@@ -11,7 +11,7 @@ export const useSolanaBalance = (publicKey?: PublicKey | null) => {
 
   const { data } = useSWR(
     publicKey ? [FETCH_SOL_BALANCE_KEY, publicKey.toBase58()] : null,
-    (_, base58: string) => connection.getBalance(new PublicKey(base58)),
+    (_: any, base58: string) => connection.getBalance(new PublicKey(base58)),
   )
 
   return {
