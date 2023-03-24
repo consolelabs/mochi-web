@@ -3,7 +3,7 @@ import type { VariantProps } from 'class-variance-authority'
 
 const variant = cva(
   [
-    'flex gap-x-1 items-center justify-center flex-shrink-0 font-semibold transition-all duration-100 ease-in-out',
+    'flex gap-x-1 items-center justify-center flex-shrink-0 font-semibold transition-all duration-100 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed',
   ],
   {
     variants: {

@@ -1,9 +1,11 @@
 import { create } from 'zustand'
 import { API, apiLogin, apiLogout } from '~constants/api'
+import { ViewProfile } from '~types/mochi-profile-schema'
 
 const STORAGE_KEY = 'mochi.token'
 
 type State = {
+  me?: ViewProfile
   token: string | null
   isLoggedIn: boolean
   isLoadingSession: boolean
@@ -13,6 +15,7 @@ type State = {
 }
 
 export const useAuthStore = create<State>((set, get) => ({
+  me: undefined,
   token: null,
   isLoggedIn: false,
   isLoadingSession: true,
@@ -38,11 +41,14 @@ export const useAuthStore = create<State>((set, get) => ({
           set({ isLoadingSession: false })
           logout()
         })
-        .res(() => {
+        .res((res) => {
           set({ isLoadingSession: false })
           // if the code makes it here means the token is valid
           login(token)
+
+          return res.json()
         })
+        .then((me) => set({ me }))
     }
   },
   login: (token: string) => {

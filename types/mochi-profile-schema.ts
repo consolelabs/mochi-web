@@ -19,6 +19,11 @@ export interface DtoMarkReadActivitiesRequest {
   ids: number[]
 }
 
+export interface DtoUpdateProfileInfoRequest {
+  avatar?: string
+  profile_name?: string
+}
+
 export interface ViewActivityResponse {
   action?: string
   action_description?: string
@@ -70,8 +75,10 @@ export interface ViewPaginationResponse {
 
 export interface ViewProfile {
   associated_accounts?: ViewAssociatedAccount[]
+  avatar?: string
   created_at?: string
   id?: string
+  profile_name?: string
   updated_at?: string
 }
 
