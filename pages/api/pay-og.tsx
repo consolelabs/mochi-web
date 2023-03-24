@@ -39,6 +39,16 @@ const og = async (req: NextRequest) => {
   const bold = await boldFont
   const extrabold = await extraboldFont
 
+  let tokenSrc = 'https://mochi.gg/assets/coin.png'
+  if (payRequest.token.icon.includes('.webp')) {
+    // try to use png as webp is not supported
+    const tmpSrc = payRequest.token.icon.replace('.webp', '.png')
+    try {
+      await fetch(tmpSrc)
+      tokenSrc = tmpSrc
+    } catch {}
+  }
+
   return new ImageResponse(
     (
       <div
@@ -111,7 +121,7 @@ const og = async (req: NextRequest) => {
                 width: '100%',
                 height: '100%',
               }}
-              src="https://mochi.gg/assets/coin.png"
+              src={tokenSrc}
               alt=""
             />
           </div>

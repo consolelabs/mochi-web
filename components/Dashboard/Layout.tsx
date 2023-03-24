@@ -9,6 +9,7 @@ import Sidebar from './Sidebar'
 import { SEO } from '~app/layout/seo'
 import { HOME_URL } from '~envs'
 import { useAuthStore } from '~store'
+import { useRouter } from 'next/router'
 
 export default function DashboardLayout({
   children,
@@ -29,6 +30,7 @@ export default function DashboardLayout({
   footer?: React.ReactNode
   skipAuth?: boolean
 }) {
+  const { pathname } = useRouter()
   const mounted = useHasMounted()
   const { isLoggedIn, isLoadingSession } = useAuthStore()
 
@@ -42,8 +44,8 @@ export default function DashboardLayout({
             'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between z-20',
             {
               'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
-                isLoggedIn,
-              'bg-dashboard-gray-1': !isLoggedIn,
+                isLoggedIn || pathname !== '/dashboard',
+              'bg-dashboard-gray-1': !isLoggedIn && pathname === '/dashboard',
             },
           )}
         >
