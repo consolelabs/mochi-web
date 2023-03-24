@@ -47,7 +47,7 @@ const Home: NextPageWithLayout = () => {
   const servers = data?.data || {}
 
   const skeletonRender = new Array(4).fill(0).map((_, index) => {
-    return <div className="bg-[#FFFFFF] animate-pulse h-40" key={index} />
+    return <div className="bg-white-pure animate-pulse h-40" key={index} />
   })
 
   return (

@@ -1,23 +1,23 @@
-import useSWR, { Key } from "swr";
-import { Fetcher, SWRConfiguration } from "swr/dist/types";
-import { useState, useEffect } from "react";
+import useSWR, { Key } from 'swr'
+import { Fetcher, SWRConfiguration } from 'swr'
+import { useState, useEffect } from 'react'
 
 export function useFetch<Data = any, Error = any>(
   key: Key,
   fn: Fetcher<Data> | null = null,
-  config?: SWRConfiguration<Data, Error>
+  config?: SWRConfiguration<Data, Error>,
 ) {
-  const { data, error, ...rest } = useSWR<Data, Error>(key, fn, config);
-  const [internalData, setInternalData] = useState<Data>();
+  const { data, error, ...rest } = useSWR<Data, Error>(key, fn, config)
+  const [internalData, setInternalData] = useState<Data>()
 
-  const isFirstLoading = !internalData && !error;
-  const loading = !data && !error;
+  const isFirstLoading = !internalData && !error
+  const loading = !data && !error
 
   useEffect(() => {
     if (data) {
-      setInternalData(data);
+      setInternalData(data)
     }
-  }, [data]);
+  }, [data])
 
   return {
     data: internalData,
@@ -25,5 +25,5 @@ export function useFetch<Data = any, Error = any>(
     loading,
     error,
     ...rest,
-  };
+  }
 }

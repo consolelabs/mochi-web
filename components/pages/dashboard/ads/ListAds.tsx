@@ -109,7 +109,7 @@ export default function ListAds() {
           tableClassName="!overflow-visible"
           theadClassName="mb-2 text-xs font-bold uppercase thead text-dashboard-gray-2"
           tdClassName="flex items-center"
-          trBodyClassName="py-4 bg-[#FFFFFF] rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition group"
+          trBodyClassName="py-4 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition group"
         />
       </div>
     </>

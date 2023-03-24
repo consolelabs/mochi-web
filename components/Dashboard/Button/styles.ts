@@ -9,7 +9,7 @@ const variant = cva(
     variants: {
       appearance: {
         primary: [
-          'bg-[#FFFFFF]',
+          'bg-white-pure',
           'text-foreground',
           'border-[1.5px] border-black/15%',
           'shadow-md',

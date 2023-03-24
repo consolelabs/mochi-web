@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority'
 
 const variant = cva(
   [
-    'text-sm px-3 py-2 rounded-lg caret-mochi transition duration-200 w-full text-left bg-[#FFFFFF] leading-relaxed',
+    'text-sm px-3 py-2 rounded-lg caret-mochi transition duration-200 w-full text-left bg-white-pure leading-relaxed',
     'border hover:border-mochi focus:border-mochi !outline-none',
   ],
   {

@@ -21,7 +21,7 @@ export const FileInput = forwardRef(
       <div
         className={input({
           appearance,
-          className: 'relative flex gap-2 items-center bg-[#FFFFFF]',
+          className: 'relative flex gap-2 items-center bg-white-pure',
         })}
       >
         <button

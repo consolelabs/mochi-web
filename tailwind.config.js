@@ -52,7 +52,10 @@ module.exports = {
           mythic: '#FFA3A9',
           epic: '#FFA3A9',
         },
-        white: '#fafafd',
+        white: {
+          DEFAULT: '#fafafd',
+          pure: '#FFFFFF',
+        },
       },
       blur: {
         '4xl': '128px',

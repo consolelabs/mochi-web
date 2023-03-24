@@ -81,7 +81,7 @@ const CreateRecurrenceQuest = () => {
         </div>
       }
       footer={
-        <div className="fixed left-0 bottom-0 w-full bg-[#FFFFFF] px-5">
+        <div className="fixed left-0 bottom-0 w-full bg-white-pure px-5">
           <div className="flex justify-between py-4 mx-auto w-full max-w-5xl">
             <button
               type="button"
