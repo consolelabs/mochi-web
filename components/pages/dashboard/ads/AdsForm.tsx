@@ -188,7 +188,7 @@ export function AdsForm() {
               </Field>
             </div>
 
-            <div className="flex flex-col gap-y-4 max-w-[90%]">
+            <div className="flex flex-col gap-y-4">
               <Field name="image" label="Upload your image" control={control}>
                 <FileInput
                   placeholder="Select a file"

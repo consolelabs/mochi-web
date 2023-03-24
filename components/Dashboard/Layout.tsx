@@ -88,7 +88,7 @@ export default function DashboardLayout({
                   className={clsx(
                     'flex items-start gap-x-24 mx-auto w-full relative',
                     {
-                      'max-w-5xl my-10 px-5': !fullWidth,
+                      'max-w-6xl my-10 px-5': !fullWidth,
                     },
                   )}
                 >
@@ -97,7 +97,7 @@ export default function DashboardLayout({
                       <Sidebar />
                     </div>
                   ) : null}
-                  <div className="flex-1 h-full">
+                  <div className="flex-1 h-full overflow-x-hidden">
                     {(header || headerExtraRight) && (
                       <div className="flex justify-between mb-6">
                         <h2 className="font-bold text-[22px]">

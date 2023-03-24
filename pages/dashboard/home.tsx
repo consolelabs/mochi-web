@@ -35,7 +35,7 @@ const Server = (props: ViewDiscordGuild) => {
             : `https://boring-avatars-api.vercel.app/api/avatar?size=40&variant=marble`
         }
       />
-      <span className="text-xs font-semibold uppercase text-dashboard-gray-8">
+      <span className="text-xs font-semibold uppercase text-dashboard-gray-8 text-center">
         {name}
       </span>
       {mochi_supported ? (
