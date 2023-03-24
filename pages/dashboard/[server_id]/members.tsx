@@ -18,7 +18,10 @@ const LIMIT = 10
 const Members: NextPageWithLayout = () => {
   const { me } = useAuthStore(({ me }) => ({ me }), shallow)
   const { server, getServerMemberList } = useDashboardStore(
-    ({ server, getServerMemberList }) => ({ server, getServerMemberList }),
+    ({ server, getServerMemberList }) => ({
+      server,
+      getServerMemberList,
+    }),
     shallow,
   )
 
@@ -30,13 +33,20 @@ const Members: NextPageWithLayout = () => {
     sortBy: [],
   })
 
-  const { data, isLoading } = useSWR([GET_PATHS.USERS_TOP, query], () => {
-    return getServerMemberList({
-      ...query,
-      guild_id: server.id,
-      user_id: me?.id,
-    })
-  })
+  const { data, isLoading } = useSWR(
+    [GET_PATHS.USERS_TOP, query, server, me],
+    () => {
+      if (!server || !me) {
+        return
+      }
+
+      return getServerMemberList({
+        ...query,
+        guild_id: server.id,
+        user_id: me?.id,
+      })
+    },
+  )
   const members = useMemo(() => {
     return data?.data.leaderboard || []
   }, [data])
@@ -82,7 +92,7 @@ const Members: NextPageWithLayout = () => {
         </div>
       }
     >
-      {isLoading ? (
+      {isLoading || !data ? (
         skeletonRender
       ) : (
         <>
