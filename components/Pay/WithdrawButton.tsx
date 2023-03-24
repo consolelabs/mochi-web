@@ -15,24 +15,29 @@ import ToastLoading from '~components/Toast/ToastLoading'
 import { API } from '~constants/api'
 import { PayRequest } from '~pages/pay/[pay_code]'
 import ToastError from '~components/Toast/ToastError'
+import clsx from 'clsx'
 
 const DropdownButton = ({
   icon,
   title,
   description,
   onClick = noop,
+  wip = false,
 }: {
   icon: React.ReactElement
   title: string
   description: string
   onClick?: () => void
+  wip?: boolean
 }) => {
   return (
     <button
       type="button"
       className={button({
         appearance: 'text',
-        className: '!p-0 gap-x-2',
+        className: clsx('!p-0 gap-x-2', {
+          'opacity-30 outline-none': wip,
+        }),
       })}
       onClick={onClick}
     >
@@ -261,19 +266,19 @@ export default function WithdrawButton({
               <div>Withdraw</div>
             </Popover.Button>
             <div className="w-full">
-              <Popover.Panel className="bg-white-pure z-40 rounded-lg shadow-full">
+              <Popover.Panel className="z-40 rounded-lg bg-white-pure shadow-full">
                 <div className="flex flex-col gap-y-2 p-3 md:gap-y-4">
-                  <div className="text-left">
+                  <div className="hidden text-left">
                     <div className="text-sm font-semibold">Login & Claim</div>
                     <div className="text-xs font-medium text-dashboard-gray-8">
                       You need to connect your existing account to claim
                     </div>
                   </div>
-                  <div>
+                  <div className="hidden">
                     <SocialButtons />
                   </div>
 
-                  <hr className="w-full bg-black" />
+                  <hr className="hidden w-full bg-black" />
 
                   {/* list wallet */}
                   {/* {wallets.map(({ address, icon, amount }, idx) => ( */}
@@ -285,11 +290,12 @@ export default function WithdrawButton({
                   {/*   /> */}
                   {/* ))} */}
                   <DropdownButton
-                    title="Connect Wallet"
+                    title="Connect Wallet (coming soon)"
                     description="Connect to an existing crypto wallet"
                     icon={
                       <Icon icon="material-symbols:account-balance-wallet" />
                     }
+                    wip
                   />
 
                   <hr className="w-full bg-black" />
