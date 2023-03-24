@@ -32,12 +32,13 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const { asPath, query, replace, isReady } = useRouter()
+  const { asPath, query, pathname, replace, isReady } = useRouter()
   const { getSession } = useAuthStore()
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
     if (!isReady) return
+    if (pathname === '/404') return
 
     getSession(query.token as string).then(() => {
       replace(asPath, undefined, { shallow: true })
