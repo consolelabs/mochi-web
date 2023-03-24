@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import Avatar from './Dashboard/Avatar'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
+import { handleCancelRendering } from '~pages/_app'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
@@ -29,7 +30,9 @@ export default function ConnectButton() {
   const disconnect = () => {
     onClose()
     logout()
-    replace('/dashboard')
+    replace('/dashboard', undefined, { shallow: true }).catch(
+      handleCancelRendering,
+    )
   }
 
   if (!mounted) return null

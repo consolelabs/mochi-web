@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react'
 import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Input } from './Input'
+import { AUTH_DISCORD_URL } from '~envs'
 
 export default function Login() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -13,10 +14,13 @@ export default function Login() {
       <div className="flex flex-col items-center">
         <h2 className={heading({ className: 'mb-6', size: 'lg' })}>Log in</h2>
         <div className="grid grid-cols-2 grid-rows-2 gap-3">
-          <button className={button({})}>
+          <a
+            href={`${AUTH_DISCORD_URL}?url_location=${window.location.href}`}
+            className={button({})}
+          >
             <Icon icon="mingcute:discord-fill" className="text-foreground" />
             <div>Discord</div>
-          </button>
+          </a>
           <button className={button({})}>
             <Icon icon="mingcute:google-fill" className="text-foreground" />
             <div>Google</div>
