@@ -1,21 +1,21 @@
 import React, { useMemo } from 'react'
-import { useAccount } from '~hooks/wallets/useAccount'
 import { useEns } from '~hooks/wallets/useEns'
+import { useProfileStore } from '~store/profile'
 
 interface Props extends React.HTMLProps<HTMLImageElement> {}
 
 export default function Avatar(props: Props) {
-  const { address } = useAccount()
-  const { ensAvatar, ensName } = useEns(address)
+  const profileUsername = useProfileStore((s) => s.profile_username)
+  const { ensAvatar, ensName } = useEns(profileUsername ?? '')
 
   const src = useMemo(() => {
     return (
       ensAvatar ??
       `https://source.boringavatars.com/beam/120/${
-        ensName ?? address
+        ensName ?? profileUsername
       }?colors=665c52,74b3a7,a3ccaf,E6E1CF,CC5B14`
     )
-  }, [address, ensAvatar, ensName])
+  }, [ensAvatar, ensName, profileUsername])
 
   return <img {...props} alt="user's avatar" src={src} />
 }

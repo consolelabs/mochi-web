@@ -131,7 +131,7 @@ export default function Verify({
                         </button>
                       </>
                     ) : (
-                      <ConnectButton />
+                      <ConnectButton isVerifying />
                     )}
                   </div>
                 </div>
