@@ -51,9 +51,22 @@ export const useAuthStore = create<State>((set, get) => ({
         })
         .then((me) => {
           set({ me })
+          const evmAcc = me.associated_accounts.find(
+            (aa: any) => aa.platform === 'evm-chain',
+          )
+          const solAcc = me.associated_accounts.find(
+            (aa: any) => aa.platform === 'solana-chain',
+          )
+          const other = me.associated_accounts[0]
+
+          const profile_username =
+            evmAcc?.platform_identifier ??
+            solAcc?.platform_identifier ??
+            other?.platform_identifier
+
           useProfileStore.setState({
             profile_id: me.id,
-            profile_username: me.associated_accounts[0].platform_identifier,
+            profile_username,
             accounts: me.associated_accounts.map((aa: any) => ({
               id: aa.id,
               platform: aa.platform,

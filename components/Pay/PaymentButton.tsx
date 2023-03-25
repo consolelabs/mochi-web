@@ -67,13 +67,15 @@ type Props = {
   isDone: boolean
   setDone: () => void
   refresh: () => void
+  isPayMe?: boolean
 }
 
-export default function WithdrawButton({
+export default function PaymentButton({
   payRequest,
   isDone,
   setDone,
   refresh,
+  isPayMe = false,
 }: Props) {
   const {
     isOpen: isShowingReminder,
@@ -134,7 +136,7 @@ export default function WithdrawButton({
   )
 
   useEffect(() => {
-    if (!onChainWallet) return
+    if (!onChainWallet || isPayMe) return
     if (payRequest?.claim_tx && !isShowSubmittedToast) {
       toast.custom(
         () => {
@@ -262,8 +264,17 @@ export default function WithdrawButton({
                 className: 'w-full',
               })}
             >
-              <Icon icon="jam:arrow-square-down-f" />
-              <div>Withdraw</div>
+              {isPayMe ? (
+                <>
+                  <Icon icon="jam:arrow-square-up-f" />
+                  <div>Pay</div>
+                </>
+              ) : (
+                <>
+                  <Icon icon="jam:arrow-square-down-f" />
+                  <div>Withdraw</div>
+                </>
+              )}
             </Popover.Button>
             <div className="w-full">
               <Popover.Panel className="z-40 rounded-lg bg-white-pure shadow-full">
