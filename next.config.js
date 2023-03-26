@@ -19,6 +19,11 @@ module.exports = {
         destination: process.env.INVITE_LINK,
         permanent: false,
       },
+      {
+        source: '/dashboard/:slug*',
+        destination: '/',
+        permanent: false,
+      },
     ]
   },
 }

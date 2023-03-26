@@ -43,9 +43,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       .json((r) => r)
   }
 
-  payRequest.profile = {
-    name: profile.profile_name,
-    avatar: profile.avatar,
+  if (profile) {
+    payRequest.profile = {
+      name: profile.profile_name ?? '',
+      avatar: profile.avatar ?? '',
+    }
   }
 
   return {
@@ -163,7 +165,7 @@ export default function PayCode({
     >
       <div
         className={clsx(
-          'flex flex-col p-8 pt-4 mx-auto text-center bg-white rounded-2xl md:mb-64',
+          'flex flex-col p-4 sm:p-8 sm:pt-4 mx-auto text-center bg-white rounded-2xl mb-32 md:mb-64',
           {
             'gap-y-6 max-w-[400px]': payRequest.status !== 'expired',
             'max-w-[450px]': payRequest.status === 'expired',

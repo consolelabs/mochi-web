@@ -176,6 +176,7 @@ export const useWalletConnectors = () => {
         setErrorMsg(e.message || 'Something went wrong')
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoConnect, connect, selectedWallet])
 
   groupedWallets.forEach((wallet: WalletInstance) => {

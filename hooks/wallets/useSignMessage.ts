@@ -7,28 +7,46 @@ import { utils } from 'ethers'
 import { useCallback } from 'react'
 import { useAppWalletContext } from '~context/wallet-context'
 
-export const useSignMessage = (messageToSign: string) => {
-  const { openInApp } = useAppWalletContext()
-  const { signMessageAsync } = useWagmiSignMessage({ message: messageToSign })
+export const useSignMessage = () => {
+  const { openInApp, disconnect } = useAppWalletContext()
+  const { signMessageAsync } = useWagmiSignMessage()
   const { connector } = useWagmiAccount()
   const { connected: isSolanaConnected, signMessage } = useWallet()
 
-  const signEVM = useCallback(async () => {
-    const provider = await connector?.getProvider()
-    if (provider?.connector?.uri) {
-      openInApp(provider.connector.uri)
-    }
-    const signature = await signMessageAsync()
-    return signature ?? ''
-  }, [connector, openInApp, signMessageAsync])
+  const signEVM = useCallback(
+    async (message: string) => {
+      try {
+        const provider = await connector?.getProvider()
+        if (provider?.connector?.uri) {
+          openInApp(provider.connector.uri)
+        }
+        const signature = await signMessageAsync({ message })
+        return signature ?? ''
+      } catch (e) {
+        disconnect()
 
-  const signSOL = useCallback(async () => {
-    const messageEncoded = new TextEncoder().encode(messageToSign)
+        throw e
+      }
+    },
+    [connector, disconnect, openInApp, signMessageAsync],
+  )
 
-    const signature = await signMessage?.(messageEncoded)
+  const signSOL = useCallback(
+    async (message: string) => {
+      try {
+        const messageEncoded = new TextEncoder().encode(message)
 
-    return utils.base58.encode(signature as any)
-  }, [messageToSign, signMessage])
+        const signature = await signMessage?.(messageEncoded)
+
+        return utils.base58.encode(signature as any)
+      } catch (e) {
+        disconnect()
+
+        throw e
+      }
+    },
+    [disconnect, signMessage],
+  )
 
   return isSolanaConnected ? signSOL : signEVM
 }

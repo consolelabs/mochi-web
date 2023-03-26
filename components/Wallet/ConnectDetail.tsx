@@ -10,6 +10,7 @@ export type ConnectDetailProps = {
   qrCodeUri?: string
   reconnect: (wallet: WalletConnector) => void
   wallet: WalletConnector
+  signError: boolean
 }
 
 export const ConnectDetail = ({
@@ -18,6 +19,7 @@ export const ConnectDetail = ({
   connectionError,
   reconnect,
   connectionErrorMsg,
+  signError,
 }: ConnectDetailProps) => {
   const { downloadUrls, iconUrl, qrCode, ready } = wallet
 
@@ -70,9 +72,9 @@ export const ConnectDetail = ({
             <h1 className={heading({ className: 'mt-8', size: 'xs' })}>
               Opening {wallet.name}
             </h1>
-            {connectionError ? (
+            {connectionError || signError ? (
               <span className="text-sm font-semibold text-red-400">
-                {connectionErrorMsg}
+                {signError ? 'Failed to sign message' : connectionErrorMsg}
               </span>
             ) : (
               <span className="mt-px text-xs font-semibold text-foreground">
@@ -94,7 +96,14 @@ export const ConnectDetail = ({
         </div>
       </div>
     )
-  }, [wallet, iconUrl, connectionError, reconnect])
+  }, [
+    wallet,
+    iconUrl,
+    connectionError,
+    signError,
+    connectionErrorMsg,
+    reconnect,
+  ])
 
   const downloadExtendsionView = useMemo(() => {
     return (

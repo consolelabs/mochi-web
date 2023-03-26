@@ -17,12 +17,12 @@ export interface Account {
   value?: BigNumber
   isEVMConnected: boolean
   isSolanaConnected: boolean
-  disconnect: () => void
+  disconnect: () => Promise<any>
 }
 
 export const useAccount = (): Account => {
   const { address: addressEVM, isConnected: isEVMConnected } = useWagmiAccount()
-  const { disconnect: disconnectEVM } = useDisconnect()
+  const { disconnectAsync: disconnectEVM } = useDisconnect()
   // const { data: evmBalanceData } = useBalance({ address })
   // const evmDisplayBalance = evmBalanceData
   //   ? `${abbreviateETHBalance(parseFloat(evmBalanceData.formatted))} ${
@@ -48,16 +48,16 @@ export const useAccount = (): Account => {
   )
 
   useEffect(() => {
+    setActiveAddress(addressEVM ?? '')
     if (addressEVM) {
-      setActiveAddress(addressEVM)
       disconnectSOL()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressEVM])
 
   useEffect(() => {
+    setActiveAddress(addressSOL ?? '')
     if (addressSOL) {
-      setActiveAddress(addressSOL)
       disconnectEVM()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,9 +67,9 @@ export const useAccount = (): Account => {
     isEVMConnected,
     isSolanaConnected,
     address: activeAddress,
-    disconnect: () => {
-      disconnectEVM()
-      disconnectSOL()
+    disconnect: async () => {
+      setActiveAddress('')
+      return await Promise.allSettled([disconnectEVM(), disconnectSOL()])
     },
     // symbol: isSolanaConnected ? solBalanceData.symbol : evmBalanceData?.symbol,
     // displayBalance: isSolanaConnected ? solDisplayBalance : evmDisplayBalance,

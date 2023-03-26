@@ -7,6 +7,7 @@ import {
   useMemo,
   useReducer,
   useRef,
+  useState,
 } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
@@ -24,6 +25,7 @@ import { isMobile } from '~utils/isMobile'
 import { getWalletLoginSignMessage } from '~utils/string'
 import { ConnectDetail } from './ConnectDetail'
 import { ConnectWalletIntro } from './ConnectWalletIntro'
+import { shallow } from 'zustand/shallow'
 
 type Props = {
   isOpen: boolean
@@ -49,10 +51,9 @@ type State = {
 }
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
-  const debounceRef = useRef(-1)
-  const login = useAuthStore((s) => s.login)
-  const code = useMemo(() => Date.now().toString(), [])
-  const _signMsg = useSignMessage(getWalletLoginSignMessage(code))
+  const debounceRef = useRef<number>()
+  const login = useAuthStore((s) => s.login, shallow)
+  const _signMsg = useSignMessage()
   const { connected, openInApp } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
@@ -70,13 +71,18 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   )
   const { errorMsg, wallets, groupedWallets } = useWalletConnectors()
   const { wallet: solWallet } = useWallet()
+  const [signError, setSignError] = useState(false)
 
   const filteredWallets = wallets.filter(
     (wallet) => wallet.ready || wallet.downloadUrls?.browserExtension,
   )
 
   const signMsg = useCallback(async () => {
-    _signMsg()
+    if (!connected || !address) return
+    setSignError(false)
+    const code = String(Date.now())
+    const msg = getWalletLoginSignMessage(code)
+    _signMsg(msg)
       .then((signature) => {
         if (signature) {
           API.MOCHI_PROFILE.post(
@@ -91,9 +97,8 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
             .finally(() => disconnect())
         }
       })
-      .catch(() => null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_signMsg, address, code, isEVMConnected])
+      .catch(() => setSignError(true))
+  }, [_signMsg, address, connected, disconnect, isEVMConnected, login])
 
   const connectToWallet = useCallback(
     async (wallet: WalletConnector) => {
@@ -170,25 +175,16 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   }
 
   const onSelectWallet = async (wallet: WalletConnector) => {
-    if (state.selectedOptionId === wallet.id) {
-      signMsg()
-      return
-    }
+    const sWallet = filteredWallets.find((w) => wallet.id === w.id)
     setState({
       selectedOptionId: wallet.id,
+      selectedWallet: sWallet,
     })
 
+    changeWalletStep(WalletStep.Connect)
     connectToWallet(wallet)
 
     if (wallet.ready) {
-      const sWallet = filteredWallets.find((w) => wallet.id === w.id)
-
-      if (wallet.isSolana) {
-        setState({
-          selectedWallet: sWallet,
-        })
-        changeWalletStep(WalletStep.Connect)
-      }
       if (!wallet.isSolana) {
         setTimeout(async () => {
           // We need to guard against "onConnecting" callbacks being fired
@@ -203,9 +199,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
             const uri = await sWallet?.qrCode?.getUri()
             setState({
               qrCodeUri: uri,
-              selectedWallet: sWallet,
             })
-            changeWalletStep(WalletStep.Connect)
             callbackFired = false
           })
         }, 0)
@@ -227,6 +221,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           <ConnectDetail
             connectionError={state.isConnectionError}
             connectionErrorMsg={errorMsg}
+            signError={signError}
             qrCodeUri={state.qrCodeUri}
             reconnect={connectToWallet}
             wallet={state.selectedWallet}
@@ -238,6 +233,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   }, [
     connectToWallet,
     errorMsg,
+    signError,
     state.isConnectionError,
     state.qrCodeUri,
     state.selectedWallet,
@@ -267,13 +263,8 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
 
   useEffect(() => {
     window.clearTimeout(debounceRef.current)
-    debounceRef.current = window.setTimeout(() => {
-      if (connected) {
-        signMsg()
-      }
-    }, 200)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, signMsg])
+    debounceRef.current = window.setTimeout(signMsg, 200)
+  }, [address])
 
   return (
     <Transition show={isOpen} as={Fragment}>

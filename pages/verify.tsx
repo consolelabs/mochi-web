@@ -45,13 +45,13 @@ export default function Verify({
   )
   const { connected } = useAppWalletContext()
   const { address, isSolanaConnected, isEVMConnected } = useAccount()
-  const signMsg = useSignMessage(getWalletLoginSignMessage(code))
+  const signMsg = useSignMessage()
 
   const sign = useCallback(async () => {
     if (!code || !profileId || loading || !connected || !address) return
     try {
       setLoading(true)
-      const signature = await signMsg()
+      const signature = await signMsg(getWalletLoginSignMessage(code))
       if (signature) {
         API.MOCHI_PROFILE.post(
           {

@@ -18,6 +18,7 @@ import { WalletProvider } from '~context/wallet-context'
 import { Toaster } from 'sonner'
 import { useRouter } from 'next/router'
 import { useAuthStore } from '~store'
+import { shallow } from 'zustand/shallow'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -37,14 +38,14 @@ export function handleCancelRendering(e: any) {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const { asPath, query, pathname, replace, push, isReady } = useRouter()
-  const { getSession } = useAuthStore()
+  const login = useAuthStore((s) => s.login, shallow)
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
     if (!isReady) return
     if (pathname === '/404') return
 
-    getSession(query.token as string).then(() => {
+    login(query.token as string).then(() => {
       replace(asPath, undefined, { shallow: true })
         .catch(handleCancelRendering)
         .then(() => {

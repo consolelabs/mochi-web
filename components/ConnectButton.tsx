@@ -36,9 +36,9 @@ export default function ConnectButton({ isVerifying = false }: Props) {
   const disconnect = () => {
     onClose()
     logout()
-    replace('/dashboard', undefined, { shallow: true }).catch(
-      handleCancelRendering,
-    )
+    /* replace('/dashboard', undefined, { shallow: true }).catch( */
+    /*   handleCancelRendering, */
+    /* ) */
   }
 
   if (!mounted) return null
@@ -105,7 +105,7 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             />
                           ),
                           text: 'My Profile',
-                          url: '/dashboard/profile',
+                          /* url: '/dashboard/profile', */
                         },
                         {
                           id: 'quests',
@@ -113,9 +113,9 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             <Icon icon="mdi:bookmark-box" className="w-5 h-5" />
                           ),
                           text: 'Quests',
-                          url: serverId
-                            ? `/dashboard/${serverId}/quests`
-                            : '/dashboard',
+                          /* url: serverId */
+                          /*   ? `/dashboard/${serverId}/quests` */
+                          /*   : '/dashboard', */
                         },
                         {
                           id: 'game-store',
@@ -136,7 +136,7 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             />
                           ),
                           text: 'Server Management',
-                          url: '/dashboard',
+                          /* url: '/dashboard', */
                         },
                         {
                           id: 'settings',
@@ -147,7 +147,7 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             />
                           ),
                           text: 'Settings',
-                          url: '/dashboard/settings/account',
+                          /* url: '/dashboard/settings/account', */
                         },
                       ],
                     ],

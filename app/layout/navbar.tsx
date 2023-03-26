@@ -144,9 +144,6 @@ const NavLinks = ({ className }: { className: string }) => (
         Vote on Discordbotlist.com
       </NavLink>
     </Popover>
-    <div className="hidden md:block">
-      <ConnectButton />
-    </div>
   </div>
 )
 
@@ -154,26 +151,24 @@ export const Navbar = () => (
   <Fragment>
     <nav className="relative z-20 bg-transparent">
       <div className="flex flex-wrap gap-y-5 items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
-        <Link legacyBehavior href="/">
-          <a className="flex gap-4 items-center text-gray-900 group">
-            <div className="w-9 h-9 rounded-full transition-shadow duration-200 ease-in-out group-hover:shadow-xl group-hover:shadow-mochi-200">
-              <Image
-                src={logo}
-                alt="Logo"
-                width={36}
-                height={36}
-                className="block rounded-full"
-              />
-            </div>
-            <span className="font-black uppercase">
-              Mochi<span className="text-mochi">.</span>
-            </span>
-          </a>
+        <Link className="flex gap-4 items-center text-gray-900 group" href="/">
+          <div className="w-9 h-9 rounded-full transition-shadow duration-200 ease-in-out group-hover:shadow-xl group-hover:shadow-mochi-200">
+            <Image
+              src={logo}
+              alt="Logo"
+              width={36}
+              height={36}
+              className="block rounded-full"
+            />
+          </div>
+          <span className="font-black uppercase">
+            Mochi<span className="text-mochi">.</span>
+          </span>
         </Link>
-        <div className="ml-auto md:hidden">
+        <div className="order-1 ml-auto md:order-2 md:ml-10">
           <ConnectButton />
         </div>
-        <NavLinks className="flex gap-x-10 justify-center mx-auto md:justify-start md:mx-0 md:ml-auto basis-full md:basis-[auto]" />
+        <NavLinks className="flex order-2 gap-x-10 justify-center mx-auto md:order-1 md:justify-start md:mx-0 md:ml-auto basis-full md:basis-[auto]" />
       </div>
     </nav>
     <div className="flex relative justify-center items-center py-2 space-x-2 w-full text-sm bg-black">

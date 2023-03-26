@@ -10,8 +10,7 @@ type State = {
   token: string | null
   isLoggedIn: boolean
   isLoadingSession: boolean
-  getSession: (token?: string) => Promise<void>
-  login: (token: string) => void
+  login: (token?: string) => Promise<void>
   logout: () => void
 }
 
@@ -20,8 +19,8 @@ export const useAuthStore = create<State>((set, get) => ({
   token: null,
   isLoggedIn: false,
   isLoadingSession: true,
-  getSession: async (tokenParam?: string) => {
-    const { login, logout } = get()
+  login: async (tokenParam?: string) => {
+    const { logout } = get()
     // on load, try to get token first from storage
     const token = tokenParam ?? localStorage.getItem(STORAGE_KEY)
 
@@ -45,20 +44,26 @@ export const useAuthStore = create<State>((set, get) => ({
         .res((res) => {
           set({ isLoadingSession: false })
           // if the code makes it here means the token is valid
-          login(token)
+          localStorage.setItem(STORAGE_KEY, token)
+          set({ token, isLoggedIn: true })
+          apiLogin(token)
 
           return res.json()
         })
         .then((me) => {
           set({ me })
+          // try to find evm account
           const evmAcc = me.associated_accounts.find(
             (aa: any) => aa.platform === 'evm-chain',
           )
+          // do the same with solana
           const solAcc = me.associated_accounts.find(
             (aa: any) => aa.platform === 'solana-chain',
           )
+          // probably social accounts
           const other = me.associated_accounts[0]
 
+          // priority evm > sol > socials
           const profile_username =
             evmAcc?.platform_identifier ??
             solAcc?.platform_identifier ??
@@ -75,11 +80,6 @@ export const useAuthStore = create<State>((set, get) => ({
           })
         })
     }
-  },
-  login: (token: string) => {
-    localStorage.setItem(STORAGE_KEY, token)
-    set({ token, isLoggedIn: true })
-    apiLogin(token)
   },
   logout: () => {
     localStorage.removeItem(STORAGE_KEY)
