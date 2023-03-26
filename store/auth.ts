@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { API, apiLogin, apiLogout } from '~constants/api'
 import { ViewProfile } from '~types/mochi-profile-schema'
+import { useProfileStore } from './profile'
 
 const STORAGE_KEY = 'mochi.token'
 
@@ -48,7 +49,31 @@ export const useAuthStore = create<State>((set, get) => ({
 
           return res.json()
         })
-        .then((me) => set({ me }))
+        .then((me) => {
+          set({ me })
+          const evmAcc = me.associated_accounts.find(
+            (aa: any) => aa.platform === 'evm-chain',
+          )
+          const solAcc = me.associated_accounts.find(
+            (aa: any) => aa.platform === 'solana-chain',
+          )
+          const other = me.associated_accounts[0]
+
+          const profile_username =
+            evmAcc?.platform_identifier ??
+            solAcc?.platform_identifier ??
+            other?.platform_identifier
+
+          useProfileStore.setState({
+            profile_id: me.id,
+            profile_username,
+            accounts: me.associated_accounts.map((aa: any) => ({
+              id: aa.id,
+              platform: aa.platform,
+              platformId: aa.platform_identifier,
+            })),
+          })
+        })
     }
   },
   login: (token: string) => {

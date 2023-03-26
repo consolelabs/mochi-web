@@ -1,6 +1,5 @@
 import React from 'react'
 import { truncate } from '@dwarvesf/react-utils'
-import { useAccount } from '~hooks/wallets/useAccount'
 import { useEns } from '~hooks/wallets/useEns'
 import ConnectWalletModal from './Wallet/ConnectWalletModal'
 import { useDisclosure, useHasMounted } from '@dwarvesf/react-hooks'
@@ -14,17 +13,24 @@ import Avatar from './Dashboard/Avatar'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
 import { handleCancelRendering } from '~pages/_app'
+import { useProfileStore } from '~store/profile'
+import { useAppWalletContext } from '~context/wallet-context'
 
-export default function ConnectButton() {
+type Props = {
+  isVerifying?: boolean
+}
+
+export default function ConnectButton({ isVerifying = false }: Props) {
   const mounted = useHasMounted()
   const { query, replace } = useRouter()
   const serverId = query.server_id
+  const { connected } = useAppWalletContext()
   const { isLoggedIn, logout } = useAuthStore(
     (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
     shallow,
   )
-  const { address } = useAccount()
-  const { ensName } = useEns(address)
+  const profileUsername = useProfileStore((s) => s.profile_username)
+  const { ensName } = useEns(profileUsername ?? '')
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const disconnect = () => {
@@ -37,7 +43,7 @@ export default function ConnectButton() {
 
   if (!mounted) return null
 
-  if (!isLoggedIn)
+  if (!isLoggedIn || (isVerifying && !connected))
     return (
       <div>
         <button className={button({ size: 'sm' })} onClick={onOpen}>
@@ -52,7 +58,7 @@ export default function ConnectButton() {
       <Popover.Button className="flex gap-x-2 items-center p-1 pr-2 rounded-full border outline-none bg-mochi/10 border-dashboard-red-1">
         <Avatar className="w-6 rounded-full" />
         <span className="text-sm font-semibold text-foreground">
-          {ensName ?? truncate(address ?? '', 5, true, '.')}
+          {ensName ?? truncate(profileUsername ?? '', 5, true, '.')}
         </span>
       </Popover.Button>
       <Transition
