@@ -35,4 +35,5 @@ export const GET_PATHS = {
   GUILDS: '/discord/users/me/guilds',
   GUILD: (id: string) => `/guilds/${id}`,
   USERS_TOP: '/users/top',
+  PROFILE_ID: (id: string) => `/profiles/${id}`,
 }

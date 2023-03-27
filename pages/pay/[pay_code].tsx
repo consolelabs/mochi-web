@@ -20,6 +20,8 @@ import useSWR from 'swr'
 import Card from '~components/Pay/Card'
 import Link from 'next/link'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import { useEffect } from 'react'
+import { usePayRequest } from '~store/pay-request'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -63,13 +65,16 @@ export type PayRequest = {
   amount: string
   status: 'submitted' | 'claimed' | 'expired' | 'failed'
   note?: string
+  profile_id: string
   profile?: {
     name: string
     avatar: string
   }
   token: {
+    address: string
     icon: string
     chain: {
+      chain_id: string
       symbol: string
       icon: string
       explorer: string
@@ -77,6 +82,7 @@ export type PayRequest = {
     decimal: number
     symbol: string
   }
+  type: 'paylink' | 'payme'
 }
 
 export type Props = {
@@ -88,6 +94,7 @@ export default function PayCode({
   isPayMe,
   payRequest: initialPayRequest,
 }: Props) {
+  const setPayRequestStore = usePayRequest((s) => s.set)
   const { data: payRequest = initialPayRequest, mutate } = useSWR<PayRequest>(
     `/pay-requests/${initialPayRequest?.code}`,
     (url) => API.MOCHI_PAY.get(url).json((r) => r.data),
@@ -96,6 +103,13 @@ export default function PayCode({
   const { isOpen: isDone, onOpen: setDone } = useDisclosure({
     defaultIsOpen: payRequest?.status !== 'submitted',
   })
+
+  useEffect(() => {
+    if (initialPayRequest) {
+      setPayRequestStore(initialPayRequest)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!payRequest) {
     return (
@@ -210,11 +224,11 @@ export default function PayCode({
             </div>
 
             {isPayMe ? (
-              <div className="flex flex-col">
+              <div className="flex flex-col pb-5">
                 <p className="text-base font-semibold text-black">
                   {payRequest.profile?.name} requests you pay
                 </p>
-                <div className="flex gap-x-1 items-center mx-auto mt-3">
+                <div className="flex gap-x-1 items-center mx-auto mt-10">
                   <CutoutAvatar
                     src={payRequest.token.icon}
                     cutoutSrc={payRequest.token.chain.icon}
@@ -237,10 +251,10 @@ export default function PayCode({
                 </span>
               </div>
             ) : (
-              <Card isDone={isDone} payRequest={payRequest} />
+              <Card isDone={isDone} />
             )}
             {payRequest.note ? (
-              <span>
+              <span className="">
                 <span className="font-medium">Message: </span>&ldquo;
                 {truncate(payRequest.note, 100, false)}
                 &rdquo;
@@ -254,7 +268,6 @@ export default function PayCode({
               isDone={isDone}
               setDone={setDone}
               refresh={mutate}
-              payRequest={payRequest}
             />
           </>
         )}
