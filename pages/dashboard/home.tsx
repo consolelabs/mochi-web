@@ -5,7 +5,7 @@ import type { ReactElement } from 'react'
 import { heading } from '~components/Dashboard/Heading'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { NextPageWithLayout } from '~pages/_app'
-import { useDashboardStore } from '~store/dashboard'
+import { useDashboardStore } from '~store'
 import useSWR from 'swr'
 import { GET_PATHS } from '~constants/api'
 import { useAuthStore } from '~store'
@@ -35,7 +35,7 @@ const Server = (props: ViewDiscordGuild) => {
             : `https://boring-avatars-api.vercel.app/api/avatar?size=40&variant=marble`
         }
       />
-      <span className="text-xs font-semibold uppercase text-dashboard-gray-8 text-center">
+      <span className="text-xs font-semibold text-center uppercase text-dashboard-gray-8">
         {name}
       </span>
       {mochi_supported ? (
@@ -70,7 +70,7 @@ const Home: NextPageWithLayout = () => {
   const servers = data?.data || {}
 
   const skeletonRender = new Array(4).fill(0).map((_, index) => {
-    return <div className="bg-white-pure animate-pulse h-48" key={index} />
+    return <div className="h-48 animate-pulse bg-white-pure" key={index} />
   })
 
   return (

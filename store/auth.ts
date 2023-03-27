@@ -6,7 +6,6 @@ import { useProfileStore } from './profile'
 const STORAGE_KEY = 'mochi.token'
 
 type State = {
-  me?: ViewProfile
   token: string | null
   isLoggedIn: boolean
   isLoadingSession: boolean
@@ -50,35 +49,7 @@ export const useAuthStore = create<State>((set, get) => ({
 
           return res.json()
         })
-        .then((me) => {
-          set({ me })
-          // try to find evm account
-          const evmAcc = me.associated_accounts.find(
-            (aa: any) => aa.platform === 'evm-chain',
-          )
-          // do the same with solana
-          const solAcc = me.associated_accounts.find(
-            (aa: any) => aa.platform === 'solana-chain',
-          )
-          // probably social accounts
-          const other = me.associated_accounts[0]
-
-          // priority evm > sol > socials
-          const profile_username =
-            evmAcc?.platform_identifier ??
-            solAcc?.platform_identifier ??
-            other?.platform_identifier
-
-          useProfileStore.setState({
-            profile_id: me.id,
-            profile_username,
-            accounts: me.associated_accounts.map((aa: any) => ({
-              id: aa.id,
-              platform: aa.platform,
-              platformId: aa.platform_identifier,
-            })),
-          })
-        })
+        .then((me) => useProfileStore.getState().setMe(me))
     }
   },
   logout: () => {

@@ -14,11 +14,12 @@ import 'nprogress/nprogress.css'
 import '~styles/global.css'
 import '~styles/nprogress.css'
 import '../styles/tos.css'
-import { WalletProvider } from '~context/wallet-context'
+import { useAppWalletContext, WalletProvider } from '~context/wallet-context'
 import { Toaster } from 'sonner'
 import { useRouter } from 'next/router'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
+import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -36,7 +37,8 @@ export function handleCancelRendering(e: any) {
   if (!e.cancelled) throw e
 }
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
+function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
+  const { isShowConnectModal, closeConnectModal } = useAppWalletContext()
   const { asPath, query, pathname, replace, push, isReady } = useRouter()
   const login = useAuthStore((s) => s.login, shallow)
   const getLayout = Component.getLayout ?? ((page) => page)
@@ -59,6 +61,18 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }, [asPath, query.token]) // eslint-disable-line
 
   return (
+    <>
+      {getLayout(<Component {...pageProps} />)}
+      <ConnectWalletModal
+        isOpen={isShowConnectModal}
+        onClose={closeConnectModal}
+      />
+    </>
+  )
+}
+
+export default function App(props: AppPropsWithLayout) {
+  return (
     <StrictMode>
       <Toaster
         position="top-right"
@@ -68,7 +82,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         }}
       />
       <TopProgressBar />
-      <WalletProvider>{getLayout(<Component {...pageProps} />)}</WalletProvider>
+      <WalletProvider>
+        <InnerApp {...props} />
+      </WalletProvider>
     </StrictMode>
   )
 }

@@ -16,15 +16,24 @@ import { API } from '~constants/api'
 import { PayRequest } from '~pages/pay/[pay_code]'
 import ToastError from '~components/Toast/ToastError'
 import clsx from 'clsx'
+import { useAppWalletContext } from '~context/wallet-context'
+import { useAuthStore, useProfileStore } from '~store'
+import Image from 'next/image'
+import { useEns } from '~hooks/wallets/useEns'
+import { useBalance } from 'wagmi'
+import { useSns } from '~hooks/wallets/useSns'
+import { useSolBalance } from '~hooks/wallets/useSolBalance'
 
 const DropdownButton = ({
   icon,
+  image,
   title,
   description,
   onClick = noop,
   wip = false,
 }: {
-  icon: React.ReactElement
+  icon?: React.ReactElement
+  image?: React.ReactElement
   title: string
   description: string
   onClick?: () => void
@@ -41,11 +50,15 @@ const DropdownButton = ({
       })}
       onClick={onClick}
     >
-      <div className="flex relative">
-        {React.cloneElement(icon, {
-          ...icon.props,
-          className: 'w-5 h-5 md:w-6 md:h-6 flex-shrink-0',
-        })}
+      <div className="flex relative flex-shrink-0 w-5 h-5 md:w-6 md:h-6">
+        {icon
+          ? React.cloneElement(icon, {
+              ...icon.props,
+              className: 'w-full h-full',
+            })
+          : image
+          ? image
+          : null}
       </div>
       <div className="flex-1 text-start">
         <div className="text-sm font-semibold">{title}</div>
@@ -57,8 +70,45 @@ const DropdownButton = ({
   )
 }
 
+const WalletButton = ({
+  address,
+  onClick,
+  image,
+  type,
+}: {
+  type: string
+  address: string
+  image: string
+  symbol: string
+  onClick?: () => void
+}) => {
+  const { ensName } = useEns(address)
+  const { data } = useBalance({ address: address as `0x${string}` })
+  const solBalance = useSolBalance(address)
+  const { names } = useSns(address)
+
+  const defaultAddr = truncate(address, 8, true, '.')
+
+  return (
+    <DropdownButton
+      title={
+        type === 'evm'
+          ? ensName ?? defaultAddr
+          : names.find(Boolean) ?? defaultAddr
+      }
+      description={
+        type === 'evm'
+          ? `${data?.formatted} ${data?.symbol}`
+          : `${solBalance.formatted} ${solBalance.symbol}`
+      }
+      image={<Image src={image} alt={`${type}-network-icon`} fill />}
+      onClick={onClick}
+    />
+  )
+}
+
 type WithdrawOption = {
-  id: 'none' | 'mochi-wallet' | 'wallet' | 'public-key'
+  id: 'none' | 'mochi-wallet' | 'public-key' | `${string}-${string}`
   handler?: () => void
 }
 
@@ -70,6 +120,17 @@ type Props = {
   isPayMe?: boolean
 }
 
+const chains: Record<string, { image: string; symbol: string }> = {
+  evm: {
+    image: '/assets/eth-icon.png',
+    symbol: 'ETH',
+  },
+  solana: {
+    image: '/assets/sol-icon.png',
+    symbol: 'SOL',
+  },
+}
+
 export default function PaymentButton({
   payRequest,
   isDone,
@@ -77,6 +138,27 @@ export default function PaymentButton({
   refresh,
   isPayMe = false,
 }: Props) {
+  const { showConnectModal } = useAppWalletContext()
+
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
+  const wallets = useProfileStore((s) => {
+    const walletAccounts = s.me?.associated_accounts?.filter((aa) =>
+      aa.platform?.endsWith('chain'),
+    )
+
+    return walletAccounts
+      ?.map((wa) => {
+        const type = wa.platform?.split('-')[0] ?? ''
+
+        return {
+          type,
+          address: wa.platform_identifier ?? '',
+          ...chains[type],
+        }
+      })
+      .filter((w) => w.address)
+  })
+
   const {
     isOpen: isShowingReminder,
     onOpen: showReminder,
@@ -100,7 +182,7 @@ export default function PaymentButton({
 
   const [processingToastId, setProcessingToastId] = useState<number>()
 
-  const handleWithdrawOnChain = useCallback(
+  const handleWithdraw = useCallback(
     async (values: { walletAddress: string }) => {
       if (payRequest?.code) {
         toast.custom(
@@ -200,19 +282,6 @@ export default function PaymentButton({
     onChainWallet,
   ])
 
-  const wallets = [
-    {
-      icon: <Icon icon="cryptocurrency-color:sol" />,
-      address: '0xE4eb4BbcB01247638F7D7d664F7b771F406A411a',
-      amount: '$12,673 (23BTC)',
-    },
-    {
-      icon: <Icon icon="cryptocurrency-color:sol" />,
-      address: 'baddeed.eth',
-      amount: '$12,673 (23BTC)',
-    },
-  ]
-
   const keepPopover = isShowingReminder || isShowingPulicKeyWithdraw
 
   const onSelectWithdrawOption = useCallback(
@@ -291,35 +360,45 @@ export default function PaymentButton({
 
                   <hr className="hidden w-full bg-black" />
 
-                  {/* list wallet */}
-                  {/* {wallets.map(({ address, icon, amount }, idx) => ( */}
-                  {/*   <DropdownButton */}
-                  {/*     key={idx} */}
-                  {/*     title={truncate(address, 12, true, '.')} */}
-                  {/*     description={amount} */}
-                  {/*     icon={icon} */}
-                  {/*   /> */}
-                  {/* ))} */}
-                  <DropdownButton
-                    title="Connect Wallet (coming soon)"
-                    description="Connect to an existing crypto wallet"
-                    icon={
-                      <Icon icon="material-symbols:account-balance-wallet" />
-                    }
-                    wip
-                  />
+                  {isLoggedIn && wallets?.length ? (
+                    wallets.map((w) => {
+                      return (
+                        <WalletButton
+                          key={`wallet-dropdown-option-${w.address}`}
+                          {...w}
+                          onClick={onSelectWithdrawOption(
+                            `${w.type}-${w.address}`,
+                            handleWithdraw.bind(handleWithdraw, {
+                              walletAddress: w.address,
+                            }),
+                          )}
+                        />
+                      )
+                    })
+                  ) : (
+                    <DropdownButton
+                      title="Connect Wallet"
+                      description="Connect to an existing crypto wallet"
+                      icon={
+                        <Icon icon="material-symbols:account-balance-wallet" />
+                      }
+                      onClick={showConnectModal}
+                    />
+                  )}
 
                   <hr className="w-full bg-black" />
 
-                  <DropdownButton
-                    title="Claim to public key"
-                    description="Claim to a wallet address you specify"
-                    icon={<Icon icon="tabler:circle-key-filled" />}
-                    onClick={onSelectWithdrawOption(
-                      'public-key',
-                      showPublicKeyWithdraw,
-                    )}
-                  />
+                  {!isPayMe ? (
+                    <DropdownButton
+                      title="Claim to a crypto wallet"
+                      description="Claim to a wallet address you specify"
+                      icon={<Icon icon="tabler:circle-key-filled" />}
+                      onClick={onSelectWithdrawOption(
+                        'public-key',
+                        showPublicKeyWithdraw,
+                      )}
+                    />
+                  ) : null}
                 </div>
               </Popover.Panel>
             </div>
@@ -370,7 +449,7 @@ export default function PaymentButton({
       </Modal>
       <Modal isOpen={isShowingPulicKeyWithdraw} onClose={hidePublicKeyWithdraw}>
         <WalletAddressForm
-          onSubmit={handleWithdrawOnChain}
+          onSubmit={handleWithdraw}
           onCancel={hidePublicKeyWithdraw}
         />
       </Modal>

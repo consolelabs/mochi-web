@@ -11,7 +11,7 @@ import { HOME_URL } from '~envs'
 import { useAuthStore } from '~store'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useDashboardStore } from '~store/dashboard'
+import { useDashboardStore } from '~store'
 
 export default function DashboardLayout({
   children,

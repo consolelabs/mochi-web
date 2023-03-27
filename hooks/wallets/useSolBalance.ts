@@ -6,12 +6,12 @@ import { solanaChain } from 'context/wallets/solana/chains'
 
 const FETCH_SOL_BALANCE_KEY = 'sol-balance'
 
-export const useSolanaBalance = (publicKey?: PublicKey | null) => {
+export const useSolBalance = (publicKey: string) => {
   const { connection } = useConnection()
 
   const { data } = useSWR(
-    publicKey ? [FETCH_SOL_BALANCE_KEY, publicKey.toBase58()] : null,
-    (_: any, base58: string) => connection.getBalance(new PublicKey(base58)),
+    publicKey ? [FETCH_SOL_BALANCE_KEY, publicKey] : null,
+    (_: any, pubKey: string) => connection.getBalance(new PublicKey(pubKey)),
   )
 
   return {

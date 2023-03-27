@@ -29,7 +29,6 @@ import { shallow } from 'zustand/shallow'
 
 type Props = {
   isOpen: boolean
-  onOpen?: () => void
   onClose: () => void
 }
 

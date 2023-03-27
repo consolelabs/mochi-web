@@ -6,8 +6,8 @@ import { NextPageWithLayout } from '~pages/_app'
 import useSWR from 'swr'
 import { GET_PATHS } from '~constants/api'
 import { useMemo, useState } from 'react'
-import { useDashboardStore } from '~store/dashboard'
-import { useAuthStore } from '~store'
+import { useDashboardStore } from '~store'
+import { useProfileStore } from '~store'
 import { format } from 'date-fns'
 import { TIMESTAMP_FORMAT } from '~constants/date'
 import { Pagination } from '~components/Dashboard/Pagination'
@@ -16,7 +16,7 @@ import { shallow } from 'zustand/shallow'
 const LIMIT = 20
 
 const Members: NextPageWithLayout = () => {
-  const { me } = useAuthStore(({ me }) => ({ me }), shallow)
+  const { me } = useProfileStore(({ me }) => ({ me }), shallow)
   const { server, getServerMemberList } = useDashboardStore(
     ({ server, getServerMemberList }) => ({
       server,
@@ -59,7 +59,7 @@ const Members: NextPageWithLayout = () => {
       {new Array(3).fill(0).map((_, index) => {
         return (
           <div
-            className="h-16 bg-white-pure animate-pulse rounded-lg"
+            className="h-16 rounded-lg animate-pulse bg-white-pure"
             key={index}
           />
         )
@@ -105,7 +105,7 @@ const Members: NextPageWithLayout = () => {
                 minWidth: 250,
                 Cell: ({ row: { original } }: any) => {
                   return (
-                    <div className="flex items-center gap-2">
+                    <div className="flex gap-2 items-center">
                       <img
                         className="w-10 h-10 rounded-full"
                         alt=""
@@ -143,7 +143,7 @@ const Members: NextPageWithLayout = () => {
                       ].map((role: any) => {
                         return (
                           <div
-                            className="p-1 rounded bg-dashboard-gray-3 flex gap-1 text-xs"
+                            className="flex gap-1 p-1 text-xs rounded bg-dashboard-gray-3"
                             key={role.name}
                           >
                             <img src={role.icon} className="w-4 h-4" alt="" />
@@ -197,7 +197,7 @@ const Members: NextPageWithLayout = () => {
             }}
           />
           {totalPage > 1 && (
-            <div className="mt-4 flex justify-center">
+            <div className="flex justify-center mt-4">
               <Pagination
                 page={query.page}
                 totalPage={totalPage}

@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo } from 'react'
+import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import { SolanaWalletProvider } from 'context/wallets/solana/SolanaWalletProvider'
 import { EVMWalletProvider } from 'context/wallets/ethereum/EVMWalletProvider'
 import { useNetwork } from 'wagmi'
@@ -7,6 +7,8 @@ import { Chain } from './wallets/Wallet'
 import { decorateChains } from './wallets/ethereum/chains'
 import { solanaChain } from './wallets/solana/chains'
 import { useAccount } from '~hooks/wallets/useAccount'
+import { useDisclosure } from '@dwarvesf/react-hooks'
+import { useAuthStore } from '~store'
 
 export type WalletProviderProps = {
   children: ReactNode
@@ -32,6 +34,9 @@ export interface AppWalletContextValues {
   initialChainId?: number
   getChainById: (id: number) => Chain | undefined
   openInApp: (wcUrl: string) => void
+  isShowConnectModal: boolean
+  showConnectModal: () => void
+  closeConnectModal: () => void
 }
 
 const [Provider, useAppWalletContext] = createContext<AppWalletContextValues>()
@@ -71,9 +76,26 @@ export const AppWalletContextProvider = ({
     a.click()
   }, [])
 
+  const {
+    isOpen: isShowConnectModal,
+    onOpen: showConnectModal,
+    onClose: closeConnectModal,
+  } = useDisclosure()
+
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      closeConnectModal()
+    }
+  }, [closeConnectModal, isLoggedIn])
+
   return (
     <Provider
       value={{
+        isShowConnectModal,
+        showConnectModal,
+        closeConnectModal,
         blockchain,
         connected,
         disconnect,

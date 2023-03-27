@@ -1,13 +1,12 @@
 import { button } from './Button'
 import { heading } from './Heading'
 import { Icon } from '@iconify/react'
-import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
-import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Input } from './Input'
 import { AUTH_DISCORD_URL } from '~envs'
+import { useAppWalletContext } from '~context/wallet-context'
 
 export default function Login() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { showConnectModal } = useAppWalletContext()
 
   return (
     <div className="flex flex-1 justify-center items-center w-full">
@@ -25,11 +24,19 @@ export default function Login() {
             <Icon icon="mingcute:google-fill" className="text-foreground" />
             <div>Google</div>
           </button>
-          <button type="button" onClick={onOpen} className={button({})}>
+          <button
+            type="button"
+            onClick={showConnectModal}
+            className={button({})}
+          >
             <Icon icon="mingcute:ethereum-fill" className="text-foreground" />
             <div>Ethereum</div>
           </button>
-          <button type="button" onClick={onOpen} className={button({})}>
+          <button
+            type="button"
+            onClick={showConnectModal}
+            className={button({})}
+          >
             <Icon icon="mingcute:solana-sol-line" className="text-foreground" />
             <div>Solana</div>
           </button>
@@ -53,7 +60,6 @@ export default function Login() {
           Login
         </button>
       </div>
-      <ConnectWalletModal isOpen={isOpen} onClose={onClose} />
     </div>
   )
 }
