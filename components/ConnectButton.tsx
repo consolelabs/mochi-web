@@ -1,8 +1,7 @@
 import React from 'react'
 import { truncate } from '@dwarvesf/react-utils'
 import { useEns } from '~hooks/wallets/useEns'
-import ConnectWalletModal from './Wallet/ConnectWalletModal'
-import { useDisclosure, useHasMounted } from '@dwarvesf/react-hooks'
+import { useHasMounted } from '@dwarvesf/react-hooks'
 import { Popover, Transition } from '@headlessui/react'
 import { button } from './Dashboard/Button'
 import { Icon } from '@iconify/react'
@@ -12,8 +11,7 @@ import { useRouter } from 'next/router'
 import Avatar from './Dashboard/Avatar'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
-import { handleCancelRendering } from '~pages/_app'
-import { useProfileStore } from '~store/profile'
+import { useProfileStore } from '~store'
 import { useAppWalletContext } from '~context/wallet-context'
 
 type Props = {
@@ -24,17 +22,17 @@ export default function ConnectButton({ isVerifying = false }: Props) {
   const mounted = useHasMounted()
   const { query, replace } = useRouter()
   const serverId = query.server_id
-  const { connected } = useAppWalletContext()
+  const { showConnectModal, closeConnectModal, connected } =
+    useAppWalletContext()
   const { isLoggedIn, logout } = useAuthStore(
     (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
     shallow,
   )
-  const profileUsername = useProfileStore((s) => s.profile_username)
+  const profileUsername = useProfileStore((s) => s.me?.profile_name)
   const { ensName } = useEns(profileUsername ?? '')
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const disconnect = () => {
-    onClose()
+    closeConnectModal()
     logout()
     /* replace('/dashboard', undefined, { shallow: true }).catch( */
     /*   handleCancelRendering, */
@@ -46,10 +44,9 @@ export default function ConnectButton({ isVerifying = false }: Props) {
   if (!isLoggedIn || (isVerifying && !connected))
     return (
       <div>
-        <button className={button({ size: 'sm' })} onClick={onOpen}>
+        <button className={button({ size: 'sm' })} onClick={showConnectModal}>
           Connect
         </button>
-        <ConnectWalletModal isOpen={isOpen} onClose={onClose} />
       </div>
     )
 

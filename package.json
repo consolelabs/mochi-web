@@ -11,6 +11,7 @@
     "fetch-definitions": "swagger-typescript-api --no-client -p https://api.mochi-profile.console.so/swagger/doc.json -o ./types -n mochi-profile-schema.ts && swagger-typescript-api --no-client -p https://api.mochi.pod.town/swagger/doc.json -o ./types -n mochi-schema.ts"
   },
   "dependencies": {
+    "@bonfida/spl-name-service": "^0.1.67",
     "@dwarvesf/react-hooks": "^0.7.0",
     "@dwarvesf/react-utils": "^0.4.1",
     "@fnando/sparkline": "^0.3.10",
@@ -19,6 +20,7 @@
     "@headlessui-float/react": "^0.11.0",
     "@headlessui/react": "^1.7.5",
     "@notionhq/client": "^2.2.2",
+    "@solana/spl-token": "^0.3.7",
     "@solana/wallet-adapter-base": "^0.9.22",
     "@solana/wallet-adapter-react": "^0.15.30",
     "@solana/wallet-adapter-wallets": "^0.19.15",
@@ -42,6 +44,7 @@
     "sonner": "^0.3.0",
     "sprintf-js": "^1.1.2",
     "swr": "^2.1.1",
+    "tweetnacl": "^1.0.3",
     "wagmi": "^0.12.1",
     "webp-converter": "^2.3.3",
     "wretch": "^2.5.1",

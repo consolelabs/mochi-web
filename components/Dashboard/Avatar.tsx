@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import { useEns } from '~hooks/wallets/useEns'
-import { useProfileStore } from '~store/profile'
+import { useProfileStore } from '~store'
 
 interface Props extends React.HTMLProps<HTMLImageElement> {}
 
 export default function Avatar(props: Props) {
-  const profileUsername = useProfileStore((s) => s.profile_username)
+  const profileUsername = useProfileStore((s) => s.me?.profile_name)
   const { ensAvatar, ensName } = useEns(profileUsername ?? '')
 
   const src = useMemo(() => {

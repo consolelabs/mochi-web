@@ -3,7 +3,7 @@ import type { ReactElement } from 'react'
 import { heading } from '~components/Dashboard/Heading'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { NextPageWithLayout } from '~pages/_app'
-import { useDashboardStore } from '~store/dashboard'
+import { useDashboardStore } from '~store'
 
 const Overview: NextPageWithLayout = () => {
   const { server } = useDashboardStore()
