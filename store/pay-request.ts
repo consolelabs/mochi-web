@@ -7,6 +7,7 @@ export type PayRequest = {
   status: 'submitted' | 'claimed' | 'expired' | 'failed'
   note?: string
   profile_id: string
+  is_evm: boolean
   profile?: {
     name: string
     avatar: string
@@ -14,6 +15,7 @@ export type PayRequest = {
   token: {
     address: string
     icon: string
+    native: boolean
     chain: {
       chain_id: string
       symbol: string
@@ -37,9 +39,11 @@ export const usePayRequest = create<State>((set) => ({
     amount: '',
     status: 'submitted',
     profile_id: '-1',
+    is_evm: false,
     token: {
       address: '',
       icon: '',
+      native: false,
       chain: {
         chain_id: '',
         symbol: '',

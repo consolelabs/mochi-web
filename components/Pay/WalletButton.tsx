@@ -23,12 +23,13 @@ export const WalletButton = ({
   symbol: string
   onClick?: (args?: any) => void
 }) => {
-  const { amount, payType, tokenAddress, chainId } = usePayRequest(
+  const { amount, payType, tokenAddress, chainId, isNative } = usePayRequest(
     (s) => ({
       payType: s.payRequest.type,
       tokenAddress: s.payRequest.token.address,
       amount: s.payRequest.amount,
       chainId: Number(s.payRequest.token.chain.chain_id),
+      isNative: s.payRequest.token.native,
     }),
     shallow,
   )
@@ -53,20 +54,27 @@ export const WalletButton = ({
     }
 
     showConnectModal(() => {
-      _onClick?.({
-        address: tokenAddress as `0x${string}`,
-        abi: erc20ABI,
-        functionName: 'transfer',
-        args: [address, BigNumber.from(amount)],
-        enabled: type === 'evm',
-        chainId,
-      })
+      _onClick?.(
+        isNative
+          ? {
+              request: { to: address, value: BigNumber.from(amount) },
+            }
+          : {
+              address: tokenAddress as `0x${string}`,
+              abi: erc20ABI,
+              functionName: 'transfer',
+              args: [address, BigNumber.from(amount)],
+              enabled: type === 'evm',
+              chainId,
+            },
+      )
     })
   }, [
     _onClick,
     address,
     amount,
     chainId,
+    isNative,
     payType,
     showConnectModal,
     tokenAddress,

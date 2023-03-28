@@ -22,14 +22,7 @@ import { API, GET_PATHS } from '~constants/api'
 import ToastError from '~components/Toast/ToastError'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useAuthStore, useProfileStore } from '~store'
-import {
-  ChainMismatchError,
-  erc20ABI,
-  mainnet,
-  useContractWrite,
-  usePrepareContractWrite,
-  useSwitchNetwork,
-} from 'wagmi'
+import { mainnet, useSwitchNetwork } from 'wagmi'
 import useSWR from 'swr'
 import { ViewProfile } from '~types/mochi-profile-schema'
 import { DropdownButton } from './DropdownButton'
@@ -37,6 +30,7 @@ import { WalletButton } from './WalletButton'
 import { shallow } from 'zustand/shallow'
 import { usePayRequest } from '~store/pay-request'
 import { utils } from 'ethers'
+import { useSendEVMToken } from '~hooks/wallets/useSendEVMToken'
 
 type PayOption = {
   id: 'none' | 'mochi-wallet' | 'public-key' | `${string}-${string}`
@@ -95,6 +89,7 @@ export default function PaymentButton({
     chainSymbol,
     chainExplorer,
     chainId,
+    isNative,
   } = usePayRequest(
     (s) => ({
       payAmountFormatted: `${utils.formatUnits(
@@ -108,17 +103,12 @@ export default function PaymentButton({
       chainSymbol: s.payRequest.token.chain.symbol,
       chainExplorer: s.payRequest.token.chain.explorer,
       chainId: Number(s.payRequest.token.chain.chain_id),
+      isNative: s.payRequest.token.native,
     }),
     shallow,
   )
   const debounceRef = useRef<number>()
-  const [config, setConfig] = useState({})
-  const { config: txConfig, error } = usePrepareContractWrite<
-    typeof erc20ABI,
-    'transfer',
-    number
-  >(config)
-  const { writeAsync: payAsync } = useContractWrite(txConfig)
+  const { setConfig, sendNative, sendNonNative, wrongChain } = useSendEVMToken()
   const {
     showConnectModal,
     closeConnectModal,
@@ -203,9 +193,12 @@ export default function PaymentButton({
     [hidePublicKeyWithdraw, payCode, refresh],
   )
 
-  const handlePreparePay = useCallback(async (config: any) => {
-    setConfig(config)
-  }, [])
+  const handlePreparePay = useCallback(
+    async (config: any) => {
+      setConfig(config)
+    },
+    [setConfig],
+  )
 
   const keepPopover =
     isShowingReminder || isShowingPulicKeyWithdraw || isShowConnectModal
@@ -225,13 +218,14 @@ export default function PaymentButton({
   useEffect(() => {
     window.clearTimeout(debounceRef.current)
     debounceRef.current = window.setTimeout(async () => {
-      if (!payAsync || !switchNetworkAsync) return
+      const pay = isNative ? sendNative : sendNonNative
+      if (!pay || !switchNetworkAsync) return
 
       toast.custom(
         (t) => {
           setToastId(t)
           closeConnectModal()
-          payAsync()
+          pay()
             .then((sendTx) => {
               toast.custom(() => {
                 toast.dismiss(toastId)
@@ -294,14 +288,14 @@ export default function PaymentButton({
       )
     }, 400)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [payAsync])
+  }, [sendNative, sendNonNative, isNative])
 
   useEffect(() => {
-    if (error instanceof ChainMismatchError) {
+    if (wrongChain) {
       switchNetworkAsync?.().catch(disconnect)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error])
+  }, [wrongChain])
 
   useEffect(() => {
     if (!onChainWallet || isPayMe) return
@@ -506,7 +500,14 @@ export default function PaymentButton({
                 You&apos;re sending{' '}
                 <span className="font-semibold">{payAmountFormatted}</span> to{' '}
                 <span className="font-semibold break-all">
-                  {truncate(option.args?.args[0] ?? '', 8, true, '.')}
+                  {truncate(
+                    isNative
+                      ? option.args?.request?.to ?? ''
+                      : option.args?.args[0] ?? '',
+                    8,
+                    true,
+                    '.',
+                  )}
                 </span>
                 , please confirm that you and the recipient are on the{' '}
                 <span className="font-semibold">
