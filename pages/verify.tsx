@@ -8,7 +8,8 @@ import { API } from '~constants/api'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { WretchError } from 'wretch'
-import { useAuthStore } from '~store'
+import { useAuthStore, useProfileStore } from '~store'
+import { shallow } from 'zustand/shallow'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const discordId = ctx.query.did
@@ -32,7 +33,10 @@ export default function Verify({ profileId }: { profileId: string }) {
   const [error, _setError] = useState(!profileId ? 'Missing profile id' : '')
   const { showConnectModal, closeConnectModal, disconnect } =
     useAppWalletContext()
-  const login = useAuthStore((s) => s.login)
+  const { login, isLoggedIn } = useAuthStore(
+    (s) => ({ login: s.login, isLoggedIn: s.isLoggedIn }),
+    shallow,
+  )
 
   const setError = useCallback(
     (e: WretchError) => {
@@ -83,26 +87,32 @@ export default function Verify({ profileId }: { profileId: string }) {
                                 code,
                                 signature,
                               }
+                              if (!isLoggedIn) {
+                                await API.MOCHI_PROFILE.post(
+                                  payload,
+                                  `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
+                                )
+                                  .json((r) =>
+                                    login({
+                                      token: r.data.access_token,
+                                    }),
+                                  )
+                                  .catch(setError)
+                                  .finally(() => {
+                                    closeConnectModal()
+                                    setLoading(false)
+                                    disconnect()
+                                  })
+                              }
+
                               API.MOCHI_PROFILE.post(
                                 payload,
-                                `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
+                                `/profiles/me/accounts/connect-${
+                                  isEVM ? 'evm' : 'solana'
+                                }`,
                               )
-                                .json((r) =>
-                                  login({
-                                    token: r.data.access_token,
-                                  }),
-                                )
-                                .then(() => {
-                                  API.MOCHI_PROFILE.post(
-                                    payload,
-                                    `/profiles/me/accounts/connect-${
-                                      isEVM ? 'evm' : 'solana'
-                                    }`,
-                                  )
-                                    .badRequest(setError)
-                                    .json(() => setVerified(true))
-                                    .catch(setError)
-                                })
+                                .badRequest(setError)
+                                .json(() => setVerified(true))
                                 .catch(setError)
                                 .finally(() => {
                                   closeConnectModal()
