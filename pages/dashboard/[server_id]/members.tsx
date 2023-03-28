@@ -44,6 +44,7 @@ const Members: NextPageWithLayout = () => {
         ...query,
         guild_id: server.id,
         user_id: me?.id,
+        platform: 'web',
       })
     },
   )
@@ -51,7 +52,7 @@ const Members: NextPageWithLayout = () => {
     return data?.data.leaderboard || []
   }, [data])
   const totalPage = useMemo(() => {
-    return Math.ceil((data?.data.metadata.total || 0) / LIMIT)
+    return Math.ceil((data?.data.metadata?.total || 0) / LIMIT)
   }, [data])
 
   const skeletonRender = (
@@ -109,14 +110,20 @@ const Members: NextPageWithLayout = () => {
                       <img
                         className="w-10 h-10 rounded-full"
                         alt=""
-                        src="https://boring-avatars-api.vercel.app/api/avatar?size=40&variant=beam"
+                        src={
+                          original.guild_member?.user.avatar
+                            ? `https://cdn.discordapp.com/avatars/${original.user_id}/${original.guild_member.user.avatar}`
+                            : 'https://boring-avatars-api.vercel.app/api/avatar?size=40&variant=beam'
+                        }
                       />
                       <div className="flex flex-col">
                         <div className="font-bold">
-                          {original.user.username}
+                          {original.guild_member?.nick ||
+                            original.user.username}
                         </div>
                         <div className="text-xs text-dashboard-gray-8">
-                          @{original.user.handle || ''}
+                          {original.user.username || ''}#$
+                          {original.guild_member?.user.discriminator}
                         </div>
                       </div>
                     </div>
@@ -125,10 +132,9 @@ const Members: NextPageWithLayout = () => {
               },
               {
                 Header: 'Roles',
-                accessor: 'roles',
                 id: 'roles',
                 minWidth: 250,
-                Cell: () => {
+                Cell: ({ row: { original } }: any) => {
                   return (
                     <div className="flex flex-wrap gap-1">
                       {[
@@ -175,15 +181,23 @@ const Members: NextPageWithLayout = () => {
               },
               {
                 Header: 'Joined',
-                accessor: 'joined',
                 id: 'joined',
-                minWidth: 100,
+                minWidth: 80,
                 tdClassName: 'text-right',
                 thClassName: 'text-right',
-                Cell: ({ cell: { value } }: any) => {
+                Cell: ({ row: { original } }: any) => {
+                  const dateString = original?.guild_member
+                    ? format(
+                        new Date(original?.guild_member?.joined_at),
+                        TIMESTAMP_FORMAT,
+                      )
+                    : 'N/A'
+
                   return (
                     <div className="text-xs text-dashboard-gray-8">
-                      {format(new Date(), TIMESTAMP_FORMAT)}
+                      {dateString.split(', ')[0]}
+                      <br />
+                      {dateString.split(', ')[1]}
                     </div>
                   )
                 },

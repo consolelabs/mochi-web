@@ -58,6 +58,7 @@ export interface ViewDiscordGuild {
   features?: string[]
   icon?: string
   id?: string
+  mochi_supported?: boolean
   name?: string
   owner?: boolean
   permissions?: string

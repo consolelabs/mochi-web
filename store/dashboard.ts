@@ -2,13 +2,18 @@ import { create } from 'zustand'
 import { API, GET_PATHS } from '~constants/api'
 import { Response } from '~types/api'
 import { ViewUserDiscordGuilds } from '~types/mochi-profile-schema'
+import {
+  DiscordgoMember,
+  ResponseGetGuildResponse,
+  ResponseTopUser,
+} from '~types/mochi-schema'
 
 type State = {
   getServerList: () => Promise<Response<ViewUserDiscordGuilds>>
   // TODO: Use official interfaces from swagger schema of Mochi API
-  server?: any
+  server?: ResponseGetGuildResponse
   getServer: (id: string) => Promise<void>
-  getServerMemberList: (query: any) => Promise<Response<any>>
+  getServerMemberList: (query: any) => Promise<Response<ResponseTopUser>>
 }
 
 export const useDashboardStore = create<State>((set, get) => ({
