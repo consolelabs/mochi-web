@@ -9,14 +9,14 @@ export const DropdownButton = ({
   title,
   description,
   onClick = noop,
-  wip = false,
+  disabled = false,
 }: {
   icon?: React.ReactElement
   image?: React.ReactElement
   title: string
   description: string
   onClick?: (args?: any) => void
-  wip?: boolean
+  disabled?: boolean
 }) => {
   return (
     <button
@@ -24,7 +24,7 @@ export const DropdownButton = ({
       className={button({
         appearance: 'text',
         className: clsx('!p-0 gap-x-2', {
-          'opacity-30 outline-none': wip,
+          'opacity-40 outline-none cursor-auto': disabled,
         }),
       })}
       onClick={onClick}

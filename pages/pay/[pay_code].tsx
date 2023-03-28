@@ -200,14 +200,24 @@ export default function PayCode({
             {isPayMe ? (
               <div className="flex flex-col pb-5">
                 <p className="text-base font-semibold text-black">
-                  {payRequest.profile?.name} requests you pay
+                  {initialPayRequest?.profile?.name} requests you pay
                 </p>
                 <div className="flex gap-x-1 items-center mx-auto mt-10">
-                  <CutoutAvatar
-                    src={payRequest.token.icon}
-                    cutoutSrc={payRequest.token.chain.icon}
-                    size="xs"
-                  />
+                  {payRequest.token.native ? (
+                    <div className="relative w-9 h-9">
+                      <Image
+                        fill
+                        src={payRequest.token.icon}
+                        alt={`${payRequest.token.symbol} token icon`}
+                      />
+                    </div>
+                  ) : (
+                    <CutoutAvatar
+                      src={payRequest.token.icon}
+                      cutoutSrc={payRequest.token.chain.icon}
+                      size="xs"
+                    />
+                  )}
                   <div className="flex gap-x-1 items-baseline">
                     <span className="text-3xl font-semibold text-foreground">
                       {utils.formatUnits(
