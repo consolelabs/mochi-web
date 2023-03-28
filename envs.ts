@@ -36,3 +36,5 @@ export const AUTH_DISCORD_URL = `${MOCHI_PROFILE_API}/profiles/auth/discord`
 
 export const WALLET_LOGIN_SIGN_MESSAGE =
   process.env.NEXT_PUBLIC_WALLET_LOGIN_SIGN_MESSAGE || ''
+
+export const BETA_PAGE = process.env.NEXT_PUBLIC_BETA_PAGE
