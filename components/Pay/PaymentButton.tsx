@@ -1,12 +1,6 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { button } from '~components/Dashboard/Button'
 import Modal from '~components/Modal'
 import { toast } from 'sonner'
@@ -106,7 +100,6 @@ export default function PaymentButton({
     }),
     shallow,
   )
-  const debounceRef = useRef<number>()
 
   const {
     config: configSOL,
@@ -125,7 +118,7 @@ export default function PaymentButton({
   const {
     showConnectModal,
     closeConnectModal,
-    isShowConnectModal,
+    isShowingConnectModal,
     disconnect,
   } = useAppWalletContext()
 
@@ -159,6 +152,12 @@ export default function PaymentButton({
     onOpen: showPublicKeyWithdraw,
     onClose: hidePublicKeyWithdraw,
   } = useDisclosure()
+
+  const {
+    isOpen: isButtonClicked,
+    onOpen: setButtonClicked,
+    onClose: setButtonUnclicked,
+  } = useDisclosure({})
 
   const [option, setOption] = useState<PayOption>({
     id: 'none',
@@ -267,8 +266,10 @@ export default function PaymentButton({
     [chainExplorer, hidePublicKeyWithdraw, payCode, refresh, setDone, toastId],
   )
 
-  const keepPopover =
-    isShowingReminder || isShowingPulicKeyWithdraw || isShowConnectModal
+  const showPopover =
+    isShowingReminder ||
+    isShowingPulicKeyWithdraw ||
+    (isShowingConnectModal && isButtonClicked)
 
   const onSelectPayOption = useCallback(
     (payOtps: PayOption) => (args: any) => {
@@ -290,13 +291,12 @@ export default function PaymentButton({
     ) => {
       toast.custom(
         (t) => {
-          setToastId(t)
           closeConnectModal()
           payFn()
             .then((sendTx) => {
               if (!sendTx) return
               toast.custom(() => {
-                toast.dismiss(toastId)
+                toast.dismiss(t)
                 sendTx.wait().then((tx) => {
                   if (!tx) return
                   toast.custom(() => (
@@ -346,7 +346,7 @@ export default function PaymentButton({
               ))
             })
             .finally(() => {
-              toast.dismiss(toastId)
+              toast.dismiss(t)
               disconnect()
               setConfigEVM(null)
               setConfigSOL(null)
@@ -356,14 +356,7 @@ export default function PaymentButton({
         { duration: Infinity },
       )
     },
-    [
-      chainExplorer,
-      closeConnectModal,
-      disconnect,
-      setConfigEVM,
-      setConfigSOL,
-      toastId,
-    ],
+    [chainExplorer, closeConnectModal, disconnect, setConfigEVM, setConfigSOL],
   )
 
   const handlePreparePay = useCallback(
@@ -377,6 +370,9 @@ export default function PaymentButton({
     [setConfigEVM, setConfigSOL],
   )
 
+  const emptyConfigSOL = !Object.keys(configSOL ?? {}).length
+  const emptyConfigEVM = !Object.keys(configEVM ?? {}).length
+
   useEffect(() => {
     const payFn = isEVM
       ? isNative
@@ -386,7 +382,7 @@ export default function PaymentButton({
       ? sendNativeSOL
       : sendNonNativeSOL
     if (!payFn || (isEVM && !switchNetworkAsync)) {
-      if ((isEVM && configSOL) || (!isEVM && configEVM)) {
+      if ((isEVM && !emptyConfigSOL) || (!isEVM && !emptyConfigEVM)) {
         disconnect()
         setConfigEVM(null)
         setConfigSOL(null)
@@ -402,23 +398,31 @@ export default function PaymentButton({
     }
 
     pay(payFn)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    sendNativeEVM,
-    sendNonNativeEVM,
-    sendNativeSOL,
-    sendNonNativeSOL,
-    configSOL,
-    configEVM,
+    emptyConfigSOL,
+    emptyConfigEVM,
+    disconnect,
+    isEVM,
     isNative,
+    pay,
+    sendNativeEVM,
+    sendNativeSOL,
+    sendNonNativeEVM,
+    sendNonNativeSOL,
+    setConfigEVM,
+    setConfigSOL,
+    switchNetworkAsync,
   ])
 
   useEffect(() => {
     if (wrongChain) {
       switchNetworkAsync?.().catch(disconnect)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wrongChain])
+  }, [disconnect, switchNetworkAsync, wrongChain])
+
+  useEffect(() => {
+    if (!isShowingConnectModal) setButtonUnclicked()
+  }, [isShowingConnectModal, setButtonUnclicked])
 
   return (
     <>
@@ -449,9 +453,10 @@ export default function PaymentButton({
             leaveTo="opacity-0 translate-y-1"
             placement="bottom"
             offset={8}
-            show={keepPopover ? true : undefined}
+            show={showPopover ? true : undefined}
           >
             <Popover.Button
+              onClick={() => setButtonClicked()}
               type="button"
               className={button({
                 appearance: 'secondary',

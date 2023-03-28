@@ -42,19 +42,22 @@ export function handleCancelRendering(e: any) {
 }
 
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
-  const { isShowConnectModal, closeConnectModal } = useAppWalletContext()
+  const { isShowingConnectModal, closeConnectModal } = useAppWalletContext()
   const { asPath, query, pathname, replace, push, isReady } = useRouter()
-  const login = useAuthStore((s) => s.login, shallow)
+  const { login } = useAuthStore(
+    (s) => ({ login: s.login, isLoadingSession: s.isLoadingSession }),
+    shallow,
+  )
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
-    if (!isReady) return
-    if (pathname === '/404') return
+    if (!isReady || pathname === '/404') return
 
     login({
       token: query.token as string,
       showLoading: true,
     }).then(() => {
+      if (!query.token) return
       replace(asPath, undefined, { shallow: true })
         .catch(handleCancelRendering)
         .then(() => {
@@ -65,13 +68,22 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
           }
         })
     })
-  }, [asPath, query.token]) // eslint-disable-line
+  }, [
+    asPath,
+    isReady,
+    login,
+    pathname,
+    push,
+    query.token,
+    query.url_location,
+    replace,
+  ])
 
   return (
     <>
       {getLayout(<Component {...pageProps} />)}
       <ConnectWalletModal
-        isOpen={isShowConnectModal}
+        isOpen={isShowingConnectModal}
         onClose={closeConnectModal}
       />
     </>

@@ -22,11 +22,16 @@ export const useAuthStore = create<State>((set, get) => ({
   token: null,
   isLoggedIn: false,
   isLoadingSession: true,
+  logout: () => {
+    localStorage.removeItem(STORAGE_KEY)
+    set({ token: null, isLoggedIn: false })
+    apiLogout()
+  },
   login: async ({ token: tokenParam, showLoading = false }: LoginProps) => {
     const { logout: _logout } = get()
     function logout() {
       set({ isLoadingSession: false })
-      logout()
+      _logout()
     }
     // on load, try to get token first from storage
     const token = tokenParam ?? localStorage.getItem(STORAGE_KEY)
@@ -53,10 +58,5 @@ export const useAuthStore = create<State>((set, get) => ({
         })
         .then((me) => useProfileStore.getState().setMe(me))
     }
-  },
-  logout: () => {
-    localStorage.removeItem(STORAGE_KEY)
-    set({ token: null, isLoggedIn: false })
-    apiLogout()
   },
 }))

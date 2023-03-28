@@ -82,8 +82,7 @@ export default function PayCode({
     if (initialPayRequest) {
       setPayRequestStore(initialPayRequest)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [initialPayRequest, setPayRequestStore])
 
   if (!payRequest) {
     return (

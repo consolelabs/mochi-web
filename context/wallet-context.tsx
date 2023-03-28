@@ -48,7 +48,7 @@ export interface AppWalletContextValues {
   initialChainId?: number
   getChainById: (id: number) => Chain | undefined
   openInApp: (wcUrl: string) => void
-  isShowConnectModal: boolean
+  isShowingConnectModal: boolean
   showConnectModal: (cb?: ConnectCallback) => void
   closeConnectModal: () => void
   /** Do not use this outside of <ConnectWalletModal /> */
@@ -93,7 +93,7 @@ export const AppWalletContextProvider = ({
   }, [])
 
   const {
-    isOpen: isShowConnectModal,
+    isOpen: isShowingConnectModal,
     onOpen: _showConnectModal,
     onClose: closeConnectModal,
   } = useDisclosure()
@@ -120,7 +120,7 @@ export const AppWalletContextProvider = ({
   return (
     <Provider
       value={{
-        isShowConnectModal,
+        isShowingConnectModal,
         showConnectModal,
         closeConnectModal,
         connectModalCallback,
