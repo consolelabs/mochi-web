@@ -1,4 +1,10 @@
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { SolanaWalletProvider } from 'context/wallets/solana/SolanaWalletProvider'
 import { EVMWalletProvider } from 'context/wallets/ethereum/EVMWalletProvider'
 import { useNetwork } from 'wagmi'
@@ -35,8 +41,10 @@ export interface AppWalletContextValues {
   getChainById: (id: number) => Chain | undefined
   openInApp: (wcUrl: string) => void
   isShowConnectModal: boolean
-  showConnectModal: () => void
+  showConnectModal: (cb?: VoidFunction) => void
   closeConnectModal: () => void
+  /** Do not use this outside of <ConnectWalletModal /> */
+  connectModalCallback?: VoidFunction
 }
 
 const [Provider, useAppWalletContext] = createContext<AppWalletContextValues>()
@@ -78,9 +86,20 @@ export const AppWalletContextProvider = ({
 
   const {
     isOpen: isShowConnectModal,
-    onOpen: showConnectModal,
+    onOpen: _showConnectModal,
     onClose: closeConnectModal,
   } = useDisclosure()
+
+  const [connectModalCallback, setConnectModalCallback] =
+    useState<VoidFunction>()
+
+  const showConnectModal = useCallback(
+    (cb?: VoidFunction) => {
+      setConnectModalCallback(() => cb)
+      _showConnectModal()
+    },
+    [_showConnectModal],
+  )
 
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
 
@@ -96,6 +115,7 @@ export const AppWalletContextProvider = ({
         isShowConnectModal,
         showConnectModal,
         closeConnectModal,
+        connectModalCallback,
         blockchain,
         connected,
         disconnect,

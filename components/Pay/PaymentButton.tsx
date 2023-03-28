@@ -1,119 +1,50 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { button } from '~components/Dashboard/Button'
 import Modal from '~components/Modal'
 import { toast } from 'sonner'
 import ConnectSocialButton from './ConnectSocialButton'
 import WalletAddressForm from './WalletAddressForm'
 import ToastSuccess from '~components/Toast/ToastSuccess'
-import { noop, truncate } from '@dwarvesf/react-utils'
+import { truncate } from '@dwarvesf/react-utils'
 import { Popover } from '@headlessui/react'
 import SocialButtons from './components/SocialButtons'
 import { Float } from '@headlessui-float/react'
 import ToastLoading from '~components/Toast/ToastLoading'
-import { API } from '~constants/api'
-import { PayRequest } from '~pages/pay/[pay_code]'
+import { API, GET_PATHS } from '~constants/api'
 import ToastError from '~components/Toast/ToastError'
-import clsx from 'clsx'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useAuthStore, useProfileStore } from '~store'
-import Image from 'next/image'
-import { useEns } from '~hooks/wallets/useEns'
-import { useBalance } from 'wagmi'
-import { useSns } from '~hooks/wallets/useSns'
-import { useSolBalance } from '~hooks/wallets/useSolBalance'
+import {
+  ChainMismatchError,
+  erc20ABI,
+  mainnet,
+  useContractWrite,
+  usePrepareContractWrite,
+  useSwitchNetwork,
+} from 'wagmi'
+import useSWR from 'swr'
+import { ViewProfile } from '~types/mochi-profile-schema'
+import { DropdownButton } from './DropdownButton'
+import { WalletButton } from './WalletButton'
+import { shallow } from 'zustand/shallow'
+import { usePayRequest } from '~store/pay-request'
+import { utils } from 'ethers'
 
-const DropdownButton = ({
-  icon,
-  image,
-  title,
-  description,
-  onClick = noop,
-  wip = false,
-}: {
-  icon?: React.ReactElement
-  image?: React.ReactElement
-  title: string
-  description: string
-  onClick?: () => void
-  wip?: boolean
-}) => {
-  return (
-    <button
-      type="button"
-      className={button({
-        appearance: 'text',
-        className: clsx('!p-0 gap-x-2', {
-          'opacity-30 outline-none': wip,
-        }),
-      })}
-      onClick={onClick}
-    >
-      <div className="flex relative flex-shrink-0 w-5 h-5 md:w-6 md:h-6">
-        {icon
-          ? React.cloneElement(icon, {
-              ...icon.props,
-              className: 'w-full h-full',
-            })
-          : image
-          ? image
-          : null}
-      </div>
-      <div className="flex-1 text-start">
-        <div className="text-sm font-semibold">{title}</div>
-        <div className="text-xs font-medium text-dashboard-gray-8">
-          {description}
-        </div>
-      </div>
-    </button>
-  )
-}
-
-const WalletButton = ({
-  address,
-  onClick,
-  image,
-  type,
-}: {
-  type: string
-  address: string
-  image: string
-  symbol: string
-  onClick?: () => void
-}) => {
-  const { ensName } = useEns(address)
-  const { data } = useBalance({ address: address as `0x${string}` })
-  const solBalance = useSolBalance(address)
-  const { names } = useSns(address)
-
-  const defaultAddr = truncate(address, 8, true, '.')
-
-  return (
-    <DropdownButton
-      title={
-        type === 'evm'
-          ? ensName ?? defaultAddr
-          : names.find(Boolean) ?? defaultAddr
-      }
-      description={
-        type === 'evm'
-          ? `${data?.formatted} ${data?.symbol}`
-          : `${solBalance.formatted} ${solBalance.symbol}`
-      }
-      image={<Image src={image} alt={`${type}-network-icon`} fill />}
-      onClick={onClick}
-    />
-  )
-}
-
-type WithdrawOption = {
+type PayOption = {
   id: 'none' | 'mochi-wallet' | 'public-key' | `${string}-${string}`
-  handler?: () => void
+  handler?: (args?: any) => void
+  args?: any
 }
 
 type Props = {
-  payRequest?: PayRequest
   isDone: boolean
   setDone: () => void
   refresh: () => void
@@ -123,7 +54,7 @@ type Props = {
 const chains: Record<string, { image: string; symbol: string }> = {
   evm: {
     image: '/assets/eth-icon.png',
-    symbol: 'ETH',
+    symbol: mainnet.nativeCurrency.symbol,
   },
   solana: {
     image: '/assets/sol-icon.png',
@@ -131,33 +62,88 @@ const chains: Record<string, { image: string; symbol: string }> = {
   },
 }
 
+function convertWallets(profile?: ViewProfile | null) {
+  const walletAccounts = profile?.associated_accounts?.filter((aa) =>
+    aa.platform?.endsWith('chain'),
+  )
+
+  return walletAccounts
+    ?.map((wa) => {
+      const type = (wa.platform?.split('-')[0] ?? '').toLowerCase()
+
+      return {
+        type,
+        address: (wa.platform_identifier ?? '') as `0x${string}`,
+        ...chains[type],
+      }
+    })
+    .filter((w) => w.address)
+}
+
 export default function PaymentButton({
-  payRequest,
   isDone,
   setDone,
   refresh,
   isPayMe = false,
 }: Props) {
-  const { showConnectModal } = useAppWalletContext()
+  const {
+    payAmountFormatted,
+    payProfileId,
+    payCode,
+    status,
+    claimTx,
+    chainSymbol,
+    chainExplorer,
+    chainId,
+  } = usePayRequest(
+    (s) => ({
+      payAmountFormatted: `${utils.formatUnits(
+        s.payRequest.amount,
+        s.payRequest.token.decimal,
+      )} ${s.payRequest.token.symbol}`,
+      payProfileId: s.payRequest.profile_id,
+      payCode: s.payRequest.code,
+      claimTx: s.payRequest.claim_tx,
+      status: s.payRequest.status,
+      chainSymbol: s.payRequest.token.chain.symbol,
+      chainExplorer: s.payRequest.token.chain.explorer,
+      chainId: Number(s.payRequest.token.chain.chain_id),
+    }),
+    shallow,
+  )
+  const debounceRef = useRef<number>()
+  const [config, setConfig] = useState({})
+  const { config: txConfig, error } = usePrepareContractWrite<
+    typeof erc20ABI,
+    'transfer',
+    number
+  >(config)
+  const { writeAsync: payAsync } = useContractWrite(txConfig)
+  const {
+    showConnectModal,
+    closeConnectModal,
+    isShowConnectModal,
+    disconnect,
+  } = useAppWalletContext()
+
+  const { switchNetworkAsync } = useSwitchNetwork({
+    chainId,
+  })
+
+  const { data: recipientWallets } = useSWR(
+    GET_PATHS.PROFILE_ID(payProfileId),
+    async (url) => {
+      const profile = await API.MOCHI_PROFILE.get(url)
+        .notFound(() => null)
+        .internalError(() => null)
+        .json((r) => r)
+
+      return convertWallets(profile)
+    },
+  )
 
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
-  const wallets = useProfileStore((s) => {
-    const walletAccounts = s.me?.associated_accounts?.filter((aa) =>
-      aa.platform?.endsWith('chain'),
-    )
-
-    return walletAccounts
-      ?.map((wa) => {
-        const type = wa.platform?.split('-')[0] ?? ''
-
-        return {
-          type,
-          address: wa.platform_identifier ?? '',
-          ...chains[type],
-        }
-      })
-      .filter((w) => w.address)
-  })
+  const wallets = useProfileStore((s) => convertWallets(s.me), shallow)
 
   const {
     isOpen: isShowingReminder,
@@ -173,25 +159,25 @@ export default function PaymentButton({
 
   const [onChainWallet, setOnChainWallet] = useState<string>()
 
-  const [option, setOption] = useState<WithdrawOption>({
+  const [option, setOption] = useState<PayOption>({
     id: 'none',
   })
 
   const { isOpen: isShowSubmittedToast, onOpen: showSubmittedToast } =
     useDisclosure()
 
-  const [processingToastId, setProcessingToastId] = useState<number>()
+  const [toastId, setToastId] = useState<number>()
 
   const handleWithdraw = useCallback(
     async (values: { walletAddress: string }) => {
-      if (payRequest?.code) {
+      if (payCode) {
         toast.custom(
           (t) => {
-            setProcessingToastId(t)
+            setToastId(t)
             API.MOCHI_PAY.json({
               public_key: values.walletAddress,
             })
-              .url(`/pay-requests/${payRequest.code}/claim/onchain`)
+              .url(`/pay-requests/${payCode}/claim/onchain`)
               .put()
               .notFound(() =>
                 toast.custom(() => (
@@ -214,15 +200,115 @@ export default function PaymentButton({
         hidePublicKeyWithdraw()
       }
     },
-    [hidePublicKeyWithdraw, payRequest?.code, refresh],
+    [hidePublicKeyWithdraw, payCode, refresh],
+  )
+
+  const handlePreparePay = useCallback(async (config: any) => {
+    setConfig(config)
+  }, [])
+
+  const keepPopover =
+    isShowingReminder || isShowingPulicKeyWithdraw || isShowConnectModal
+
+  const onSelectPayOption = useCallback(
+    (payOtps: PayOption) => (args: any) => {
+      setOption({
+        ...payOtps,
+        handler: payOtps.handler?.bind(payOtps.handler, args),
+        args,
+      })
+      showReminder()
+    },
+    [showReminder],
   )
 
   useEffect(() => {
+    window.clearTimeout(debounceRef.current)
+    debounceRef.current = window.setTimeout(async () => {
+      if (!payAsync || !switchNetworkAsync) return
+
+      toast.custom(
+        (t) => {
+          setToastId(t)
+          closeConnectModal()
+          payAsync()
+            .then((sendTx) => {
+              toast.custom(() => {
+                toast.dismiss(toastId)
+                sendTx.wait().then((tx) => {
+                  toast.custom(() => (
+                    <ToastSuccess
+                      message="Payment Successful!"
+                      description={
+                        <>
+                          You&#39;ve successfully paid to wallet{' '}
+                          <span className="font-bold text-dashboard-green-1">
+                            {truncate(tx.to, 8, true, '.')}.
+                          </span>
+                        </>
+                      }
+                    />
+                  ))
+                })
+
+                return (
+                  <ToastSuccess
+                    message="Request submitted"
+                    description={
+                      <>
+                        Track the transaction{' '}
+                        <a
+                          className="underline"
+                          href={`${new URL(chainExplorer).origin}/tx/${
+                            sendTx.hash
+                          }`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          here
+                        </a>
+                      </>
+                    }
+                  />
+                )
+              })
+            })
+            .catch(() => {
+              toast.dismiss(toastId)
+
+              toast.custom(() => (
+                <ToastError
+                  key="pay-error"
+                  message="Pay Error"
+                  description="User rejected request"
+                />
+              ))
+            })
+            .finally(() => {
+              disconnect()
+              setConfig({})
+            })
+          return <ToastLoading text="Processing your pay request..." />
+        },
+        { duration: Infinity },
+      )
+    }, 400)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [payAsync])
+
+  useEffect(() => {
+    if (error instanceof ChainMismatchError) {
+      switchNetworkAsync?.().catch(disconnect)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error])
+
+  useEffect(() => {
     if (!onChainWallet || isPayMe) return
-    if (payRequest?.claim_tx && !isShowSubmittedToast) {
+    if (claimTx && !isShowSubmittedToast) {
       toast.custom(
         () => {
-          toast.dismiss(processingToastId)
+          toast.dismiss(toastId)
           setTimeout(showSubmittedToast, 3000)
           return (
             <ToastSuccess
@@ -232,9 +318,7 @@ export default function PaymentButton({
                   Track the transaction{' '}
                   <a
                     className="underline"
-                    href={`${
-                      new URL(payRequest.token.chain.explorer).origin
-                    }/tx/${payRequest.claim_tx}`}
+                    href={`${new URL(chainExplorer).origin}/tx/${claimTx}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -250,7 +334,7 @@ export default function PaymentButton({
       return
     }
     if (!isShowSubmittedToast) return
-    if (payRequest?.status === 'claimed') {
+    if (status === 'claimed') {
       toast.custom(() => (
         <ToastSuccess
           message="Withdraw Successful!"
@@ -264,7 +348,7 @@ export default function PaymentButton({
           }
         />
       ))
-    } else if (payRequest?.status === 'failed') {
+    } else if (status === 'failed') {
       toast.custom(() => (
         <ToastError
           key="withdraw-error"
@@ -275,25 +359,7 @@ export default function PaymentButton({
     }
     setDone()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    payRequest?.status,
-    payRequest?.claim_tx,
-    isShowSubmittedToast,
-    onChainWallet,
-  ])
-
-  const keepPopover = isShowingReminder || isShowingPulicKeyWithdraw
-
-  const onSelectWithdrawOption = useCallback(
-    (id: WithdrawOption['id'], handler: WithdrawOption['handler']) => () => {
-      setOption({
-        id,
-        handler,
-      })
-      showReminder()
-    },
-    [showReminder],
-  )
+  }, [status, claimTx, isShowSubmittedToast, onChainWallet])
 
   return (
     <>
@@ -360,18 +426,20 @@ export default function PaymentButton({
 
                   <hr className="hidden w-full bg-black" />
 
-                  {isLoggedIn && wallets?.length ? (
-                    wallets.map((w) => {
+                  {isLoggedIn &&
+                  ((!isPayMe && wallets?.length) ||
+                    (isPayMe && recipientWallets?.length)) ? (
+                    (isPayMe ? recipientWallets : wallets)?.map((w) => {
                       return (
                         <WalletButton
-                          key={`wallet-dropdown-option-${w.address}`}
+                          key={`wallet-dropdown-option-${w.address}-${w.type}`}
                           {...w}
-                          onClick={onSelectWithdrawOption(
-                            `${w.type}-${w.address}`,
-                            handleWithdraw.bind(handleWithdraw, {
-                              walletAddress: w.address,
-                            }),
-                          )}
+                          onClick={onSelectPayOption({
+                            id: `${w.type}-${w.address}`,
+                            handler: isPayMe
+                              ? handlePreparePay
+                              : handleWithdraw,
+                          })}
                         />
                       )
                     })
@@ -386,18 +454,19 @@ export default function PaymentButton({
                     />
                   )}
 
-                  <hr className="w-full bg-black" />
-
                   {!isPayMe ? (
-                    <DropdownButton
-                      title="Claim to a crypto wallet"
-                      description="Claim to a wallet address you specify"
-                      icon={<Icon icon="tabler:circle-key-filled" />}
-                      onClick={onSelectWithdrawOption(
-                        'public-key',
-                        showPublicKeyWithdraw,
-                      )}
-                    />
+                    <>
+                      <hr className="w-full bg-black" />
+                      <DropdownButton
+                        title="Claim to a crypto wallet"
+                        description="Claim to a wallet address you specify"
+                        icon={<Icon icon="tabler:circle-key-filled" />}
+                        onClick={onSelectPayOption({
+                          id: 'public-key',
+                          handler: showPublicKeyWithdraw,
+                        })}
+                      />
+                    </>
                   ) : null}
                 </div>
               </Popover.Panel>
@@ -406,20 +475,47 @@ export default function PaymentButton({
         </Popover>
       )}
 
+      <Modal isOpen={isShowingPulicKeyWithdraw} onClose={hidePublicKeyWithdraw}>
+        <WalletAddressForm
+          onSubmit={handleWithdraw}
+          onCancel={hidePublicKeyWithdraw}
+        />
+      </Modal>
       <Modal isOpen={isShowingReminder} onClose={hideReminder}>
         <div className="flex flex-col items-center py-4 px-5 max-w-sm bg-white rounded-xl">
           <span className="text-lg font-semibold">Reminder</span>
-          <span className="mt-2 font-light text-center text-dashboard-gray-8">
-            For the safety of your funds, the network you selected is{' '}
-            <span className="font-semibold">
-              {payRequest?.token.chain.symbol.toUpperCase() || '???'}
-            </span>
-            , please confirm that your withdrawal address supports the{' '}
-            <span className="font-semibold">
-              {payRequest?.token.chain.symbol.toUpperCase() || '???'}
-            </span>{' '}
-            chain network.
-          </span>
+          {!isPayMe ? (
+            <>
+              <span className="mt-2 font-light text-center text-dashboard-gray-8">
+                For the safety of your funds, the network you selected is{' '}
+                <span className="font-semibold">
+                  {chainSymbol.toUpperCase() || '???'}
+                </span>
+                , please confirm that your{' '}
+                <span className="font-semibold">withdrawal address</span>{' '}
+                supports the{' '}
+                <span className="font-semibold">
+                  {chainSymbol.toUpperCase() || '???'}
+                </span>{' '}
+                chain network.
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="mt-2 font-light text-center text-dashboard-gray-8">
+                You&apos;re sending{' '}
+                <span className="font-semibold">{payAmountFormatted}</span> to{' '}
+                <span className="font-semibold break-all">
+                  {truncate(option.args?.args[0] ?? '', 8, true, '.')}
+                </span>
+                , please confirm that you and the recipient are on the{' '}
+                <span className="font-semibold">
+                  {chainSymbol.toUpperCase() || '???'}
+                </span>{' '}
+                chain network before proceeding.
+              </span>
+            </>
+          )}
           <div className="flex gap-x-2 self-stretch mt-5">
             <button
               type="button"
@@ -446,12 +542,6 @@ export default function PaymentButton({
             </button>
           </div>
         </div>
-      </Modal>
-      <Modal isOpen={isShowingPulicKeyWithdraw} onClose={hidePublicKeyWithdraw}>
-        <WalletAddressForm
-          onSubmit={handleWithdraw}
-          onCancel={hidePublicKeyWithdraw}
-        />
       </Modal>
     </>
   )

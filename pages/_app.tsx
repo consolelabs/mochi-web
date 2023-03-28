@@ -51,7 +51,10 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
     if (!isReady) return
     if (pathname === '/404') return
 
-    login(query.token as string).then(() => {
+    login({
+      token: query.token as string,
+      showLoading: true,
+    }).then(() => {
       replace(asPath, undefined, { shallow: true })
         .catch(handleCancelRendering)
         .then(() => {
