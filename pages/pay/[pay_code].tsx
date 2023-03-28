@@ -21,7 +21,7 @@ import Card from '~components/Pay/Card'
 import Link from 'next/link'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { useEffect } from 'react'
-import { usePayRequest } from '~store/pay-request'
+import { PayRequest, usePayRequest } from '~store/pay-request'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -57,32 +57,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       payRequest,
     },
   }
-}
-
-export type PayRequest = {
-  code: string
-  claim_tx: string
-  amount: string
-  status: 'submitted' | 'claimed' | 'expired' | 'failed'
-  note?: string
-  profile_id: string
-  profile?: {
-    name: string
-    avatar: string
-  }
-  token: {
-    address: string
-    icon: string
-    chain: {
-      chain_id: string
-      symbol: string
-      icon: string
-      explorer: string
-    }
-    decimal: number
-    symbol: string
-  }
-  type: 'paylink' | 'payme'
 }
 
 export type Props = {
