@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react'
 import { utils } from 'ethers'
+import Image from 'next/image'
 import { shallow } from 'zustand/shallow'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { usePayRequest } from '~store/pay-request'
@@ -9,7 +10,7 @@ type Props = {
 }
 
 export default function Card({ isDone }: Props) {
-  const { symbol, decimal, amount, status, chainIcon, tokenIcon } =
+  const { native, symbol, decimal, amount, status, chainIcon, tokenIcon } =
     usePayRequest(
       (s) => ({
         chainIcon: s.payRequest.token.chain.icon,
@@ -18,6 +19,7 @@ export default function Card({ isDone }: Props) {
         amount: s.payRequest.amount,
         decimal: s.payRequest.token.decimal,
         symbol: s.payRequest.token.symbol,
+        native: s.payRequest.token.native,
       }),
       shallow,
     )
@@ -30,11 +32,15 @@ export default function Card({ isDone }: Props) {
       </div>
       <div className="flex gap-x-1.5 items-center">
         <div className="relative flex-shrink-0 w-9 h-9 rounded-full">
-          <CutoutAvatar
-            cutoutSrc={chainIcon || '/assets/coin.png'}
-            src={tokenIcon}
-            size="xs"
-          />
+          {native ? (
+            <Image fill src={tokenIcon} alt={`${symbol} token icon`} />
+          ) : (
+            <CutoutAvatar
+              cutoutSrc={chainIcon || '/assets/coin.png'}
+              src={tokenIcon}
+              size="xs"
+            />
+          )}
         </div>
         <div className="flex items-baseline pr-2 w-full">
           <span className="flex-shrink-0 max-w-full font-semibold text-white bg-red text-[32px] truncate">

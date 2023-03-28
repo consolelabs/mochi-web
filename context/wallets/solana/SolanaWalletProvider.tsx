@@ -4,7 +4,7 @@ import {
   ConnectionProvider,
   WalletProvider as SolWalletProvider,
 } from '@solana/wallet-adapter-react'
-import { clusterApiUrl } from '@solana/web3.js'
+/* import { clusterApiUrl } from '@solana/web3.js' */
 import { getDefaultSolanaWallets } from './getDefaultWallets'
 
 export type SolanaWalletProviderProps = {
@@ -14,8 +14,8 @@ export type SolanaWalletProviderProps = {
 export const SolanaWalletProvider = ({
   children,
 }: SolanaWalletProviderProps) => {
-  const network = WalletAdapterNetwork.Devnet
-  const endpoint = useMemo(() => clusterApiUrl(network), [network])
+  const network = WalletAdapterNetwork.Mainnet
+  const endpoint = useMemo(() => 'https://rpc.ankr.com/solana', [])
 
   const wallets = useMemo(
     () => getDefaultSolanaWallets(network).adapters,

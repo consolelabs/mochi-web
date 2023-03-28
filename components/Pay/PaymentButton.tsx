@@ -31,6 +31,7 @@ import { shallow } from 'zustand/shallow'
 import { PayRequest, usePayRequest } from '~store/pay-request'
 import { utils } from 'ethers'
 import { useSendEVMToken } from '~hooks/wallets/useSendEVMToken'
+import { useSendSOLToken } from '~hooks/wallets/useSendSOLToken'
 
 type PayOption = {
   id: 'none' | 'mochi-wallet' | 'public-key' | `${string}-${string}`
@@ -88,6 +89,7 @@ export default function PaymentButton({
     chainExplorer,
     chainId,
     isNative,
+    isEVM,
   } = usePayRequest(
     (s) => ({
       payAmountFormatted: `${utils.formatUnits(
@@ -100,11 +102,26 @@ export default function PaymentButton({
       chainExplorer: s.payRequest.token.chain.explorer,
       chainId: Number(s.payRequest.token.chain.chain_id),
       isNative: s.payRequest.token.native,
+      isEVM: s.payRequest.is_evm,
     }),
     shallow,
   )
   const debounceRef = useRef<number>()
-  const { setConfig, sendNative, sendNonNative, wrongChain } = useSendEVMToken()
+
+  const {
+    config: configSOL,
+    setConfig: setConfigSOL,
+    sendNative: sendNativeSOL,
+    sendNonNative: sendNonNativeSOL,
+  } = useSendSOLToken()
+  const {
+    config: configEVM,
+    setConfig: setConfigEVM,
+    sendNative: sendNativeEVM,
+    sendNonNative: sendNonNativeEVM,
+    wrongChain,
+  } = useSendEVMToken()
+
   const {
     showConnectModal,
     closeConnectModal,
@@ -184,7 +201,7 @@ export default function PaymentButton({
                                   message="Withdraw Successful!"
                                   description={
                                     <>
-                                      You&#39;ve successfully withdrawn all to
+                                      You&apos;ve successfully withdrawn all to
                                       wallet{' '}
                                       <span className="font-bold text-dashboard-green-1">
                                         {truncate(
@@ -250,13 +267,6 @@ export default function PaymentButton({
     [chainExplorer, hidePublicKeyWithdraw, payCode, refresh, setDone, toastId],
   )
 
-  const handlePreparePay = useCallback(
-    async (config: any) => {
-      setConfig(config)
-    },
-    [setConfig],
-  )
-
   const keepPopover =
     isShowingReminder || isShowingPulicKeyWithdraw || isShowConnectModal
 
@@ -272,27 +282,29 @@ export default function PaymentButton({
     [showReminder],
   )
 
-  useEffect(() => {
-    window.clearTimeout(debounceRef.current)
-    debounceRef.current = window.setTimeout(async () => {
-      const pay = isNative ? sendNative : sendNonNative
-      if (!pay || !switchNetworkAsync) return
-
+  const pay = useCallback(
+    (
+      payFn: () => Promise<
+        { hash: string; wait: () => Promise<any> } | undefined
+      >,
+    ) => {
       toast.custom(
         (t) => {
           setToastId(t)
           closeConnectModal()
-          pay()
+          payFn()
             .then((sendTx) => {
+              if (!sendTx) return
               toast.custom(() => {
                 toast.dismiss(toastId)
                 sendTx.wait().then((tx) => {
+                  if (!tx) return
                   toast.custom(() => (
                     <ToastSuccess
                       message="Payment Successful!"
                       description={
                         <>
-                          You&#39;ve successfully paid to wallet{' '}
+                          You&apos;ve successfully paid to wallet{' '}
                           <span className="font-bold text-dashboard-green-1">
                             {truncate(tx.to, 8, true, '.')}.
                           </span>
@@ -311,7 +323,7 @@ export default function PaymentButton({
                         <a
                           className="underline"
                           href={`${new URL(chainExplorer).origin}/tx/${
-                            sendTx.hash
+                            sendTx?.hash
                           }`}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -324,28 +336,82 @@ export default function PaymentButton({
                 )
               })
             })
-            .catch(() => {
-              toast.dismiss(toastId)
-
+            .catch((e) => {
               toast.custom(() => (
                 <ToastError
                   key="pay-error"
                   message="Pay Error"
-                  description="User rejected request"
+                  description={e.message ?? 'Something went wrong'}
                 />
               ))
             })
             .finally(() => {
+              toast.dismiss(toastId)
               disconnect()
-              setConfig({})
+              setConfigEVM(null)
+              setConfigSOL(null)
             })
           return <ToastLoading text="Processing your pay request..." />
         },
         { duration: Infinity },
       )
-    }, 400)
+    },
+    [
+      chainExplorer,
+      closeConnectModal,
+      disconnect,
+      setConfigEVM,
+      setConfigSOL,
+      toastId,
+    ],
+  )
+
+  const handlePreparePay = useCallback(
+    async ({ isAddressEVM, ...config }: any) => {
+      if (isAddressEVM) {
+        setConfigEVM(config)
+      } else {
+        setConfigSOL(config)
+      }
+    },
+    [setConfigEVM, setConfigSOL],
+  )
+
+  useEffect(() => {
+    const payFn = isEVM
+      ? isNative
+        ? sendNativeEVM
+        : sendNonNativeEVM
+      : isNative
+      ? sendNativeSOL
+      : sendNonNativeSOL
+    if (!payFn || (isEVM && !switchNetworkAsync)) {
+      if ((isEVM && configSOL) || (!isEVM && configEVM)) {
+        disconnect()
+        setConfigEVM(null)
+        setConfigSOL(null)
+        toast.custom(() => (
+          <ToastError
+            key="pay-error-wallet"
+            message="Pay Error"
+            description="Wrong wallet/network"
+          />
+        ))
+      }
+      return
+    }
+
+    pay(payFn)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sendNative, sendNonNative, isNative])
+  }, [
+    sendNativeEVM,
+    sendNonNativeEVM,
+    sendNativeSOL,
+    sendNonNativeSOL,
+    configSOL,
+    configEVM,
+    isNative,
+  ])
 
   useEffect(() => {
     if (wrongChain) {
@@ -419,14 +485,16 @@ export default function PaymentButton({
 
                   <hr className="hidden w-full bg-black" />
 
-                  {isLoggedIn &&
-                  ((!isPayMe && wallets?.length) ||
-                    (isPayMe && recipientWallets?.length)) ? (
+                  {(!isPayMe && wallets?.length && isLoggedIn) ||
+                  (isPayMe && recipientWallets?.length) ? (
                     (isPayMe ? recipientWallets : wallets)?.map((w) => {
                       return (
                         <WalletButton
                           key={`wallet-dropdown-option-${w.address}-${w.type}`}
                           {...w}
+                          disabled={
+                            isEVM ? w.type !== 'evm' : w.type !== 'solana'
+                          }
                           onClick={onSelectPayOption({
                             id: `${w.type}-${w.address}`,
                             handler: isPayMe
@@ -443,7 +511,7 @@ export default function PaymentButton({
                       icon={
                         <Icon icon="material-symbols:account-balance-wallet" />
                       }
-                      onClick={showConnectModal}
+                      onClick={() => showConnectModal()}
                     />
                   )}
 
@@ -500,9 +568,11 @@ export default function PaymentButton({
                 <span className="font-semibold">{payAmountFormatted}</span> to{' '}
                 <span className="font-semibold break-all">
                   {truncate(
-                    isNative
-                      ? option.args?.request?.to ?? ''
-                      : option.args?.args[0] ?? '',
+                    isEVM
+                      ? isNative
+                        ? option.args?.request?.to ?? ''
+                        : option.args?.args[0] ?? ''
+                      : option.args?.recipientAddress?.toBase58() ?? '',
                     8,
                     true,
                     '.',

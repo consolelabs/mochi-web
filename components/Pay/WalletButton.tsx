@@ -10,29 +10,34 @@ import { useCallback } from 'react'
 import { useAppWalletContext } from '~context/wallet-context'
 import { usePayRequest } from '~store/pay-request'
 import { shallow } from 'zustand/shallow'
+import { PublicKey } from '@solana/web3.js'
 
 export const WalletButton = ({
   address,
   onClick: _onClick,
   image,
   type,
+  disabled,
 }: {
   type: string
   address: string
   image: string
   symbol: string
   onClick?: (args?: any) => void
+  disabled: boolean
 }) => {
-  const { amount, payType, tokenAddress, chainId, isNative } = usePayRequest(
-    (s) => ({
-      payType: s.payRequest.type,
-      tokenAddress: s.payRequest.token.address,
-      amount: s.payRequest.amount,
-      chainId: Number(s.payRequest.token.chain.chain_id),
-      isNative: s.payRequest.token.native,
-    }),
-    shallow,
-  )
+  const { amount, payType, tokenAddress, chainId, isNative, isEVM } =
+    usePayRequest(
+      (s) => ({
+        payType: s.payRequest.type,
+        tokenAddress: s.payRequest.token.address,
+        amount: s.payRequest.amount,
+        chainId: Number(s.payRequest.token.chain.chain_id),
+        isNative: s.payRequest.token.native,
+        isEVM: s.payRequest.is_evm,
+      }),
+      shallow,
+    )
   const { ensName } = useEns(address, type === 'evm')
   const { data } = useBalance({
     address: address as `0x${string}`,
@@ -46,6 +51,7 @@ export const WalletButton = ({
   const { showConnectModal } = useAppWalletContext()
 
   const onClick = useCallback(() => {
+    if (disabled) return
     if (payType === 'paylink') {
       _onClick?.({
         walletAddress: address,
@@ -53,19 +59,34 @@ export const WalletButton = ({
       return
     }
 
-    showConnectModal(() => {
+    showConnectModal(async ({ isEVM: isAddressEVM }) => {
       _onClick?.(
-        isNative
+        isEVM
+          ? isNative
+            ? {
+                request: { to: address, value: BigNumber.from(amount) },
+                isAddressEVM,
+              }
+            : {
+                address: tokenAddress as `0x${string}`,
+                abi: erc20ABI,
+                functionName: 'transfer',
+                args: [address, BigNumber.from(amount)],
+                enabled: type === 'evm',
+                chainId,
+                isAddressEVM,
+              }
+          : isNative
           ? {
-              request: { to: address, value: BigNumber.from(amount) },
+              recipientAddress: new PublicKey(address),
+              amount: BigNumber.from(amount),
+              isAddressEVM,
             }
           : {
-              address: tokenAddress as `0x${string}`,
-              abi: erc20ABI,
-              functionName: 'transfer',
-              args: [address, BigNumber.from(amount)],
-              enabled: type === 'evm',
-              chainId,
+              tokenMint: new PublicKey(tokenAddress),
+              recipientAddress: new PublicKey(address),
+              amount: BigNumber.from(amount),
+              isAddressEVM,
             },
       )
     })
@@ -74,6 +95,8 @@ export const WalletButton = ({
     address,
     amount,
     chainId,
+    disabled,
+    isEVM,
     isNative,
     payType,
     showConnectModal,
@@ -83,6 +106,7 @@ export const WalletButton = ({
 
   return (
     <DropdownButton
+      disabled={disabled}
       title={
         type === 'evm'
           ? ensName ?? defaultAddr
