@@ -1,4 +1,4 @@
-import { DISCORD_LINK, GITBOOK_LINK, TWITTER_LINK } from '~envs'
+import { BETA_PAGE, DISCORD_LINK, GITBOOK_LINK, TWITTER_LINK } from '~envs'
 
 export const PAGES = {
   HOME: {
@@ -42,3 +42,5 @@ export const SOCIAL_LINKS = {
 export const TOKEN_NAME = '$MOCHI'
 
 export const JP_NAME = 'もち'
+
+export const isBeta = !!BETA_PAGE
