@@ -6,10 +6,11 @@ import { QRCode as QRCodeGenerator } from '~components/Wallet/QRCode'
 import { useMedia } from '@dwarvesf/react-hooks'
 
 type Props = {
-  uri: string
+  link: string
+  image?: string
 }
 
-export default function QRCodeInfo({ uri }: Props) {
+export default function QRCodeInfo({ link, image }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const qrSize = useMedia(
     ['(min-width: 640px)', '(min-width: 0px)'],
@@ -44,8 +45,8 @@ export default function QRCodeInfo({ uri }: Props) {
 
           <QRCodeGenerator
             logoBackground="white"
-            logoUrl={'/assets/mochi-gray.png'}
-            uri={uri}
+            logoUrl={image ?? '/assets/mochi-gray.png'}
+            uri={link}
             qrSize={qrSize}
           />
         </div>
