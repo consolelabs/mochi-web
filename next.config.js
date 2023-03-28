@@ -1,4 +1,4 @@
-const isProduction = process.env.NODE_ENV === 'production'
+// const isProduction = process.env.NODE_ENV === 'production'
 
 /** @type {import('next').NextConfig} */
 module.exports = {
@@ -23,13 +23,13 @@ module.exports = {
       },
     ]
 
-    if (isProduction) {
-      redirects.push({
-        source: '/dashboard/:slug*',
-        destination: '/',
-        permanent: false,
-      })
-    }
+    // if (isProduction) {
+    //   redirects.push({
+    //     source: '/dashboard/:slug*',
+    //     destination: '/',
+    //     permanent: false,
+    //   })
+    // }
 
     return redirects
   },
