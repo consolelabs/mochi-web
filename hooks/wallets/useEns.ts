@@ -4,7 +4,7 @@ import { useAppWalletContext } from 'context/wallet-context'
 import { isSSR } from '@dwarvesf/react-utils'
 import { utils } from 'ethers'
 
-export const useEns = (_address: string) => {
+export const useEns = (_address: string, enabled?: boolean) => {
   let address = _address
   try {
     address = utils.getAddress(address)
@@ -17,13 +17,13 @@ export const useEns = (_address: string) => {
   const { data: ensName } = useEnsName({
     address: address as `0x${string}`,
     chainId: mainnet.id,
-    enabled: hasMainnet && !isSSR(),
+    enabled: enabled ?? (hasMainnet && !isSSR()),
   })
 
   const { data: ensAvatar } = useEnsAvatar({
     address: address as `0x${string}`,
     chainId: mainnet.id,
-    enabled: hasMainnet && !isSSR(),
+    enabled: enabled ?? (hasMainnet && !isSSR()),
   })
 
   return {

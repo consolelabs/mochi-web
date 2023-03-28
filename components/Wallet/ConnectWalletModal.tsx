@@ -53,7 +53,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   const debounceRef = useRef<number>()
   const login = useAuthStore((s) => s.login, shallow)
   const _signMsg = useSignMessage()
-  const { connected, openInApp } = useAppWalletContext()
+  const { connected, openInApp, connectModalCallback } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
@@ -92,12 +92,29 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
             },
             `/profiles/auth/${isEVMConnected ? 'evm' : 'solana'}`,
           )
-            .json((r) => login(r.data.access_token))
-            .finally(() => disconnect())
+            .json((r) =>
+              login({
+                token: r.data.access_token,
+              }),
+            )
+            .then(connectModalCallback)
+            .finally(() => {
+              // the idea is that if there is a callback then that callback must manually handle the disconnect
+              if (connectModalCallback) return
+              disconnect()
+            })
         }
       })
       .catch(() => setSignError(true))
-  }, [_signMsg, address, connected, disconnect, isEVMConnected, login])
+  }, [
+    _signMsg,
+    address,
+    connectModalCallback,
+    connected,
+    disconnect,
+    isEVMConnected,
+    login,
+  ])
 
   const connectToWallet = useCallback(
     async (wallet: WalletConnector) => {
@@ -263,11 +280,19 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   useEffect(() => {
     window.clearTimeout(debounceRef.current)
     debounceRef.current = window.setTimeout(signMsg, 200)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
+
+  useEffect(() => {
+    if (!isOpen) {
+      changeWalletStep(WalletStep.None)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
 
   return (
     <Transition show={isOpen} as={Fragment}>
-      <Dialog as="div" onClose={onClose} className="relative z-50">
+      <Dialog as="div" onClose={onClose} className="relative z-40">
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-200"

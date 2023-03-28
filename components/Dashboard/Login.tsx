@@ -26,7 +26,7 @@ export default function Login() {
           </button>
           <button
             type="button"
-            onClick={showConnectModal}
+            onClick={() => showConnectModal()}
             className={button({})}
           >
             <Icon icon="mingcute:ethereum-fill" className="text-foreground" />
@@ -34,7 +34,7 @@ export default function Login() {
           </button>
           <button
             type="button"
-            onClick={showConnectModal}
+            onClick={() => showConnectModal()}
             className={button({})}
           >
             <Icon icon="mingcute:solana-sol-line" className="text-foreground" />

@@ -44,7 +44,10 @@ export default function ConnectButton({ isVerifying = false }: Props) {
   if (!isLoggedIn || (isVerifying && !connected))
     return (
       <div>
-        <button className={button({ size: 'sm' })} onClick={showConnectModal}>
+        <button
+          className={button({ size: 'sm' })}
+          onClick={() => showConnectModal()}
+        >
           Connect
         </button>
       </div>
