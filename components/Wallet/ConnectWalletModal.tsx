@@ -11,7 +11,6 @@ import {
 } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
-import { API } from '~constants/api'
 import { useAppWalletContext } from '~context/wallet-context'
 import { metaMask } from '~context/wallets/ethereum/walletConnectors'
 import {
@@ -20,12 +19,10 @@ import {
 } from '~context/wallets/useWalletConnectors'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useSignMessage } from '~hooks/wallets/useSignMessage'
-import { useAuthStore } from '~store'
 import { isMobile } from '~utils/isMobile'
 import { getWalletLoginSignMessage } from '~utils/string'
 import { ConnectDetail } from './ConnectDetail'
 import { ConnectWalletIntro } from './ConnectWalletIntro'
-import { shallow } from 'zustand/shallow'
 
 type Props = {
   isOpen: boolean
@@ -51,7 +48,6 @@ type State = {
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   const debounceRef = useRef<number>()
-  const login = useAuthStore((s) => s.login, shallow)
   const _signMsg = useSignMessage()
   const { connected, openInApp, connectModalCallback } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
@@ -82,30 +78,21 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     const code = String(Date.now())
     const msg = getWalletLoginSignMessage(code)
     _signMsg(msg)
-      .then((signature) => {
-        if (signature) {
-          API.MOCHI_PROFILE.post(
-            {
-              wallet_address: address,
-              code,
-              signature,
-            },
-            `/profiles/auth/${isEVMConnected ? 'evm' : 'solana'}`,
-          )
-            .json((r) =>
-              login({
-                token: r.data.access_token,
-              }),
-            )
-            .then(connectModalCallback)
-            .finally(() => {
-              // the idea is that if there is a callback then that callback must manually handle the disconnect
-              if (connectModalCallback) return
-              disconnect()
-            })
-        }
-      })
+      .then((signature) =>
+        connectModalCallback?.({
+          signature,
+          address,
+          msg,
+          code,
+          isEVM: isEVMConnected,
+        }),
+      )
       .catch(() => setSignError(true))
+      .finally(() => {
+        // the idea is that if there is a callback then that callback must manually handle the disconnect
+        if (connectModalCallback) return
+        disconnect()
+      })
   }, [
     _signMsg,
     address,
@@ -113,7 +100,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     connected,
     disconnect,
     isEVMConnected,
-    login,
   ])
 
   const connectToWallet = useCallback(
@@ -192,9 +178,11 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
 
   const onSelectWallet = async (wallet: WalletConnector) => {
     const sWallet = filteredWallets.find((w) => wallet.id === w.id)
+    setSignError(false)
     setState({
       selectedOptionId: wallet.id,
       selectedWallet: sWallet,
+      isConnectionError: false,
     })
 
     changeWalletStep(WalletStep.Connect)

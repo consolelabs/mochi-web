@@ -1,21 +1,16 @@
-import { isSSR } from '@dwarvesf/react-utils'
 import { GetServerSideProps } from 'next'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
 import { button } from '~components/Dashboard/Button'
 import { PAGES } from '~constants'
 import { API } from '~constants/api'
 import { useAppWalletContext } from '~context/wallet-context'
-import { useAccount } from '~hooks/wallets/useAccount'
-import { useSignMessage } from '~hooks/wallets/useSignMessage'
-import ConnectButton from '~components/ConnectButton'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { WretchError } from 'wretch'
-import { getWalletLoginSignMessage } from '~utils/string'
+import { useAuthStore } from '~store'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const code = ctx.query.code ?? null
   const discordId = ctx.query.did
 
   let profile
@@ -26,66 +21,25 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   } catch {}
 
   return {
-    props: { code, profileId: discordId ? profile?.id ?? null : null },
+    props: { profileId: discordId ? profile?.id ?? null : null },
   }
 }
 
-export default function Verify({
-  code,
-  profileId,
-}: {
-  code: string
-  profileId: string
-}) {
+export default function Verify({ profileId }: { profileId: string }) {
   const mounted = useHasMounted()
   const [loading, setLoading] = useState(false)
   const [verified, setVerified] = useState(false)
-  const [error, setError] = useState(
-    !code || !profileId ? 'Missing code/profile id' : '',
+  const [error, _setError] = useState(!profileId ? 'Missing profile id' : '')
+  const { showConnectModal, closeConnectModal, disconnect } =
+    useAppWalletContext()
+  const login = useAuthStore((s) => s.login)
+
+  const setError = useCallback(
+    (e: WretchError) => {
+      _setError(e.json?.msg ?? 'Something went wrong')
+    },
+    [_setError],
   )
-  const { connected } = useAppWalletContext()
-  const { address, isSolanaConnected, isEVMConnected } = useAccount()
-  const signMsg = useSignMessage()
-
-  const sign = useCallback(async () => {
-    if (!code || !profileId || loading || !connected || !address) return
-    try {
-      setLoading(true)
-      const signature = await signMsg(getWalletLoginSignMessage(code))
-      if (signature) {
-        API.MOCHI_PROFILE.post(
-          {
-            wallet_address: address,
-            code,
-            signature,
-          },
-          `/profiles/${profileId}/accounts/${
-            isEVMConnected ? 'evm' : 'solana'
-          }`,
-        )
-          .json(() => setVerified(true))
-          .catch((e: WretchError) => {
-            setError(e.json.msg ?? 'Something went wrong')
-          })
-      }
-    } catch (e) {
-      console.error('sign method error', e)
-    } finally {
-      setLoading(false)
-    }
-  }, [address, code, connected, isEVMConnected, loading, profileId, signMsg])
-
-  useEffect(() => {
-    if (
-      !verified &&
-      connected &&
-      !loading &&
-      !isSSR() &&
-      (isEVMConnected || isSolanaConnected)
-    )
-      sign()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connected, verified, isEVMConnected, isSolanaConnected, signMsg])
 
   if (!mounted) return null
 
@@ -95,7 +49,7 @@ export default function Verify({
       <div className="flex relative flex-col items-center">
         <div className="py-16 px-12 mx-auto max-w-7xl">
           <div className="py-24 md:py-48">
-            {code && profileId && !error ? (
+            {profileId && !error ? (
               verified ? (
                 <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
                   <div className="text-2xl font-black text-center md:text-3xl">
@@ -115,24 +69,59 @@ export default function Verify({
                     with more exclusive privileges.
                   </p>
                   <div className="flex gap-x-2 justify-center">
-                    {connected ? (
-                      <>
-                        <button
-                          onClick={sign}
-                          className={button({ size: 'sm' })}
-                        >
-                          {loading ? 'Verifying...' : 'Verify'}
-                        </button>
-                        <button
-                          onClick={() => setLoading(false)}
-                          className={button({ size: 'sm' })}
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    ) : (
-                      <ConnectButton isVerifying />
-                    )}
+                    <>
+                      <button
+                        disabled={loading}
+                        className={button({ size: 'sm' })}
+                        onClick={() =>
+                          showConnectModal(
+                            async ({ signature, code, address, isEVM }) => {
+                              if (!code || !profileId || loading) return
+                              setLoading(true)
+                              const payload = {
+                                wallet_address: address,
+                                code,
+                                signature,
+                              }
+                              API.MOCHI_PROFILE.post(
+                                payload,
+                                `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
+                              )
+                                .json((r) =>
+                                  login({
+                                    token: r.data.access_token,
+                                  }),
+                                )
+                                .then(() => {
+                                  API.MOCHI_PROFILE.post(
+                                    payload,
+                                    `/profiles/me/accounts/connect-${
+                                      isEVM ? 'evm' : 'solana'
+                                    }`,
+                                  )
+                                    .badRequest(setError)
+                                    .json(() => setVerified(true))
+                                    .catch(setError)
+                                })
+                                .catch(setError)
+                                .finally(() => {
+                                  closeConnectModal()
+                                  setLoading(false)
+                                  disconnect()
+                                })
+                            },
+                          )
+                        }
+                      >
+                        Connect
+                      </button>
+                      <button
+                        onClick={() => setLoading(false)}
+                        className={button({ size: 'sm' })}
+                      >
+                        Cancel
+                      </button>
+                    </>
                   </div>
                 </div>
               )

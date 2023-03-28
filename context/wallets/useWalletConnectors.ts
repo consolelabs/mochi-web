@@ -193,6 +193,7 @@ export const useWalletConnectors = () => {
     walletConnectors.push({
       ...wallet,
       connect: async () => {
+        setErrorMsg('')
         if (wallet.isSolana) {
           if (selectedWallet?.adapter.name !== wallet.name) {
             select(wallet.adapter?.name as WalletName)

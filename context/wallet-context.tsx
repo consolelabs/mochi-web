@@ -32,6 +32,14 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
 
 export type Blockchain = 'EVM' | 'SOL'
 
+type ConnectCallback = (data: {
+  signature: string
+  code: string
+  address: string
+  msg: string
+  isEVM: boolean
+}) => Promise<void>
+
 export interface AppWalletContextValues {
   blockchain: Blockchain | null
   connected: boolean
@@ -41,10 +49,10 @@ export interface AppWalletContextValues {
   getChainById: (id: number) => Chain | undefined
   openInApp: (wcUrl: string) => void
   isShowConnectModal: boolean
-  showConnectModal: (cb?: VoidFunction) => void
+  showConnectModal: (cb?: ConnectCallback) => void
   closeConnectModal: () => void
   /** Do not use this outside of <ConnectWalletModal /> */
-  connectModalCallback?: VoidFunction
+  connectModalCallback?: ConnectCallback
 }
 
 const [Provider, useAppWalletContext] = createContext<AppWalletContextValues>()
@@ -91,10 +99,10 @@ export const AppWalletContextProvider = ({
   } = useDisclosure()
 
   const [connectModalCallback, setConnectModalCallback] =
-    useState<VoidFunction>()
+    useState<ConnectCallback>()
 
   const showConnectModal = useCallback(
-    (cb?: VoidFunction) => {
+    (cb?: ConnectCallback) => {
       setConnectModalCallback(() => cb)
       _showConnectModal()
     },

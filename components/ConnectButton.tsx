@@ -13,19 +13,19 @@ import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
 import { useProfileStore } from '~store'
 import { useAppWalletContext } from '~context/wallet-context'
+import { API } from '~constants/api'
 
-type Props = {
-  isVerifying?: boolean
-}
-
-export default function ConnectButton({ isVerifying = false }: Props) {
+export default function ConnectButton() {
   const mounted = useHasMounted()
   const { query, replace } = useRouter()
   const serverId = query.server_id
-  const { showConnectModal, closeConnectModal, connected } =
-    useAppWalletContext()
-  const { isLoggedIn, logout } = useAuthStore(
-    (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
+  const {
+    showConnectModal,
+    closeConnectModal,
+    disconnect: disconnectWallet,
+  } = useAppWalletContext()
+  const { isLoggedIn, logout, login } = useAuthStore(
+    (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout, login: s.login }),
     shallow,
   )
   const profileUsername = useProfileStore((s) => s.me?.profile_name)
@@ -41,16 +41,31 @@ export default function ConnectButton({ isVerifying = false }: Props) {
 
   if (!mounted) return null
 
-  if (!isLoggedIn || (isVerifying && !connected))
+  if (!isLoggedIn)
     return (
-      <div>
-        <button
-          className={button({ size: 'sm' })}
-          onClick={() => showConnectModal()}
-        >
-          Connect
-        </button>
-      </div>
+      <button
+        className={button({ size: 'sm' })}
+        onClick={() =>
+          showConnectModal(async ({ signature, address, code, isEVM }) => {
+            API.MOCHI_PROFILE.post(
+              {
+                wallet_address: address,
+                code,
+                signature,
+              },
+              `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
+            )
+              .json((r) =>
+                login({
+                  token: r.data.access_token,
+                }),
+              )
+              .finally(disconnectWallet)
+          })
+        }
+      >
+        Connect
+      </button>
     )
 
   return (
