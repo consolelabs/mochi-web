@@ -136,11 +136,11 @@ const Members: NextPageWithLayout = () => {
                       />
                       <div className="flex flex-col">
                         <div className="font-bold">
-                          {original.user.guild_users[0]?.nick ||
+                          {original.user.guild_users[0]?.nickname ||
                             original.user.username}
                         </div>
                         <div className="text-xs text-dashboard-gray-8">
-                          {original.user.id || ''}
+                          {original.user.username}#{original.user.discriminator}
                         </div>
                       </div>
                     </div>
@@ -155,19 +155,29 @@ const Members: NextPageWithLayout = () => {
                 Cell: ({ row: { original } }: any) => {
                   return (
                     <div className="flex flex-wrap gap-1">
-                      {original.user.guild_users[0]?.roles.map((id: string) => {
-                        const role = roleMap[id]
+                      {original.user.guild_users[0]?.roles
+                        .slice(0, 3)
+                        .map((id: string) => {
+                          const role = roleMap[id]
 
-                        return (
-                          <div
-                            className="flex gap-1 p-1 text-xs rounded bg-dashboard-gray-3"
-                            key={id}
-                          >
-                            <img src={role.icon} className="w-4 h-4" alt="" />
-                            <div>{role.name}</div>
-                          </div>
-                        )
-                      })}
+                          return (
+                            <div
+                              className="flex gap-1 p-1 text-xs rounded bg-dashboard-gray-3"
+                              key={id}
+                            >
+                              {role.icon ? (
+                                <img
+                                  src={role.icon}
+                                  className="w-4 h-4"
+                                  alt=""
+                                />
+                              ) : (
+                                <div>{role.unicode_emoji}</div>
+                              )}
+                              <div>{role.name}</div>
+                            </div>
+                          )
+                        })}
                     </div>
                   )
                 },
