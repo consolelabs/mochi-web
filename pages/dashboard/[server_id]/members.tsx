@@ -12,14 +12,21 @@ import { format } from 'date-fns'
 import { TIMESTAMP_FORMAT } from '~constants/date'
 import { Pagination } from '~components/Dashboard/Pagination'
 import { shallow } from 'zustand/shallow'
+import { ResponseDiscordGuildRole } from '~types/mochi-schema'
+import { useDebounce } from '@dwarvesf/react-hooks'
 
 const LIMIT = 20
 
 const Members: NextPageWithLayout = () => {
   const { me } = useProfileStore(({ me }) => ({ me }), shallow)
-  const { server, getServerMemberList } = useDashboardStore(
-    ({ server, getServerMemberList }) => ({
+  const {
+    server,
+    roles = [],
+    getServerMemberList,
+  } = useDashboardStore(
+    ({ server, roles, getServerMemberList }) => ({
       server,
+      roles,
       getServerMemberList,
     }),
     shallow,
@@ -27,21 +34,22 @@ const Members: NextPageWithLayout = () => {
 
   // TODO: Use official interface from Mochi API schema
   const [query, setQuery] = useState({
-    q: '',
+    query: '',
     page: 1,
     limit: LIMIT,
     sortBy: [],
   })
+  const debouncedQuery = useDebounce(query, 300)
 
   const { data, isLoading } = useSWR(
-    [GET_PATHS.USERS_TOP, query, server, me],
+    [GET_PATHS.USERS_TOP, JSON.stringify({ debouncedQuery, server, me })],
     () => {
       if (!server || !me) {
         return
       }
 
       return getServerMemberList({
-        ...query,
+        ...debouncedQuery,
         guild_id: server.id,
         user_id: me?.id,
         platform: 'web',
@@ -54,6 +62,15 @@ const Members: NextPageWithLayout = () => {
   const totalPage = useMemo(() => {
     return Math.ceil((data?.data.metadata?.total || 0) / LIMIT)
   }, [data])
+
+  const roleMap = useMemo(() => {
+    return roles.reduce((result, current) => {
+      return {
+        ...result,
+        [current.id || '']: current,
+      }
+    }, {} as Record<string, ResponseDiscordGuildRole>)
+  }, [roles])
 
   const skeletonRender = (
     <div className="flex flex-col gap-2">
@@ -75,8 +92,9 @@ const Members: NextPageWithLayout = () => {
       headerExtraRight={
         <div className="max-w-[200px]">
           <Input
+            value={query.query}
             onChange={(e) =>
-              setQuery((o: any) => ({ ...o, q: e.target.value }))
+              setQuery((o: any) => ({ ...o, query: e.target.value }))
             }
             placeholder="Search"
             prefix={
@@ -133,23 +151,17 @@ const Members: NextPageWithLayout = () => {
                 Header: 'Roles',
                 id: 'roles',
                 minWidth: 250,
+                tdClassName: 'pr-4',
                 Cell: ({ row: { original } }: any) => {
                   return (
                     <div className="flex flex-wrap gap-1">
-                      {[
-                        {
-                          name: 'verified',
-                          icon: '/assets/dashboard/coin.png',
-                        },
-                        {
-                          name: 'podian',
-                          icon: '/assets/dashboard/xp.png',
-                        },
-                      ].map((role: any) => {
+                      {original.user.guild_users[0]?.roles.map((id: string) => {
+                        const role = roleMap[id]
+
                         return (
                           <div
                             className="flex gap-1 p-1 text-xs rounded bg-dashboard-gray-3"
-                            key={role.name}
+                            key={id}
                           >
                             <img src={role.icon} className="w-4 h-4" alt="" />
                             <div>{role.name}</div>
@@ -206,7 +218,14 @@ const Members: NextPageWithLayout = () => {
             trBodyClassName="px-4 py-3 bg-white-pure rounded-lg border border-[#FFFFFF] hover:shadow hover:border-dashboard-gray-1 text-sm mb-2 transition flex items-center"
             manualSortBy
             onChange={({ sortBy }) => {
-              setQuery((o: any) => ({ ...o, sortBy }))
+              if (sortBy.length > 0) {
+                setQuery((o: any) => ({
+                  ...o,
+                  sort: sortBy[0].desc ? 'DESC' : 'ASC',
+                }))
+              } else {
+                setQuery((o: any) => ({ ...o, sort: undefined }))
+              }
             }}
           />
           {totalPage > 1 && (
