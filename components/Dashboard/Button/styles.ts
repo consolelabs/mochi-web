@@ -41,6 +41,7 @@ const variant = cva(
         text: ['bg-transparent', 'text-foreground'],
       },
       size: {
+        xs: ['text-xs', 'px-3', 'py-1'],
         sm: ['text-sm', 'px-3', 'py-1'],
         base: ['text-base', 'px-6', 'py-2'],
         icon: ['w-8', 'h-8', '!rounded-full'],

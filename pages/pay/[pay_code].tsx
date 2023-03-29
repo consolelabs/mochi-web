@@ -194,6 +194,7 @@ export default function PayCode({
               <QRCodeButton
                 image={initialPayRequest?.profile?.avatar}
                 link={isSSR() ? '' : window.location.href}
+                user={initialPayRequest?.profile?.name}
               />
               <CopyLinkButton link={isSSR() ? '' : window.location.href} />
               <ShareButton link={isSSR() ? '' : window.location.href} />
