@@ -29,7 +29,7 @@ type State = {
   ) => Promise<Response<ResponseTopUser>>
 }
 
-export const useDashboardStore = create<State>((set, get) => ({
+export const useDashboardStore = create<State>((set) => ({
   getServerList: () => {
     return API.MOCHI_PROFILE.get(GET_PATHS.GUILDS).res((res) => res.json())
   },

@@ -33,25 +33,26 @@ const Members: NextPageWithLayout = () => {
   )
 
   // TODO: Use official interface from Mochi API schema
-  const [query, setQuery] = useState({
-    query: '',
+  const [metadata, setMetadata] = useState({
+    sort: undefined,
     page: 1,
-    limit: LIMIT,
-    sortBy: [],
   })
+  const [query, setQuery] = useState('')
   const debouncedQuery = useDebounce(query, 300)
 
   const { data, isLoading } = useSWR(
-    [GET_PATHS.USERS_TOP, JSON.stringify({ debouncedQuery, server, me })],
-    () => {
-      if (!server || !me) {
+    [GET_PATHS.USERS_TOP, server?.id, me?.id, debouncedQuery, metadata],
+    ([_, guild_id, user_id, query, metadata]) => {
+      if (!guild_id || !user_id) {
         return
       }
 
       return getServerMemberList({
-        ...debouncedQuery,
-        guild_id: server.id,
-        user_id: me?.id,
+        ...metadata,
+        query,
+        limit: LIMIT,
+        guild_id,
+        user_id,
         platform: 'web',
       })
     },
@@ -92,10 +93,8 @@ const Members: NextPageWithLayout = () => {
       headerExtraRight={
         <div className="max-w-[200px]">
           <Input
-            value={query.query}
-            onChange={(e) =>
-              setQuery((o: any) => ({ ...o, query: e.target.value }))
-            }
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="Search"
             prefix={
               <Icon
@@ -229,21 +228,21 @@ const Members: NextPageWithLayout = () => {
             manualSortBy
             onChange={({ sortBy }) => {
               if (sortBy.length > 0) {
-                setQuery((o: any) => ({
+                setMetadata((o: any) => ({
                   ...o,
                   sort: sortBy[0].desc ? 'DESC' : 'ASC',
                 }))
               } else {
-                setQuery((o: any) => ({ ...o, sort: undefined }))
+                setMetadata((o: any) => ({ ...o, sort: undefined }))
               }
             }}
           />
           {totalPage > 1 && (
             <div className="flex justify-center mt-4">
               <Pagination
-                page={query.page}
+                page={metadata.page}
                 totalPage={totalPage}
-                onChange={(page) => setQuery((o) => ({ ...o, page }))}
+                onChange={(page) => setMetadata((o) => ({ ...o, page }))}
               />
             </div>
           )}
