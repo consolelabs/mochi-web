@@ -111,19 +111,18 @@ const Members: NextPageWithLayout = () => {
                         className="w-10 h-10 rounded-full"
                         alt=""
                         src={
-                          original.guild_member?.user.avatar
-                            ? `https://cdn.discordapp.com/avatars/${original.user_id}/${original.guild_member.user.avatar}`
+                          original.user.guild_users[0]?.avatar
+                            ? original.user.guild_users[0]?.avatar
                             : 'https://boring-avatars-api.vercel.app/api/avatar?size=40&variant=beam'
                         }
                       />
                       <div className="flex flex-col">
                         <div className="font-bold">
-                          {original.guild_member?.nick ||
+                          {original.user.guild_users[0]?.nick ||
                             original.user.username}
                         </div>
                         <div className="text-xs text-dashboard-gray-8">
-                          {original.user.username || ''}#$
-                          {original.guild_member?.user.discriminator}
+                          {original.user.id || ''}
                         </div>
                       </div>
                     </div>
@@ -186,9 +185,9 @@ const Members: NextPageWithLayout = () => {
                 tdClassName: 'text-right',
                 thClassName: 'text-right',
                 Cell: ({ row: { original } }: any) => {
-                  const dateString = original?.guild_member
+                  const dateString = original?.user.guild_users[0]
                     ? format(
-                        new Date(original?.guild_member?.joined_at),
+                        new Date(original?.user.guild_users[0]?.joined_at),
                         TIMESTAMP_FORMAT,
                       )
                     : 'N/A'

@@ -13,19 +13,16 @@ import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
 import { useProfileStore } from '~store'
 import { useAppWalletContext } from '~context/wallet-context'
-import { API } from '~constants/api'
+import { handleCancelRendering } from '~pages/_app'
+import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
   const { query, replace } = useRouter()
   const serverId = query.server_id
-  const {
-    showConnectModal,
-    closeConnectModal,
-    disconnect: disconnectWallet,
-  } = useAppWalletContext()
-  const { isLoggedIn, logout, login } = useAuthStore(
-    (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout, login: s.login }),
+  const { showConnectModal, closeConnectModal } = useAppWalletContext()
+  const { isLoggedIn, logout } = useAuthStore(
+    (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
     shallow,
   )
   const profileUsername = useProfileStore((s) => s.me?.profile_name)
@@ -34,10 +31,12 @@ export default function ConnectButton() {
   const disconnect = () => {
     closeConnectModal()
     logout()
-    /* replace('/dashboard', undefined, { shallow: true }).catch( */
-    /*   handleCancelRendering, */
-    /* ) */
+    replace('/dashboard', undefined, { shallow: true }).catch(
+      handleCancelRendering,
+    )
   }
+
+  const loginAfterConnect = useLoginAfterConnect()
 
   if (!mounted) return null
 
@@ -45,24 +44,7 @@ export default function ConnectButton() {
     return (
       <button
         className={button({ size: 'sm' })}
-        onClick={() =>
-          showConnectModal(async ({ signature, address, code, isEVM }) => {
-            API.MOCHI_PROFILE.post(
-              {
-                wallet_address: address,
-                code,
-                signature,
-              },
-              `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
-            )
-              .json((r) =>
-                login({
-                  token: r.data.access_token,
-                }),
-              )
-              .finally(disconnectWallet)
-          })
-        }
+        onClick={() => showConnectModal(loginAfterConnect)}
       >
         Connect
       </button>
@@ -120,7 +102,7 @@ export default function ConnectButton() {
                             />
                           ),
                           text: 'My Profile',
-                          /* url: '/dashboard/profile', */
+                          url: '/dashboard/profile',
                         },
                         {
                           id: 'quests',
@@ -128,9 +110,9 @@ export default function ConnectButton() {
                             <Icon icon="mdi:bookmark-box" className="w-5 h-5" />
                           ),
                           text: 'Quests',
-                          /* url: serverId */
-                          /*   ? `/dashboard/${serverId}/quests` */
-                          /*   : '/dashboard', */
+                          url: serverId
+                            ? `/dashboard/${serverId}/quests`
+                            : '/dashboard',
                         },
                         {
                           id: 'game-store',
@@ -151,7 +133,7 @@ export default function ConnectButton() {
                             />
                           ),
                           text: 'Server Management',
-                          /* url: '/dashboard', */
+                          url: '/dashboard',
                         },
                         {
                           id: 'settings',
@@ -162,7 +144,7 @@ export default function ConnectButton() {
                             />
                           ),
                           text: 'Settings',
-                          /* url: '/dashboard/settings/account', */
+                          url: '/dashboard/settings/account',
                         },
                       ],
                     ],

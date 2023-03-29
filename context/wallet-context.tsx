@@ -32,7 +32,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
 
 export type Blockchain = 'EVM' | 'SOL'
 
-type ConnectCallback = (data: {
+export type ConnectCallback = (data: {
   signature: string
   code: string
   address: string

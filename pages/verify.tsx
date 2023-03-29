@@ -8,7 +8,7 @@ import { API } from '~constants/api'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { WretchError } from 'wretch'
-import { useAuthStore, useProfileStore } from '~store'
+import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

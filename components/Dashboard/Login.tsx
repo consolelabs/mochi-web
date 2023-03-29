@@ -4,9 +4,11 @@ import { Icon } from '@iconify/react'
 import { Input } from './Input'
 import { AUTH_DISCORD_URL } from '~envs'
 import { useAppWalletContext } from '~context/wallet-context'
+import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 
 export default function Login() {
   const { showConnectModal } = useAppWalletContext()
+  const loginAfterConnect = useLoginAfterConnect()
 
   return (
     <div className="flex flex-1 justify-center items-center w-full">
@@ -26,7 +28,7 @@ export default function Login() {
           </button>
           <button
             type="button"
-            onClick={() => showConnectModal()}
+            onClick={() => showConnectModal(loginAfterConnect)}
             className={button({})}
           >
             <Icon icon="mingcute:ethereum-fill" className="text-foreground" />
@@ -34,7 +36,7 @@ export default function Login() {
           </button>
           <button
             type="button"
-            onClick={() => showConnectModal()}
+            onClick={() => showConnectModal(loginAfterConnect)}
             className={button({})}
           >
             <Icon icon="mingcute:solana-sol-line" className="text-foreground" />

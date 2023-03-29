@@ -26,6 +26,7 @@ import { PayRequest, usePayRequest } from '~store/pay-request'
 import { utils } from 'ethers'
 import { useSendEVMToken } from '~hooks/wallets/useSendEVMToken'
 import { useSendSOLToken } from '~hooks/wallets/useSendSOLToken'
+import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 
 type PayOption = {
   id: 'none' | 'mochi-wallet' | 'public-key' | `${string}-${string}`
@@ -138,7 +139,10 @@ export default function PaymentButton({
     },
   )
 
-  const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
+  const { isLoggedIn } = useAuthStore(
+    (s) => ({ isLoggedIn: s.isLoggedIn }),
+    shallow,
+  )
   const wallets = useProfileStore((s) => convertWallets(s.me), shallow)
 
   const {
@@ -370,6 +374,8 @@ export default function PaymentButton({
     [setConfigEVM, setConfigSOL],
   )
 
+  const loginAfterConnect = useLoginAfterConnect()
+
   const emptyConfigSOL = !Object.keys(configSOL ?? {}).length
   const emptyConfigEVM = !Object.keys(configEVM ?? {}).length
 
@@ -516,7 +522,9 @@ export default function PaymentButton({
                       icon={
                         <Icon icon="material-symbols:account-balance-wallet" />
                       }
-                      onClick={() => showConnectModal()}
+                      onClick={() => {
+                        showConnectModal(loginAfterConnect)
+                      }}
                     />
                   )}
 
