@@ -1,3 +1,4 @@
+import { truncate } from '@dwarvesf/react-utils'
 import { create } from 'zustand'
 import { API, GET_PATHS } from '~constants/api'
 import { Pagination } from '~types/api'
@@ -28,10 +29,16 @@ export const useProfileStore = create<State>((set, get) => ({
 
     // priority evm > sol > socials
     const profile_name =
-      evmAcc?.platform_identifier ??
-      solAcc?.platform_identifier ??
-      other?.platform_identifier ??
-      ''
+      me.profile_name ??
+      truncate(
+        evmAcc?.platform_identifier ??
+          solAcc?.platform_identifier ??
+          other?.platform_identifier ??
+          '',
+        5,
+        true,
+        '.',
+      )
 
     set({
       me: {

@@ -1,5 +1,4 @@
 import React from 'react'
-import { truncate } from '@dwarvesf/react-utils'
 import { useEns } from '~hooks/wallets/useEns'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { Popover, Transition } from '@headlessui/react'
@@ -18,7 +17,7 @@ import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
-  const { query, replace } = useRouter()
+  const { query, pathname, replace } = useRouter()
   const serverId = query.server_id
   const { showConnectModal, closeConnectModal } = useAppWalletContext()
   const { isLoggedIn, logout } = useAuthStore(
@@ -31,9 +30,13 @@ export default function ConnectButton() {
   const disconnect = () => {
     closeConnectModal()
     logout()
-    replace('/dashboard', undefined, { shallow: true }).catch(
-      handleCancelRendering,
-    )
+    if (pathname.startsWith('/dashboard')) {
+      replace('/dashboard', undefined, { shallow: true }).catch(
+        handleCancelRendering,
+      )
+    } else {
+      replace('/', undefined, { shallow: true }).catch(handleCancelRendering)
+    }
   }
 
   const loginAfterConnect = useLoginAfterConnect()
@@ -55,7 +58,7 @@ export default function ConnectButton() {
       <Popover.Button className="flex gap-x-2 items-center p-1 pr-2 rounded-full border outline-none bg-mochi/10 border-dashboard-red-1">
         <Avatar className="w-6 rounded-full" />
         <span className="text-sm font-semibold text-foreground">
-          {ensName ?? truncate(profileUsername ?? '', 5, true, '.')}
+          {ensName ?? profileUsername}
         </span>
       </Popover.Button>
       <Transition
