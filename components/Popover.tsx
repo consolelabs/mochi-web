@@ -1,12 +1,16 @@
-import { Popover as HeadlessPopover } from '@headlessui/react'
+import {
+  Popover as HeadlessPopover,
+  PopoverPanelProps,
+} from '@headlessui/react'
 import clsx from 'clsx'
 import { Float } from '@headlessui-float/react'
 import { useState } from 'react'
 
 type Props = {
   trigger: React.ReactNode
-  children: React.ReactNode
+  children: PopoverPanelProps<any>['children']
   panelClassname?: string
+  offset?: number
 }
 
 export const Popover = (props: Props) => {
@@ -16,7 +20,7 @@ export const Popover = (props: Props) => {
     <HeadlessPopover
       onMouseEnter={() => setIsShowing(true)}
       onMouseLeave={() => setIsShowing(false)}
-      className="relative"
+      className="flex relative"
     >
       <Float
         show={isShowing}
@@ -28,7 +32,7 @@ export const Popover = (props: Props) => {
         leaveTo="opacity-0 translate-y-1"
         placement="bottom-start"
         flip
-        offset={0}
+        offset={props.offset ?? 0}
       >
         <HeadlessPopover.Button
           className={({ open }) =>
@@ -41,7 +45,7 @@ export const Popover = (props: Props) => {
         </HeadlessPopover.Button>
         <HeadlessPopover.Panel
           className={clsx(
-            'relative z-50 rounded-md shadow-xl bg-white p-2',
+            'relative z-50 rounded-md shadow-xl',
             props.panelClassname,
           )}
         >
