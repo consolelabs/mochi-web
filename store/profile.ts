@@ -1,4 +1,3 @@
-import { truncate } from '@dwarvesf/react-utils'
 import { create } from 'zustand'
 import { API, GET_PATHS } from '~constants/api'
 import { Pagination } from '~types/api'
@@ -6,16 +5,20 @@ import {
   ViewActivityResponseData,
   ViewProfile,
 } from '~types/mochi-profile-schema'
+import { isSolAddress } from '~utils/sol'
+import { utils } from 'ethers'
 
 type State = {
   me: ViewProfile | null
   setMe: (me: ViewProfile) => void
+  shouldTruncateAddress: boolean
   getActivites: (query: Pagination) => Promise<ViewActivityResponseData>
   updateActivityReadStatus: (ids: number[]) => void
 }
 
 export const useProfileStore = create<State>((set, get) => ({
   me: null,
+  shouldTruncateAddress: true,
   setMe: (me: ViewProfile) => {
     const evmAcc = me.associated_accounts?.find(
       (aa: any) => aa.platform === 'evm-chain',
@@ -30,21 +33,18 @@ export const useProfileStore = create<State>((set, get) => ({
     // priority evm > sol > socials
     const profile_name =
       me.profile_name ??
-      truncate(
-        evmAcc?.platform_identifier ??
-          solAcc?.platform_identifier ??
-          other?.platform_identifier ??
-          '',
-        5,
-        true,
-        '.',
-      )
+      evmAcc?.platform_identifier ??
+      solAcc?.platform_identifier ??
+      other?.platform_identifier ??
+      ''
 
     set({
       me: {
         ...me,
         profile_name,
       },
+      shouldTruncateAddress:
+        isSolAddress(profile_name) || utils.isAddress(profile_name),
     })
   },
 

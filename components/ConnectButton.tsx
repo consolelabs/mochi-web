@@ -14,6 +14,7 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { handleCancelRendering } from '~pages/_app'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import { Popover } from './Popover'
+import { truncate } from '@dwarvesf/react-utils'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
@@ -28,8 +29,14 @@ export default function ConnectButton() {
     (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
     shallow,
   )
-  const profileUsername = useProfileStore((s) => s.me?.profile_name)
-  const { ensName } = useEns(profileUsername ?? '')
+  const { name, shouldTruncate } = useProfileStore(
+    (s) => ({
+      name: s.me?.profile_name,
+      shouldTruncate: s.shouldTruncateAddress,
+    }),
+    shallow,
+  )
+  const { ensName } = useEns(name ?? '')
 
   const disconnect = () => {
     try {
@@ -47,6 +54,9 @@ export default function ConnectButton() {
   }
 
   const loginAfterConnect = useLoginAfterConnect()
+
+  let finalName = ensName ?? name ?? ''
+  finalName = shouldTruncate ? truncate(finalName, 5, true, '.') : finalName
 
   if (!mounted) return null
 
@@ -87,7 +97,7 @@ export default function ConnectButton() {
         <div className="flex gap-x-2 items-center p-1 pr-2 rounded-full border outline-none bg-mochi/10 border-dashboard-red-1">
           <Avatar className="w-6 rounded-full" />
           <span className="text-sm font-semibold text-foreground">
-            {ensName ?? profileUsername}
+            {finalName}
           </span>
         </div>
       }
