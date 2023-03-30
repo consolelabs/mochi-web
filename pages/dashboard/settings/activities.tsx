@@ -99,9 +99,9 @@ const Activities: NextPageWithLayout = () => {
                         {format(new Date(value), TIMESTAMP_FORMAT)}
                       </div>
                       <div className="flex gap-1 items-center">
-                        {original.platform_icon && (
+                        {original.activity_platform?.emoji && (
                           <img
-                            src={original.platform_icon}
+                            src={original.activity_platform?.emoji}
                             alt=""
                             className="w-4 h-4"
                           />
@@ -119,9 +119,9 @@ const Activities: NextPageWithLayout = () => {
                 Cell: ({ cell: { value }, row: { original } }: any) => {
                   return (
                     <div className="flex items-center ml-auto gap-1">
-                      {original.action_icon && (
+                      {original.activity_content?.emoji && (
                         <img
-                          src={original.action_icon}
+                          src={original.activity_content?.emoji}
                           alt=""
                           className="w-6 h-6"
                         />
