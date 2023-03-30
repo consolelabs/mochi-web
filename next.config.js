@@ -25,13 +25,13 @@ module.exports = {
     ]
 
     // TODO: remove after done dashboard
-    if (isProduction && !isBeta) {
-      redirects.push({
-        source: '/dashboard/:slug*',
-        destination: '/',
-        permanent: false,
-      })
-    }
+    /* if (isProduction && !isBeta) { */
+    /*   redirects.push({ */
+    /*     source: '/dashboard/:slug*', */
+    /*     destination: '/', */
+    /*     permanent: false, */
+    /*   }) */
+    /* } */
 
     return redirects
   },

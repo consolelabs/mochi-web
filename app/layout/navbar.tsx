@@ -44,7 +44,7 @@ const NavLinks = ({ className }: { className: string }) => (
   >
     <Popover
       trigger={<span className="text-sm font-semibold">Features</span>}
-      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
+      panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       {[
         {
@@ -89,7 +89,7 @@ const NavLinks = ({ className }: { className: string }) => (
     </Popover>
     <Popover
       trigger={<span className="text-sm font-semibold">Community</span>}
-      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
+      panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
         icon={<Icon icon="heroicons:bell-alert-20-solid" className="w-5 h-5" />}
@@ -105,7 +105,7 @@ const NavLinks = ({ className }: { className: string }) => (
     </Popover>
     <Popover
       trigger={<span className="text-sm font-semibold">Support</span>}
-      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
+      panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
         icon={<Icon icon="heroicons:heart-20-solid" className="w-5 h-5" />}
@@ -127,7 +127,7 @@ const NavLinks = ({ className }: { className: string }) => (
     </Popover>
     <Popover
       trigger={<span className="text-sm font-semibold">Credibility</span>}
-      panelClassname="flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
+      panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
         icon={

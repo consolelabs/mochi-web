@@ -118,7 +118,7 @@ const Activities: NextPageWithLayout = () => {
                 thClassName: 'text-right',
                 Cell: ({ cell: { value }, row: { original } }: any) => {
                   return (
-                    <div className="flex items-center ml-auto gap-1">
+                    <div className="flex gap-1 items-center ml-auto">
                       {original.activity_content?.emoji && (
                         <img
                           src={original.activity_content?.emoji}
@@ -137,11 +137,11 @@ const Activities: NextPageWithLayout = () => {
               //   thClassName: 'text-right',
               //   Cell: ({ cell: { value } }: any) => {
               //     return (
-              //       <div className="flex items-center ml-auto gap-2">
+              //       <div className="flex gap-2 items-center ml-auto">
               //         {value.map((reward: any) => {
               //           return (
               //             <div
-              //               className="flex items-center gap-1"
+              //               className="flex gap-1 items-center"
               //               key={reward.type}
               //             >
               //               <img src={reward.icon} alt="" className="w-6 h-6" />

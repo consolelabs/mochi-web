@@ -5,7 +5,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import { getDefaultWallets } from './getDefaultWallets'
 
 const { chains, provider } = configureChains(
-  [fantom, mainnet, polygon, optimism, arbitrum],
+  [mainnet, polygon, optimism, arbitrum, fantom],
   [publicProvider()],
 )
 
