@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { API, GET_PATHS } from '~constants/api'
-import { Response } from '~types/api'
+import { Pagination, CommonQuery, Response } from '~types/api'
 import { ViewUserDiscordGuilds } from '~types/mochi-profile-schema'
 import {
   ResponseDiscordGuildRole,
@@ -8,23 +8,13 @@ import {
   ResponseTopUser,
 } from '~types/mochi-schema'
 
-type Pagination = {
-  page?: number
-  limit?: number
-}
-
-type Query = {
-  sort?: string
-  query?: string
-}
-
 type State = {
   getServerList: () => Promise<Response<ViewUserDiscordGuilds>>
   server?: ResponseGetGuildResponse
   roles?: ResponseDiscordGuildRole[]
   getServer: (id: string) => void
   getServerMemberList: (
-    query: Query &
+    query: CommonQuery &
       Pagination & { guild_id?: string; user_id?: string; platform?: string },
   ) => Promise<Response<ResponseTopUser>>
 }

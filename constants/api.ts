@@ -37,4 +37,5 @@ export const GET_PATHS = {
   GUILD_ROLES: (id: string) => `/guilds/${id}/roles`,
   USERS_TOP: '/users/top',
   PROFILE_ID: (id: string) => `/profiles/${id}`,
+  PROFILE_ACTIVITES: (id: string) => `/profiles/${id}/activities`,
 }

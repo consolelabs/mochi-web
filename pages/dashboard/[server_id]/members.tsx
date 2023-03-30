@@ -35,7 +35,8 @@ const Members: NextPageWithLayout = () => {
   // TODO: Use official interface from Mochi API schema
   const [metadata, setMetadata] = useState({
     sort: undefined,
-    page: 1,
+    page: 0,
+    limit: LIMIT,
   })
   const [query, setQuery] = useState('')
   const debouncedQuery = useDebounce(query, 300)
@@ -50,7 +51,6 @@ const Members: NextPageWithLayout = () => {
       return getServerMemberList({
         ...metadata,
         query,
-        limit: LIMIT,
         guild_id,
         user_id,
         platform: 'web',
