@@ -13,17 +13,14 @@ import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
 import { useProfileStore } from '~store'
 import { useAppWalletContext } from '~context/wallet-context'
+import { handleCancelRendering } from '~pages/_app'
+import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 
-type Props = {
-  isVerifying?: boolean
-}
-
-export default function ConnectButton({ isVerifying = false }: Props) {
+export default function ConnectButton() {
   const mounted = useHasMounted()
   const { query, replace } = useRouter()
   const serverId = query.server_id
-  const { showConnectModal, closeConnectModal, connected } =
-    useAppWalletContext()
+  const { showConnectModal, closeConnectModal } = useAppWalletContext()
   const { isLoggedIn, logout } = useAuthStore(
     (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
     shallow,
@@ -34,20 +31,23 @@ export default function ConnectButton({ isVerifying = false }: Props) {
   const disconnect = () => {
     closeConnectModal()
     logout()
-    /* replace('/dashboard', undefined, { shallow: true }).catch( */
-    /*   handleCancelRendering, */
-    /* ) */
+    replace('/dashboard', undefined, { shallow: true }).catch(
+      handleCancelRendering,
+    )
   }
+
+  const loginAfterConnect = useLoginAfterConnect()
 
   if (!mounted) return null
 
-  if (!isLoggedIn || (isVerifying && !connected))
+  if (!isLoggedIn)
     return (
-      <div>
-        <button className={button({ size: 'sm' })} onClick={showConnectModal}>
-          Connect
-        </button>
-      </div>
+      <button
+        className={button({ size: 'sm' })}
+        onClick={() => showConnectModal(loginAfterConnect)}
+      >
+        Connect
+      </button>
     )
 
   return (
@@ -102,7 +102,7 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             />
                           ),
                           text: 'My Profile',
-                          /* url: '/dashboard/profile', */
+                          url: '/dashboard/profile',
                         },
                         {
                           id: 'quests',
@@ -110,9 +110,9 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             <Icon icon="mdi:bookmark-box" className="w-5 h-5" />
                           ),
                           text: 'Quests',
-                          /* url: serverId */
-                          /*   ? `/dashboard/${serverId}/quests` */
-                          /*   : '/dashboard', */
+                          url: serverId
+                            ? `/dashboard/${serverId}/quests`
+                            : '/dashboard',
                         },
                         {
                           id: 'game-store',
@@ -133,7 +133,7 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             />
                           ),
                           text: 'Server Management',
-                          /* url: '/dashboard', */
+                          url: '/dashboard',
                         },
                         {
                           id: 'settings',
@@ -144,7 +144,7 @@ export default function ConnectButton({ isVerifying = false }: Props) {
                             />
                           ),
                           text: 'Settings',
-                          /* url: '/dashboard/settings/account', */
+                          url: '/dashboard/settings/account',
                         },
                       ],
                     ],

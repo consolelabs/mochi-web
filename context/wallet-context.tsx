@@ -1,4 +1,10 @@
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { SolanaWalletProvider } from 'context/wallets/solana/SolanaWalletProvider'
 import { EVMWalletProvider } from 'context/wallets/ethereum/EVMWalletProvider'
 import { useNetwork } from 'wagmi'
@@ -26,6 +32,14 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
 
 export type Blockchain = 'EVM' | 'SOL'
 
+export type ConnectCallback = (data: {
+  signature: string
+  code: string
+  address: string
+  msg: string
+  isEVM: boolean
+}) => Promise<void>
+
 export interface AppWalletContextValues {
   blockchain: Blockchain | null
   connected: boolean
@@ -34,9 +48,11 @@ export interface AppWalletContextValues {
   initialChainId?: number
   getChainById: (id: number) => Chain | undefined
   openInApp: (wcUrl: string) => void
-  isShowConnectModal: boolean
-  showConnectModal: () => void
+  isShowingConnectModal: boolean
+  showConnectModal: (cb?: ConnectCallback) => void
   closeConnectModal: () => void
+  /** Do not use this outside of <ConnectWalletModal /> */
+  connectModalCallback?: ConnectCallback
 }
 
 const [Provider, useAppWalletContext] = createContext<AppWalletContextValues>()
@@ -77,10 +93,21 @@ export const AppWalletContextProvider = ({
   }, [])
 
   const {
-    isOpen: isShowConnectModal,
-    onOpen: showConnectModal,
+    isOpen: isShowingConnectModal,
+    onOpen: _showConnectModal,
     onClose: closeConnectModal,
   } = useDisclosure()
+
+  const [connectModalCallback, setConnectModalCallback] =
+    useState<ConnectCallback>()
+
+  const showConnectModal = useCallback(
+    (cb?: ConnectCallback) => {
+      setConnectModalCallback(() => cb)
+      _showConnectModal()
+    },
+    [_showConnectModal],
+  )
 
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn)
 
@@ -93,9 +120,10 @@ export const AppWalletContextProvider = ({
   return (
     <Provider
       value={{
-        isShowConnectModal,
+        isShowingConnectModal,
         showConnectModal,
         closeConnectModal,
+        connectModalCallback,
         blockchain,
         connected,
         disconnect,

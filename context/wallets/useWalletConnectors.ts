@@ -5,11 +5,11 @@ import { useAppWalletContext } from 'context/wallet-context'
 import { WalletInstance } from './Wallet'
 import { getRecentWalletIds, addRecentWalletId } from './recentWalletIds'
 import { walletDownloadUrls } from './solana/walletAdapters'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean
-  connect: ReturnType<typeof useConnect>['connectAsync'] | VoidFunction
+  connect?: () => Promise<void>
   onConnecting: (fn: () => void) => void
   connecting?: boolean | ((fn: () => void) => void)
   showWalletConnectModal?: () => void
@@ -85,7 +85,6 @@ export const useWalletConnectors = () => {
     wallets,
     wallet: selectedWallet,
     connect,
-    autoConnect,
   } = useWallet()
   const [errorMsg, setErrorMsg] = useState('')
   const defaultConnectors = defaultConnectors_untyped as Connector[]
@@ -148,36 +147,50 @@ export const useWalletConnectors = () => {
 
   const walletConnectors: WalletConnector[] = []
 
-  async function evmConnectWallet(walletId: string, connector: Connector) {
-    try {
-      const result = await connectAsync({ connector })
-      if (result) {
-        addRecentWalletId(walletId)
+  const evmConnectWallet = useCallback(
+    async (walletId: string, connector: Connector) => {
+      try {
+        const result = await connectAsync({ connector })
+        if (result) {
+          addRecentWalletId(walletId)
+        }
+      } catch (e: any) {
+        setErrorMsg(e.message || 'Something went wrong')
+
+        // so that the outer handler function can catch it and set the flag
+        throw e
       }
+    },
+    [connectAsync],
+  )
 
-      return result
-    } catch (e: any) {
-      setErrorMsg(e.message || 'Something went wrong')
+  const solConnectWallet = useCallback(
+    async (wallet: WalletInstance) => {
+      try {
+        if (selectedWallet?.adapter.name !== wallet.adapter?.name) {
+          select(wallet.adapter?.name as WalletName)
+        } else {
+          connect()
+        }
 
-      // so that the outer handler function can catch it and set the flag
-      throw e
-    }
-  }
+        addRecentWalletId(wallet.adapter?.name as string)
+      } catch (e: any) {
+        setErrorMsg(e.message || 'Something went wrong')
+
+        // so that the outer handler function can catch it and set the flag
+        throw e
+      }
+    },
+    [connect, select, selectedWallet?.adapter.name],
+  )
 
   useEffect(() => {
-    select(null)
-    // because solana wallet hook is stupid
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    if (!autoConnect && selectedWallet) {
+    if (selectedWallet?.adapter.name) {
       connect().catch((e) => {
         setErrorMsg(e.message || 'Something went wrong')
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoConnect, connect, selectedWallet])
+  }, [connect, selectedWallet?.adapter.name])
 
   groupedWallets.forEach((wallet: WalletInstance) => {
     if (!wallet) {
@@ -193,13 +206,11 @@ export const useWalletConnectors = () => {
     walletConnectors.push({
       ...wallet,
       connect: async () => {
+        setErrorMsg('')
         if (wallet.isSolana) {
-          if (selectedWallet?.adapter.name !== wallet.name) {
-            select(wallet.adapter?.name as WalletName)
-          }
-          addRecentWalletId(wallet.adapter?.name as string)
+          solConnectWallet(wallet)
         } else {
-          return evmConnectWallet(wallet.id, wallet.connector!)
+          evmConnectWallet(wallet.id, wallet.connector!)
         }
       },
       groupName: recent ? 'Recent' : wallet.groupName,

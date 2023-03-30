@@ -6,12 +6,10 @@ import {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
   useState,
 } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
-import { API } from '~constants/api'
 import { useAppWalletContext } from '~context/wallet-context'
 import { metaMask } from '~context/wallets/ethereum/walletConnectors'
 import {
@@ -20,12 +18,10 @@ import {
 } from '~context/wallets/useWalletConnectors'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useSignMessage } from '~hooks/wallets/useSignMessage'
-import { useAuthStore } from '~store'
 import { isMobile } from '~utils/isMobile'
 import { getWalletLoginSignMessage } from '~utils/string'
 import { ConnectDetail } from './ConnectDetail'
 import { ConnectWalletIntro } from './ConnectWalletIntro'
-import { shallow } from 'zustand/shallow'
 
 type Props = {
   isOpen: boolean
@@ -50,10 +46,8 @@ type State = {
 }
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
-  const debounceRef = useRef<number>()
-  const login = useAuthStore((s) => s.login, shallow)
-  const _signMsg = useSignMessage()
-  const { connected, openInApp } = useAppWalletContext()
+  const { signMsg, isSigning } = useSignMessage()
+  const { connected, openInApp, connectModalCallback } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
@@ -76,48 +70,22 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     (wallet) => wallet.ready || wallet.downloadUrls?.browserExtension,
   )
 
-  const signMsg = useCallback(async () => {
-    if (!connected || !address) return
-    setSignError(false)
-    const code = String(Date.now())
-    const msg = getWalletLoginSignMessage(code)
-    _signMsg(msg)
-      .then((signature) => {
-        if (signature) {
-          API.MOCHI_PROFILE.post(
-            {
-              wallet_address: address,
-              code,
-              signature,
-            },
-            `/profiles/auth/${isEVMConnected ? 'evm' : 'solana'}`,
-          )
-            .json((r) => login(r.data.access_token))
-            .finally(() => disconnect())
-        }
-      })
-      .catch(() => setSignError(true))
-  }, [_signMsg, address, connected, disconnect, isEVMConnected, login])
-
   const connectToWallet = useCallback(
     async (wallet: WalletConnector) => {
       setState({
         isConnectionError: false,
       })
       if (wallet.ready) {
-        if (wallet.isSolana) {
-          await wallet?.connect?.()
-        } else {
-          await (wallet?.connect?.() as Promise<any>).catch((e) => {
-            if (e instanceof ConnectorAlreadyConnectedError) {
-              /* signMsg() */
-            } else {
-              setState({
-                isConnectionError: true,
-              })
-            }
-          })
-        }
+        wallet.connect?.().catch((e) => {
+          console.log(e)
+          if (e instanceof ConnectorAlreadyConnectedError) {
+            /* signMsg() */
+          } else {
+            setState({
+              isConnectionError: true,
+            })
+          }
+        })
 
         setTimeout(async () => {
           const getDesktopDeepLink = wallet.desktop?.getUri
@@ -145,39 +113,41 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     [openInApp],
   )
 
-  const changeWalletStep = (
-    newWalletStep: WalletStep,
-    isBack: boolean = false,
-  ) => {
-    if (
-      isBack &&
-      newWalletStep === WalletStep.Get &&
-      state.initialWalletStep === WalletStep.Get
-    ) {
+  const changeWalletStep = useCallback(
+    (newWalletStep: WalletStep, isBack: boolean = false) => {
+      if (
+        isBack &&
+        newWalletStep === WalletStep.Get &&
+        state.initialWalletStep === WalletStep.Get
+      ) {
+        setState({
+          selectedOptionId: undefined,
+          selectedWallet: undefined,
+          qrCodeUri: undefined,
+        })
+      } else if (!isBack && newWalletStep === WalletStep.Get) {
+        setState({
+          initialWalletStep: WalletStep.Get,
+        })
+      } else if (!isBack && newWalletStep === WalletStep.Connect) {
+        setState({
+          initialWalletStep: WalletStep.Connect,
+        })
+      }
       setState({
-        selectedOptionId: undefined,
-        selectedWallet: undefined,
-        qrCodeUri: undefined,
+        walletStep: newWalletStep,
       })
-    } else if (!isBack && newWalletStep === WalletStep.Get) {
-      setState({
-        initialWalletStep: WalletStep.Get,
-      })
-    } else if (!isBack && newWalletStep === WalletStep.Connect) {
-      setState({
-        initialWalletStep: WalletStep.Connect,
-      })
-    }
-    setState({
-      walletStep: newWalletStep,
-    })
-  }
+    },
+    [state.initialWalletStep],
+  )
 
   const onSelectWallet = async (wallet: WalletConnector) => {
     const sWallet = filteredWallets.find((w) => wallet.id === w.id)
+    setSignError(false)
     setState({
       selectedOptionId: wallet.id,
       selectedWallet: sWallet,
+      isConnectionError: false,
     })
 
     changeWalletStep(WalletStep.Connect)
@@ -261,13 +231,50 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   }, [solWallet])
 
   useEffect(() => {
-    window.clearTimeout(debounceRef.current)
-    debounceRef.current = window.setTimeout(signMsg, 200)
-  }, [address])
+    if (!connected || !address || isSigning) return
+    const code = String(Date.now())
+    const msg = getWalletLoginSignMessage(code)
+    setSignError(false)
+    signMsg(msg)
+      .then((signature) =>
+        connectModalCallback?.({
+          signature,
+          address,
+          msg,
+          code,
+          isEVM: isEVMConnected,
+        }),
+      )
+      .catch(() => setSignError(true))
+      .finally(() => {
+        // the idea is that if there is a callback then that callback must manually handle the disconnect
+        if (connectModalCallback) return
+        disconnect()
+      })
+
+    return () => {
+      if (connectModalCallback) return
+      disconnect()
+    }
+  }, [
+    address,
+    connectModalCallback,
+    connected,
+    disconnect,
+    isEVMConnected,
+    isSigning,
+    signMsg,
+  ])
+
+  useEffect(() => {
+    if (!isOpen) {
+      changeWalletStep(WalletStep.None)
+    }
+  }, [changeWalletStep, isOpen])
 
   return (
     <Transition show={isOpen} as={Fragment}>
-      <Dialog as="div" onClose={onClose} className="relative z-50">
+      <Dialog as="div" onClose={onClose} className="relative z-40">
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-200"

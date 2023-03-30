@@ -6,6 +6,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { utils } from 'ethers'
 import { useCallback } from 'react'
 import { useAppWalletContext } from '~context/wallet-context'
+import { useDisclosure } from '@dwarvesf/react-hooks'
 
 export const useSignMessage = () => {
   const { openInApp, disconnect } = useAppWalletContext()
@@ -13,8 +14,15 @@ export const useSignMessage = () => {
   const { connector } = useWagmiAccount()
   const { connected: isSolanaConnected, signMessage } = useWallet()
 
+  const {
+    isOpen: isSigning,
+    onOpen: setIsSigning,
+    onClose: setIsNotSigning,
+  } = useDisclosure()
+
   const signEVM = useCallback(
     async (message: string) => {
+      setIsSigning()
       try {
         const provider = await connector?.getProvider()
         if (provider?.connector?.uri) {
@@ -23,16 +31,25 @@ export const useSignMessage = () => {
         const signature = await signMessageAsync({ message })
         return signature ?? ''
       } catch (e) {
+        setIsNotSigning()
         disconnect()
 
         throw e
       }
     },
-    [connector, disconnect, openInApp, signMessageAsync],
+    [
+      connector,
+      disconnect,
+      openInApp,
+      setIsNotSigning,
+      setIsSigning,
+      signMessageAsync,
+    ],
   )
 
   const signSOL = useCallback(
     async (message: string) => {
+      setIsSigning()
       try {
         const messageEncoded = new TextEncoder().encode(message)
 
@@ -40,13 +57,17 @@ export const useSignMessage = () => {
 
         return utils.base58.encode(signature as any)
       } catch (e) {
+        setIsNotSigning()
         disconnect()
 
         throw e
       }
     },
-    [disconnect, signMessage],
+    [disconnect, setIsNotSigning, setIsSigning, signMessage],
   )
 
-  return isSolanaConnected ? signSOL : signEVM
+  return {
+    isSigning,
+    signMsg: isSolanaConnected ? signSOL : signEVM,
+  }
 }

@@ -34,5 +34,8 @@ export const apiLogout = () => {
 export const GET_PATHS = {
   GUILDS: '/discord/users/me/guilds',
   GUILD: (id: string) => `/guilds/${id}`,
+  GUILD_ROLES: (id: string) => `/guilds/${id}/roles`,
   USERS_TOP: '/users/top',
+  PROFILE_ID: (id: string) => `/profiles/${id}`,
+  PROFILE_ACTIVITES: (id: string) => `/profiles/${id}/activities`,
 }

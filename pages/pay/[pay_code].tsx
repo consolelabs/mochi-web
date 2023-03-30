@@ -20,6 +20,8 @@ import useSWR from 'swr'
 import Card from '~components/Pay/Card'
 import Link from 'next/link'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import { useEffect } from 'react'
+import { PayRequest, usePayRequest } from '~store/pay-request'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -57,28 +59,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 }
 
-export type PayRequest = {
-  code: string
-  claim_tx: string
-  amount: string
-  status: 'submitted' | 'claimed' | 'expired' | 'failed'
-  note?: string
-  profile?: {
-    name: string
-    avatar: string
-  }
-  token: {
-    icon: string
-    chain: {
-      symbol: string
-      icon: string
-      explorer: string
-    }
-    decimal: number
-    symbol: string
-  }
-}
-
 export type Props = {
   payRequest?: PayRequest
   isPayMe?: boolean
@@ -88,6 +68,7 @@ export default function PayCode({
   isPayMe,
   payRequest: initialPayRequest,
 }: Props) {
+  const setPayRequestStore = usePayRequest((s) => s.set)
   const { data: payRequest = initialPayRequest, mutate } = useSWR<PayRequest>(
     `/pay-requests/${initialPayRequest?.code}`,
     (url) => API.MOCHI_PAY.get(url).json((r) => r.data),
@@ -96,6 +77,12 @@ export default function PayCode({
   const { isOpen: isDone, onOpen: setDone } = useDisclosure({
     defaultIsOpen: payRequest?.status !== 'submitted',
   })
+
+  useEffect(() => {
+    if (initialPayRequest) {
+      setPayRequestStore(initialPayRequest)
+    }
+  }, [initialPayRequest, setPayRequestStore])
 
   if (!payRequest) {
     return (
@@ -204,22 +191,36 @@ export default function PayCode({
         ) : (
           <>
             <div className="flex flex-wrap gap-2">
-              <QRCodeButton uri={isSSR() ? '' : window.location.href} />
+              <QRCodeButton
+                image={initialPayRequest?.profile?.avatar}
+                link={isSSR() ? '' : window.location.href}
+                user={initialPayRequest?.profile?.name}
+              />
               <CopyLinkButton link={isSSR() ? '' : window.location.href} />
               <ShareButton link={isSSR() ? '' : window.location.href} />
             </div>
 
             {isPayMe ? (
-              <div className="flex flex-col">
+              <div className="flex flex-col pb-5">
                 <p className="text-base font-semibold text-black">
-                  {payRequest.profile?.name} requests you pay
+                  {initialPayRequest?.profile?.name} requests you pay
                 </p>
-                <div className="flex gap-x-1 items-center mx-auto mt-3">
-                  <CutoutAvatar
-                    src={payRequest.token.icon}
-                    cutoutSrc={payRequest.token.chain.icon}
-                    size="xs"
-                  />
+                <div className="flex gap-x-1 items-center mx-auto mt-10">
+                  {payRequest.token.native ? (
+                    <div className="relative w-9 h-9">
+                      <Image
+                        fill
+                        src={payRequest.token.icon}
+                        alt={`${payRequest.token.symbol} token icon`}
+                      />
+                    </div>
+                  ) : (
+                    <CutoutAvatar
+                      src={payRequest.token.icon}
+                      cutoutSrc={payRequest.token.chain.icon}
+                      size="xs"
+                    />
+                  )}
                   <div className="flex gap-x-1 items-baseline">
                     <span className="text-3xl font-semibold text-foreground">
                       {utils.formatUnits(
@@ -237,10 +238,10 @@ export default function PayCode({
                 </span>
               </div>
             ) : (
-              <Card isDone={isDone} payRequest={payRequest} />
+              <Card isDone={isDone} />
             )}
             {payRequest.note ? (
-              <span>
+              <span className="">
                 <span className="font-medium">Message: </span>&ldquo;
                 {truncate(payRequest.note, 100, false)}
                 &rdquo;
@@ -254,7 +255,6 @@ export default function PayCode({
               isDone={isDone}
               setDone={setDone}
               refresh={mutate}
-              payRequest={payRequest}
             />
           </>
         )}

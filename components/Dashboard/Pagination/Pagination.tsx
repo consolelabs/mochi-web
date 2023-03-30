@@ -22,7 +22,7 @@ export const Pagination = (props: Props) => {
       <button
         type="button"
         onClick={() => onChange(page - 1)}
-        disabled={page === 1}
+        disabled={page === 0}
         className={button({ appearance: 'tertiary', size: 'icon' })}
       >
         <Icon className="w-4 h-4" icon="heroicons:chevron-left" />
@@ -48,7 +48,7 @@ export const Pagination = (props: Props) => {
       <button
         type="button"
         onClick={() => onChange(page + 1)}
-        disabled={page === totalPage}
+        disabled={page === totalPage - 1}
         className={button({ appearance: 'tertiary', size: 'icon' })}
       >
         <Icon className="w-4 h-4" icon="heroicons:chevron-right" />

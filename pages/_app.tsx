@@ -20,6 +20,10 @@ import { useRouter } from 'next/router'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
 import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
+import Modal from '~components/Modal'
+import { useDisclosure } from '@dwarvesf/react-hooks'
+import { isBeta } from '~constants'
+import { button } from '~components/Dashboard/Button'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -38,17 +42,25 @@ export function handleCancelRendering(e: any) {
 }
 
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
-  const { isShowConnectModal, closeConnectModal } = useAppWalletContext()
-  const { asPath, query, pathname, replace, push, isReady } = useRouter()
-  const login = useAuthStore((s) => s.login, shallow)
+  const { isShowingConnectModal, closeConnectModal } = useAppWalletContext()
+  const { query, asPath, pathname, replace, push, isReady } = useRouter()
+  const { isLoggedIn, login } = useAuthStore(
+    (s) => ({ isLoggedIn: s.isLoggedIn, login: s.login }),
+    shallow,
+  )
   const getLayout = Component.getLayout ?? ((page) => page)
 
   useEffect(() => {
-    if (!isReady) return
-    if (pathname === '/404') return
+    if (!isReady || pathname === '/404' || isLoggedIn) return
 
-    login(query.token as string).then(() => {
-      replace(asPath, undefined, { shallow: true })
+    login({
+      token: query.token as string,
+      showLoading: true,
+    }).then(() => {
+      if (!query.token) return
+      replace({ pathname: asPath.split('?')[0] }, undefined, {
+        shallow: true,
+      })
         .catch(handleCancelRendering)
         .then(() => {
           if (query.url_location && typeof query.url_location === 'string') {
@@ -58,13 +70,23 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
           }
         })
     })
-  }, [asPath, query.token]) // eslint-disable-line
+  }, [
+    asPath,
+    isLoggedIn,
+    isReady,
+    login,
+    pathname,
+    push,
+    query.token,
+    query.url_location,
+    replace,
+  ])
 
   return (
     <>
       {getLayout(<Component {...pageProps} />)}
       <ConnectWalletModal
-        isOpen={isShowConnectModal}
+        isOpen={isShowingConnectModal}
         onClose={closeConnectModal}
       />
     </>
@@ -72,6 +94,8 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
 }
 
 export default function App(props: AppPropsWithLayout) {
+  const { isOpen, onClose } = useDisclosure({ defaultIsOpen: isBeta })
+
   return (
     <StrictMode>
       <Toaster
@@ -85,6 +109,29 @@ export default function App(props: AppPropsWithLayout) {
       <WalletProvider>
         <InnerApp {...props} />
       </WalletProvider>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <div className="flex relative z-50 flex-col items-center py-4 px-5 max-w-sm bg-white rounded-xl">
+          <span className="text-lg font-semibold">Warning</span>
+          <span className="mt-2 font-light text-center text-dashboard-gray-8">
+            You&apos;re visiting the <span className="font-semibold">beta</span>{' '}
+            page of Mochi, this site is meant for internal team testing, the
+            Mochi team won&apos;t be responsible for any loss of your assets on
+            beta site, proceed with caution.
+          </span>
+          <div className="flex gap-x-2 self-stretch mt-5">
+            <button
+              type="button"
+              className={button({
+                appearance: 'secondary',
+                className: 'flex-1',
+              })}
+              onClick={onClose}
+            >
+              I understand the risk
+            </button>
+          </div>
+        </div>
+      </Modal>
     </StrictMode>
   )
 }

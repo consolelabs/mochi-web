@@ -1,15 +1,19 @@
 import { create } from 'zustand'
 import { API, apiLogin, apiLogout } from '~constants/api'
-import { ViewProfile } from '~types/mochi-profile-schema'
 import { useProfileStore } from './profile'
 
 const STORAGE_KEY = 'mochi.token'
+
+type LoginProps = {
+  token?: string
+  showLoading?: boolean
+}
 
 type State = {
   token: string | null
   isLoggedIn: boolean
   isLoadingSession: boolean
-  login: (token?: string) => Promise<void>
+  login: (props: LoginProps) => Promise<void>
   logout: () => void
 }
 
@@ -18,8 +22,17 @@ export const useAuthStore = create<State>((set, get) => ({
   token: null,
   isLoggedIn: false,
   isLoadingSession: true,
-  login: async (tokenParam?: string) => {
-    const { logout } = get()
+  logout: () => {
+    localStorage.removeItem(STORAGE_KEY)
+    set({ token: null, isLoggedIn: false })
+    apiLogout()
+  },
+  login: async ({ token: tokenParam, showLoading = false }: LoginProps) => {
+    const { logout: _logout } = get()
+    function logout() {
+      set({ isLoadingSession: false })
+      _logout()
+    }
     // on load, try to get token first from storage
     const token = tokenParam ?? localStorage.getItem(STORAGE_KEY)
 
@@ -29,17 +42,11 @@ export const useAuthStore = create<State>((set, get) => ({
     } else {
       // if found, this token could still be outdated or malformed -> try to call the /me api with this token
 
-      set({ isLoadingSession: true })
+      set({ ...(showLoading ? { isLoadingSession: true } : {}) })
       await API.MOCHI_PROFILE.auth(`Bearer ${token}`)
         .get('/profiles/me')
-        .badRequest(() => {
-          set({ isLoadingSession: false })
-          logout()
-        })
-        .unauthorized(() => {
-          set({ isLoadingSession: false })
-          logout()
-        })
+        .badRequest(logout)
+        .unauthorized(logout)
         .res((res) => {
           set({ isLoadingSession: false })
           // if the code makes it here means the token is valid
@@ -51,10 +58,5 @@ export const useAuthStore = create<State>((set, get) => ({
         })
         .then((me) => useProfileStore.getState().setMe(me))
     }
-  },
-  logout: () => {
-    localStorage.removeItem(STORAGE_KEY)
-    set({ token: null, isLoggedIn: false })
-    apiLogout()
   },
 }))
