@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import { useCallback, useState } from 'react'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
@@ -11,26 +10,11 @@ import { WretchError } from 'wretch'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const discordId = ctx.query.did
-
-  let profile
-  try {
-    profile = (await API.MOCHI_PROFILE.get(
-      `/profiles/get-by-discord/${discordId}`,
-    ).json()) as { id?: number }
-  } catch {}
-
-  return {
-    props: { profileId: discordId ? profile?.id ?? null : null },
-  }
-}
-
-export default function Verify({ profileId }: { profileId: string }) {
+export default function Verify() {
   const mounted = useHasMounted()
   const [loading, setLoading] = useState(false)
   const [verified, setVerified] = useState(false)
-  const [error, _setError] = useState(!profileId ? 'Missing profile id' : '')
+  const [error, _setError] = useState('')
   const { showConnectModal, closeConnectModal, disconnect } =
     useAppWalletContext()
   const { login, isLoggedIn } = useAuthStore(
@@ -53,7 +37,7 @@ export default function Verify({ profileId }: { profileId: string }) {
       <div className="flex relative flex-col items-center">
         <div className="py-16 px-12 mx-auto max-w-7xl">
           <div className="py-24 md:py-48">
-            {profileId && !error ? (
+            {!error ? (
               verified ? (
                 <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
                   <div className="text-2xl font-black text-center md:text-3xl">
@@ -80,7 +64,7 @@ export default function Verify({ profileId }: { profileId: string }) {
                         onClick={() =>
                           showConnectModal(
                             async ({ signature, code, address, isEVM }) => {
-                              if (!code || !profileId || loading) return
+                              if (!code || loading) return
                               setLoading(true)
                               const payload = {
                                 wallet_address: address,
