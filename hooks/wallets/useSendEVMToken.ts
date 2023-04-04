@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   ChainMismatchError,
   erc20ABI,
+  RpcError,
   useContractWrite,
   usePrepareContractWrite,
   usePrepareSendTransaction,
@@ -19,11 +20,24 @@ export const useSendEVMToken = () => {
     usePrepareContractWrite<typeof erc20ABI, 'transfer', number>(config ?? {})
   const { writeAsync } = useContractWrite(nonNativeConfig)
 
+  const errorMessage = useMemo(() => {
+    if (nativeError) {
+      const error = nativeError as RpcError<{ message: string }>
+      return error.data?.message ?? nativeError.message
+    }
+    if (nonNativeError) {
+      const error = nonNativeError as RpcError<{ message: string }>
+      return error.data?.message ?? nonNativeError.message
+    }
+    setConfig(null)
+  }, [nativeError, nonNativeError])
+
   return {
     config,
     setConfig,
     sendNonNative: writeAsync,
     sendNative: sendTransactionAsync,
+    errorMessage,
     wrongChain:
       nativeError instanceof ChainMismatchError ||
       nonNativeError instanceof ChainMismatchError,

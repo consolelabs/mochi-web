@@ -114,6 +114,7 @@ export default function PaymentButton({
     sendNative: sendNativeEVM,
     sendNonNative: sendNonNativeEVM,
     wrongChain,
+    errorMessage,
   } = useSendEVMToken()
 
   const {
@@ -425,6 +426,20 @@ export default function PaymentButton({
       switchNetworkAsync?.().catch(disconnect)
     }
   }, [disconnect, switchNetworkAsync, wrongChain])
+
+  useEffect(() => {
+    if (errorMessage && !wrongChain) {
+      disconnect()
+      setConfigEVM(null)
+      toast.custom(() => (
+        <ToastError
+          key="pay-error-wallet"
+          message="Pay Error"
+          description={errorMessage}
+        />
+      ))
+    }
+  }, [disconnect, errorMessage, setConfigEVM, wrongChain])
 
   useEffect(() => {
     if (!isShowingConnectModal) setButtonUnclicked()

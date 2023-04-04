@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Icon } from '@iconify/react'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { signMessage } from '@wagmi/core'
 import {
   Fragment,
   useCallback,
@@ -51,8 +50,6 @@ type State = {
 }
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
-  const { connect } = useWallet()
-
   const { signMsg, isSigning } = useSignMessage()
   const { connected, openInApp, connectModalCallback } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
@@ -70,7 +67,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     },
   )
   const { errorMsg, wallets, groupedWallets } = useWalletConnectors()
-  const { wallet: solWallet } = useWallet()
+  const { connect, wallet: solWallet } = useWallet()
   const [signError, setSignError] = useState(false)
 
   const filteredWallets = wallets.filter(
