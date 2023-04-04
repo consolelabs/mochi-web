@@ -1,4 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { Icon } from '@iconify/react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import {
   Fragment,
@@ -21,7 +22,7 @@ import {
 } from '~context/wallets/useWalletConnectors'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useSignMessage } from '~hooks/wallets/useSignMessage'
-import { isMobile } from '~utils/isMobile'
+import { isAndroid, isMobile } from '~utils/isMobile'
 import { getWalletLoginSignMessage } from '~utils/string'
 import { ConnectDetail } from './ConnectDetail'
 import { ConnectWalletIntro } from './ConnectWalletIntro'
@@ -49,6 +50,8 @@ type State = {
 }
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
+  const { connect } = useWallet()
+
   const { signMsg, isSigning } = useSignMessage()
   const { connected, openInApp, connectModalCallback } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
@@ -78,48 +81,42 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       setState({
         isConnectionError: false,
       })
-      if (wallet.ready) {
-        wallet.connect?.().catch((e) => {
-          console.log(e)
-          if (e instanceof ConnectorAlreadyConnectedError) {
-            /* signMsg() */
-          } else {
-            setState({
-              isConnectionError: true,
-            })
-          }
+      wallet.connect?.().catch((e) => {
+        if (e instanceof ConnectorAlreadyConnectedError) return
+        setState({
+          isConnectionError: true,
         })
+      })
 
-        setTimeout(async () => {
-          const getDesktopDeepLink = wallet.desktop?.getUri
-          const getMobileURI = wallet.mobile?.getUri
-          let uri
-          if (isMobile()) {
-            if (getMobileURI) {
-              uri = await getMobileURI()
-            } else if (wallet.id === metaMask({ chains: [] }).id) {
-              // https://github.com/MetaMask/metamask-mobile/issues/3965#issuecomment-1122505112
+      setTimeout(async () => {
+        const getDesktopDeepLink = wallet.desktop?.getUri
+        const getMobileURI = wallet.mobile?.getUri
+        let uri
+        if (isMobile()) {
+          if (getMobileURI) {
+            uri = await getMobileURI()
+          } else if (wallet.id === metaMask({ chains: [] }).id) {
+            // https://github.com/MetaMask/metamask-mobile/issues/3965#issuecomment-1122505112
 
-              const isMetaMaskInjected =
-                typeof window !== 'undefined' &&
-                typeof window.ethereum !== 'undefined' &&
-                isMetaMask(window.ethereum)
+            const isMetaMaskInjected =
+              typeof window !== 'undefined' &&
+              typeof window.ethereum !== 'undefined' &&
+              isMetaMask(window.ethereum)
 
-              if (isMetaMaskInjected) return
+            if (isMetaMaskInjected) return
 
-              uri = `dapp://${window.location.href.replace(
-                `${window.location.protocol}//`,
-                '',
-              )}`
-            }
-          } else if (getDesktopDeepLink) {
-            uri = await getDesktopDeepLink()
+            uri = `dapp://${window.location.href.replace(
+              `${window.location.protocol}//`,
+              '',
+            )}`
           }
-          if (uri) {
-            openInApp(uri)
-          }
-        }, 100)
-      }
+        } else if (getDesktopDeepLink) {
+          uri = await getDesktopDeepLink()
+        }
+        if (uri) {
+          openInApp(uri)
+        }
+      }, 100)
     },
     [openInApp],
   )
@@ -164,32 +161,28 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     changeWalletStep(WalletStep.Connect)
     connectToWallet(wallet)
 
-    if (wallet.ready) {
-      if (!wallet.isSolana) {
-        setTimeout(async () => {
-          // We need to guard against "onConnecting" callbacks being fired
-          // multiple times since connector instances can be shared between
-          // wallets. Ideally wagmi would let us scope the callback to the
-          // specific "connect" call, but this will work in the meantime.
-          let callbackFired = false
-          wallet.onConnecting(async () => {
-            if (callbackFired) return
+    if (!wallet.isSolana) {
+      setTimeout(async () => {
+        // We need to guard against "onConnecting" callbacks being fired
+        // multiple times since connector instances can be shared between
+        // wallets. Ideally wagmi would let us scope the callback to the
+        // specific "connect" call, but this will work in the meantime.
+        let callbackFired = false
+        wallet.onConnecting(async () => {
+          if (callbackFired) return
 
-            callbackFired = true
-            const uri = await sWallet?.qrCode?.getUri()
-            setState({
-              qrCodeUri: uri,
-            })
-            callbackFired = false
+          callbackFired = true
+          const uri = await sWallet?.qrCode?.getUri()
+          setState({
+            qrCodeUri: uri,
           })
-        }, 0)
-      }
-    } else {
-      setState({
-        selectedWallet: wallet,
-      })
-      changeWalletStep(WalletStep.Connect)
+          callbackFired = false
+        })
+      }, 0)
     }
+    setState({
+      selectedWallet: wallet,
+    })
   }
 
   const walletContent = useMemo(() => {
@@ -320,6 +313,32 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                     Choose your wallet
                   </h1>
                   <div className="flex overflow-x-auto flex-row gap-x-10 p-4 pt-0 lg:flex-col lg:gap-x-0 lg:gap-y-5 lg:p-0 lg:mt-5">
+                    {isAndroid() && (
+                      <div className="flex flex-col flex-shrink-0 gap-y-0.5 lg:gap-y-2">
+                        <span className="text-xs font-semibold text-dashboard-gray-4">
+                          Solana
+                        </span>
+                        <div className="flex flex-row gap-x-4 -ml-2 lg:flex-col lg:gap-x-0 lg:gap-y-1 lg:m-0">
+                          <button
+                            onClick={() =>
+                              connect().catch((e) => {
+                                console.log('solana', e)
+                              })
+                            }
+                            type="button"
+                            className="flex flex-col gap-y-1 gap-x-2 items-center p-2 rounded-md lg:flex-row lg:gap-y-0 hover:bg-dashboard-gray-3"
+                          >
+                            <Icon
+                              icon="cryptocurrency-color:sol"
+                              className="flex-shrink-0 w-12 rounded-xl lg:w-6 lg:rounded-none"
+                            />
+                            <span className="text-xs font-medium lg:text-sm text-foreground">
+                              Solana Wallets
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
                     {Object.entries(groupedWallets).map(
                       ([groupName, connectors]) => {
                         return (

@@ -5,6 +5,7 @@ import {
   WalletProvider as SolWalletProvider,
 } from '@solana/wallet-adapter-react'
 import { getDefaultSolanaWallets } from './getDefaultWallets'
+import { isAndroid, isMobile } from '~utils/isMobile'
 
 export type SolanaWalletProviderProps = {
   children: ReactNode
@@ -17,7 +18,10 @@ export const SolanaWalletProvider = ({
   const endpoint = useMemo(() => 'https://rpc.ankr.com/solana', [])
 
   const wallets = useMemo(
-    () => getDefaultSolanaWallets(network).adapters,
+    () =>
+      isMobile() && isAndroid()
+        ? []
+        : getDefaultSolanaWallets(network).adapters,
     [network],
   )
 
