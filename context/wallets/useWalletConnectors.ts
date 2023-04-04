@@ -85,6 +85,7 @@ export const useWalletConnectors = () => {
     wallets,
     wallet: selectedWallet,
     connect,
+    disconnect,
   } = useWallet()
   const [errorMsg, setErrorMsg] = useState('')
   const defaultConnectors = defaultConnectors_untyped as Connector[]
@@ -190,7 +191,11 @@ export const useWalletConnectors = () => {
         setErrorMsg(e.message || 'Something went wrong')
       })
     }
-  }, [connect, selectedWallet?.adapter.name])
+
+    return () => {
+      disconnect()
+    }
+  }, [connect, disconnect, selectedWallet])
 
   groupedWallets.forEach((wallet: WalletInstance) => {
     if (!wallet) {

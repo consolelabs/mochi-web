@@ -62,7 +62,7 @@ export default function ConnectButton() {
 
   if (!isLoggedIn)
     return (
-      <Popover trigger={<span className={button({ size: 'sm' })}>Login</span>}>
+      <Popover trigger="Login" triggerClassname={button({ size: 'sm' })}>
         <div className="pt-3">
           <div className="flex flex-col gap-y-2 p-2 bg-white rounded-lg">
             <a
@@ -96,7 +96,7 @@ export default function ConnectButton() {
       trigger={
         <div className="flex gap-x-2 items-center p-1 pr-2 rounded-full border outline-none bg-mochi/10 border-dashboard-red-1">
           <Avatar className="w-6 rounded-full" />
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-xs font-semibold sm:text-sm text-foreground">
             {finalName}
           </span>
         </div>
