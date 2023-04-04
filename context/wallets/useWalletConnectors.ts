@@ -6,7 +6,6 @@ import { WalletInstance } from './Wallet'
 import { getRecentWalletIds, addRecentWalletId } from './recentWalletIds'
 import { walletDownloadUrls } from './solana/walletAdapters'
 import { useCallback, useEffect, useState } from 'react'
-import { isMobile } from '~utils/isMobile'
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean
@@ -192,6 +191,7 @@ export const useWalletConnectors = () => {
       return
     if (selectedWallet?.adapter.name) {
       connect().catch((e) => {
+        console.log(e)
         setErrorMsg(e.message || 'Something went wrong')
       })
     }
