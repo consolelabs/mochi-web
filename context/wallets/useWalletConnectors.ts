@@ -186,12 +186,10 @@ export const useWalletConnectors = () => {
   )
 
   useEffect(() => {
-    console.log(selectedWallet)
     if (selectedWallet?.adapter.name.toLowerCase() === 'mobile wallet adapter')
       return
     if (selectedWallet?.adapter.name) {
       connect().catch((e) => {
-        console.log(e)
         setErrorMsg(e.message || 'Something went wrong')
       })
     }
