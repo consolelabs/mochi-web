@@ -187,6 +187,7 @@ export const useWalletConnectors = () => {
   )
 
   useEffect(() => {
+    console.log(selectedWallet)
     if (selectedWallet?.adapter.name.toLowerCase() === 'mobile wallet adapter')
       return
     if (selectedWallet?.adapter.name) {
