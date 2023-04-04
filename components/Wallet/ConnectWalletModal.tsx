@@ -1,6 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Icon } from '@iconify/react'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { signMessage } from '@wagmi/core'
 import {
   Fragment,
   useCallback,
@@ -235,7 +236,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   }, [solWallet])
 
   useEffect(() => {
-    if (!connected || !address || isSigning) return
+    if (!connected || !address || isSigning || isAndroid()) return
     const code = String(Date.now())
     const msg = getWalletLoginSignMessage(code)
     setSignError(false)
@@ -320,20 +321,42 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                         </span>
                         <div className="flex flex-row gap-x-4 -ml-2 lg:flex-col lg:gap-x-0 lg:gap-y-1 lg:m-0">
                           <button
-                            onClick={() =>
-                              connect().catch((e) => {
-                                console.log('solana', e)
-                              })
-                            }
+                            onClick={() => {
+                              if (connected) {
+                                const code = String(Date.now())
+                                const msg = getWalletLoginSignMessage(code)
+                                setSignError(false)
+                                signMsg(msg)
+                                  .then((signature) => {
+                                    if (address) {
+                                      connectModalCallback?.({
+                                        signature,
+                                        address,
+                                        msg,
+                                        code,
+                                        isEVM: isEVMConnected,
+                                      })
+                                    }
+                                  })
+                                  .catch(() => setSignError(true))
+                                  .finally(() => {
+                                    // the idea is that if there is a callback then that callback must manually handle the disconnect
+                                    if (connectModalCallback) return
+                                    disconnect()
+                                  })
+                              } else {
+                                connect().catch(() => {})
+                              }
+                            }}
                             type="button"
                             className="flex flex-col gap-y-1 gap-x-2 items-center p-2 rounded-md lg:flex-row lg:gap-y-0 hover:bg-dashboard-gray-3"
                           >
                             <Icon
                               icon="cryptocurrency-color:sol"
-                              className="flex-shrink-0 w-12 rounded-xl lg:w-6 lg:rounded-none"
+                              className="flex-shrink-0 w-12 h-12 rounded-xl lg:w-6 lg:rounded-none"
                             />
                             <span className="text-xs font-medium lg:text-sm text-foreground">
-                              Solana Wallets
+                              {connected ? 'Sign Message' : 'Solana Wallets'}
                             </span>
                           </button>
                         </div>
