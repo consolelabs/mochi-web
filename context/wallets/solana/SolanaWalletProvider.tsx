@@ -4,7 +4,6 @@ import {
   ConnectionProvider,
   WalletProvider as SolWalletProvider,
 } from '@solana/wallet-adapter-react'
-/* import { clusterApiUrl } from '@solana/web3.js' */
 import { getDefaultSolanaWallets } from './getDefaultWallets'
 
 export type SolanaWalletProviderProps = {

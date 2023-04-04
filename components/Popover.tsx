@@ -8,6 +8,7 @@ import { useState } from 'react'
 
 type Props = {
   trigger: React.ReactNode
+  triggerClassname?: string
   children: PopoverPanelProps<any>['children']
   panelClassname?: string
   offset?: number
@@ -33,10 +34,11 @@ export const Popover = (props: Props) => {
         placement="bottom-start"
         flip
         offset={props.offset ?? 0}
+        strategy="fixed"
       >
         <HeadlessPopover.Button
           className={({ open }) =>
-            clsx('outline-none h-full', {
+            clsx('outline-none h-full', props.triggerClassname ?? '', {
               'text-mochi': open,
             })
           }

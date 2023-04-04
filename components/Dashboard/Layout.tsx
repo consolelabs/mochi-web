@@ -53,7 +53,7 @@ export default function DashboardLayout({
       <div className="flex flex-col min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(
-            'sticky top-0 flex py-4 px-7 flex-shrink-0 justify-between z-20',
+            'sticky top-0 flex py-2 px-3 md:py-4 md:px-7 flex-shrink-0 justify-between z-20',
             {
               'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
                 isLoggedIn || pathname !== '/dashboard',

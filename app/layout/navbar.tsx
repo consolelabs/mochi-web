@@ -151,17 +151,15 @@ export const Navbar = () => (
   <Fragment>
     <nav className="relative z-20 bg-transparent">
       <div className="flex flex-wrap gap-y-5 items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
-        <Link className="flex gap-4 items-center text-gray-900 group" href="/">
-          <div className="w-9 h-9 rounded-full transition-shadow duration-200 ease-in-out group-hover:shadow-xl group-hover:shadow-mochi-200">
-            <Image
-              src={logo}
-              alt="Logo"
-              width={36}
-              height={36}
-              className="block rounded-full"
-            />
-          </div>
-          <span className="font-black uppercase">
+        <Link className="flex gap-x-3 items-center" href="/">
+          <Image
+            src={logo}
+            alt="Logo"
+            width={32}
+            height={32}
+            className="block rounded-full"
+          />
+          <span className="text-xl font-black uppercase text-foreground">
             Mochi<span className="text-mochi">.</span>
           </span>
         </Link>
