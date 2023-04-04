@@ -66,6 +66,7 @@ export const WalletButton = ({
             ? {
                 request: { to: address, value: BigNumber.from(amount) },
                 isAddressEVM,
+                chainId,
               }
             : {
                 address: tokenAddress as `0x${string}`,
