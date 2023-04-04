@@ -6,6 +6,7 @@ import { WalletInstance } from './Wallet'
 import { getRecentWalletIds, addRecentWalletId } from './recentWalletIds'
 import { walletDownloadUrls } from './solana/walletAdapters'
 import { useCallback, useEffect, useState } from 'react'
+import { isMobile } from '~utils/isMobile'
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean
@@ -186,10 +187,9 @@ export const useWalletConnectors = () => {
   )
 
   useEffect(() => {
-    if (
-      selectedWallet?.adapter.name &&
-      selectedWallet.readyState === WalletReadyState.Installed
-    ) {
+    if (selectedWallet?.adapter.name.toLowerCase() === 'mobile wallet adapter')
+      return
+    if (selectedWallet?.adapter.name) {
       connect().catch((e) => {
         setErrorMsg(e.message || 'Something went wrong')
       })
