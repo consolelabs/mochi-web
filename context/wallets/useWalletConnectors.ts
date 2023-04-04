@@ -5,7 +5,7 @@ import { useAppWalletContext } from 'context/wallet-context'
 import { WalletInstance } from './Wallet'
 import { getRecentWalletIds, addRecentWalletId } from './recentWalletIds'
 import { walletDownloadUrls } from './solana/walletAdapters'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean
@@ -75,6 +75,7 @@ function isNotNullish<T>(value: T | null | undefined): value is T {
 const MAX_RECENT_WALLETS = 3
 
 export const useWalletConnectors = () => {
+  const interacted = useRef(false)
   const { initialChainId } = useAppWalletContext()
   const { connectAsync, connectors: defaultConnectors_untyped } = useConnect({
     chainId: initialChainId,
@@ -188,7 +189,7 @@ export const useWalletConnectors = () => {
   useEffect(() => {
     if (selectedWallet?.adapter.name.toLowerCase() === 'mobile wallet adapter')
       return
-    if (selectedWallet?.adapter.name) {
+    if (selectedWallet?.adapter.name && interacted.current) {
       connect().catch((e) => {
         setErrorMsg(e.message || 'Something went wrong')
       })
@@ -216,6 +217,7 @@ export const useWalletConnectors = () => {
         setErrorMsg('')
         if (wallet.isSolana) {
           solConnectWallet(wallet)
+          interacted.current = true
         } else {
           evmConnectWallet(wallet.id, wallet.connector!)
         }
