@@ -11,7 +11,10 @@ import {
 import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { heading } from '~components/Dashboard/Heading'
 import { useAppWalletContext } from '~context/wallet-context'
-import { metaMask } from '~context/wallets/ethereum/walletConnectors'
+import {
+  isMetaMask,
+  metaMask,
+} from '~context/wallets/ethereum/walletConnectors'
 import {
   useWalletConnectors,
   WalletConnector,
@@ -96,6 +99,14 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
               uri = await getMobileURI()
             } else if (wallet.id === metaMask({ chains: [] }).id) {
               // https://github.com/MetaMask/metamask-mobile/issues/3965#issuecomment-1122505112
+
+              const isMetaMaskInjected =
+                typeof window !== 'undefined' &&
+                typeof window.ethereum !== 'undefined' &&
+                isMetaMask(window.ethereum)
+
+              if (isMetaMaskInjected) return
+
               uri = `dapp://${window.location.href.replace(
                 `${window.location.protocol}//`,
                 '',
@@ -107,7 +118,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           if (uri) {
             openInApp(uri)
           }
-        }, 0)
+        }, 100)
       }
     },
     [openInApp],

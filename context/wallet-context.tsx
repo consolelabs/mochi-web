@@ -15,7 +15,6 @@ import { solanaChain } from './wallets/solana/chains'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { useAuthStore } from '~store'
-import { isMetaMask } from './wallets/ethereum/walletConnectors'
 
 export type WalletProviderProps = {
   children: ReactNode
@@ -87,13 +86,6 @@ export const AppWalletContextProvider = ({
   )
 
   const openInApp = useCallback((wcUrl: string) => {
-    const isMetaMaskInjected =
-      typeof window !== 'undefined' &&
-      typeof window.ethereum !== 'undefined' &&
-      isMetaMask(window.ethereum)
-
-    if (isMetaMaskInjected) return
-
     const a = document.createElement('a')
     a.href = wcUrl
     a.rel = 'noreferrer noopener'
