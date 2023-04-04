@@ -186,7 +186,10 @@ export const useWalletConnectors = () => {
   )
 
   useEffect(() => {
-    if (selectedWallet?.adapter.name) {
+    if (
+      selectedWallet?.adapter.name &&
+      selectedWallet.readyState === WalletReadyState.Installed
+    ) {
       connect().catch((e) => {
         setErrorMsg(e.message || 'Something went wrong')
       })
