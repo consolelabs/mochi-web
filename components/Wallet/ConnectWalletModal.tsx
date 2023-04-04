@@ -118,7 +118,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           if (uri) {
             openInApp(uri)
           }
-        }, 0)
+        }, 100)
       }
     },
     [openInApp],
