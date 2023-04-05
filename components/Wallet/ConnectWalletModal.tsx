@@ -51,7 +51,13 @@ type State = {
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   const { signMsg, isSigning } = useSignMessage()
-  const { connected, openInApp, connectModalCallback } = useAppWalletContext()
+  const {
+    connected,
+    openInApp,
+    connectModalCallback,
+    signCode,
+    clearSignCode,
+  } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
@@ -234,7 +240,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
 
   useEffect(() => {
     if (!connected || !address || isSigning || isAndroid()) return
-    const code = String(Date.now())
+    const code = signCode ?? String(Date.now())
     const msg = getWalletLoginSignMessage(code)
     setSignError(false)
     signMsg(msg)
@@ -249,6 +255,8 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       )
       .catch(() => setSignError(true))
       .finally(() => {
+        // clean up
+        clearSignCode()
         // the idea is that if there is a callback then that callback must manually handle the disconnect
         if (connectModalCallback) return
         disconnect()
@@ -260,11 +268,13 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     }
   }, [
     address,
+    clearSignCode,
     connectModalCallback,
     connected,
     disconnect,
     isEVMConnected,
     isSigning,
+    signCode,
     signMsg,
   ])
 
@@ -320,7 +330,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                           <button
                             onClick={() => {
                               if (connected) {
-                                const code = String(Date.now())
+                                const code = signCode ?? String(Date.now())
                                 const msg = getWalletLoginSignMessage(code)
                                 setSignError(false)
                                 signMsg(msg)
@@ -337,6 +347,8 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                                   })
                                   .catch(() => setSignError(true))
                                   .finally(() => {
+                                    // clean up
+                                    clearSignCode()
                                     // the idea is that if there is a callback then that callback must manually handle the disconnect
                                     if (connectModalCallback) return
                                     disconnect()

@@ -9,8 +9,31 @@ import { useHasMounted } from '@dwarvesf/react-hooks'
 import { WretchError } from 'wretch'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
+import { GetServerSideProps } from 'next'
 
-export default function Verify() {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { code, guild_id } = ctx.query
+
+  if (!code || !guild_id)
+    return {
+      notFound: true,
+    }
+
+  return {
+    props: {
+      code,
+      guild_id,
+    },
+  }
+}
+
+export default function Verify({
+  code,
+  guild_id,
+}: {
+  code: string
+  guild_id: string
+}) {
   const mounted = useHasMounted()
   const [loading, setLoading] = useState(false)
   const [verified, setVerified] = useState(false)
@@ -71,23 +94,6 @@ export default function Verify() {
                                 code,
                                 signature,
                               }
-                              if (!isLoggedIn) {
-                                await API.MOCHI_PROFILE.post(
-                                  payload,
-                                  `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
-                                )
-                                  .json((r) =>
-                                    login({
-                                      token: r.data.access_token,
-                                    }),
-                                  )
-                                  .catch(setError)
-                                  .finally(() => {
-                                    closeConnectModal()
-                                    setLoading(false)
-                                    disconnect()
-                                  })
-                              }
 
                               API.MOCHI_PROFILE.post(
                                 payload,
@@ -96,7 +102,52 @@ export default function Verify() {
                                 }`,
                               )
                                 .badRequest(setError)
-                                .json(() => setVerified(true))
+                                .json((r) => {
+                                  const user_discord_id =
+                                    r.associated_accounts.find(
+                                      (aa: any) => aa.platform === 'discord',
+                                    )?.platform_identifier
+                                  if (user_discord_id) {
+                                    API.MOCHI.post(
+                                      {
+                                        user_discord_id,
+                                        guild_id,
+                                      },
+                                      `/verify/assign-role`,
+                                    )
+                                      .badRequest(setError)
+                                      .res(() => {
+                                        setVerified(true)
+
+                                        if (!isLoggedIn) {
+                                          // log the user in with the new connected discord account
+                                          API.MOCHI_PROFILE.post(
+                                            payload,
+                                            `/profiles/auth/${
+                                              isEVM ? 'evm' : 'solana'
+                                            }`,
+                                          )
+                                            .json((r) =>
+                                              login({
+                                                token: r.data.access_token,
+                                              }),
+                                            )
+                                            .catch(setError)
+                                            .finally(() => {
+                                              closeConnectModal()
+                                              setLoading(false)
+                                              disconnect()
+                                            })
+                                        }
+                                      })
+                                      .catch(setError)
+                                      .finally(() => {
+                                        closeConnectModal()
+                                        setLoading(false)
+                                        disconnect()
+                                      })
+                                  }
+                                })
                                 .catch(setError)
                                 .finally(() => {
                                   closeConnectModal()
@@ -104,6 +155,7 @@ export default function Verify() {
                                   disconnect()
                                 })
                             },
+                            code,
                           )
                         }
                       >
