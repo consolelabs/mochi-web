@@ -54,6 +54,7 @@ export interface AppWalletContextValues {
   /** Do not use this outside of <ConnectWalletModal /> */
   connectModalCallback?: ConnectCallback
   signCode?: string
+  clearSignCode: () => void
 }
 
 const [Provider, useAppWalletContext] = createContext<AppWalletContextValues>()
@@ -66,6 +67,8 @@ export const AppWalletContextProvider = ({
   children,
 }: AppWalletContextProviderProps) => {
   const [signCode, setSignCode] = useState<string>()
+
+  const clearSignCode = useCallback(() => setSignCode(undefined), [])
   // EVM
   const { chains } = useNetwork()
   const decoratedChains = decorateChains(chains)
@@ -135,6 +138,7 @@ export const AppWalletContextProvider = ({
         getChainById,
         openInApp,
         signCode,
+        clearSignCode,
       }}
     >
       {children}

@@ -51,8 +51,13 @@ type State = {
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   const { signMsg, isSigning } = useSignMessage()
-  const { connected, openInApp, connectModalCallback, signCode } =
-    useAppWalletContext()
+  const {
+    connected,
+    openInApp,
+    connectModalCallback,
+    signCode,
+    clearSignCode,
+  } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
@@ -250,6 +255,8 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       )
       .catch(() => setSignError(true))
       .finally(() => {
+        // clean up
+        clearSignCode()
         // the idea is that if there is a callback then that callback must manually handle the disconnect
         if (connectModalCallback) return
         disconnect()
@@ -261,6 +268,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     }
   }, [
     address,
+    clearSignCode,
     connectModalCallback,
     connected,
     disconnect,
@@ -339,6 +347,8 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                                   })
                                   .catch(() => setSignError(true))
                                   .finally(() => {
+                                    // clean up
+                                    clearSignCode()
                                     // the idea is that if there is a callback then that callback must manually handle the disconnect
                                     if (connectModalCallback) return
                                     disconnect()
