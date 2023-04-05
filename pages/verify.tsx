@@ -94,23 +94,6 @@ export default function Verify({
                                 code,
                                 signature,
                               }
-                              if (!isLoggedIn) {
-                                await API.MOCHI_PROFILE.post(
-                                  payload,
-                                  `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
-                                )
-                                  .json((r) =>
-                                    login({
-                                      token: r.data.access_token,
-                                    }),
-                                  )
-                                  .catch(setError)
-                                  .finally(() => {
-                                    closeConnectModal()
-                                    setLoading(false)
-                                    disconnect()
-                                  })
-                              }
 
                               API.MOCHI_PROFILE.post(
                                 payload,
@@ -135,6 +118,27 @@ export default function Verify({
                                       .badRequest(setError)
                                       .res(() => {
                                         setVerified(true)
+
+                                        if (!isLoggedIn) {
+                                          // log the user in with the new connected discord account
+                                          API.MOCHI_PROFILE.post(
+                                            payload,
+                                            `/profiles/auth/${
+                                              isEVM ? 'evm' : 'solana'
+                                            }`,
+                                          )
+                                            .json((r) =>
+                                              login({
+                                                token: r.data.access_token,
+                                              }),
+                                            )
+                                            .catch(setError)
+                                            .finally(() => {
+                                              closeConnectModal()
+                                              setLoading(false)
+                                              disconnect()
+                                            })
+                                        }
                                       })
                                       .catch(setError)
                                       .finally(() => {
