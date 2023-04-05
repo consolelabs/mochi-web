@@ -99,9 +99,9 @@ const Activities: NextPageWithLayout = () => {
                         {format(new Date(value), TIMESTAMP_FORMAT)}
                       </div>
                       <div className="flex gap-1 items-center">
-                        {original.platform_icon && (
+                        {original.activity_platform?.emoji && (
                           <img
-                            src={original.platform_icon}
+                            src={original.activity_platform?.emoji}
                             alt=""
                             className="w-4 h-4"
                           />
@@ -118,10 +118,10 @@ const Activities: NextPageWithLayout = () => {
                 thClassName: 'text-right',
                 Cell: ({ cell: { value }, row: { original } }: any) => {
                   return (
-                    <div className="flex items-center ml-auto gap-1">
-                      {original.action_icon && (
+                    <div className="flex gap-1 items-center ml-auto">
+                      {original.activity_content?.emoji && (
                         <img
-                          src={original.action_icon}
+                          src={original.activity_content?.emoji}
                           alt=""
                           className="w-6 h-6"
                         />
@@ -137,11 +137,11 @@ const Activities: NextPageWithLayout = () => {
               //   thClassName: 'text-right',
               //   Cell: ({ cell: { value } }: any) => {
               //     return (
-              //       <div className="flex items-center ml-auto gap-2">
+              //       <div className="flex gap-2 items-center ml-auto">
               //         {value.map((reward: any) => {
               //           return (
               //             <div
-              //               className="flex items-center gap-1"
+              //               className="flex gap-1 items-center"
               //               key={reward.type}
               //             >
               //               <img src={reward.icon} alt="" className="w-6 h-6" />

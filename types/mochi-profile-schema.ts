@@ -15,6 +15,12 @@ export interface DtoAuthBlockchainAccountRequest {
   wallet_address: string
 }
 
+export interface DtoGCSUploadImageRequest {
+  /** @minItems 1 */
+  data: number[]
+  image_name: string
+}
+
 export interface DtoMarkReadActivitiesRequest {
   ids: number[]
 }
@@ -24,9 +30,29 @@ export interface DtoUpdateProfileInfoRequest {
   profile_name?: string
 }
 
+export interface ModelActivityContent {
+  action?: string
+  activity_content?: string
+  created_at?: string
+  description?: string
+  emoji?: string
+  id?: number
+  updated_at?: string
+}
+
+export interface ModelActivityPlatform {
+  created_at?: string
+  emoji?: string
+  id?: number
+  platform?: string
+  updated_at?: string
+}
+
 export interface ViewActivityResponse {
   action?: string
   action_description?: string
+  activity_content?: ModelActivityContent
+  activity_platform?: ModelActivityPlatform
   created_at?: string
   id?: number
   platform?: string
@@ -62,6 +88,10 @@ export interface ViewDiscordGuild {
   name?: string
   owner?: boolean
   permissions?: string
+}
+
+export interface ViewGCSUploadImageResponse {
+  url?: string
 }
 
 export interface ViewMarkReadActivitiesResponse {

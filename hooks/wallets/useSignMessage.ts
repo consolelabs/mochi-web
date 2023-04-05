@@ -4,12 +4,12 @@ import {
 } from 'wagmi'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { utils } from 'ethers'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 
 export const useSignMessage = () => {
-  const { openInApp, disconnect } = useAppWalletContext()
+  const { openInApp, connected, disconnect } = useAppWalletContext()
   const { signMessageAsync } = useWagmiSignMessage()
   const { connector } = useWagmiAccount()
   const { connected: isSolanaConnected, signMessage } = useWallet()
@@ -65,6 +65,12 @@ export const useSignMessage = () => {
     },
     [disconnect, setIsNotSigning, setIsSigning, signMessage],
   )
+
+  useEffect(() => {
+    if (!connected) {
+      setIsNotSigning()
+    }
+  }, [connected, setIsNotSigning])
 
   return {
     isSigning,

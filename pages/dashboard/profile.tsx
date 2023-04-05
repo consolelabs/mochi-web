@@ -13,6 +13,13 @@ import { NextPageWithLayout } from '~pages/_app'
 // @ts-ignore
 import { Sparklines, SparklinesCurve } from 'react-sparklines'
 
+type IconType = 'telegram' | 'discord' | 'twitter'
+const iconMap: Record<IconType, string> = {
+  telegram: 'ic:baseline-telegram',
+  discord: 'ic:baseline-discord',
+  twitter: 'mdi:twitter',
+}
+
 const sampleSparklineData = [
   20014.593981052483, 19927.84901663721, 19952.053930132868, 19966.099406627905,
   19927.031640527064, 19662.44149159682, 19736.70214276614, 20015.141795842756,
@@ -67,102 +74,138 @@ const Profile: NextPageWithLayout = () => {
   if (!mounted) return null
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex items-center py-2 px-5 pr-2 rounded-xl bg-dashboard-gray-3">
+    <div className="flex flex-col gap-6 text-[13px]">
+      <div className="flex flex-col items-center justify-center gap-y-2">
         <div className="p-0.5 w-20 h-20 bg-white rounded-full aspect-square">
           <Avatar className="rounded-full" />
         </div>
-        <div className="flex flex-col ml-3">
-          <span className="text-sm text-dashboard-gray-8">No ID</span>
-          <div className="flex gap-x-2">
-            <p className={heading({ size: 'sm' })}>
-              {truncate(address ?? '', 10, true, '.')}
-            </p>
-            <button className={button({ size: 'icon-sm' })}>
-              <Icon
-                icon="heroicons:chevron-down-20-solid"
-                className="w-6 h-6"
-              />
-            </button>
-          </div>
-          <div className="flex gap-x-1 mt-1">
-            <button className={button({ size: 'icon' })}>
-              <Icon icon="heroicons:wallet-solid" />
-            </button>
-            <button className={button({ size: 'icon' })}>
-              <Icon icon="ci:external-link" />
-            </button>
-            <button className={button({ size: 'icon' })}>
-              <Icon icon="fluent:qr-code-24-filled" />
-            </button>
-          </div>
+        <div className="relative">
+          <select
+            value="baddeed.eth"
+            className="text-lg font-bold bg-transparent pr-6 appearance-none"
+          >
+            <option value="baddeed.eth">baddeed.eth</option>
+          </select>
+          <Icon
+            icon="heroicons:chevron-down-20-solid"
+            className="w-6 h-6 absolute right-0 top-0 mt-0.5"
+          />
         </div>
-        <div className="flex gap-x-2 self-stretch ml-auto w-1/2">
-          <div
-            className={card({
-              className: 'flex-1 flex flex-col justify-between',
-            })}
-          >
-            <span className="text-xs font-semibold uppercase text-dashboard-gray-8">
-              wallet
-            </span>
-            <div className="flex gap-x-1 items-center">
-              <Icon
-                icon="basil:wallet-solid"
-                className="w-6 h-6 text-dashboard-gray-4"
-              />
-              <span className="text-xl font-semibold text-foreground">
-                $12,456
-              </span>
-            </div>
+        <div className="flex gap-x-1">
+          <button className={button({ size: 'icon' })}>
+            <Icon icon="mdi:wallet-plus" />
+          </button>
+          <button className={button({ size: 'icon' })}>
+            <Icon icon="ci:external-link" />
+          </button>
+          <button className={button({ size: 'icon' })}>
+            <Icon icon="fluent:qr-code-24-filled" />
+          </button>
+        </div>
+        <div className="flex gap-x-2 items-center justify-center">
+          {[
+            {
+              type: 'discord',
+              value: 'baddeed.eth',
+            },
+            {
+              type: 'telegram',
+              value: 'nntruonghan',
+            },
+            {
+              type: 'twitter',
+              value: 'nntruonghan',
+            },
+          ].map((i) => {
+            return (
+              <div
+                key={i.type}
+                className="flex space-x-2 items-center py-1.5 px-2 rounded-full bg-white font-semibold"
+              >
+                <Icon
+                  icon={iconMap[i.type as IconType]}
+                  className="w-4 h-4 text-dashboard-gray-4"
+                />
+                <div>{i.value}</div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+      <div className="p-1.5 rounded-xl bg-dashboard-gray-3">
+        <div className="flex items-center justify-between w-full py-2 px-2.5">
+          <div className="flex space-x-2 items-center font-bold text-dashboard-gray-8">
+            <Icon icon="mdi:wallet" className="w-4 h-4" />
+            <div>My Wallets (5)</div>
           </div>
-
-          <div
-            className={card({
-              className: 'flex-1 flex flex-col justify-between',
+          <Icon
+            icon="heroicons:cog-6-tooth-solid"
+            className="w-5 h-5 text-foreground"
+          />
+        </div>
+        <div className="bg-white rounded-xl p-2.5">
+          <div className="grid grid-cols-2 gap-4 py-1.5">
+            {[
+              {
+                chain: 'MOCHI',
+                address: '0x102bD3474aFDB897baDCB5ACeAB46364Dfe1014a',
+                ens: 'baddeed.eth',
+              },
+              {
+                chain: 'ETH',
+                address: '0x102bD3474aFDB897baDCB5ACeAB46364Dfe1014a',
+                ens: 'baddeed.eth',
+              },
+              {
+                chain: 'RON',
+                address: '0x102bD3474aFDB897baDCB5ACeAB46364Dfe1014a',
+                ens: 'baddeed.eth',
+              },
+              {
+                chain: 'SOL',
+                address: '0x102bD3474aFDB897baDCB5ACeAB46364Dfe1014a',
+                ens: 'baddeed.eth',
+              },
+              {
+                chain: 'NEAR',
+                address: '0x102bD3474aFDB897baDCB5ACeAB46364Dfe1014a',
+              },
+              {
+                chain: 'SUI',
+                address: '0x102bD3474aFDB897baDCB5ACeAB46364Dfe1014a',
+              },
+            ].map((i, index) => {
+              return (
+                <div
+                  key={index}
+                  className="flex space-x-2 items-center font-semibold"
+                >
+                  <div className="w-6 h-6 rounded-full bg-dashboard-gray-3" />
+                  <div>
+                    {i.chain} • {truncate(i.address, 10, true, '.')}
+                  </div>
+                  {i.ens && (
+                    <div className="text-dashboard-gray-4">{i.ens}</div>
+                  )}
+                </div>
+              )
             })}
-          >
-            <span className="text-xs font-semibold uppercase text-dashboard-gray-8">
-              protocol
-            </span>
-            <div className="flex gap-x-1 items-center">
-              <Icon icon="cryptocurrency-color:eth" className="w-6 h-6" />
-              <span className="text-xl font-semibold text-foreground">ETH</span>
-            </div>
-          </div>
-
-          <div
-            className={card({
-              className: 'flex-1 flex flex-col justify-between',
-            })}
-          >
-            <span className="text-xs font-semibold uppercase text-dashboard-gray-8">
-              NFTS
-            </span>
-            <div className="flex gap-x-1 items-center">
-              <Icon
-                icon="basil:image-solid"
-                className="w-6 h-6 text-dashboard-gray-8"
-              />
-              <span className="text-xl font-semibold text-foreground">26</span>
-            </div>
           </div>
         </div>
       </div>
-      <div className="flex space-x-10">
-        <div className="flex flex-col flex-shrink-0 flex-[3]">
-          <div className="flex justify-between mb-2">
-            <p className={heading({ size: 'xs', className: '!font-semibold' })}>
-              My Watchlist
-            </p>
+      <div className="flex space-x-4">
+        <div className="flex flex-col flex-shrink-0 flex-[3] bg-dashboard-gray-3 p-1.5 rounded-xl">
+          <div className="flex items-center justify-between w-full py-2 px-2.5">
+            <div className="flex space-x-2 items-center font-bold text-dashboard-gray-8">
+              <Icon icon="heroicons:star-solid" className="w-4 h-4" />
+              <div>My Watchlist</div>
+            </div>
             <div className="flex gap-x-3 items-center">
               <Link
                 href="#"
                 className="flex items-center text-foreground-secondary"
               >
-                <span className="text-sm font-medium underline">
-                  Setup alert bot
-                </span>
+                <span className="font-medium underline">Setup alert bot</span>
                 <Icon
                   icon="eva:diagonal-arrow-right-up-fill"
                   className="w-5 h-5"
@@ -174,7 +217,7 @@ const Profile: NextPageWithLayout = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 grid-rows-5 gap-2 p-2 rounded-xl bg-dashboard-gray-3">
+          <div className="grid grid-cols-2 grid-rows-5 gap-2 rounded-xl bg-dashboard-gray-3">
             {Array(10)
               .fill(0)
               .map((_, i) => {
@@ -188,12 +231,12 @@ const Profile: NextPageWithLayout = () => {
                     <div className="flex flex-col gap-y-2">
                       <div className="flex gap-x-1 items-center">
                         <Icon icon="logos:bitcoin" className="w-4 h-4" />
-                        <span className="text-sm font-semibold uppercase text-foreground">
+                        <span className="font-semibold uppercase text-foreground">
                           BTC
                         </span>
                       </div>
                       <div className="flex gap-x-5 items-center">
-                        <span className="text-sm font-semibold text-foreground-secondary">
+                        <span className="font-semibold text-foreground-secondary">
                           $19,842.86
                         </span>
                         <div className="flex gap-x-0.5 items-center text-red-500">
@@ -218,17 +261,18 @@ const Profile: NextPageWithLayout = () => {
               })}
           </div>
         </div>
-        <div className="flex-shrink-0">
-          <div className="flex flex-1 justify-between mb-2">
-            <p className={heading({ size: 'xs', className: '!font-semibold' })}>
-              My Quests
-            </p>
+        <div className="flex-shrink-0 bg-dashboard-gray-3 p-1.5 rounded-xl">
+          <div className="flex items-center justify-between w-full py-2 px-2.5">
+            <div className="flex space-x-2 items-center font-bold text-dashboard-gray-8">
+              <Icon icon="mdi:bookmark-box" className="w-4 h-4" />
+              <div>My Quests</div>
+            </div>
             <div className="flex gap-x-3 items-center">
               <Link
                 href="#"
                 className="flex items-center text-foreground-secondary"
               >
-                <span className="text-sm font-medium underline">See all</span>
+                <span className="font-medium underline">See all</span>
                 <Icon
                   icon="eva:diagonal-arrow-right-up-fill"
                   className="w-5 h-5"
@@ -236,13 +280,12 @@ const Profile: NextPageWithLayout = () => {
               </Link>
             </div>
           </div>
-
-          <div className="flex flex-col p-2 rounded-xl bg-dashboard-gray-3">
+          <div className="flex flex-col rounded-xl bg-dashboard-gray-3">
             <div className="flex gap-x-10 justify-between p-3">
               <div className="flex flex-col gap-y-1">
                 <span className="font-semibold">Ongoing Quests</span>
                 <div className="flex gap-x-2 items-center">
-                  <div className="py-1 px-2 text-sm font-bold text-white rounded-lg bg-foreground-secondary/50">
+                  <div className="py-1 px-2 font-bold text-white rounded-lg bg-foreground-secondary/50">
                     4/6
                   </div>
                   <span className="font-medium">tasks</span>
@@ -252,8 +295,8 @@ const Profile: NextPageWithLayout = () => {
                 <span className="font-semibold">Completed Quests</span>
               </div>
             </div>
-            <div className={card({ className: 'flex h-[280px]' })}></div>
-            <button className={button({ className: 'mt-2' })}>
+            <div className={card({ className: 'flex h-[272px]' })}></div>
+            <button className={button({ className: 'mt-2 text-[13px]' })}>
               Claim Reward
             </button>
           </div>

@@ -1,7 +1,7 @@
 import type { VariantProps } from 'class-variance-authority'
 import { cva } from 'class-variance-authority'
 
-const variant = cva(['bg-white border border-black/10 shadow-card'], {
+const variant = cva(['bg-white border border-black/10'], {
   variants: {
     padding: {
       none: ['p-0'],
