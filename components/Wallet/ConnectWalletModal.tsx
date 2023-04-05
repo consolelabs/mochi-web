@@ -51,7 +51,8 @@ type State = {
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
   const { signMsg, isSigning } = useSignMessage()
-  const { connected, openInApp, connectModalCallback } = useAppWalletContext()
+  const { connected, openInApp, connectModalCallback, signCode } =
+    useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
@@ -234,7 +235,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
 
   useEffect(() => {
     if (!connected || !address || isSigning || isAndroid()) return
-    const code = String(Date.now())
+    const code = signCode ?? String(Date.now())
     const msg = getWalletLoginSignMessage(code)
     setSignError(false)
     signMsg(msg)
@@ -265,6 +266,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     disconnect,
     isEVMConnected,
     isSigning,
+    signCode,
     signMsg,
   ])
 
@@ -320,7 +322,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                           <button
                             onClick={() => {
                               if (connected) {
-                                const code = String(Date.now())
+                                const code = signCode ?? String(Date.now())
                                 const msg = getWalletLoginSignMessage(code)
                                 setSignError(false)
                                 signMsg(msg)

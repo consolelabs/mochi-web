@@ -49,10 +49,11 @@ export interface AppWalletContextValues {
   getChainById: (id: number) => Chain | undefined
   openInApp: (wcUrl: string) => void
   isShowingConnectModal: boolean
-  showConnectModal: (cb?: ConnectCallback) => void
+  showConnectModal: (cb?: ConnectCallback, overrideCode?: string) => void
   closeConnectModal: () => void
   /** Do not use this outside of <ConnectWalletModal /> */
   connectModalCallback?: ConnectCallback
+  signCode?: string
 }
 
 const [Provider, useAppWalletContext] = createContext<AppWalletContextValues>()
@@ -64,6 +65,7 @@ export type AppWalletContextProviderProps = {
 export const AppWalletContextProvider = ({
   children,
 }: AppWalletContextProviderProps) => {
+  const [signCode, setSignCode] = useState<string>()
   // EVM
   const { chains } = useNetwork()
   const decoratedChains = decorateChains(chains)
@@ -102,7 +104,8 @@ export const AppWalletContextProvider = ({
     useState<ConnectCallback>()
 
   const showConnectModal = useCallback(
-    (cb?: ConnectCallback) => {
+    (cb?: ConnectCallback, overrideCode?: string) => {
+      setSignCode(overrideCode)
       setConnectModalCallback(() => cb)
       _showConnectModal()
     },
@@ -131,6 +134,7 @@ export const AppWalletContextProvider = ({
         initialChainId: chains.length > 0 ? chains[0].id : undefined,
         getChainById,
         openInApp,
+        signCode,
       }}
     >
       {children}
