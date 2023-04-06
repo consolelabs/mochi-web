@@ -1,4 +1,4 @@
-import React, { useId } from 'react'
+import React from 'react'
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
 
@@ -38,10 +38,10 @@ type Props = VariantProps<typeof style> & {
 }
 
 export default function CutoutAvatar({ size, src, cutoutSrc }: Props) {
-  const id = useId()
+  const id = String(Date.now())
 
   return (
-    <div className={style({ size })}>
+    <div style={{ display: 'flex' }} className={style({ size })}>
       <svg role="none" width="100%" height="100%" viewBox="0 0 100 100">
         <mask id={`circle-mask-${id}`}>
           <circle fill="white" cx="50%" cy="50%" r="50%"></circle>
