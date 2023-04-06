@@ -88,7 +88,7 @@ export default function DashboardLayout({
                   className={clsx(
                     'flex items-start gap-x-24 mx-auto w-full relative',
                     {
-                      'max-w-6xl my-10 px-5': !fullWidth,
+                      'max-w-6xl my-10 px-0 sm:px-5': !fullWidth,
                     },
                   )}
                 >

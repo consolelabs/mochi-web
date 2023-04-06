@@ -154,7 +154,7 @@ export default function PayCode({
         className={clsx(
           'flex flex-col p-4 sm:p-8 sm:pt-4 mx-auto text-center bg-white rounded-2xl mb-32 md:mb-64',
           {
-            'gap-y-6 max-w-[400px]': payRequest.status !== 'expired',
+            'gap-y-6 max-w-[420px]': payRequest.status !== 'expired',
             'max-w-[450px]': payRequest.status === 'expired',
           },
         )}
