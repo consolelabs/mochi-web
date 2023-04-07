@@ -86,7 +86,10 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         isConnectionError: false,
       })
       wallet.connect?.().catch((e) => {
-        if (e instanceof ConnectorAlreadyConnectedError) return
+        if (e instanceof ConnectorAlreadyConnectedError) {
+          wallet.connect?.().catch(() => null)
+          return
+        }
         setState({
           isConnectionError: true,
         })
