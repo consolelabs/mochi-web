@@ -23,13 +23,18 @@ export const useSendEVMToken = () => {
   const errorMessage = useMemo(() => {
     if (nativeError) {
       const error = nativeError as RpcError<{ message: string }>
-      return error.data?.message ?? nativeError.message
+      return error.data?.message ?? (error as any).reason ?? nativeError.message
     }
     if (nonNativeError) {
+      console.log(JSON.stringify(nonNativeError, null, 4))
       const error = nonNativeError as RpcError<{ message: string }>
-      return error.data?.message ?? nonNativeError.message
+      return (
+        error.data?.message ?? (error as any).reason ?? nonNativeError.message
+      )
     }
-    setConfig(null)
+    if (nativeError || nonNativeError) {
+      setConfig(null)
+    }
   }, [nativeError, nonNativeError])
 
   return {
