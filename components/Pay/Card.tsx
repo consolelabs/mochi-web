@@ -1,7 +1,7 @@
-import { Icon } from '@iconify/react'
 import { utils } from 'ethers'
 import { shallow } from 'zustand/shallow'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import { HOME_URL } from '~envs'
 import { usePayRequest } from '~store/pay-request'
 
 export type Props = {
@@ -71,6 +71,22 @@ export function CardUI({
             filter: 'blur(60px)',
             opacity: 0.7,
           }}
+        />
+        <img
+          style={{
+            transform: 'scaleX(-1)',
+            display: 'flex',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            opacity: 0.25,
+            width: 200,
+            height: 200,
+          }}
+          src={`${HOME_URL}/assets/mochisan.png`}
+          alt="mochisan"
+          width={200}
+          height={200}
         />
         <div
           style={{

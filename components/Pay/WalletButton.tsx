@@ -115,8 +115,8 @@ export const WalletButton = ({
       }
       description={
         type === 'evm'
-          ? `${data?.formatted} ${data?.symbol}`
-          : `${solBalance.formatted} ${solBalance.symbol}`
+          ? `${data?.formatted ?? ''} ${data?.symbol ?? ''}`
+          : `${solBalance.formatted ?? ''} ${solBalance.symbol ?? ''}`
       }
       image={<Image src={image} alt={`${type}-network-icon`} fill />}
       onClick={onClick}
