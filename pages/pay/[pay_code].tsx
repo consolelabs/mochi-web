@@ -136,7 +136,9 @@ export default function PayCode({
           image={`${HOME_URL}/api/pay-og?code=${payRequest.code}`}
           description={
             isPayMe
-              ? `Someone created a Pay Me Link with ${utils.formatUnits(
+              ? `${
+                  initialPayRequest?.profile?.name ?? 'Someone'
+                } wants to be paid with ${utils.formatUnits(
                   payRequest.amount,
                   payRequest.token.decimal,
                 )} ${payRequest.token.symbol}`

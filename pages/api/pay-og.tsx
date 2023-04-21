@@ -40,8 +40,8 @@ const og = async (req: NextRequest) => {
   const extrabold = await extraboldFont
 
   let tokenSrc = 'https://mochi.gg/assets/coin.png'
-  let tmpSrc = payRequest.token.icon
-  if (tmpSrc.includes('.webp')) {
+  let tmpSrc = payRequest?.token.icon
+  if (tmpSrc?.includes('.webp')) {
     // try to use png as webp is not supported
     tmpSrc = tmpSrc.replace('.webp', '.png')
   }
@@ -51,13 +51,13 @@ const og = async (req: NextRequest) => {
   } catch {}
 
   const data: Props = {
-    isDone: payRequest.status !== 'submitted',
+    isDone: payRequest?.status !== 'submitted',
     tokenIcon: tokenSrc,
-    status: payRequest.status,
+    status: payRequest?.status,
     native: true,
-    symbol: payRequest.token.symbol,
-    decimal: payRequest.token.decimal,
-    amount: payRequest.amount,
+    symbol: payRequest?.token.symbol,
+    decimal: payRequest?.token.decimal,
+    amount: payRequest?.amount,
   }
   return new ImageResponse(
     (

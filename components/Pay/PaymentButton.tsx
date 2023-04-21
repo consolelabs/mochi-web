@@ -630,7 +630,10 @@ export default function PaymentButton({
             </button>
             <button
               type="button"
-              onClick={hideReminder}
+              onClick={() => {
+                closeConnectModal()
+                hideReminder()
+              }}
               className={button({
                 appearance: 'primary',
                 className: 'flex-1',
