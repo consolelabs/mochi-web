@@ -133,7 +133,7 @@ export default function PayCode({
         <SEO
           title={isPayMe ? 'Pay Me' : 'Pay Link'}
           tailTitle
-          image={`${HOME_URL}/api/pay-og?code=${payRequest.code}`}
+          image={`${HOME_URL}/api/pay-og?code=${payRequest.code}&balance=${payRequest.amount}`}
           description={
             isPayMe
               ? `${
