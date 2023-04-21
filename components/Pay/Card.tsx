@@ -83,7 +83,11 @@ export function CardUI({
             width: 200,
             height: 200,
           }}
-          src={`${HOME_URL}/assets/mochisan.png`}
+          src={
+            !amount
+              ? `${HOME_URL}/assets/mochisan-panic.png`
+              : `${HOME_URL}/assets/mochisan.png`
+          }
           alt="mochisan"
           width={200}
           height={200}
@@ -169,7 +173,9 @@ export function CardUI({
                 fontSize: 32,
               }}
             >
-              {status === 'claimed' && isDone
+              {!amount
+                ? '???'
+                : status === 'claimed' && isDone
                 ? 0
                 : utils.formatUnits(amount, decimal)}
             </span>

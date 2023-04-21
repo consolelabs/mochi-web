@@ -1,3 +1,6 @@
+const isProduction = process.env.NODE_ENV === 'production'
+const isBeta = process.env.NEXT_PUBLIC_BETA_PAGE === 'true'
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   experimental: {
@@ -20,6 +23,15 @@ module.exports = {
         permanent: false,
       },
     ]
+
+    // TODO: remove after done dashboard
+    if (isProduction && !isBeta) {
+      redirects.push({
+        source: '/dashboard/:slug*',
+        destination: '/',
+        permanent: false,
+      })
+    }
 
     return redirects
   },
