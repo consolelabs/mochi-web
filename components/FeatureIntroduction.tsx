@@ -1,9 +1,8 @@
-import Image from 'next/image'
 import React from 'react'
 import clsx from 'clsx'
 
 type Props = {
-  image: any
+  image: React.ReactNode
   title: React.ReactNode
   subtitle: React.ReactNode
   flip?: boolean
@@ -14,7 +13,7 @@ export const FeatureIntroduction = (props: Props) => {
   return (
     <div
       className={clsx(
-        'flex flex-col items-center justify-between gap-3 mt-20 md:mt-0',
+        'flex flex-col items-center justify-between gap-3 mt-20 md:mt-0 gap-x-10',
         props.className,
         {
           'md:flex-row-reverse': props.flip,
@@ -22,9 +21,7 @@ export const FeatureIntroduction = (props: Props) => {
         },
       )}
     >
-      <div className="flex-1">
-        <Image alt="" src={props.image} />
-      </div>
+      {props.image}
       <div className="flex-1">
         {typeof props.title === 'string' ? (
           <p className="text-2xl">{props.title}</p>

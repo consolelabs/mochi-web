@@ -10,7 +10,9 @@ type Props = {
 } & React.ButtonHTMLAttributes<HTMLElement>
 
 const button = cva(
-  ['flex gap-x-2 items-center rounded-lg px-4 py-2 font-semibold'],
+  [
+    'flex gap-x-2 items-center rounded-lg px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base font-semibold',
+  ],
   {
     variants: {
       appearance: {

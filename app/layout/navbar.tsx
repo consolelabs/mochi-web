@@ -7,6 +7,7 @@ import { logo } from '~utils/image'
 import { Icon } from '@iconify/react'
 import ConnectButton from '~components/ConnectButton'
 import Marquee from 'react-fast-marquee'
+import clsx from 'clsx'
 
 const NavLink = (props: any) => {
   if (!props.href) {
@@ -44,7 +45,9 @@ const NavLinks = ({ className }: { className: string }) => (
     className={['flex flex-wrap items-stretch gap-y-2', className].join(' ')}
   >
     <Popover
-      trigger={<span className="text-sm font-semibold">Features</span>}
+      trigger={
+        <span className="text-sm font-semibold text-inherit">Features</span>
+      }
       panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       {[
@@ -89,7 +92,9 @@ const NavLinks = ({ className }: { className: string }) => (
       })}
     </Popover>
     <Popover
-      trigger={<span className="text-sm font-semibold">Community</span>}
+      trigger={
+        <span className="text-sm font-semibold text-inherit">Community</span>
+      }
       panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
@@ -105,7 +110,9 @@ const NavLinks = ({ className }: { className: string }) => (
       </NavLink>
     </Popover>
     <Popover
-      trigger={<span className="text-sm font-semibold">Support</span>}
+      trigger={
+        <span className="text-sm font-semibold text-inherit">Support</span>
+      }
       panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
@@ -127,7 +134,9 @@ const NavLinks = ({ className }: { className: string }) => (
       </NavLink>
     </Popover>
     <Popover
-      trigger={<span className="text-sm font-semibold">Credibility</span>}
+      trigger={
+        <span className="text-sm font-semibold text-inherit">Credibility</span>
+      }
       panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
@@ -164,9 +173,20 @@ const Banner = () => {
   )
 }
 
-export const Navbar = () => (
+export const Navbar = ({
+  showBanner,
+  dark,
+}: {
+  showBanner: boolean
+  dark: boolean
+}) => (
   <Fragment>
-    <nav className="relative z-20 bg-transparent">
+    <nav
+      className={clsx('relative z-20', {
+        'bg-transparent': !dark,
+        'bg-near-black': dark,
+      })}
+    >
       <div className="flex flex-wrap gap-y-5 items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
         <Link className="flex gap-x-3 items-center" href="/">
           <Image
@@ -176,17 +196,38 @@ export const Navbar = () => (
             height={32}
             className="block rounded-full"
           />
-          <span className="text-xl font-black uppercase text-foreground">
+          <span
+            className={clsx('text-xl font-black uppercase text-foreground', {
+              'text-foreground': !dark,
+              'text-white': dark,
+            })}
+          >
             Mochi<span className="text-mochi">.</span>
           </span>
         </Link>
         <div className="order-1 ml-auto md:order-2 md:ml-10">
           <ConnectButton />
         </div>
-        <NavLinks className="flex order-2 gap-x-10 justify-center mx-auto md:order-1 md:justify-start md:mx-0 md:ml-auto basis-full md:basis-[auto]" />
+        <NavLinks
+          className={clsx(
+            'flex order-2 gap-x-10 justify-center mx-auto md:order-1 md:justify-start md:mx-0 md:ml-auto basis-full md:basis-[auto]',
+            {
+              'text-foreground': !dark,
+              'text-white': dark,
+            },
+          )}
+        />
       </div>
     </nav>
-    <div className="flex relative justify-center items-center py-1 w-full text-sm bg-black">
+    <div
+      className={clsx(
+        'relative justify-center items-center py-1 w-full text-sm bg-black',
+        {
+          flex: showBanner,
+          hidden: !showBanner,
+        },
+      )}
+    >
       <Marquee gradientColor={[0, 0, 0]}>
         {Array(10)
           .fill(Banner)

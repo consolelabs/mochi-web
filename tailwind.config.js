@@ -3,6 +3,11 @@ module.exports = {
   mode: 'jit',
   theme: {
     extend: {
+      fontFamily: {
+        clash: ['ClashDisplay-Regular'],
+        'clash-semi': ['ClashDisplay-Semibold'],
+        'clash-bold': ['ClashDisplay-Bold'],
+      },
       colors: {
         dashboard: {
           green: {
@@ -35,6 +40,9 @@ module.exports = {
         },
         telegram: {
           DEFAULT: '#059FDB',
+        },
+        pepe: {
+          DEFAULT: '#34B68A',
         },
         mochi: {
           DEFAULT: '#E88B88',

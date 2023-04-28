@@ -1,3 +1,5 @@
+@import url('../public/fonts/clash/clash-display.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,7 +13,6 @@
 body {
   @apply bg-white;
   font-family: 'Inter', sans-serif;
-  cursor: url(../public/cursor.png), auto;
 }
 
 .twitter-tweet {
@@ -61,4 +62,18 @@ span {
 
 .text-mochi-gradient {
   @apply text-transparent uppercase bg-clip-text bg-gradient-to-r from-mochi-300 via-mochi-600 to-mochi-300;
+}
+
+.text-meme {
+  text-transform: uppercase;
+  --thickness: 4px;
+  color: white;
+  text-shadow: var(--thickness) var(--thickness) 0 #000,
+    calc(var(--thickness) * -1) calc(var(--thickness) * -1) 0 #000,
+    var(--thickness) calc(var(--thickness) * -1) 0 #000,
+    calc(var(--thickness) * -1) var(--thickness) 0 #000,
+    0px var(--thickness) 0 #000, var(--thickness) 0px 0 #000,
+    0px calc(var(--thickness) * -1) 0 #000,
+    calc(var(--thickness) * -1) 0px 0 #000,
+    var(--thickness) var(--thickness) 5px #000;
 }
