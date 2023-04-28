@@ -8,7 +8,6 @@ import { CTA } from '~components/CTA'
 import { FeatureIntroduction } from '~components/FeatureIntroduction'
 import { RingsBackground } from '~components/RingsBackground'
 import { Stats } from '~components/Stats'
-import { Tweets } from '~components/Tweets'
 import { INVITE_LINK } from '~envs'
 import {
   diagBg,
@@ -25,12 +24,14 @@ import {
   util2,
   util3,
   util4,
+  mochisanspacecar,
+  mochisancoins,
+  mochisanchartincrease,
 } from '~utils/image'
-import { Partner } from '~components/Partner'
-import { IntegratedChains } from '~components/IntegratedChains'
 import { Icon } from '@iconify/react'
-
-const scale = 2.25
+import Balancer from 'react-wrap-balancer'
+import { HowMochiWork } from '~components/HowMochiWork'
+import { AddButtons } from '~components/AddButtons'
 
 export default function index() {
   return (
@@ -40,194 +41,128 @@ export default function index() {
       </div>
       <Layout>
         <SEO />
-        <div className="flex relative flex-col-reverse justify-between px-6 md:px-12 lg:flex-row lg:mt-40 body-block h-[600px] xl:h-[450px]">
+        <div className="flex relative flex-col-reverse justify-center items-center px-6 md:px-12 lg:flex-row lg:mt-24 body-block h-[600px] xl:h-[450px]">
           <div className="flex relative z-10 flex-col">
-            <p className="max-w-xl text-3xl md:text-5xl">
-              Bring <span className="text-[#f17975]">Web3</span> universe to
-              your <span className="text-[#6875ED]">Discord</span> server
+            <p>
+              <Balancer className="text-3xl font-black md:text-6xl text-foreground">
+                The Siri of
+                <br />
+                <span className="font-black text-mochi">Web3</span> World!
+              </Balancer>
             </p>
-            <span className="mt-5 max-w-xl text-sm md:text-xl">
-              Smooth onboarding, automated moderation, crypto ticker, NFT rarity
-              ranking, and much more.
+            <span>
+              <Balancer className="mt-2 max-w-xl text-sm font-medium md:text-base text-foreground-secondary">
+                Turn your community into a place all{' '}
+                <span className="font-bold">Web3</span> users want to stay!
+              </Balancer>
             </span>
-            <div className="flex gap-x-5 items-center mt-10">
-              <Button href={INVITE_LINK} appearance="discord">
-                <Icon
-                  icon="ic:baseline-discord"
-                  color="white"
-                  className="w-5"
-                />
-                <div className="whitespace-nowrap">Add Discord</div>
-              </Button>
-              <Button
-                appearance="secondary"
-                className="text-black shadow"
-                disabled
-              >
-                <Icon icon="logos:telegram" color="white" className="w-5" />
-                <div>Telegram</div>
-                <span className="py-0.5 px-2 font-medium text-gray-800 uppercase bg-gray-300 rounded-full text-[10px]">
-                  coming soon
-                </span>
-              </Button>
+            <div className="flex gap-x-3 items-center mt-5">
+              <AddButtons />
             </div>
           </div>
-          <div className="absolute -right-32 -top-1/3 w-2/3 h-full">
-            <RingsBackground />
-          </div>
-          <div className="flex relative flex-1 justify-center items-center lg:justify-end lg:items-start">
+          <div className="relative self-stretch my-10 w-1/3 lg:m-0">
             <Image
-              width={1080 / scale}
-              height={669 / scale}
-              src={rocket}
-              alt=""
+              fill
+              src={mochisanspacecar}
+              alt="mochisan riding a space car"
+              className="object-contain"
             />
           </div>
         </div>
-        <div className="flex flex-col mt-32 lg:mt-5">
-          <p className="mx-auto mb-2 text-3xl text-mochi">Integrated Chains</p>
-          <IntegratedChains />
-          <p className="mx-auto mt-16 mb-2 text-3xl text-mochi">Partners</p>
-          <Partner />
-        </div>
-        <div className="mt-20">
+        <div className="flex gap-x-5 justify-center px-4 mt-5 body-block">
+          <div className="flex gap-x-2 p-4 max-w-sm rounded-xl bg-mochi shadow-mochi">
+            <div className="relative flex-1">
+              <Image
+                fill
+                className="object-contain scale-125"
+                src={mochisancoins}
+                alt="mochisan sitting between piles of coins"
+              />
+            </div>
+            <div className="flex flex-col flex-1">
+              <p className="text-sm text-foreground">
+                <span className="font-bold text-foreground">Do-to-earn</span>{' '}
+                with Mochi and connect with tons of Web3 communities out there!
+              </p>
+              <div className="p-2 mt-auto text-white rounded-lg bg-near-black">
+                Coming soon
+              </div>
+            </div>
+          </div>
           <Stats />
         </div>
         <div className="flex flex-col px-6 md:px-12 body-block">
           <div className="flex flex-col gap-y-2 items-start mx-auto mt-36 md:items-center">
-            <p className="text-4xl">Server management made easy</p>
-            <span className="text-xl">
-              Set and forget. Mochi does it all for you, automatically
+            <p className="text-3xl font-bold">What is Mochi.gg?</p>
+            <span>
+              <Balancer className="text-xl font-thin text-center">
+                Mochi is an all-in-one bot that help you to make sure money well
+                spent on the right activity!
+                <br />
+                We provides all web3 activities in different social platform
+                what help your community to bring more traffic and ease the
+                growth process.
+              </Balancer>
             </span>
-            <Link legacyBehavior href="/server-management">
-              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
-                <span className="font-medium text-blue-500 hover:text-mochi">
-                  Learn more
-                </span>
-                <Icon
-                  icon="heroicons:arrow-top-right-on-square-solid"
-                  className="w-4"
-                />
-              </a>
-            </Link>
-          </div>
-          {/* FEATURES */}
-          <FeatureIntroduction
-            title="Holder Verification"
-            subtitle={
-              <span>
-                Manage access to holder-exclusive private channels,
-                <br />
-                multiple collections at once.
-              </span>
-            }
-            image={feature1}
-            className="mt-20 md:mt-20"
-          />
-          {/* ======================= */}
-          <FeatureIntroduction
-            flip
-            title="Automatic Role Grant"
-            subtitle={
-              <span>
-                Lets users add &amp; remove roles from themselves by
-                <br />
-                simply reacting to a message.
-              </span>
-            }
-            image={feature2}
-          />
-          {/* ======================= */}
-          <FeatureIntroduction
-            title="Detailed Server Insights"
-            subtitle={
-              <span>
-                The lastest server stats bot you need to make the right
-                <br />
-                decisions.
-              </span>
-            }
-            image={feature3}
-          />
-          {/* ======================= */}
-          <FeatureIntroduction
-            flip
-            title={
-              <p className="text-2xl">
-                Smooth Onboarding
-                <br />
-                Experience
-              </p>
-            }
-            subtitle={
-              <span>
-                Give your new members a heartwarming welcome
-                <br />
-                with our ready-to-use and fully customizable designs.
-              </span>
-            }
-            image={feature4}
-          />
-          {/* ======================= */}
-          <FeatureIntroduction
-            title="Facilitate Engagement"
-            subtitle={
-              <span>
-                Quick &amp; easy to setup dedicated channels for fun &amp;
-                <br />
-                engaging activities such as GM.
-              </span>
-            }
-            image={feature5}
-          />
-        </div>
-        <div className="relative mt-[-800px]">
-          <div className="relative h-[1142px]">
-            <Image fill src={diagBg} alt="" />
-          </div>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Image width={134} height={136} src={mochiTextCircle} alt="" />
+            <div className="relative mt-3 w-52 h-52">
+              <Image
+                fill
+                className="object-contain"
+                src={mochisanchartincrease}
+                alt="mochisan over a chart that seems to be increasing"
+              />
+            </div>
           </div>
         </div>
         <div className="flex flex-col px-6 md:px-12 body-block">
           <div className="flex flex-col gap-y-2 items-start mx-auto mt-36 md:items-center">
-            <p className="text-4xl">Crypto Utilities</p>
-            <span className="text-xl">
-              Access all thing crypto without having to leave Discord
-            </span>
-            <Link legacyBehavior href="/crypto-utils">
-              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
-                <span className="font-medium text-blue-500 hover:text-mochi">
-                  Learn more
-                </span>
-                <Icon
-                  icon="heroicons:arrow-top-right-on-square-solid"
-                  className="w-4"
-                />
-              </a>
-            </Link>
+            <p className="text-3xl font-bold">What Does Mochi Do?</p>
           </div>
           <div className="grid grid-cols-1 grid-rows-4 gap-6 mt-10 md:grid-cols-2 md:grid-rows-2">
             {[
               {
-                icon: util1,
-                title: 'Crypto ticker',
-                desc: 'Track real-time price of more than 9,000 tokens supported',
+                icon: (
+                  <Icon
+                    width={32}
+                    height={32}
+                    icon="material-symbols:globe-asia"
+                  />
+                ),
+                title: 'Seamless Access to Web3',
+                desc: 'Access to all web3 application without having wallets and save tons of opportunities to earn like chads!',
               },
               {
-                icon: util2,
-                title: 'Watchlist',
-                desc: 'Save a list of favorite tokens and pairs for a quick update',
+                icon: (
+                  <Icon
+                    width={32}
+                    height={32}
+                    icon="fa6-solid:arrow-trend-up"
+                  />
+                ),
+                title: 'Ultimate tools for Crypto Degens',
+                desc: 'Perform better than 99% of crypto market to provide on-chain data insight for crypto degens. ',
               },
               {
-                icon: util3,
-                title: 'Tip bot',
-                desc: 'Send and receive any amount of crypto, directly on Discord',
+                icon: (
+                  <Icon
+                    width={32}
+                    height={32}
+                    icon="fluent:people-community-20-filled"
+                  />
+                ),
+                title: 'Grow Toolset for Community',
+                desc: 'Reach out to, reward, and engage millions of Web3 users with a simple solution and loyalty programs.',
               },
               {
-                icon: util4,
-                title: 'Airdrop',
-                desc: 'Airdrops, money rains and other community-engaging activities',
+                icon: (
+                  <Icon
+                    width={32}
+                    height={32}
+                    icon="material-symbols:insert-chart-rounded"
+                  />
+                ),
+                title: 'Toolset to manage Web3 community',
+                desc: 'Set and forget. Mochi does all management activities for you, automatically.',
               },
             ].map((u, i) => {
               return (
@@ -235,132 +170,16 @@ export default function index() {
                   key={`util-${i}`}
                   className="flex flex-col items-start p-6 bg-white rounded-lg border border-gray-200"
                 >
-                  <CircledIcon src={u.icon} />
+                  <CircledIcon>{u.icon}</CircledIcon>
                   <p className="mt-2 text-xl">{u.title}</p>
-                  <span className="mt-1 text-base">{u.desc}</span>
+                  <span className="mt-1 text-base font-light">{u.desc}</span>
                 </div>
               )
             })}
           </div>
         </div>
-        <div className="px-6 md:px-12 body-block">
-          <div className="flex flex-col gap-y-2 items-start mx-auto mt-36 md:items-center">
-            <p className="text-4xl">NFT + Discord = WAGMI</p>
-            <span className="text-xl">
-              A full set of tools for minters, traders, and collection owners
-            </span>
-            <Link legacyBehavior href="/nft">
-              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
-                <span className="font-medium text-blue-500 hover:text-mochi">
-                  Learn more
-                </span>
-                <Icon
-                  icon="heroicons:arrow-top-right-on-square-solid"
-                  className="w-4"
-                />
-              </a>
-            </Link>
-          </div>
-          <div className="flex flex-col gap-y-8 justify-between mt-16 md:flex-row md:gap-y-0 md:mt-32">
-            <div className="flex flex-col gap-y-2">
-              <p className="text-xl">Rarity ranking tool</p>
-              <span className="text-base">
-                Instant rarity checker from a huge database, while
-                <br />
-                indexing new collections is quick and easy.
-              </span>
-            </div>
-            <div className="flex flex-col gap-y-2">
-              <p className="text-xl">Track NFT Sales</p>
-              <span className="text-base">
-                Quick catch up on market movement and you might
-                <br />
-                see some steals in there.
-              </span>
-            </div>
-          </div>
-          <div className="mt-10">
-            <Image src={nftRarityRanking} alt="" />
-          </div>
-        </div>
-        <div className="flex flex-col px-6 mt-44 md:px-12 body-block">
-          <div className="flex flex-col gap-y-2 items-start mx-auto md:items-center">
-            <p className="text-4xl">Social</p>
-            <span className="text-xl">
-              Engage with your community and honor members.
-            </span>
-            <Link legacyBehavior href="/social">
-              <a className="flex gap-x-1 items-center font-medium text-blue-500 underline">
-                <span className="font-medium text-blue-500 hover:text-mochi">
-                  Learn more
-                </span>
-                <Icon
-                  icon="heroicons:arrow-top-right-on-square-solid"
-                  className="w-4"
-                />
-              </a>
-            </Link>
-          </div>
-          <div className="flex flex-col gap-y-8 justify-between py-5 px-10 mt-10 bg-white rounded-lg border border-gray-200 md:flex-row md:gap-y-0">
-            {[
-              {
-                icon: '/rocket.gif',
-                title: 'Beyond Discord',
-                desc: (
-                  <>
-                    Let users connect other social
-                    <br />
-                    profiles and flex their
-                    <br />
-                    personality
-                  </>
-                ),
-              },
-              {
-                icon: '/thumbs-up.gif',
-                title: 'Starboard',
-                desc: (
-                  <>
-                    Honor and share well-rated
-                    <br />
-                    content
-                  </>
-                ),
-              },
-              {
-                icon: '/party.gif',
-                title: 'Leaderboard',
-                desc: (
-                  <>
-                    Let your community know
-                    <br />
-                    who&apos;s the best
-                  </>
-                ),
-              },
-            ].map((s, i) => {
-              return (
-                <div
-                  key={`social-${i}`}
-                  className="flex flex-col items-center text-center"
-                >
-                  <CircledIcon src={s.icon} />
-                  <p className="mt-1 text-xl">{s.title}</p>
-                  <span className="mt-1 text-base">{s.desc}</span>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-        <div className="flex flex-col px-6 mt-44 md:px-12 body-block">
-          <div className="flex flex-col gap-y-2 items-start mx-auto md:items-center">
-            <p className="text-4xl">Tweets</p>
-          </div>
-          <Tweets />
-        </div>
-        <div className="mt-20">
-          <CTA />
-        </div>
+        <CTA />
+        <HowMochiWork />
       </Layout>
     </div>
   )

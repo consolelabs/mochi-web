@@ -6,6 +6,7 @@ import { PAGES, SOCIAL_LINKS } from '~constants'
 import { logo } from '~utils/image'
 import { Icon } from '@iconify/react'
 import ConnectButton from '~components/ConnectButton'
+import Marquee from 'react-fast-marquee'
 
 const NavLink = (props: any) => {
   if (!props.href) {
@@ -147,6 +148,22 @@ const NavLinks = ({ className }: { className: string }) => (
   </div>
 )
 
+const Banner = () => {
+  return (
+    <div className="flex items-center mx-3 space-x-6">
+      <span className="font-black text-white">SOLANA CODING CAMP</span>
+      <span className="flex items-center px-2 text-xs font-black text-black uppercase bg-yellow-50 rounded-full">
+        <Icon
+          icon="fluent-emoji-high-contrast:2nd-place-medal"
+          className="mr-1"
+          height={20}
+        />
+        2nd place
+      </span>
+    </div>
+  )
+}
+
 export const Navbar = () => (
   <Fragment>
     <nav className="relative z-20 bg-transparent">
@@ -169,18 +186,14 @@ export const Navbar = () => (
         <NavLinks className="flex order-2 gap-x-10 justify-center mx-auto md:order-1 md:justify-start md:mx-0 md:ml-auto basis-full md:basis-[auto]" />
       </div>
     </nav>
-    <div className="flex relative justify-center items-center py-2 space-x-2 w-full text-sm bg-black">
-      <span className="font-semibold text-white">Solana Coding Camp</span>
-      <span
-        className="flex items-center py-1 px-3 text-xs font-semibold text-black uppercase rounded-full"
-        style={{
-          background:
-            'linear-gradient(90deg, #F4C4C2 0%, #EEC3FD 48.96%, #8FC6E4 100%)',
-        }}
-      >
-        <Icon icon="heroicons:trophy-20-solid" className="mr-1 w-4" />
-        2nd place
-      </span>
+    <div className="flex relative justify-center items-center py-1 w-full text-sm bg-black">
+      <Marquee gradientColor={[0, 0, 0]}>
+        {Array(10)
+          .fill(Banner)
+          .map((Comp, i) => (
+            <Comp key={`banner-${i}`} />
+          ))}
+      </Marquee>
     </div>
   </Fragment>
 )

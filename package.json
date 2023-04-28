@@ -41,6 +41,7 @@
     "react-sparkline-svg": "^1.0.2",
     "react-sparklines": "^1.7.0",
     "react-table": "^7.8.0",
+    "react-wrap-balancer": "^0.4.0",
     "sharp": "^0.31.3",
     "sonner": "^0.3.0",
     "sprintf-js": "^1.1.2",

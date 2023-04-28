@@ -3,20 +3,14 @@ import React from 'react'
 import { iconContainer } from '~utils/image'
 
 type Props = {
-  src: any
+  children: React.ReactNode
 }
 
 export const CircledIcon = (props: Props) => {
   return (
-    <div className="flex relative justify-center items-center p-4 w-16 h-16">
+    <div className="flex relative justify-center items-center p-4 w-14 h-14">
       <Image fill src={iconContainer} alt="" />
-      <Image
-        width={40}
-        height={40}
-        src={props.src}
-        alt=""
-        className="relative"
-      />
+      <div className="relative">{props.children}</div>
     </div>
   )
 }

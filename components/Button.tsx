@@ -1,7 +1,7 @@
 import React from 'react'
 import { cva } from 'class-variance-authority'
 
-type Appearance = 'primary' | 'secondary' | 'tertiary' | 'discord'
+type Appearance = 'primary' | 'secondary' | 'tertiary' | 'discord' | 'telegram'
 
 type Props = {
   appearance?: Appearance
@@ -18,6 +18,7 @@ const button = cva(
         secondary: ['text-mochi', 'bg-white'],
         tertiary: ['text-mochi bg-mochi bg-opacity-[15%]'],
         discord: ['text-white', 'bg-discord'],
+        telegram: ['text-white', 'bg-telegram'],
       },
     },
     defaultVariants: {

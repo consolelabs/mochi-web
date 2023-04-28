@@ -23,12 +23,18 @@ module.exports = {
             1: '#FD5E59',
           },
         },
+        'near-black': {
+          DEFAULT: '#161418',
+        },
         foreground: {
           DEFAULT: '#111827',
           secondary: '#4B5563',
         },
         discord: {
           DEFAULT: '#6875ED',
+        },
+        telegram: {
+          DEFAULT: '#059FDB',
         },
         mochi: {
           DEFAULT: '#E88B88',
@@ -61,8 +67,12 @@ module.exports = {
         '4xl': '128px',
       },
       boxShadow: {
+        mochi: '0px 8px 25px rgba(232, 139, 136, 0.5)',
         full: '0px 4px 16px rgba(0, 0, 0, 0.15)',
         card: '0px 0.883215px 2.64964px rgba(0, 0, 0, 0.2)',
+      },
+      animation: {
+        'spin-slow': 'spin 20s linear infinite',
       },
     },
   },
