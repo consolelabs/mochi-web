@@ -40,6 +40,7 @@ export function CardUI({
         height: 200,
         background: 'linear-gradient(135deg, #e9dbda, #eec3fd, #8fc6e4)',
         filter: 'drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.2))',
+        transform: 'translateZ(0)',
       }}
       className="w-[270px] sm:w-[340px]"
     >
