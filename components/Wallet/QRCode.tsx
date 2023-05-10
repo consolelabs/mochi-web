@@ -66,7 +66,6 @@ export const QRCode = React.forwardRef<HTMLDivElement, Props>(
       qrList.forEach(({ x, y }) => {
         const x1 = (matrix.length - 7) * cellSize * x
         const y1 = (matrix.length - 7) * cellSize * y
-        let biggestSize = 0
         for (let i = 0; i < 3; i++) {
           dots.push(
             <rect

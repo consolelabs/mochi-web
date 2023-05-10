@@ -11,9 +11,10 @@ type Props = {
   link: string
   image?: string
   user?: string
+  children?: React.ReactNode
 }
 
-export default function QRCodeInfo({ user, link, image }: Props) {
+export default function QRCodeInfo({ children, user, link, image }: Props) {
   const {
     isOpen: justCopied,
     onOpen: copied,
@@ -50,7 +51,7 @@ export default function QRCodeInfo({ user, link, image }: Props) {
           icon="fluent:qr-code-28-filled"
           className="w-4 h-4 text-dashboard-gray-4"
         />
-        <div className="whitespace-nowrap">QR Code</div>
+        {children ?? <div className="whitespace-nowrap">QR Code</div>}
       </button>
 
       <Modal isOpen={isOpen} onClose={onClose}>

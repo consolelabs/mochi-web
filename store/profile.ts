@@ -44,7 +44,7 @@ export const useProfileStore = create<State>((set, get) => ({
         profile_name,
       },
       shouldTruncateAddress:
-        true || isSolAddress(profile_name) || utils.isAddress(profile_name),
+        isSolAddress(profile_name) || utils.isAddress(profile_name),
     })
   },
 

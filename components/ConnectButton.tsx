@@ -14,7 +14,10 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { handleCancelRendering } from '~pages/_app'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import { Popover } from './Popover'
-import { truncate } from '@dwarvesf/react-utils'
+import { isSSR, truncate } from '@dwarvesf/react-utils'
+import QRCodeButton from '~components/Pay/QRCodeButton'
+import useSWR from 'swr'
+import { API } from '~constants/api'
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
@@ -29,14 +32,28 @@ export default function ConnectButton() {
     (s) => ({ isLoggedIn: s.isLoggedIn, logout: s.logout }),
     shallow,
   )
-  const { name, shouldTruncate } = useProfileStore(
+  const { name, id, shouldTruncate, avatar } = useProfileStore(
     (s) => ({
+      id: s.me?.id,
       name: s.me?.profile_name,
       shouldTruncate: s.shouldTruncateAddress,
+      avatar: s.me?.avatar,
     }),
     shallow,
   )
   const { ensName } = useEns(name ?? '')
+
+  const { data: payRequests = { pay_request: null, nr_of_unclaimed: 0 } } =
+    useSWR([`/unclaimed`, id], async ([_, id]) => {
+      if (!id)
+        return {
+          pay_request: null,
+          nr_of_unclaimed: 0,
+        }
+      return await API.MOCHI_PAY.get(`/pay-requests/${id}/unclaimed`).json(
+        (r) => r.data,
+      )
+    })
 
   const disconnect = () => {
     try {
@@ -122,6 +139,22 @@ export default function ConnectButton() {
                 <Icon icon="mingcute:discord-fill" width={16} />
                 Add Bot
               </a>
+
+              {payRequests.pay_request && payRequests.nr_of_unclaimed ? (
+                <div className="flex mx-3 mt-2">
+                  <QRCodeButton
+                    image={avatar}
+                    link={
+                      isSSR()
+                        ? ''
+                        : `${window.location.protocol}://${window.location.host}/pay/${payRequests.pay_request.code}`
+                    }
+                    user={finalName}
+                  >
+                    {payRequests.nr_of_unclaimed} code(s) left
+                  </QRCodeButton>
+                </div>
+              ) : null}
               <Menu
                 onClick={() => close()}
                 items={[
