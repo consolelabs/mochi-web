@@ -195,7 +195,7 @@ export default function PayCode({
             <div className="flex flex-wrap gap-2">
               <QRCodeButton
                 image={initialPayRequest?.profile?.avatar}
-                link={isSSR() ? '' : window.location.href}
+                links={isSSR() ? [] : [window.location.href]}
                 user={initialPayRequest?.profile?.name}
               />
               <CopyLinkButton link={isSSR() ? '' : window.location.href} />

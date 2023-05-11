@@ -43,11 +43,11 @@ export default function ConnectButton() {
   )
   const { ensName } = useEns(name ?? '')
 
-  const { data: payRequests = { pay_request: null, nr_of_unclaimed: 0 } } =
+  const { data: payRequests = { pay_requests: [], nr_of_unclaimed: 0 } } =
     useSWR([`/unclaimed`, id], async ([_, id]) => {
       if (!id)
         return {
-          pay_request: null,
+          pay_requests: [],
           nr_of_unclaimed: 0,
         }
       return await API.MOCHI_PAY.get(`/pay-requests/${id}/unclaimed`).json(
@@ -140,14 +140,18 @@ export default function ConnectButton() {
                 Add Bot
               </a>
 
-              {payRequests.pay_request && payRequests.nr_of_unclaimed ? (
+              {payRequests.pay_requests.length &&
+              payRequests.nr_of_unclaimed ? (
                 <div className="flex mx-3 mt-2">
                   <QRCodeButton
                     image={avatar}
-                    link={
+                    links={
                       isSSR()
-                        ? ''
-                        : `${window.location.protocol}://${window.location.host}/pay/${payRequests.pay_request.code}`
+                        ? []
+                        : payRequests.pay_requests.map(
+                            (pr: any) =>
+                              `${window.location.protocol}://${window.location.host}/pay/${pr.code}`,
+                          )
                     }
                     user={finalName}
                   >

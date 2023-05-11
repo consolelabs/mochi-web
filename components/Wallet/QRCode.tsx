@@ -137,7 +137,7 @@ export const QRCode = React.forwardRef<HTMLDivElement, Props>(
     return (
       <div
         ref={ref}
-        className="relative p-4 bg-white rounded-2xl border border-theme"
+        className="relative flex-shrink-0 p-4 w-min bg-white rounded-2xl border border-theme h-min"
       >
         <div className="flex relative w-full h-full select-none">
           <div
