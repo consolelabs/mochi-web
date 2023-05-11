@@ -6,8 +6,8 @@ import { QRCode as QRCodeGenerator } from '~components/Wallet/QRCode'
 import { useMedia } from '@dwarvesf/react-hooks'
 import { useEffect, useRef, useState } from 'react'
 import domtoimage from 'dom-to-image'
-import { FixedSizeList as List } from 'react-window'
 import createScrollSnap from 'scroll-snap'
+import VirtualList, { ScrollDirection } from 'react-tiny-virtual-list'
 
 type Props = {
   links: string[]
@@ -25,36 +25,35 @@ function Inner({ setIdx, links, refs, image, qrSize }: any) {
   )
 
   useEffect(() => {
-    if (ref.current) {
-      const { bind, unbind } = createScrollSnap(
-        ref.current,
-        {
-          snapDestinationX: '100%',
-        },
-        () => {
-          if (ref.current) {
-            const scrollLeft = ref.current?.scrollLeft
-            setIdx(Math.floor(scrollLeft / (qrOuterSize + 10)) - 1)
-          }
-        },
-      )
-      bind()
-      return () => unbind()
-    }
-
-    return () => {}
+    const ele = document
+      .getElementsByClassName('qr-code-scroll-container')
+      .item(0) as HTMLElement
+    if (!ele) return () => {}
+    const { bind, unbind } = createScrollSnap(
+      ele,
+      {
+        snapDestinationX: '100%',
+      },
+      () => {
+        if (ref.current) {
+          const scrollLeft = ref.current?.scrollLeft
+          setIdx(Math.floor(scrollLeft / (qrOuterSize + 10)) - 1)
+        }
+      },
+    )
+    bind()
+    return () => unbind()
   }, [qrOuterSize, setIdx])
 
   return (
-    <List
-      outerRef={ref}
+    <VirtualList
+      className="qr-code-scroll-container"
       height={qrOuterSize}
       width={qrOuterSize + 10}
       itemCount={links.length}
       itemSize={qrOuterSize + 10}
-      layout="horizontal"
-    >
-      {({ index, style }) => {
+      scrollDirection={ScrollDirection.HORIZONTAL}
+      renderItem={({ index, style }) => {
         return (
           <div style={style}>
             <QRCodeGenerator
@@ -69,7 +68,7 @@ function Inner({ setIdx, links, refs, image, qrSize }: any) {
           </div>
         )
       }}
-    </List>
+    ></VirtualList>
   )
 }
 
