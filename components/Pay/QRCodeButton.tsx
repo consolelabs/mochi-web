@@ -1,4 +1,4 @@
-import { useDisclosure, useHasMounted } from '@dwarvesf/react-hooks'
+import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
 import { button } from '~components/Dashboard/Button'
 import Modal from '~components/Modal'
@@ -7,7 +7,7 @@ import { useMedia } from '@dwarvesf/react-hooks'
 import { useEffect, useRef, useState } from 'react'
 import domtoimage from 'dom-to-image'
 import { FixedSizeList as List } from 'react-window'
-import { useDrag, useGesture, useScroll } from '@use-gesture/react'
+import createScrollSnap from 'scroll-snap'
 
 type Props = {
   links: string[]
@@ -16,13 +16,69 @@ type Props = {
   children?: React.ReactNode
 }
 
+function Inner({ setIdx, links, refs, image, qrSize }: any) {
+  const ref = useRef<HTMLDivElement>(null)
+  const qrOuterSize = useMedia(
+    ['(min-width: 640px)', '(min-width: 0px)'],
+    [318, 268],
+    268,
+  )
+
+  useEffect(() => {
+    if (ref.current) {
+      const { bind, unbind } = createScrollSnap(
+        ref.current,
+        {
+          snapDestinationX: '100%',
+        },
+        () => {
+          if (ref.current) {
+            const scrollLeft = ref.current?.scrollLeft
+            setIdx(Math.floor(scrollLeft / (qrOuterSize + 10)) - 1)
+          }
+        },
+      )
+      bind()
+      return () => unbind()
+    }
+
+    return () => {}
+  }, [qrOuterSize, setIdx])
+
+  return (
+    <List
+      outerRef={ref}
+      height={qrOuterSize}
+      width={qrOuterSize + 10}
+      itemCount={links.length}
+      itemSize={qrOuterSize + 10}
+      layout="horizontal"
+    >
+      {({ index, style }) => {
+        return (
+          <div style={style}>
+            <QRCodeGenerator
+              ref={(e) => {
+                refs.current[index] = e
+              }}
+              logoBackground="white"
+              logoUrl={image ?? '/assets/mochi-gray.png'}
+              uri={links[index]}
+              qrSize={qrSize}
+            />
+          </div>
+        )
+      }}
+    </List>
+  )
+}
+
 export default function QRCodeInfo({ children, user, links, image }: Props) {
   const {
     isOpen: justCopied,
     onOpen: copied,
     onClose: clearCopied,
   } = useDisclosure()
-  const hasMounted = useHasMounted()
   const [imgBlob, setImgBlob] = useState<Blob>()
   const [idx, setIdx] = useState(0)
   const refs = useRef<(HTMLDivElement | null)[]>([])
@@ -32,50 +88,6 @@ export default function QRCodeInfo({ children, user, links, image }: Props) {
     [300, 250],
     250,
   )
-  const qrOuterSize = useMedia(
-    ['(min-width: 640px)', '(min-width: 0px)'],
-    [318, 268],
-    268,
-  )
-
-  const bind = useGesture(
-    {
-      onDrag: (state) => {
-        let isLeft, isRight
-        if (state.down) {
-          state.cancel()
-          isLeft = state.movement[0] < 0
-          isRight = state.movement[0] > 0
-        } else {
-          state.cancel()
-          isLeft = state.swipe[0] < 0
-          isRight = state.swipe[0] > 0
-        }
-        if (isLeft) {
-          setIdx(Math.min(idx + 1, links.length - 1))
-        } else if (isRight) {
-          setIdx(Math.max(idx - 1, 0))
-        }
-      },
-    },
-    { drag: { axis: 'x' } },
-  )
-
-  useEffect(() => {
-    const ref = refs.current[idx]
-    if (!ref) return
-    domtoimage
-      .toBlob(ref, {
-        bgcolor: 'white',
-      })
-      .then(setImgBlob)
-  }, [links, user, qrSize, idx])
-
-  useEffect(() => {
-    if (refs.current[idx] && hasMounted) {
-      refs.current[idx]?.scrollIntoView()
-    }
-  }, [hasMounted, idx])
 
   if (!links.filter(Boolean).length) return null
 
@@ -128,34 +140,13 @@ export default function QRCodeInfo({ children, user, links, image }: Props) {
           >
             {justCopied ? 'Copied!' : 'Copy QR Code'}
           </button>
-          <div>
-            <List
-              height={qrOuterSize}
-              width={qrOuterSize + 10}
-              itemCount={links.length}
-              itemSize={qrOuterSize + 10}
-              layout="horizontal"
-              /* style={{ */
-              /*   overflow: 'hidden', */
-              /* }} */
-            >
-              {({ index, style }) => {
-                return (
-                  <div style={style}>
-                    <QRCodeGenerator
-                      ref={(e) => {
-                        refs.current[index] = e
-                      }}
-                      logoBackground="white"
-                      logoUrl={image ?? '/assets/mochi-gray.png'}
-                      uri={links[index]}
-                      qrSize={qrSize}
-                    />
-                  </div>
-                )
-              }}
-            </List>
-          </div>
+          <Inner
+            setIdx={setIdx}
+            refs={refs}
+            links={links}
+            qrSize={qrSize}
+            image={image}
+          />
         </div>
       </Modal>
     </>
