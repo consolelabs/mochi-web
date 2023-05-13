@@ -156,7 +156,8 @@ export default function Airdrop({
             }
           })
           .catch(() => null)
-      }, timeout)
+        // wait more 3 seconds to make sure
+      }, (timeout ?? 0) + 3000)
     },
     [airdropId, reload, replace, timeout],
   )
