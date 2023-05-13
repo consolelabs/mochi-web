@@ -48,6 +48,7 @@
     "sprintf-js": "^1.1.2",
     "swr": "^2.1.1",
     "tweetnacl": "^1.0.3",
+    "use-timer": "^2.0.1",
     "wagmi": "^0.12.1",
     "webp-converter": "^2.3.3",
     "wretch": "^2.5.1",

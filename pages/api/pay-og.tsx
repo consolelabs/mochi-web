@@ -70,7 +70,7 @@ const og = async (req: NextRequest) => {
           width: 340,
         }}
       >
-        <CardUI {...data} />
+        <CardUI {...data} isOG />
       </div>
     ),
     {

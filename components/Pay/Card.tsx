@@ -13,6 +13,7 @@ export type Props = {
   decimal: number
   symbol: string
   native: boolean
+  isOG?: boolean
 }
 
 // we must style this component via `style` prop since we're also using
@@ -27,10 +28,12 @@ export function CardUI({
   status,
   chainIcon,
   tokenIcon,
+  isOG = false,
 }: Props) {
   return (
     <div
       style={{
+        ...(!isOG ? { transform: 'translateZ(0px)' } : {}),
         display: 'flex',
         overflow: 'hidden',
         margin: '0 auto',
@@ -40,7 +43,6 @@ export function CardUI({
         height: 200,
         background: 'linear-gradient(135deg, #e9dbda, #eec3fd, #8fc6e4)',
         filter: 'drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.2))',
-        transform: 'translateZ(0)',
       }}
       className="w-[270px] sm:w-[340px]"
     >

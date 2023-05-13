@@ -64,6 +64,15 @@ module.exports = {
         full: '0px 4px 16px rgba(0, 0, 0, 0.15)',
         card: '0px 0.883215px 2.64964px rgba(0, 0, 0, 0.2)',
       },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      animation: {
+        float: 'float 5s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
