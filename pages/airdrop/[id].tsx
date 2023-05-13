@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   // no data -> maybe the airdrop is still ongoing?
   const isAirdropOngoing =
-    Date.now() < (Number(joinRes.airdrop?.end_at_unix) ?? 0) / 1000
+    Date.now() < (Number(joinRes.airdrop?.end_at_unix) ?? 0) * 1000
 
   if (isAirdropOngoing) {
     return {
@@ -79,7 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         valid: false,
         joinId,
         airdropId,
-        timeout: Number(joinRes.airdrop.end_at_unix) / 1000 - Date.now(),
+        timeout: Number(joinRes.airdrop.end_at_unix) * 1000 - Date.now(),
       },
     }
   }
@@ -97,12 +97,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 function Countdown(props: any) {
   const { start, reset, time } = useTimer({
-    initialTime: props.countdown,
+    initialTime: props.countdown / 1000,
     timerType: 'DECREMENTAL',
   })
 
   useEffect(() => {
-    if (props.countdown <= 0) return
+    if (props.countdown / 1000 <= 0) return
     start()
 
     return () => {
@@ -112,11 +112,11 @@ function Countdown(props: any) {
 
   return (
     <>
-      <p>{numberFormat.format(Math.floor(time / 3600))}</p>
+      <p>{numberFormat.format(Math.max(0, Math.floor(time / 3600)))}</p>
       <p>:</p>
-      <p>{numberFormat.format(Math.floor((time % 3600) / 60))}</p>
+      <p>{numberFormat.format(Math.max(Math.floor((time % 3600) / 60)))}</p>
       <p>:</p>
-      <p>{numberFormat.format(time % 60)}</p>
+      <p>{numberFormat.format(Math.max(Math.floor(time % 60)))}</p>
     </>
   )
 }
@@ -149,8 +149,6 @@ export default function Airdrop({
           .json((r) => r.data)
           .then((res) => {
             if (res) {
-              localStorage.removeItem(KEY)
-
               replace(`/pay/${res?.pay_request?.code}`)
             } else {
               // reload to show invalid message
@@ -164,11 +162,17 @@ export default function Airdrop({
   )
 
   useEffect(() => {
-    let joinId = _joinId || localStorage.getItem(KEY)
+    let joinId = _joinId
     if (!joinId) {
-      replace(`/airdrop/${airdropId}?join_id=${window.crypto.randomUUID()}`)
+      joinId =
+        localStorage.getItem(`${KEY}-${airdropId}`) ??
+        window.crypto.randomUUID()
+      localStorage.setItem(`${KEY}-${airdropId}`, joinId)
+      replace(`/airdrop/${airdropId}?join_id=${joinId}`)
       return
     }
+
+    localStorage.setItem(`${KEY}-${airdropId}`, joinId)
 
     if (!ended && !valid && typeof timeout === 'number') {
       // we just wait
@@ -177,7 +181,6 @@ export default function Airdrop({
       // first time visit, join manually
       setTimeout(() => {
         if (!joinId) return
-        localStorage.setItem(KEY, joinId)
         API.MOCHI_PAY.post(
           {},
           `/pay-requests/airdrop/${airdropId}/join/${joinId}`,
@@ -185,10 +188,12 @@ export default function Airdrop({
           .json((r) => r.data)
           .then((joinRes) => {
             if (!joinRes || !joinId) return
+            const countdown =
+              Number(joinRes.airdrop?.end_at_unix ?? 0) * 1000 - Date.now()
+            const isEnded = countdown <= 0
+            if (isEnded) return
             setJoined(true)
-            setCountdown(
-              Number(joinRes.airdrop?.end_at_unix ?? 0) / 1000 - Date.now(),
-            )
+            setCountdown(countdown)
             waitAndGetLink(joinId)
           })
           .catch(() => null)
@@ -199,6 +204,13 @@ export default function Airdrop({
       }, 2000)
     }
   }, [_joinId, airdropId, code, ended, replace, timeout, valid, waitAndGetLink])
+
+  useEffect(() => {
+    if (!ended && !valid && typeof timeout === 'number') {
+      setJoined(true)
+      setCountdown(timeout)
+    }
+  }, [ended, timeout, valid])
 
   const isWaiting = !ended && !valid && joined && countdown > 0
   const redirectingToPaylink = ended && valid
@@ -247,7 +259,8 @@ export default function Airdrop({
                 <div className="flex justify-center items-center text-3xl">
                   <Countdown countdown={countdown} />
                 </div>
-                <p>Patience is a virtue!</p>
+                <p className="text-sm font-thin">until airdrop ends</p>
+                <p className="mt-3">Patience is a virtue!</p>
               </div>
             )
           ) : ended && !valid ? (
