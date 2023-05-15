@@ -22,6 +22,12 @@ module.exports = {
         destination: process.env.INVITE_LINK,
         permanent: false,
       },
+      {
+        source: '/guide',
+        destination:
+          'https://mochibot.gitbook.io/mochi-bot/introduction/about-mochi-bot',
+        permanent: false,
+      },
     ]
 
     // TODO: remove after done dashboard
