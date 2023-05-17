@@ -21,6 +21,10 @@ export const PAGES = {
     path: '/verify',
     title: 'Verify Wallet',
   },
+  CONNECT_TELEGRAM: {
+    path: '/connect-telegram',
+    title: 'Connect to telegram account',
+  },
   TOS: {
     path: '/tos',
     title: 'Terms of Service',
