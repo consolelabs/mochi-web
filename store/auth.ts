@@ -47,6 +47,7 @@ export const useAuthStore = create<State>((set, get) => ({
         .get('/profiles/me')
         .badRequest(logout)
         .unauthorized(logout)
+        .internalError(logout)
         .res((res) => {
           set({ isLoadingSession: false })
           // if the code makes it here means the token is valid

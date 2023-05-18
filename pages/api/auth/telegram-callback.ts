@@ -5,8 +5,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { error, token } = req.query
+  const { username = '', error = '', token } = req.query
   return res.redirect(
-    `${HOME_URL}/connect-telegram?token=${token}&error=${error}&done=true`,
+    `${HOME_URL}/connect-telegram?token=${token}&done=true${
+      error ? `&error=${error}` : ''
+    }${username ? `&username=${username}` : ''}`,
   )
 }

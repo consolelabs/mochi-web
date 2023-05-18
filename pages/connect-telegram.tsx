@@ -10,15 +10,16 @@ import { HOME_URL } from '~envs'
 import { useAuthStore, useProfileStore } from '~store'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { code, error = '', done } = ctx.query
+  const { username = '', code, error = '', done } = ctx.query
 
-  if (!code)
+  if (!code && !done)
     return {
       notFound: true,
     }
 
   return {
     props: {
+      username,
       code,
       error: decodeURIComponent(error as string),
       done: !!done,
@@ -30,10 +31,12 @@ export default function ConnectTelegram({
   code,
   error,
   done,
+  username,
 }: {
   code?: string
   error?: string
   done: boolean
+  username: string
 }) {
   const isLoading = useAuthStore((s) => s.isLoadingSession)
   const profile = useProfileStore((s) => s.me)
@@ -68,13 +71,18 @@ export default function ConnectTelegram({
                   &ldquo;{error}&rdquo;
                 </div>
               </div>
-            ) : hasTelegramAccount && done ? (
+            ) : hasTelegramAccount && username && done ? (
               <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
                 <div className="text-2xl font-black text-center md:text-3xl">
                   <span className="uppercase text-mochi-gradient">
-                    Your Telegram is linked! You can close this window
+                    Your Telegram <span className="font-mono">@{username}</span>{' '}
+                    is linked! You can close this window
                   </span>{' '}
                   ✨
+                  <p className="mt-4 text-sm uppercase md:text-base">
+                    To connect with a different account, please disconnet the
+                    mochi.gg app via the Telegram and try again.
+                  </p>
                 </div>
               </div>
             ) : (
