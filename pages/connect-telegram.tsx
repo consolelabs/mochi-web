@@ -10,7 +10,7 @@ import { HOME_URL } from '~envs'
 import { useAuthStore, useProfileStore } from '~store'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { code } = ctx.query
+  const { code, error, done } = ctx.query
 
   if (!code)
     return {
@@ -20,11 +20,21 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       code,
+      error: decodeURIComponent(error as string),
+      done: !!done,
     },
   }
 }
 
-export default function ConnectTelegram({ code }: { code: string }) {
+export default function ConnectTelegram({
+  code,
+  error,
+  done,
+}: {
+  code?: string
+  error?: string
+  done: boolean
+}) {
   const isLoading = useAuthStore((s) => s.isLoadingSession)
   const profile = useProfileStore((s) => s.me)
   const hasTelegramAccount =
@@ -49,7 +59,16 @@ export default function ConnectTelegram({ code }: { code: string }) {
       <div className="flex relative flex-col items-center">
         <div className="py-16 px-12 mx-auto max-w-7xl">
           <div className="py-24 md:py-48">
-            {isLoading ? null : hasTelegramAccount ? (
+            {isLoading ? null : error ? (
+              <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
+                <div className="mb-2 font-medium text-center md:text-xl">
+                  Something went wrong with error
+                </div>
+                <div className="py-2 px-4 w-full font-mono rounded bg-stone-200">
+                  &ldquo;{error}&rdquo;
+                </div>
+              </div>
+            ) : hasTelegramAccount && done ? (
               <div className="py-8 px-8 mx-auto md:px-16 md:max-w-2xl">
                 <div className="text-2xl font-black text-center md:text-3xl">
                   <span className="uppercase text-mochi-gradient">
@@ -67,7 +86,7 @@ export default function ConnectTelegram({ code }: { code: string }) {
                 href={`https://oauth.telegram.org/auth?bot_id=6298380973&origin=${encodeURI(
                   HOME_URL,
                 )}&embed=1&request_access=write&return_to=${encodeURI(
-                  `${HOME_URL}/connect-telegram?code=${code}`,
+                  `${HOME_URL}/connect-telegram?code=${code ?? ''}`,
                 )}`}
               >
                 <Icon icon="ic:baseline-telegram" />
