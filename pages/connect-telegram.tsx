@@ -52,7 +52,7 @@ export default function ConnectTelegram({
         src="https://telegram.org/js/telegram-widget.js?22"
         data-telegram-login="dmmochibot"
         data-size="large"
-        data-auth-url={`https://api.mochi-profile.console.so/api/v1/auth/telegram?code=${code}`}
+        data-auth-url={`https://api.mochi-profile.console.so/api/v1/profiles/auth/telegram?code=${code}`}
         data-request-access="write"
       ></Script>
       <SEO title={PAGES.CONNECT_TELEGRAM.title} tailTitle />
