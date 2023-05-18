@@ -10,7 +10,7 @@ import { HOME_URL } from '~envs'
 import { useAuthStore, useProfileStore } from '~store'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { code, error, done } = ctx.query
+  const { code, error = '', done } = ctx.query
 
   if (!code)
     return {
