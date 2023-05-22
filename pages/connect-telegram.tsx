@@ -81,7 +81,7 @@ export default function ConnectTelegram({
                   ✨
                   <p className="mt-4 text-sm uppercase md:text-base">
                     To connect with a different account, please disconnet the
-                    mochi.gg app via the Telegram and try again.
+                    mochi.gg app via Telegram and try again.
                   </p>
                 </div>
               </div>

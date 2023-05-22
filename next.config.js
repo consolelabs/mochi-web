@@ -28,6 +28,11 @@ module.exports = {
           'https://mochibot.gitbook.io/mochi-bot/introduction/about-mochi-bot',
         permanent: false,
       },
+      {
+        source: '/open-telegram/:id',
+        destination: 'tg://user?id=:id',
+        permanent: false,
+      },
     ]
 
     // TODO: remove after done dashboard
