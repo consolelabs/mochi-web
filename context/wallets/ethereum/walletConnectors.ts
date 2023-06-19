@@ -5,6 +5,7 @@ import { Chain } from 'wagmi'
 import { isAndroid, isIOS, isMobile } from 'utils/isMobile'
 import { Wallet } from 'context/wallets/Wallet'
 import { getWalletConnectConnector } from './getWalletConnectConnector'
+import { ethers } from 'ethers'
 
 export interface BraveOptions {
   chains: Chain[]
@@ -406,6 +407,35 @@ export const walletConnect = ({ chains }: WalletConnectOptions): Wallet => ({
             mobile: { getUri },
             qrCode: { getUri },
           }),
+    }
+  },
+})
+
+export const ronin = (): Wallet => ({
+  id: 'ronin',
+  name: 'Ronin',
+  iconUrl: '/svg/wallet-icons/ronin.svg',
+  iconBackground: '#0c2f78',
+  downloadUrls: {
+    browserExtension:
+      'https://chrome.google.com/webstore/detail/ronin-wallet/fnjhmkhhmkbjkkabndcnnogagogbneec',
+    android:
+      'https://play.google.com/store/apps/details?id=com.skymavis.genesis&hl=vi&pli=1',
+    ios: 'https://apps.apple.com/us/app/ronin-wallet/id1592675001',
+  },
+  createConnector: () => {
+    const connector = new InjectedConnector({
+      options: {
+        getProvider: () => {
+          if (!window.ronin) {
+            throw new Error('No crypto wallet found. Please install it.')
+          }
+          return window.ronin.provider
+        },
+      },
+    })
+    return {
+      connector,
     }
   },
 })

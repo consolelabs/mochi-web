@@ -23,9 +23,9 @@ export type WalletProviderProps = {
 export const WalletProvider = ({ children }: WalletProviderProps) => {
   return (
     <EVMWalletProvider>
-      <SolanaWalletProvider>
-        <AppWalletContextProvider>{children}</AppWalletContextProvider>
-      </SolanaWalletProvider>
+      {/* <SolanaWalletProvider> */}
+      <AppWalletContextProvider>{children}</AppWalletContextProvider>
+      {/* </SolanaWalletProvider> */}
     </EVMWalletProvider>
   )
 }

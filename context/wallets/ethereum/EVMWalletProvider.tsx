@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { Chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { mainnet, polygon, optimism, arbitrum, fantom } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { getDefaultWallets } from './getDefaultWallets'
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 const { chains, provider } = configureChains(
   [mainnet, polygon, optimism, arbitrum, fantom],
@@ -24,6 +25,38 @@ export type EVMWalletProviderProps = {
   children: ReactNode
 }
 
+const roninTestnet: Chain = {
+  id: 2021,
+  name: 'Ronin Testnet',
+  network: 'ronin-testnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ronin',
+    symbol: 'RON',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://api.roninchain.com/rpc'],
+    },
+    public: {
+      http: ['https://api.roninchain.com/rpc'],
+    },
+  },
+  testnet: true,
+}
+
+const { chains: roninChain, provider: roninProvider } = configureChains(
+  [roninTestnet],
+  [publicProvider()],
+)
+
+const roninClient = createClient({
+  autoConnect: true,
+  connectors: [new InjectedConnector({ chains: roninChain })],
+  provider: roninProvider,
+})
+
 export const EVMWalletProvider = ({ children }: EVMWalletProviderProps) => {
-  return <WagmiConfig client={client}>{children}</WagmiConfig>
+  // return <WagmiConfig client={client}>{children}</WagmiConfig>
+  return <WagmiConfig client={roninClient}>{children}</WagmiConfig>
 }
