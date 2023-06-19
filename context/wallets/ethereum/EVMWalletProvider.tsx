@@ -3,7 +3,6 @@ import { Chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { mainnet, polygon, optimism, arbitrum, fantom } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { getDefaultWallets } from './getDefaultWallets'
-import { InjectedConnector } from 'wagmi/connectors/injected'
 
 const { chains, provider } = configureChains(
   [mainnet, polygon, optimism, arbitrum, fantom],
@@ -26,9 +25,9 @@ export type EVMWalletProviderProps = {
 }
 
 const roninTestnet: Chain = {
-  id: 2021,
+  id: 2020,
   name: 'Ronin Testnet',
-  network: 'ronin-testnet',
+  network: 'ronin',
   nativeCurrency: {
     decimals: 18,
     name: 'Ronin',
@@ -42,17 +41,16 @@ const roninTestnet: Chain = {
       http: ['https://api.roninchain.com/rpc'],
     },
   },
-  testnet: true,
 }
 
-const { chains: roninChain, provider: roninProvider } = configureChains(
+const { provider: roninProvider } = configureChains(
   [roninTestnet],
   [publicProvider()],
 )
 
 const roninClient = createClient({
   autoConnect: true,
-  connectors: [new InjectedConnector({ chains: roninChain })],
+  connectors,
   provider: roninProvider,
 })
 

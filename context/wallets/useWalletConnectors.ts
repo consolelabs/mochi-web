@@ -78,7 +78,7 @@ export const useWalletConnectors = () => {
   const interacted = useRef(false)
   const { initialChainId, disconnect } = useAppWalletContext()
   const { connectAsync, connectors: defaultConnectors_untyped } = useConnect({
-    chainId: 2021,
+    chainId: 2020,
   })
   const {
     select,
