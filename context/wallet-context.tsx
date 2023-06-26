@@ -15,6 +15,7 @@ import { solanaChain } from './wallets/solana/chains'
 import { useAccount } from '~hooks/wallets/useAccount'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { useAuthStore } from '~store'
+import { SuiWalletProvider } from './wallets/sui/SuiWalletProvider'
 
 export type WalletProviderProps = {
   children: ReactNode
@@ -22,11 +23,13 @@ export type WalletProviderProps = {
 
 export const WalletProvider = ({ children }: WalletProviderProps) => {
   return (
-    <EVMWalletProvider>
-      <SolanaWalletProvider>
-        <AppWalletContextProvider>{children}</AppWalletContextProvider>
-      </SolanaWalletProvider>
-    </EVMWalletProvider>
+    <SuiWalletProvider>
+      <EVMWalletProvider>
+        <SolanaWalletProvider>
+          <AppWalletContextProvider>{children}</AppWalletContextProvider>
+        </SolanaWalletProvider>
+      </EVMWalletProvider>
+    </SuiWalletProvider>
   )
 }
 
@@ -73,9 +76,10 @@ export const AppWalletContextProvider = ({
   const { chains } = useNetwork()
   const decoratedChains = decorateChains(chains)
 
-  const { isEVMConnected, isSolanaConnected, disconnect } = useAccount()
+  const { isEVMConnected, isSuiConnected, isSolanaConnected, disconnect } =
+    useAccount()
 
-  const connected = isEVMConnected || isSolanaConnected
+  const connected = isEVMConnected || isSolanaConnected || isSuiConnected
 
   const blockchain = useMemo(() => {
     if (isEVMConnected) return 'EVM'

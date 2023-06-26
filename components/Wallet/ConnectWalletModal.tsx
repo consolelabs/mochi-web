@@ -57,10 +57,9 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     connectModalCallback,
     signCode,
     clearSignCode,
-    initialChainId,
   } = useAppWalletContext()
   const code = signCode ?? String(Date.now())
-  const { address, isEVMConnected, disconnect } = useAccount()
+  const { address, isEVMConnected, isSuiConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
       return {
@@ -206,7 +205,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     changeWalletStep(WalletStep.Connect)
     connectToWallet(wallet)
 
-    if (!wallet.isSolana) {
+    if (!wallet.isSolana && !wallet.isSui) {
       setTimeout(async () => {
         // We need to guard against "onConnecting" callbacks being fired
         // multiple times since connector instances can be shared between
@@ -290,7 +289,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           address,
           msg,
           code,
-          platform: isEVMConnected ? 'evm' : 'solana',
+          platform: isSuiConnected ? 'sui' : isEVMConnected ? 'evm' : 'solana',
         }),
       )
       .catch(() => setSignError(true))
@@ -306,18 +305,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       if (connectModalCallback) return
       disconnect()
     }
-  }, [
-    address,
-    clearSignCode,
-    connectModalCallback,
-    connected,
-    disconnect,
-    isEVMConnected,
-    isSigning,
-    signMsg,
-    initialChainId,
-    code,
-  ])
+  }, [])
 
   useEffect(() => {
     if (!isOpen) {

@@ -41,6 +41,8 @@ export type Wallet<
   id: string
   name: string
   isSolana?: boolean
+  isEVM?: boolean
+  isSui?: boolean
   shortName?: string
   iconUrl: string
   iconBackground: string

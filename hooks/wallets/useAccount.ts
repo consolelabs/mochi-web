@@ -1,4 +1,5 @@
-import { useWallet } from '@solana/wallet-adapter-react'
+import { useWallet as useSolWallet } from '@solana/wallet-adapter-react'
+import { useWallet as useSuiWallet } from '@suiet/wallet-kit'
 import { BigNumber } from 'ethers'
 import { useAccount as useWagmiAccount, useDisconnect } from 'wagmi'
 import { useCallback, useEffect, useState } from 'react'
@@ -11,10 +12,17 @@ export interface Account {
   value?: BigNumber
   isEVMConnected: boolean
   isSolanaConnected: boolean
+  isSuiConnected: boolean
   disconnect: () => Promise<any>
 }
 
 export const useAccount = (): Account => {
+  const {
+    address: addressSui,
+    disconnect: disconnectSui,
+    connected: isSuiConnected,
+  } = useSuiWallet()
+
   const { address: addressEVM, isConnected: isEVMConnected } = useWagmiAccount()
   const { disconnectAsync: disconnectEVM } = useDisconnect()
 
@@ -23,7 +31,7 @@ export const useAccount = (): Account => {
     publicKey,
     disconnect: disconnectSOL,
     select,
-  } = useWallet()
+  } = useSolWallet()
   const addressSOL = publicKey?.toBase58()
 
   const [activeAddress, setActiveAddress] = useState(
@@ -34,25 +42,40 @@ export const useAccount = (): Account => {
     setActiveAddress(addressEVM ?? '')
     if (addressEVM) {
       disconnectSOL()
+      disconnectSui()
     }
-  }, [addressEVM, disconnectSOL])
+  }, [addressEVM, disconnectSOL, disconnectSui])
 
   useEffect(() => {
     setActiveAddress(addressSOL ?? '')
     if (addressSOL) {
       disconnectEVM()
+      disconnectSui()
     }
-  }, [addressSOL, disconnectEVM])
+  }, [addressSOL, disconnectEVM, disconnectSui])
+
+  useEffect(() => {
+    setActiveAddress(addressSui ?? '')
+    if (addressSui) {
+      disconnectEVM()
+      disconnectSOL()
+    }
+  }, [addressSOL, addressSui, disconnectEVM, disconnectSOL])
 
   const disconnect = useCallback(async () => {
     select(null)
     setActiveAddress('')
-    return await Promise.allSettled([disconnectEVM(), disconnectSOL()])
-  }, [disconnectEVM, disconnectSOL, select])
+    return await Promise.allSettled([
+      disconnectEVM(),
+      disconnectSOL(),
+      disconnectSui(),
+    ])
+  }, [disconnectEVM, disconnectSOL, disconnectSui, select])
 
   return {
     isEVMConnected,
     isSolanaConnected,
+    isSuiConnected,
     address: activeAddress,
     disconnect,
   }
