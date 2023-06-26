@@ -106,17 +106,24 @@ export const getDefaultWallets = ({
     {
       groupName: 'EVM',
       wallets: [
-        // rainbow({ chains }),
-        // coinbase({ appName, chains }),
-        // metaMask({ chains, shimDisconnect: true }),
-        // walletConnect({ chains }),
-        // brave({ chains, shimDisconnect: true }),
-        // ...(needsInjectedWalletFallback
-        //   ? [injected({ chains, shimDisconnect: true })]
-        //   : []),
-        ...(needsInjectedRoninWallet ? [ronin()] : []),
+        rainbow({ chains }),
+        coinbase({ appName, chains }),
+        metaMask({ chains, shimDisconnect: true }),
+        walletConnect({ chains }),
+        brave({ chains, shimDisconnect: true }),
+        ...(needsInjectedWalletFallback
+          ? [injected({ chains, shimDisconnect: true })]
+          : []),
       ],
     },
+    ...(needsInjectedRoninWallet
+      ? [
+          {
+            groupName: 'RONIN',
+            wallets: [ronin({ chains })],
+          },
+        ]
+      : []),
   ]
 
   return {

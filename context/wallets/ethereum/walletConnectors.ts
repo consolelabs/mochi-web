@@ -411,7 +411,7 @@ export const walletConnect = ({ chains }: WalletConnectOptions): Wallet => ({
   },
 })
 
-export const ronin = (): Wallet => ({
+export const ronin = ({ chains }: { chains: Chain[] }): Wallet => ({
   id: 'ronin',
   name: 'Ronin',
   iconUrl: '/svg/wallet-icons/ronin.svg',
@@ -425,27 +425,9 @@ export const ronin = (): Wallet => ({
   },
   createConnector: () => {
     const connector = new InjectedConnector({
-      chains: [
-        {
-          id: 2020,
-          name: 'Ronin Testnet',
-          network: 'ronin',
-          nativeCurrency: {
-            decimals: 18,
-            name: 'Ronin',
-            symbol: 'RON',
-          },
-          rpcUrls: {
-            default: {
-              http: ['https://api.roninchain.com/rpc'],
-            },
-            public: {
-              http: ['https://api.roninchain.com/rpc'],
-            },
-          },
-        },
-      ],
+      chains: chains?.filter((c) => c.id === 2020),
       options: {
+        name: 'Ronin Wallet',
         getProvider: () => {
           if (!window.ronin) {
             throw new Error('No crypto wallet found. Please install it.')

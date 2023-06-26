@@ -23,14 +23,14 @@ export type WalletProviderProps = {
 export const WalletProvider = ({ children }: WalletProviderProps) => {
   return (
     <EVMWalletProvider>
-      {/* <SolanaWalletProvider> */}
-      <AppWalletContextProvider>{children}</AppWalletContextProvider>
-      {/* </SolanaWalletProvider> */}
+      <SolanaWalletProvider>
+        <AppWalletContextProvider>{children}</AppWalletContextProvider>
+      </SolanaWalletProvider>
     </EVMWalletProvider>
   )
 }
 
-export type Blockchain = 'EVM' | 'SOL'
+export type Blockchain = 'EVM' | 'SOL' | 'RONIN'
 
 export type ConnectCallback = (data: {
   signature: string
@@ -38,6 +38,7 @@ export type ConnectCallback = (data: {
   address: string
   msg: string
   isEVM: boolean
+  chainId?: number
 }) => Promise<void>
 
 export interface AppWalletContextValues {
