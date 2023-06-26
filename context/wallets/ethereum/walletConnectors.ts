@@ -409,3 +409,33 @@ export const walletConnect = ({ chains }: WalletConnectOptions): Wallet => ({
     }
   },
 })
+
+export const ronin = ({ chains }: { chains: Chain[] }): Wallet => ({
+  id: 'ronin',
+  name: 'Ronin',
+  iconUrl: '/svg/wallet-icons/ronin.svg',
+  iconBackground: '#0c2f78',
+  downloadUrls: {
+    browserExtension:
+      'https://chrome.google.com/webstore/detail/ronin-wallet/fnjhmkhhmkbjkkabndcnnogagogbneec',
+    android:
+      'https://play.google.com/store/apps/details?id=com.skymavis.genesis&hl=vi&pli=1',
+    ios: 'https://apps.apple.com/us/app/ronin-wallet/id1592675001',
+  },
+  createConnector: () => {
+    const connector = new InjectedConnector({
+      chains: chains?.filter((c) => c.id === 2020),
+      options: {
+        getProvider: () => {
+          if (!window.ronin) {
+            throw new Error('No crypto wallet found. Please install it.')
+          }
+          return window.ronin.provider
+        },
+      },
+    })
+    return {
+      connector,
+    }
+  },
+})

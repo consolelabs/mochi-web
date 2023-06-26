@@ -57,6 +57,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     connectModalCallback,
     signCode,
     clearSignCode,
+    initialChainId,
   } = useAppWalletContext()
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
@@ -254,6 +255,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           msg,
           code,
           isEVM: isEVMConnected,
+          chainId: initialChainId,
         }),
       )
       .catch(() => setSignError(true))
@@ -279,6 +281,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     isSigning,
     signCode,
     signMsg,
+    initialChainId,
   ])
 
   useEffect(() => {
@@ -345,6 +348,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                                         msg,
                                         code,
                                         isEVM: isEVMConnected,
+                                        chainId: initialChainId,
                                       })
                                     }
                                   })

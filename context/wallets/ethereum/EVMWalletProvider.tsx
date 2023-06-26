@@ -1,11 +1,31 @@
 import React, { ReactNode } from 'react'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { Chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { mainnet, polygon, optimism, arbitrum, fantom } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { getDefaultWallets } from './getDefaultWallets'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+
+const ronin: Chain = {
+  id: 2020,
+  name: 'Ronin Mainnet',
+  network: 'ronin-mainnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ronin',
+    symbol: 'RON',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://api.roninchain.com/rpc'],
+    },
+    public: {
+      http: ['https://api.roninchain.com/rpc'],
+    },
+  },
+}
 
 const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, fantom],
+  [mainnet, polygon, optimism, arbitrum, fantom, ronin],
   [publicProvider()],
 )
 

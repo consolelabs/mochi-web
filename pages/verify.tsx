@@ -86,13 +86,22 @@ export default function Verify({
                         className={button({ size: 'sm' })}
                         onClick={() =>
                           showConnectModal(
-                            async ({ signature, code, address, isEVM }) => {
+                            async ({
+                              signature,
+                              code,
+                              address,
+                              isEVM,
+                              chainId,
+                            }) => {
                               if (!code || loading) return
                               setLoading(true)
                               const payload = {
                                 wallet_address: address,
                                 code,
                                 signature,
+                                ...(chainId === 2020 && {
+                                  platform: 'ronin-chain',
+                                }),
                               }
 
                               API.MOCHI_PROFILE.post(
