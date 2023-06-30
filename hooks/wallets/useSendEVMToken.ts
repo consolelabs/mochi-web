@@ -26,7 +26,6 @@ export const useSendEVMToken = () => {
       return error.data?.message ?? (error as any).reason ?? nativeError.message
     }
     if (nonNativeError) {
-      console.log(JSON.stringify(nonNativeError, null, 4))
       const error = nonNativeError as RpcError<{ message: string }>
       return (
         error.data?.message ?? (error as any).reason ?? nonNativeError.message

@@ -430,7 +430,8 @@ export const ronin = ({ chains }: { chains: Chain[] }): Wallet => ({
           if (!window.ronin) {
             throw new Error('No crypto wallet found. Please install it.')
           }
-          return window.ronin.provider
+          const a = window.ronin.provider
+          return a
         },
       },
     })

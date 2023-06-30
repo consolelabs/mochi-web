@@ -59,7 +59,8 @@ export const WalletButton = ({
       return
     }
 
-    showConnectModal(async ({ isEVM: isAddressEVM }) => {
+    showConnectModal(async ({ platform }) => {
+      const isAddressEVM = platform === 'evm'
       _onClick?.(
         isEVM
           ? isNative

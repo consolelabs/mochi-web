@@ -75,7 +75,7 @@ export default function ConnectButton() {
   let finalName = ensName ?? name ?? ''
   finalName = shouldTruncate ? truncate(finalName, 5, true, '.') : finalName
 
-  if (!mounted) return null
+  if (!mounted || pathname.startsWith('/verify')) return null
 
   if (!isLoggedIn)
     return (

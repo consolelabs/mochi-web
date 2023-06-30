@@ -90,8 +90,8 @@ export default function Verify({
                               signature,
                               code,
                               address,
-                              isEVM,
-                              chainId,
+                              platform,
+                              msg,
                             }) => {
                               if (!code || loading) return
                               setLoading(true)
@@ -99,16 +99,12 @@ export default function Verify({
                                 wallet_address: address,
                                 code,
                                 signature,
-                                ...(chainId === 2020 && {
-                                  platform: 'ronin-chain',
-                                }),
+                                message: msg,
                               }
 
                               API.MOCHI_PROFILE.post(
                                 payload,
-                                `/profiles/me/accounts/connect-${
-                                  isEVM ? 'evm' : 'solana'
-                                }`,
+                                `/profiles/me/accounts/connect-${platform}`,
                               )
                                 .badRequest(setError)
                                 .json((r) => {
@@ -132,9 +128,7 @@ export default function Verify({
                                           // log the user in with the new connected discord account
                                           API.MOCHI_PROFILE.post(
                                             payload,
-                                            `/profiles/auth/${
-                                              isEVM ? 'evm' : 'solana'
-                                            }`,
+                                            `/profiles/auth/${platform}`,
                                           )
                                             .json((r) =>
                                               login({

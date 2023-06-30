@@ -12,7 +12,7 @@ export interface WalletConnector extends WalletInstance {
   connect?: () => Promise<void>
   onConnecting: (fn: () => void) => void
   connecting?: boolean | ((fn: () => void) => void)
-  showWalletConnectModal?: () => void
+  // showWalletConnectModal?: () => void
   recent: boolean
 }
 
@@ -226,24 +226,24 @@ export const useWalletConnectors = () => {
       connecting: wallet.isSolana ? connecting : false,
       ready,
       recent,
-      showWalletConnectModal:
-        !wallet.isSolana && wallet.walletConnectModalConnector
-          ? async () => {
-              try {
-                await evmConnectWallet(
-                  wallet.id,
-                  wallet.walletConnectModalConnector!,
-                )
-              } catch (err) {
-                // @ts-expect-error
-                const isUserRejection = err.name === 'UserRejectedRequestError'
-
-                if (!isUserRejection) {
-                  throw err
-                }
-              }
-            }
-          : undefined,
+      // showWalletConnectModal:
+      //   !wallet.isSolana && wallet.walletConnectModalConnector
+      //     ? async () => {
+      //         try {
+      //           await evmConnectWallet(
+      //             wallet.id,
+      //             wallet.walletConnectModalConnector!,
+      //           )
+      //         } catch (err) {
+      //           // @ts-expect-error
+      //           const isUserRejection = err.name === 'UserRejectedRequestError'
+      //
+      //           if (!isUserRejection) {
+      //             throw err
+      //           }
+      //         }
+      //       }
+      //     : undefined,
     })
   })
 

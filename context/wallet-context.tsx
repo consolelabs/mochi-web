@@ -37,8 +37,7 @@ export type ConnectCallback = (data: {
   code: string
   address: string
   msg: string
-  isEVM: boolean
-  chainId?: number
+  platform: 'evm' | 'solana' | 'sui' | 'ronin'
 }) => Promise<void>
 
 export interface AppWalletContextValues {

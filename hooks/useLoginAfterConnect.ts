@@ -8,15 +8,16 @@ export const useLoginAfterConnect = () => {
   const { disconnect } = useAppWalletContext()
 
   const loginAfterConnect = useCallback<ConnectCallback>(
-    async ({ signature, address, code, isEVM, chainId }) => {
+    async ({ signature, msg, address, code, platform }) => {
       API.MOCHI_PROFILE.post(
         {
           wallet_address: address,
           code,
           signature,
-          ...(chainId === 2020 && { platform: 'ronin-chain' }),
+          message: msg,
+          platform,
         },
-        `/profiles/auth/${isEVM ? 'evm' : 'solana'}`,
+        `/profiles/auth/${platform}`,
       )
         .json((r) =>
           login({
