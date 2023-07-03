@@ -31,12 +31,18 @@ export const useProfileStore = create<State>((set, get) => ({
     const other = me.associated_accounts?.[0]
 
     // priority evm > sol > socials
-    const profile_name =
+    let profile_name =
       me.profile_name ??
       evmAcc?.platform_identifier ??
       solAcc?.platform_identifier ??
       other?.platform_identifier ??
       ''
+
+    const isRoninAddress = profile_name.startsWith('ronin:')
+
+    if (isRoninAddress) {
+      profile_name = profile_name.slice(6)
+    }
 
     set({
       me: {
@@ -44,7 +50,9 @@ export const useProfileStore = create<State>((set, get) => ({
         profile_name,
       },
       shouldTruncateAddress:
-        isSolAddress(profile_name) || utils.isAddress(profile_name),
+        profile_name.startsWith('0x') ||
+        isSolAddress(profile_name) ||
+        utils.isAddress(profile_name),
     })
   },
 

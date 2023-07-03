@@ -3,7 +3,6 @@ import { Chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { mainnet, polygon, optimism, arbitrum, fantom } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { getDefaultWallets } from './getDefaultWallets'
-import { InjectedConnector } from 'wagmi/connectors/injected'
 
 const ronin: Chain = {
   id: 2020,

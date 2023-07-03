@@ -305,7 +305,18 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       if (connectModalCallback) return
       disconnect()
     }
-  }, [])
+  }, [
+    address,
+    clearSignCode,
+    code,
+    connectModalCallback,
+    connected,
+    disconnect,
+    isEVMConnected,
+    isSigning,
+    isSuiConnected,
+    signMsg,
+  ])
 
   useEffect(() => {
     if (!isOpen) {
