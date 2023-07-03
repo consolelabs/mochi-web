@@ -2,7 +2,8 @@ import {
   useSignMessage as useWagmiSignMessage,
   useAccount as useWagmiAccount,
 } from 'wagmi'
-import { useWallet } from '@solana/wallet-adapter-react'
+import { useWallet as useSolWallet } from '@solana/wallet-adapter-react'
+import { useWallet as useSuiWallet } from '@suiet/wallet-kit'
 import { utils } from 'ethers'
 import { useCallback, useEffect } from 'react'
 import { useAppWalletContext } from '~context/wallet-context'
@@ -12,7 +13,10 @@ export const useSignMessage = () => {
   const { openInApp, connected, disconnect } = useAppWalletContext()
   const { signMessageAsync } = useWagmiSignMessage()
   const { connector } = useWagmiAccount()
-  const { connected: isSolanaConnected, signMessage } = useWallet()
+  const { connected: isSolanaConnected, signMessage: signSolMessage } =
+    useSolWallet()
+  const { connected: isSuiConnected, signMessage: signSuiMessage } =
+    useSuiWallet()
 
   const {
     isOpen: isSigning,
@@ -53,7 +57,7 @@ export const useSignMessage = () => {
       try {
         const messageEncoded = new TextEncoder().encode(message)
 
-        const signature = await signMessage?.(messageEncoded)
+        const signature = await signSolMessage?.(messageEncoded)
 
         return utils.base58.encode(signature as any)
       } catch (e) {
@@ -63,7 +67,28 @@ export const useSignMessage = () => {
         throw e
       }
     },
-    [disconnect, setIsNotSigning, setIsSigning, signMessage],
+    [disconnect, setIsNotSigning, setIsSigning, signSolMessage],
+  )
+
+  const signSui = useCallback(
+    async (message: string) => {
+      setIsSigning()
+      try {
+        const messageEncoded = new TextEncoder().encode(message)
+
+        const { signature } = await signSuiMessage?.({
+          message: messageEncoded,
+        })
+
+        return signature
+      } catch (e) {
+        setIsNotSigning()
+        disconnect()
+
+        throw e
+      }
+    },
+    [disconnect, setIsNotSigning, setIsSigning, signSuiMessage],
   )
 
   useEffect(() => {
@@ -74,6 +99,6 @@ export const useSignMessage = () => {
 
   return {
     isSigning,
-    signMsg: isSolanaConnected ? signSOL : signEVM,
+    signMsg: isSuiConnected ? signSui : isSolanaConnected ? signSOL : signEVM,
   }
 }

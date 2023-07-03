@@ -1,5 +1,6 @@
 import { Connector, ConnectorAlreadyConnectedError, useConnect } from 'wagmi'
-import { useWallet } from '@solana/wallet-adapter-react'
+import { useWallet as useSolWallet } from '@solana/wallet-adapter-react'
+import { useWallet as useSuiWallet } from '@suiet/wallet-kit'
 import { WalletName, WalletReadyState } from '@solana/wallet-adapter-base'
 import { useAppWalletContext } from 'context/wallet-context'
 import { WalletInstance } from './Wallet'
@@ -81,14 +82,36 @@ export const useWalletConnectors = () => {
     chainId: initialChainId,
   })
   const {
-    select,
-    connecting,
+    select: selectSolWallet,
+    connecting: solConnecting,
     wallets,
     wallet: selectedWallet,
     connect,
-  } = useWallet()
+  } = useSolWallet()
+  const {
+    select: selectSuiWallet,
+    configuredWallets,
+    detectedWallets,
+    connecting: suiConnecting,
+  } = useSuiWallet()
   const [errorMsg, setErrorMsg] = useState('')
   const defaultConnectors = defaultConnectors_untyped as Connector[]
+
+  const suiWalletInstances = [
+    ...configuredWallets,
+    ...detectedWallets,
+  ].map<WalletInstance>((w, i) => {
+    return {
+      groupName: 'Sui',
+      id: `${w.name}-${w.label}`,
+      name: w.name,
+      index: i,
+      isSui: true,
+      iconUrl: w.iconUrl,
+      installed: w.installed,
+      iconBackground: 'white',
+    }
+  })
 
   const evmWalletInstances = flatten(
     defaultConnectors.map(
@@ -127,7 +150,11 @@ export const useWalletConnectors = () => {
     }),
   ).sort((a, b) => a.index - b.index)
 
-  const walletInstances = [...solanaWalletInstances, ...evmWalletInstances]
+  const walletInstances = [
+    ...solanaWalletInstances,
+    ...suiWalletInstances,
+    ...evmWalletInstances,
+  ]
 
   const walletInstanceById = indexBy(
     walletInstances,
@@ -148,6 +175,15 @@ export const useWalletConnectors = () => {
 
   const walletConnectors: WalletConnector[] = []
 
+  const suiConnectWallet = useCallback(
+    async (wallet: WalletInstance) => {
+      selectSuiWallet(wallet.name)
+
+      addRecentWalletId(wallet.name)
+    },
+    [selectSuiWallet],
+  )
+
   const evmConnectWallet = useCallback(
     async (walletId: string, connector: Connector) => {
       const result = await connectAsync({ connector })
@@ -161,14 +197,14 @@ export const useWalletConnectors = () => {
   const solConnectWallet = useCallback(
     async (wallet: WalletInstance) => {
       if (selectedWallet?.adapter.name !== wallet.adapter?.name) {
-        select(wallet.adapter?.name as WalletName)
+        selectSolWallet(wallet.adapter?.name as WalletName)
       } else {
         connect()
       }
 
       addRecentWalletId(wallet.adapter?.name as string)
     },
-    [connect, select, selectedWallet?.adapter.name],
+    [connect, selectSolWallet, selectedWallet?.adapter.name],
   )
 
   useEffect(() => {
@@ -190,18 +226,21 @@ export const useWalletConnectors = () => {
       return
     }
     const recent = recentWallets.includes(wallet)
-    const { isSolana } = wallet
+    const { isSui, isSolana } = wallet
 
-    const ready = isSolana
-      ? wallet.installed ?? true
-      : (wallet.installed ?? true) && wallet?.connector?.ready
+    const ready =
+      isSolana || isSui
+        ? wallet.installed ?? true
+        : (wallet.installed ?? true) && wallet?.connector?.ready
 
     walletConnectors.push({
       ...wallet,
       connect: async () => {
         try {
           setErrorMsg('')
-          if (wallet.isSolana) {
+          if (wallet.isSui) {
+            return await suiConnectWallet(wallet)
+          } else if (wallet.isSolana) {
             interacted.current = true
             return await solConnectWallet(wallet)
           } else {
@@ -217,17 +256,21 @@ export const useWalletConnectors = () => {
       },
       groupName: recent ? 'Recent' : wallet.groupName,
       onConnecting: (fn: () => void) => {
-        if (!wallet.isSolana && wallet.connector) {
+        if (!wallet.isSolana && !wallet.isSui && wallet.connector) {
           wallet.connector.on('message', ({ type }) => {
             type === 'connecting' && fn()
           })
         }
       },
-      connecting: wallet.isSolana ? connecting : false,
+      connecting: wallet.isSui
+        ? suiConnecting
+        : wallet.isSolana
+        ? solConnecting
+        : false,
       ready,
       recent,
       // showWalletConnectModal:
-      //   !wallet.isSolana && wallet.walletConnectModalConnector
+      //   !wallet.isSolana && !wallet.isSui && wallet.walletConnectModalConnector
       //     ? async () => {
       //         try {
       //           await evmConnectWallet(
