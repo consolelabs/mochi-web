@@ -57,7 +57,9 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     connectModalCallback,
     signCode,
     clearSignCode,
+    initialChainId,
   } = useAppWalletContext()
+  const code = signCode ?? String(Date.now())
   const { address, isEVMConnected, disconnect } = useAccount()
   const [state, setState] = useReducer(
     (prevState: State, action: Partial<State>) => {
@@ -85,7 +87,43 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       setState({
         isConnectionError: false,
       })
-      wallet.connect?.().catch((e) => {
+      // special case for ronin
+      if (wallet.id === 'ronin') {
+        const msg = encodeURIComponent(getWalletLoginSignMessage(code))
+        const axieWindow = window.open(
+          'https://ronin.axiedao.org/sso/?ref=' +
+            window.parent.location.href +
+            `&message=${msg}`,
+        )
+        window.addEventListener('message', function receiveSig(event) {
+          if (
+            typeof event.data === 'object' &&
+            'key' in event.data &&
+            event.data.key === 'signature' &&
+            event.origin === 'https://ronin.axiedao.org'
+          ) {
+            window.removeEventListener('message', receiveSig, false) // Remove listener
+            const { address, signature, message } = event.data.message ?? {}
+            axieWindow?.close()
+
+            clearSignCode()
+
+            if (connectModalCallback) {
+              connectModalCallback({
+                signature,
+                address,
+                msg: message,
+                code,
+                platform: 'ronin',
+              })
+            } else {
+              disconnect()
+            }
+          }
+        })
+        return
+      }
+      await wallet.connect?.().catch((e) => {
         if (e instanceof ConnectorAlreadyConnectedError) {
           wallet.connect?.().catch(() => null)
           return
@@ -125,7 +163,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
         }
       }, 100)
     },
-    [openInApp],
+    [clearSignCode, code, connectModalCallback, disconnect, openInApp],
   )
 
   const changeWalletStep = useCallback(
@@ -243,7 +281,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
 
   useEffect(() => {
     if (!connected || !address || isSigning || isAndroid()) return
-    const code = signCode ?? String(Date.now())
     const msg = getWalletLoginSignMessage(code)
     setSignError(false)
     signMsg(msg)
@@ -253,7 +290,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           address,
           msg,
           code,
-          isEVM: isEVMConnected,
+          platform: isEVMConnected ? 'evm' : 'solana',
         }),
       )
       .catch(() => setSignError(true))
@@ -277,8 +314,9 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     disconnect,
     isEVMConnected,
     isSigning,
-    signCode,
     signMsg,
+    initialChainId,
+    code,
   ])
 
   useEffect(() => {
@@ -333,7 +371,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                           <button
                             onClick={() => {
                               if (connected) {
-                                const code = signCode ?? String(Date.now())
                                 const msg = getWalletLoginSignMessage(code)
                                 setSignError(false)
                                 signMsg(msg)
@@ -344,7 +381,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                                         address,
                                         msg,
                                         code,
-                                        isEVM: isEVMConnected,
+                                        platform: 'solana',
                                       })
                                     }
                                   })

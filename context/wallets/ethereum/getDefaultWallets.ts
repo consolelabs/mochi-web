@@ -11,6 +11,7 @@ import {
   isMetaMask,
   rainbow,
   walletConnect,
+  ronin,
 } from './walletConnectors'
 
 export const connectorsForWallets = (walletList: WalletList) => {
@@ -99,6 +100,8 @@ export const getDefaultWallets = ({
     !window.ethereum.isCoinbaseWallet &&
     !window.ethereum.isBraveWallet
 
+  const needsInjectedRoninWallet = typeof window !== 'undefined' && window.ronin
+
   const wallets: WalletList = [
     {
       groupName: 'EVM',
@@ -113,6 +116,14 @@ export const getDefaultWallets = ({
           : []),
       ],
     },
+    ...(needsInjectedRoninWallet
+      ? [
+          {
+            groupName: 'RONIN',
+            wallets: [ronin({ chains })],
+          },
+        ]
+      : []),
   ]
 
   return {
