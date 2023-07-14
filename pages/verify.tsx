@@ -107,19 +107,42 @@ export default function Verify({
                                 `/profiles/me/accounts/connect-${platform}`,
                               )
                                 .badRequest(setError)
-                                .json(() => {
-                                  setVerified(true)
-                                  if (!isLoggedIn) {
-                                    // log the user in with the new connected discord account
-                                    API.MOCHI_PROFILE.post(
-                                      payload,
-                                      `/profiles/auth/${platform}`,
+                                .json((r) => {
+                                  const user_discord_id =
+                                    r.associated_accounts.find(
+                                      (aa: any) => aa.platform === 'discord',
+                                    )?.platform_identifier
+                                  if (user_discord_id) {
+                                    API.MOCHI.post(
+                                      {
+                                        user_discord_id,
+                                        guild_id,
+                                      },
+                                      `/verify/assign-role`,
                                     )
-                                      .json((r) =>
-                                        login({
-                                          token: r.data.access_token,
-                                        }),
-                                      )
+                                      .badRequest(setError)
+                                      .res(() => {
+                                        setVerified(true)
+
+                                        if (!isLoggedIn) {
+                                          // log the user in with the new connected discord account
+                                          API.MOCHI_PROFILE.post(
+                                            payload,
+                                            `/profiles/auth/${platform}`,
+                                          )
+                                            .json((r) =>
+                                              login({
+                                                token: r.data.access_token,
+                                              }),
+                                            )
+                                            .catch(setError)
+                                            .finally(() => {
+                                              closeConnectModal()
+                                              setLoading(false)
+                                              disconnect()
+                                            })
+                                        }
+                                      })
                                       .catch(setError)
                                       .finally(() => {
                                         closeConnectModal()
