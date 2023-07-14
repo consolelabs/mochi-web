@@ -16,6 +16,14 @@ export interface Account {
   disconnect: () => Promise<any>
 }
 
+async function runAllDisconnectors(...disconnectors: Array<() => void>) {
+  try {
+    return await Promise.allSettled(disconnectors.map((d) => d()))
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const useAccount = (): Account => {
   const {
     address: addressSui,
@@ -41,35 +49,32 @@ export const useAccount = (): Account => {
   useEffect(() => {
     setActiveAddress(addressEVM ?? '')
     if (addressEVM) {
-      disconnectSOL()
-      disconnectSui()
+      runAllDisconnectors(disconnectSOL, disconnectSui)
     }
   }, [addressEVM, disconnectSOL, disconnectSui])
 
   useEffect(() => {
     setActiveAddress(addressSOL ?? '')
     if (addressSOL) {
-      disconnectEVM()
-      disconnectSui()
+      runAllDisconnectors(disconnectEVM, disconnectSui)
     }
   }, [addressSOL, disconnectEVM, disconnectSui])
 
   useEffect(() => {
     setActiveAddress(addressSui ?? '')
     if (addressSui) {
-      disconnectEVM()
-      disconnectSOL()
+      runAllDisconnectors(disconnectEVM, disconnectSOL)
     }
-  }, [addressSOL, addressSui, disconnectEVM, disconnectSOL])
+  }, [addressSui, disconnectEVM, disconnectSOL])
 
   const disconnect = useCallback(async () => {
     select(null)
     setActiveAddress('')
-    return await Promise.allSettled([
-      disconnectEVM(),
-      disconnectSOL(),
-      disconnectSui(),
-    ])
+    return await runAllDisconnectors(
+      disconnectSOL,
+      disconnectEVM,
+      disconnectSui,
+    )
   }, [disconnectEVM, disconnectSOL, disconnectSui, select])
 
   return {
