@@ -107,7 +107,27 @@ export default function Verify({
                                 `/profiles/me/accounts/connect-${platform}`,
                               )
                                 .badRequest(setError)
-                                .json()
+                                .json(() => {
+                                  setVerified(true)
+                                  if (!isLoggedIn) {
+                                    // log the user in with the new connected discord account
+                                    API.MOCHI_PROFILE.post(
+                                      payload,
+                                      `/profiles/auth/${platform}`,
+                                    )
+                                      .json((r) =>
+                                        login({
+                                          token: r.data.access_token,
+                                        }),
+                                      )
+                                      .catch(setError)
+                                      .finally(() => {
+                                        closeConnectModal()
+                                        setLoading(false)
+                                        disconnect()
+                                      })
+                                  }
+                                })
                                 .catch(setError)
                                 .finally(() => {
                                   closeConnectModal()
