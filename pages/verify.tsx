@@ -112,7 +112,9 @@ export default function Verify({
                                     r.associated_accounts.find(
                                       (aa: any) => aa.platform === 'discord',
                                     )?.platform_identifier
-                                  if (user_discord_id && guild_id) {
+                                  if (!guild_id) {
+                                    setVerified(true)
+                                  } else if (user_discord_id) {
                                     API.MOCHI.post(
                                       {
                                         user_discord_id,
