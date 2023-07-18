@@ -14,7 +14,7 @@ import { GetServerSideProps } from 'next'
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { code, guild_id } = ctx.query
 
-  if (!code || !guild_id)
+  if (!code)
     return {
       notFound: true,
     }
@@ -32,7 +32,7 @@ export default function Verify({
   guild_id,
 }: {
   code: string
-  guild_id: string
+  guild_id?: string
 }) {
   const mounted = useHasMounted()
   const [loading, setLoading] = useState(false)
@@ -112,7 +112,7 @@ export default function Verify({
                                     r.associated_accounts.find(
                                       (aa: any) => aa.platform === 'discord',
                                     )?.platform_identifier
-                                  if (user_discord_id) {
+                                  if (user_discord_id && guild_id) {
                                     API.MOCHI.post(
                                       {
                                         user_discord_id,
