@@ -1,7 +1,9 @@
+import { useClipboard } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
 import { button } from '~components/Dashboard/Button'
 
 export default function ShareButton({ link }: { link: string }) {
+  const { onCopy } = useClipboard(link)
   return (
     <button
       type="button"
@@ -9,7 +11,16 @@ export default function ShareButton({ link }: { link: string }) {
         size: 'sm',
         className: 'flex-1',
       })}
-      onClick={() => navigator.share({ url: link }).catch(() => null)}
+      onClick={() => {
+        const shareData = { url: link }
+        if (navigator.share && navigator.canShare(shareData)) {
+          navigator.share(shareData)
+        } else {
+          // Copy link if can't share
+          onCopy()
+          alert('Link Copied')
+        }
+      }}
     >
       <Icon
         icon="mingcute:share-forward-fill"
