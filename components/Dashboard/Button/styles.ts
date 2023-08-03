@@ -39,6 +39,7 @@ const variant = cva(
           'active:translate-y-0.5',
         ],
         text: ['bg-transparent', 'text-foreground'],
+        pill: ['bg-black', 'text-white', 'rounded-full'],
       },
       size: {
         xs: ['text-xs', 'px-3', 'py-1'],

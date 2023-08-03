@@ -11,6 +11,18 @@
 body {
   @apply bg-white;
   font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+}
+
+#__next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: -17px;
+  overflow-y: scroll;
 }
 
 .twitter-tweet {

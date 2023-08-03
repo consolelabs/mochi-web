@@ -53,8 +53,8 @@ export const Button = ({
     <button
       {...props}
       className={button({
-        className,
         appearance,
+        className,
       })}
     >
       {children}

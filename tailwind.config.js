@@ -4,6 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        home: {
+          gray: {
+            'p': "#70707B",
+            '600': "#F2F2F2",
+            '700': "#7A7E85"
+          }
+        },
         dashboard: {
           green: {
             1: '#3BA55C',
@@ -69,10 +76,20 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
         },
+        'move': {
+          '0%, 100%': {
+            top: '-28px'
+          }
+        }
       },
       animation: {
         float: 'float 5s ease-in-out infinite',
+        'move': 'move 5s infinite 1s',
       },
+      spacing: {
+        '18': '4.5rem',
+        '30': '7.5rem',
+      }
     },
   },
   plugins: [],

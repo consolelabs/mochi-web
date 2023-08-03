@@ -149,8 +149,8 @@ const NavLinks = ({ className }: { className: string }) => (
 
 export const Navbar = () => (
   <Fragment>
-    <nav className="relative z-20 bg-transparent">
-      <div className="flex flex-wrap gap-y-5 items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
+    <nav className="relative sticky top-0 z-20 bg-white">
+      <div className="flex justify-between items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
         <Link className="flex gap-x-3 items-center" href="/">
           <Image
             src={logo}
@@ -166,21 +166,7 @@ export const Navbar = () => (
         <div className="order-1 ml-auto md:order-2 md:ml-10">
           <ConnectButton />
         </div>
-        <NavLinks className="flex order-2 gap-x-10 justify-center mx-auto md:order-1 md:justify-start md:mx-0 md:ml-auto basis-full md:basis-[auto]" />
       </div>
     </nav>
-    <div className="flex relative justify-center items-center py-2 space-x-2 w-full text-sm bg-black">
-      <span className="font-semibold text-white">Solana Coding Camp</span>
-      <span
-        className="flex items-center py-1 px-3 text-xs font-semibold text-black uppercase rounded-full"
-        style={{
-          background:
-            'linear-gradient(90deg, #F4C4C2 0%, #EEC3FD 48.96%, #8FC6E4 100%)',
-        }}
-      >
-        <Icon icon="heroicons:trophy-20-solid" className="mr-1 w-4" />
-        2nd place
-      </span>
-    </div>
   </Fragment>
 )
