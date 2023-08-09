@@ -12,6 +12,8 @@ import { HOME_URL } from '~envs'
 import { SEO } from '~app/layout/seo'
 import ShareButton from '~components/Pay/ShareButton'
 import { heading } from '~components/Dashboard/Heading'
+import { fmt } from '~utils/formatter'
+import { Platform } from '@consolelabs/mochi-formatter'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query
@@ -26,25 +28,66 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .notFound(() => null)
     .json((r) => r.data)
 
-  let receiver = {}
-  if (transfer) {
-    receiver = await API.MOCHI_PROFILE.get(
-      `/profiles/${transfer?.other_profile_id}`,
-    )
-      .notFound(() => null)
-      .internalError(() => null)
-      .json((r) => r)
+  let sender
+  if (transfer.from_profile) {
+    if (transfer.from_profile.application) {
+      sender = `app:${transfer.from_profile.application.name}`
+    } else {
+      const dc = await fmt.discord(transfer.from_profile.id)
+      const tg = await fmt.telegram(transfer.from_profile.id)
+
+      switch (true) {
+        case dc.platform === Platform.Discord:
+          sender = `dc:${dc.value}`
+          break
+        case tg.platform === Platform.Telegram:
+          sender = `tg:${tg.value}`
+          break
+        default:
+          sender = dc.value
+      }
+    }
+  }
+
+  let receiver
+  if (transfer.other_profile) {
+    if (transfer.other_profile.application) {
+      receiver = `app:${transfer.other_profile.application.name}`
+    } else {
+      const dc = await fmt.discord(transfer.other_profile.id)
+      const tg = await fmt.telegram(transfer.other_profile.id)
+
+      switch (true) {
+        case dc.platform === Platform.Discord:
+          receiver = `dc:${dc.value}`
+          break
+        case tg.platform === Platform.Telegram:
+          receiver = `tg:${tg.value}`
+          break
+        default:
+          receiver = dc.value
+      }
+    }
   }
 
   return {
     props: {
       transfer,
+      sender,
       receiver,
     },
   }
 }
 
-export default function Transfer({ transfer }: { transfer: any }) {
+export default function Transfer({
+  transfer,
+  sender,
+  receiver,
+}: {
+  transfer: any
+  sender: string
+  receiver: string
+}) {
   const link = isSSR() ? '' : window.location.href
   return (
     <Layout
@@ -54,17 +97,16 @@ export default function Transfer({ transfer }: { transfer: any }) {
           title={'Payment Detail'}
           tailTitle
           image={`${HOME_URL}/api/transfer-og?id=${transfer.external_id}`}
-          description={`${transfer.profile_id} paid ${
-            transfer.other_profile_id
-          } ${utils.formatUnits(transfer.amount, transfer.decimal)} ${
-            transfer.token.symbol
-          }`}
+          description={`${sender} paid ${receiver} ${utils.formatUnits(
+            transfer.amount,
+            transfer.decimal,
+          )} ${transfer.token.symbol}`}
           url={`${HOME_URL}/transfer/${transfer.external_id}}`}
         />
       }
     >
-      <div className="font-sans mx-auto max-w-sm px-4">
-        <div className="px-8 py-10 border-2 border-mochi-gray rounded-2xl bg-white shadow-2xl overflow-hidden text-center">
+      <div className="px-4 mx-auto max-w-sm font-sans">
+        <div className="overflow-hidden py-10 px-8 text-center bg-white rounded-2xl border-2 shadow-2xl border-mochi-gray">
           <h1 className={clsx(heading({ size: 'base' }), 'mb-5')}>
             Payment Detail
           </h1>
@@ -75,27 +117,23 @@ export default function Transfer({ transfer }: { transfer: any }) {
             className="mx-auto mb-5"
             alt="Payment success"
           />
-          <div className="font-semibold text-base text-center mb-5">
+          <div className="mb-5 text-base font-semibold text-center">
             Payment Successful
           </div>
-          <div className="flex items-baseline justify-center mb-6">
+          <div className="flex justify-center items-baseline mb-6">
             <div className="text-4xl">
               {utils.formatUnits(transfer.amount, transfer.decimal)}
             </div>
-            <div className="text-xl ml-1">{transfer.token.symbol}</div>
+            <div className="ml-1 text-xl">{transfer.token.symbol}</div>
           </div>
-          <ul className="bg-mochi-gray space-y-2 font-semibold text-sm p-4 rounded-lg overflow-hidden">
+          <ul className="overflow-hidden p-4 space-y-2 text-sm font-semibold rounded-lg bg-mochi-gray">
             <li className="flex justify-between">
               <span className="text-gray-600">From</span>
-              <span className="font-semibold text-gray-500">
-                {transfer.profile_id}
-              </span>
+              <span className="font-semibold text-gray-500">{sender}</span>
             </li>
             <li className="flex justify-between">
               <span className="text-gray-600">To</span>
-              <span className="font-semibold text-gray-500">
-                {transfer.other_profile_id}
-              </span>
+              <span className="font-semibold text-gray-500">{receiver}</span>
             </li>
             {transfer.message && (
               <li className="flex justify-between">
@@ -135,7 +173,7 @@ export default function Transfer({ transfer }: { transfer: any }) {
               </span>
             </li>
           </ul>
-          <div className="flex justify-between space-x-4 mt-5">
+          <div className="flex justify-between mt-5 space-x-4">
             <CopyLink link={link} />
             <ShareButton link={link} />
           </div>

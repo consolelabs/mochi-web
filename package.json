@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^0.1.67",
+    "@consolelabs/mochi-formatter": "^0.0.1-rc.25",
     "@dwarvesf/react-hooks": "^0.7.0",
     "@dwarvesf/react-utils": "^0.4.1",
     "@fnando/sparkline": "^0.3.10",
@@ -19,7 +20,6 @@
     "@fontsource/sora": "^4.5.10",
     "@headlessui-float/react": "^0.11.0",
     "@headlessui/react": "^1.7.5",
-    "@mysten/sui.js": "^0.36.0",
     "@notionhq/client": "^2.2.2",
     "@solana/spl-token": "^0.3.7",
     "@solana/wallet-adapter-base": "^0.9.22",
