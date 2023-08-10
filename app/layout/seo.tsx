@@ -12,7 +12,7 @@ interface Props {
 
 export const CONFIG = {
   title: PAGES.HOME.title,
-  description: 'Mochi Bot — Bring the Web3 universe to your Discord server',
+  description: 'Mochi Bot — Pay your frens using cryptocurrency',
   url: HOME_URL,
   image: `${HOME_URL}/featured.png`,
 }

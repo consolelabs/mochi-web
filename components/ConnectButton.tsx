@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { useEns } from '~hooks/wallets/useEns'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { button } from './Dashboard/Button'
@@ -18,6 +18,14 @@ import { isSSR, truncate } from '@dwarvesf/react-utils'
 import QRCodeButton from '~components/Pay/QRCodeButton'
 import useSWR from 'swr'
 import { API } from '~constants/api'
+import clsx from 'clsx'
+
+const ConnectButtonTrigger = () => (
+  <Fragment>
+    Connect bot
+    <Icon icon="iconamoon:arrow-down-2-light" className="w-4 h-4" />
+  </Fragment>
+)
 
 export default function ConnectButton() {
   const mounted = useHasMounted()
@@ -79,7 +87,13 @@ export default function ConnectButton() {
 
   if (!isLoggedIn)
     return (
-      <Popover trigger="Login" triggerClassname={button({ size: 'sm' })}>
+      <Popover
+        trigger={<ConnectButtonTrigger />}
+        triggerClassname={clsx(
+          button({ size: 'sm', appearance: 'pill' }),
+          'inline-flex items-center',
+        )}
+      >
         <div className="pt-3">
           <div className="flex flex-col gap-y-2 p-2 bg-white rounded-lg">
             <a
