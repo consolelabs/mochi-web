@@ -38,6 +38,7 @@ const DATA = [
 export default function CommandMessages() {
   const [index, setIndex] = useState(0)
   const [displayList, setDisplayList] = useState(DATA)
+  const [transitionY, setTransitionY] = useState(82)
   const ref = useRef<HTMLDivElement>(null)
   const isVisible = useIsVisible(ref)
 
@@ -50,6 +51,9 @@ export default function CommandMessages() {
         setDisplayList((prev) => {
           return [...prev, DATA[index % DATA.length]]
         })
+        const sliderItem = document.getElementsByClassName('slider-item')[0]
+        const sliderItemHeight = sliderItem.clientHeight
+        setTransitionY(sliderItemHeight)
         setIndex(nextIndex)
       }, 3000)
     } else {
@@ -78,26 +82,24 @@ export default function CommandMessages() {
   return (
     <section id="slider" className="text-center" ref={ref}>
       <div className="container mx-auto px-6">
-        <div className="max-h-[14.375rem] overflow-hidden relative">
+        <div className="max-h-[9rem] sm:max-h-[15rem] overflow-hidden relative">
           <ul
             className={clsx(
-              'text-center transition-all delay-150 duration-500 scale-y-50',
+              'text-center transition-all delay-150 duration-500',
             )}
             style={{
-              transform: `translateY(-${index * 82}px)`,
+              transform: `translateY(-${index * transitionY}px)`,
             }}
           >
             {displayList.map((item, i) => (
               <li
                 className={clsx(
-                  'text-2xl flex items-center justify-center flex-nowrap whitespace-nowrap h-[50px] mb-[32px] transition-all duration-500 scale-x-[0.4375] scale-y-[0.7] sm:scale-x-100 sm:scale-y-100 top-0',
+                  'text-[10px] sm:text-xl lg:text-2xl flex items-center justify-center flex-nowrap whitespace-nowrap h-[3rem] sm:h-[5rem] transition-all duration-500 top-0 slider-item',
                 )}
                 key={item.sender + i}
               >
                 <img
-                  width={40}
-                  height={40}
-                  className="mr-2"
+                  className="mr-2 h-6 w-6 sm:h-10 sm:w-10"
                   src={`/assets/tip/${item.sender}.png`}
                   alt="social icons"
                 />
