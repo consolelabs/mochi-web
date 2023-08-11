@@ -105,18 +105,16 @@ export default function Banner() {
         />
       </svg>
       <div className="flex-1 flex items-center z-10">
-        <h1 className="text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl font-500 tracking-tight leading-tight mb-12">
-          A crypto native
-          <br />
-          Social payment
+        <h1 className="text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl font-500 tracking-tight leading-tight mb-12 max-w-4xl font-normal">
+          A Crypto-Native Social Payment Platform.
         </h1>
       </div>
       <div className="mt-auto z-10">
         <div className="relative p-3 xs:p-5 justify-self-end">
           <div className="mb-3">
             <div className="max-w-[24rem] text-sm sm:text-lg text-white rounded-full p-5  overflow-hidden bg-gradient-to-b from-[#A7ACB5] to-[#BBB4BB] relative">
-              A secure, convenient, and borderless way to send and receive
-              money. 🤘
+              A secure, convenient, and borderless way to{' '}
+              <b className="font-semibold">send and receive</b> money. 🤘
             </div>
             <svg
               width="20"
