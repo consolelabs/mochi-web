@@ -19,7 +19,7 @@ export default function Heading({
     <>
       <Tag
         className={clsx(
-          'text-4xl sm:text-5xl mb-4 tracking-tight leading-tight font-normal',
+          'text-4xl sm:text-5xl mb-4 tracking-tight leading-tight font-medium font-heading tracking-[-0.5px] text-[#343433]',
           className,
         )}
       >
@@ -27,9 +27,7 @@ export default function Heading({
         {children}
       </Tag>
       {subtitle && (
-        <div className="text-home-gray-p mb-12 text-base sm:text-xl md:w-4/5">
-          {subtitle}
-        </div>
+        <div className="mb-12 text-base sm:text-xl md:w-4/5">{subtitle}</div>
       )}
     </>
   )

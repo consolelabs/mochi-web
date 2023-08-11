@@ -4,7 +4,7 @@ export default function ApiIntegration() {
       <div className="container mx-auto max-w-5xl px-6">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-3/5 justify-center items-start flex flex-col">
-            <h2 className="font-normal text-4xl sm:text-5xl mb-4 sm:mb-6 text-[#D1D3D6] tracking-[2px]">
+            <h2 className="font-medium text-4xl sm:text-5xl mb-4 sm:mb-6 text-[#D1D3D6] font-heading tracking-[-0.5px]">
               A fully integrated suite of{' '}
               <span className="text-[#5CD97D] font-normal">APIs</span>
             </h2>

@@ -105,7 +105,7 @@ export default function Banner() {
         />
       </svg>
       <div className="flex-1 flex items-center z-10">
-        <h1 className="text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl font-500 tracking-tight leading-tight mb-12 max-w-4xl font-normal">
+        <h1 className="text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl font-medium tracking-tight leading-tight mb-12 max-w-4xl font-normal font-heading">
           A Crypto-Native Social Payment Platform.
         </h1>
       </div>

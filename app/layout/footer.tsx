@@ -11,12 +11,7 @@ export const Footer = () => {
         <div className="flex flex-wrap justify-between">
           <div className="text-sm text-gray-500 md:w-2/5">
             <div className="flex gap-4 items-center">
-              <div
-                className="w-9 h-9 rounded-full shadow-mochi"
-                style={{
-                  boxShadow: '0 0 3rem var(--tw-shadow-color)',
-                }}
-              >
+              <div className="w-9 h-9 rounded-full">
                 <Image
                   src={logo}
                   alt="Logo"
@@ -29,10 +24,10 @@ export const Footer = () => {
                 Mochi<span className="text-mochi">.</span>
               </span>
             </div>
-            <span className="inline-block my-6 text-xs">
+            <span className="inline-block my-6 text-xs font-normal">
               MOCHI. mission is to revolutionize social payments across
-              universal platforms. We're connecting friends and communities with
-              seamless, crypto-native transactions, turning financial
+              universal platforms. We&apos;re connecting friends and communities
+              with seamless, crypto-native transactions, turning financial
               interactions into personal connections.
             </span>
           </div>
@@ -64,7 +59,7 @@ export const Footer = () => {
               </a>
             </div>
             <div className="flex gap-6 w-full md:w-3/5"></div>
-            <div className="pt-6 text-xs text-gray-500 text-right">
+            <div className="pt-6 text-xs font-normal text-gray-500 text-right">
               Copyright © {year} MochiBot, All rights reserved
             </div>
           </div>

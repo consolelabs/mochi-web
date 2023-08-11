@@ -38,7 +38,7 @@ export default function PayYourFrens() {
                 </svg>
                 Send & Receive
               </div>
-              <div className="text-sm text-home-gray-700">
+              <div className="text-sm font-normal text-home-gray-700">
                 All-in-one, user-friendly for people of all experience levels.
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function PayYourFrens() {
                 </svg>
                 Swap
               </div>
-              <div className="text-sm text-home-gray-700">
+              <div className="text-sm font-normal text-home-gray-700">
                 Enable trading for thousands of tokens with minimal fees, 24/7.
               </div>
             </div>
@@ -91,7 +91,7 @@ export default function PayYourFrens() {
                 </svg>
                 Pay Me
               </div>
-              <div className="text-sm text-home-gray-700">
+              <div className="text-sm font-normal text-home-gray-700">
                 Your friends can pay you with just a few clicks, Mochi makes it
                 easy!
               </div>
@@ -120,7 +120,7 @@ export default function PayYourFrens() {
                 </svg>
                 Airdrop
               </div>
-              <div className="text-sm text-home-gray-700">
+              <div className="text-sm font-normal text-home-gray-700">
                 Give away your cash. Make your friends feel fun and special.
               </div>
             </div>
@@ -144,7 +144,7 @@ export default function PayYourFrens() {
                 </svg>
                 Deposit
               </div>
-              <div className="text-sm text-home-gray-700">
+              <div className="text-sm font-normal text-home-gray-700">
                 Organize your finances by creating a savings vault for each
                 financial goal.
               </div>

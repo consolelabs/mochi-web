@@ -5,10 +5,10 @@ export default function SetupIsSimple() {
     <section className="py-16 md:py-24 relative overflow-hidden">
       <div className="container mx-auto max-w-5xl px-6">
         <div className="md:w-3/5 justify-center">
-          <h2 className="text-4xl sm:text-5xl mb-4 sm:mb-6 tracking-tight leading-tight font-normal">
+          <h2 className="text-4xl sm:text-5xl mb-4 sm:mb-6 font-heading tracking-[-0.5px] font-medium">
             Setup is <span className="text-[#ACACBD] font-normal">simple</span>
           </h2>
-          <div className="text-home-gray-p mb-8 text-base sm:text-xl md:w-3/4">
+          <div className="mb-8 text-base sm:text-xl md:w-3/4">
             Make sending and receiving money with friends fun and easy. Turn
             financial transactions into personal connections.
           </div>
