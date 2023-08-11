@@ -3,6 +3,9 @@ module.exports = {
   mode: 'jit',
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['Poppins', 'sans-serif'],
+      },
       colors: {
         home: {
           gray: {
