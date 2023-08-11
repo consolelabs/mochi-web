@@ -19,7 +19,7 @@ export default function PayYourFrens() {
               className="w-full"
             />
             <div className="p-4">
-              <div className="text-base text-[#017AFF] font-semibold flex items-center mb-1">
+              <div className="text-base text-[#017AFF] font-medium flex items-center mb-1">
                 <svg
                   width="20"
                   height="20"
@@ -46,7 +46,7 @@ export default function PayYourFrens() {
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={swap.src} alt="Swap" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#A259FF] font-semibold flex items-center mb-1">
+              <div className="text-base text-[#A259FF] font-medium flex items-center mb-1">
                 <svg
                   width="20"
                   height="21"
@@ -66,14 +66,14 @@ export default function PayYourFrens() {
                 Swap
               </div>
               <div className="text-sm text-home-gray-700">
-                All-in-one, user-friendly for people of all experience levels.
+                Enable trading for thousands of tokens with minimal fees, 24/7.
               </div>
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={payMe.src} alt="Pay Me" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#EB459F] font-semibold flex items-center mb-1">
+              <div className="text-base text-[#EB459F] font-medium flex items-center mb-1">
                 <svg
                   width="20"
                   height="20"
@@ -89,7 +89,7 @@ export default function PayYourFrens() {
                     fill="#EB459F"
                   />
                 </svg>
-                Pay me
+                Pay Me
               </div>
               <div className="text-sm text-home-gray-700">
                 Your friends can pay you with just a few clicks, Mochi makes it
@@ -100,7 +100,7 @@ export default function PayYourFrens() {
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={airdrop.src} alt="airdrop" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#15A55A] font-semibold flex items-center mb-1">
+              <div className="text-base text-[#15A55A] font-medium flex items-center mb-1">
                 <svg
                   width="20"
                   height="21"
@@ -121,14 +121,14 @@ export default function PayYourFrens() {
                 Airdrop
               </div>
               <div className="text-sm text-home-gray-700">
-                All-in-one, user-friendly for people of all experience levels.
+                Give away your cash. Make your friends feel fun and special.
               </div>
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={deposit.src} alt="deposit" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#333333] font-semibold flex items-center mb-1">
+              <div className="text-base text-[#333333] font-medium flex items-center mb-1">
                 <svg
                   width="20"
                   height="20"

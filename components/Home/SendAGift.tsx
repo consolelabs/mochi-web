@@ -7,8 +7,7 @@ export default function SendAGift() {
         <Heading
           element="h2"
           title="Send a gift"
-          subtitle="Help you show your friends how much you care: buy them a starbuck,
-          celebrate a birthday, or just because you feel generous."
+          subtitle="Spread the joy to your frens and show them your heartwarming affection: buy them a Starbucks, celebrate a birthday, or just be generous – because you can!"
         />
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden flex flex-col">

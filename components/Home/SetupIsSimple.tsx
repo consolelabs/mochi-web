@@ -9,8 +9,8 @@ export default function SetupIsSimple() {
             Setup is <span className="text-[#ACACBD] font-normal">simple</span>
           </h2>
           <div className="text-home-gray-p mb-8 text-base sm:text-xl md:w-3/4">
-            Make sending and receiving money with friends fun and easy. Turn a
-            financial transaction into a personal connection.
+            Make sending and receiving money with friends fun and easy. Turn
+            financial transactions into personal connections.
           </div>
           <a
             target="blank"

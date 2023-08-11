@@ -27,7 +27,7 @@ export default function Heading({
         {children}
       </Tag>
       {subtitle && (
-        <div className="text-home-gray-p mb-12 text-base sm:text-xl md:w-3/4">
+        <div className="text-home-gray-p mb-12 text-base sm:text-xl md:w-4/5">
           {subtitle}
         </div>
       )}
