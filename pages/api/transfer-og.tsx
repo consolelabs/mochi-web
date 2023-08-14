@@ -5,6 +5,7 @@ import { API } from '~constants/api'
 import { format } from 'date-fns'
 import { fmt } from '~utils/formatter'
 import { Platform } from '@consolelabs/mochi-formatter'
+import { HOME_URL } from '~envs'
 
 export const config = {
   runtime: 'edge',
@@ -60,7 +61,7 @@ const og = async (req: NextRequest) => {
   const bold = await boldFont
   const extrabold = await extraboldFont
 
-  let tokenSrc = 'http://localhost:3001/assets/money.png'
+  let tokenSrc = `${HOME_URL}/assets/money.png`
 
   const data: Props = {
     from: sender?.plain ?? '',
