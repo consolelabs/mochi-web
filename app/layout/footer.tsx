@@ -2,36 +2,72 @@ import Image from 'next/image'
 import { SOCIAL_LINKS } from '~constants'
 import { logo } from '~utils/image'
 import { Icon } from '@iconify/react'
+import Link from 'next/link'
+
+const TITLE_COLOR = '#474645'
+const BODY_COLOR = '#A8A6A4'
 
 export const Footer = () => {
   const year = new Date().getFullYear()
   return (
     <footer className="pt-16 pb-24 mt-auto">
-      <div className="px-6 mx-auto max-w-7xl md:px-12">
-        <div className="flex flex-wrap justify-between">
-          <div className="text-sm text-gray-500 md:w-2/5">
-            <div className="flex gap-4 items-center">
-              <div className="w-9 h-9 rounded-full">
-                <Image
-                  src={logo}
-                  alt="Logo"
-                  width={36}
-                  height={36}
-                  className="block rounded-full"
-                />
-              </div>
-              <span className="text-lg font-black text-gray-900 uppercase">
-                Mochi<span className="text-mochi">.</span>
-              </span>
+      <div className="container mx-auto max-w-5xl px-6">
+        <div className="flex flex-wrap">
+          <div className="flex space-x-8 sm:space-x-12 mb-10 sm:mb-0">
+            <div className="w-9 h-9 rounded-full">
+              <Image
+                src={logo}
+                alt="Logo"
+                width={36}
+                height={36}
+                className="block rounded-full"
+              />
             </div>
-            <span className="inline-block my-6 text-xs font-normal">
-              MOCHI. mission is to revolutionize social payments across
-              universal platforms. We&apos;re connecting friends and communities
-              with seamless, crypto-native transactions, turning financial
-              interactions into personal connections.
-            </span>
+            <div className="text-[13px] space-y-2">
+              <div className="text-footer-title">Developer</div>
+              <a
+                className="block text-footer-body"
+                target="blank"
+                href={SOCIAL_LINKS.DOCUMENT}
+              >
+                Documentation
+              </a>
+              <a
+                className="block text-footer-body"
+                target="blank"
+                href={SOCIAL_LINKS.GITHUB}
+              >
+                GitHub
+              </a>
+            </div>
+            <div className="text-[13px] space-y-2">
+              <div className="text-footer-title">Resources</div>
+              <Link
+                className="block text-footer-body"
+                target="blank"
+                href="/changelog"
+              >
+                Changelog
+              </Link>
+            </div>
+            <div className="text-[13px] space-y-2">
+              <div className="text-footer-title">Company</div>
+              <a className="block text-footer-body" href="mailto:gm@mochi.gg">
+                Contact
+              </a>
+              <a
+                className="block text-footer-body"
+                target="blank"
+                href={SOCIAL_LINKS.TWITTER}
+              >
+                Twitter
+              </a>
+            </div>
           </div>
-          <div className="w-full md:w-1/2 flex flex-col justify-center items-end">
+          <div className="ml-auto flex flex-col justify-center items-end">
+            <div className="mb-6 text-xs font-normal text-footer-body text-right">
+              Copyright © {year} Mochi, All rights reserved
+            </div>
             <div className="flex gap-4 items-center justify-end">
               <a
                 href={SOCIAL_LINKS.TWITTER}
@@ -57,10 +93,6 @@ export const Footer = () => {
               >
                 <Icon icon="simple-icons:telegram" className="text-black" />
               </a>
-            </div>
-            <div className="flex gap-6 w-full md:w-3/5"></div>
-            <div className="pt-6 text-xs font-normal text-gray-500 text-right">
-              Copyright © {year} Mochi, All rights reserved
             </div>
           </div>
         </div>

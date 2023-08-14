@@ -16,7 +16,7 @@ export const CHANGELOG_SORT_PROPERTY_NAME = (process.env
 export const DISCORD_LINK =
   (process.env.DISCORD_LINK as string) || 'https://discord.gg/3d2FdBG2My'
 export const TWITTER_LINK =
-  (process.env.TWITTER_LINK as string) || 'https://twitter.com/getmochi_bot'
+  (process.env.TWITTER_LINK as string) || 'https://twitter.com/mochi_gg_'
 export const GITBOOK_LINK =
   (process.env.GITBOOK_LINK as string) ||
   'https://mochibot.gitbook.io/mochi-bot/introduction/about-mochi-bot'
@@ -26,6 +26,12 @@ export const INVITE_LINK =
 export const TELEGRAM_LINK =
   (process.env.TELEGRAM_LINK as string) ||
   'https://telegram.me/dmmochibot'
+export const DOCUMENT_LINK =
+  (process.env.DOCUMENT_LINK as string) ||
+  'https://mochi.readme.io'
+export const GITHUB_LINK =
+  (process.env.GITHUB_LINK as string) ||
+  'https://github.com/consolelabs/mochi-discord'
 
 export const HOME_URL = process.env.NEXT_PUBLIC_HOME_URL || 'https://mochi.gg'
 
