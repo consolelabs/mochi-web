@@ -1,11 +1,11 @@
-import { INVITE_LINK } from '~envs'
+import { INVITE_LINK, TELEGRAM_LINK } from '~envs'
 
 export default function SetupIsSimple() {
   return (
     <section className="py-16 md:py-24 relative overflow-hidden">
       <div className="container mx-auto max-w-5xl px-6">
         <div className="md:w-3/5 justify-center">
-          <h2 className="text-4xl sm:text-5xl mb-4 sm:mb-6 font-heading tracking-[-0.5px] font-medium">
+          <h2 className="text-[2rem] sm:text-5xl mb-4 sm:mb-6 font-heading tracking-[-0.5px] font-medium">
             Setup is <span className="text-[#ACACBD] font-normal">simple</span>
           </h2>
           <div className="mb-8 text-base sm:text-xl md:w-3/4">
@@ -33,7 +33,7 @@ export default function SetupIsSimple() {
           </a>
           <a
             target="blank"
-            href="https://telegram.me/dmmochibot"
+            href={TELEGRAM_LINK}
             className="inline-flex rounded-full overflow-hidden bg-[#059FDB] text-white px-5 py-[10px] items-center font-semibold text-xs sm:text-sm"
           >
             <svg

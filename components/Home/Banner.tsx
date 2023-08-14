@@ -5,7 +5,7 @@ export default function Banner() {
   return (
     <section
       id="hero-banner"
-      className="flex flex-col justify-center items-center text-center px-6 sm:py-10 lg:py-30 relative"
+      className="flex flex-col justify-center items-center text-center pt-6 pb-0 sm:py-10 lg:py-30 relative"
     >
       <svg
         viewBox="0 0 221 443"
@@ -105,8 +105,8 @@ export default function Banner() {
         />
       </svg>
       <div className="flex-1 flex items-center z-10">
-        <h1 className="text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl font-medium tracking-tight leading-tight mb-12 max-w-4xl font-normal font-heading">
-          A Crypto-Native Social Payment Platform.
+        <h1 className="text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl font-medium tracking-tight leading-tight mb-12 max-w-xl font-normal font-heading">
+          Pay your frens using crypto
         </h1>
       </div>
       <div className="mt-auto z-10">
@@ -150,7 +150,7 @@ export default function Banner() {
               width={50}
               color="#ADAFB7"
               icon="heroicons:arrow-down-20-solid"
-              className="mx-auto animate-bounce mt-4"
+              className="mx-auto animate-bounce mt-4 block"
             />
           </a>
           <img

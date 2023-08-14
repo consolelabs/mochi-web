@@ -50,17 +50,17 @@ export const Footer = () => {
                 <Icon icon="ic:baseline-discord" className="text-black" />
               </a>
               <a
-                href={SOCIAL_LINKS.GITBOOK}
+                href={SOCIAL_LINKS.TELEGRAM}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center w-8 h-8 p-[6px] border border-[#26272B1A] rounded-full overflow-hidden"
               >
-                <Icon icon="simple-icons:gitbook" className="text-black" />
+                <Icon icon="simple-icons:telegram" className="text-black" />
               </a>
             </div>
             <div className="flex gap-6 w-full md:w-3/5"></div>
             <div className="pt-6 text-xs font-normal text-gray-500 text-right">
-              Copyright © {year} MochiBot, All rights reserved
+              Copyright © {year} Mochi, All rights reserved
             </div>
           </div>
         </div>

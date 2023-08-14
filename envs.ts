@@ -23,6 +23,9 @@ export const GITBOOK_LINK =
 export const INVITE_LINK =
   (process.env.INVITE_LINK as string) ||
   'https://discord.com/api/oauth2/authorize?client_id=1062540132269432863&permissions=8&scope=bot%20applications.commands'
+export const TELEGRAM_LINK =
+  (process.env.TELEGRAM_LINK as string) ||
+  'https://telegram.me/dmmochibot'
 
 export const HOME_URL = process.env.NEXT_PUBLIC_HOME_URL || 'https://mochi.gg'
 

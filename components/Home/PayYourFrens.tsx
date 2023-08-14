@@ -7,7 +7,7 @@ export default function PayYourFrens() {
       <div className="container mx-auto max-w-5xl px-6">
         <Heading
           element="h2"
-          title="Pay your frens"
+          title="P2P payment platform"
           subtitle="Make sending and receiving money with friends fun and easy. Turn a
           financial transaction into a personal connection."
         />
@@ -19,7 +19,7 @@ export default function PayYourFrens() {
               className="w-full"
             />
             <div className="p-4">
-              <div className="text-base text-[#017AFF] font-medium flex items-center mb-1">
+              <div className="text-base text-[#017AFF] font-medium flex items-center mb-2">
                 <svg
                   width="20"
                   height="20"
@@ -46,7 +46,7 @@ export default function PayYourFrens() {
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={swap.src} alt="Swap" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#A259FF] font-medium flex items-center mb-1">
+              <div className="text-base text-[#A259FF] font-medium flex items-center mb-2">
                 <svg
                   width="20"
                   height="21"
@@ -73,7 +73,7 @@ export default function PayYourFrens() {
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={payMe.src} alt="Pay Me" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#EB459F] font-medium flex items-center mb-1">
+              <div className="text-base text-[#EB459F] font-medium flex items-center mb-2">
                 <svg
                   width="20"
                   height="20"
@@ -100,7 +100,7 @@ export default function PayYourFrens() {
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={airdrop.src} alt="airdrop" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#15A55A] font-medium flex items-center mb-1">
+              <div className="text-base text-[#15A55A] font-medium flex items-center mb-2">
                 <svg
                   width="20"
                   height="21"
@@ -128,7 +128,7 @@ export default function PayYourFrens() {
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
             <img src={deposit.src} alt="deposit" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#333333] font-medium flex items-center mb-1">
+              <div className="text-base text-[#333333] font-medium flex items-center mb-2">
                 <svg
                   width="20"
                   height="20"

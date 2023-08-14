@@ -1,4 +1,4 @@
-import { BETA_PAGE, DISCORD_LINK, GITBOOK_LINK, TWITTER_LINK } from '~envs'
+import { BETA_PAGE, DISCORD_LINK, GITBOOK_LINK, TELEGRAM_LINK, TWITTER_LINK } from '~envs'
 
 export const PAGES = {
   HOME: {
@@ -39,6 +39,7 @@ export const SOCIAL_LINKS = {
   DISCORD: DISCORD_LINK,
   TWITTER: TWITTER_LINK,
   GITBOOK: GITBOOK_LINK,
+  TELEGRAM: TELEGRAM_LINK,
   TOP_GG: 'https://top.gg/bot/963123183131709480/vote',
   DISCORBOTLIST: 'https://discordbotlist.com/bots/mochi-bot/upvote',
 }
