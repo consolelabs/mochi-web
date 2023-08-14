@@ -1,4 +1,5 @@
 import { utils } from 'ethers'
+import { utils as mochiUtils } from '@consolelabs/mochi-formatter'
 
 export type Props = {
   from: string
@@ -70,7 +71,9 @@ export function CardUI({
           src={tokenIcon}
           alt={`${symbol} token icon`}
         />
-        <span>{utils.formatUnits(amount ?? 0, decimal)}</span>
+        <span>
+          {mochiUtils.formatTokenDigit(utils.formatUnits(amount ?? 0, decimal))}
+        </span>
         <span
           style={{
             fontWeight: 600,
