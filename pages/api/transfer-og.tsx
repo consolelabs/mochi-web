@@ -6,10 +6,6 @@ import { format } from 'date-fns'
 import { fmt } from '~utils/formatter'
 import { Platform } from '@consolelabs/mochi-formatter'
 
-export const config = {
-  runtime: 'edge',
-}
-
 const regularFont = fetch(
   new URL('../../assets/Inter-Regular.ttf', import.meta.url),
 ).then((res) => res.arrayBuffer())

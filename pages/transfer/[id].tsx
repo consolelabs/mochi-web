@@ -28,6 +28,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .notFound(() => null)
     .json((r: any) => r.data)
 
+  if (!transfer) {
+    return {
+      notFound: true,
+    }
+  }
+
   const type = transfer.type
 
   let [sender, receiver] = await fmt.account(
