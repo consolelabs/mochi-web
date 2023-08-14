@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^0.1.67",
-    "@consolelabs/mochi-formatter": "^0.0.1-rc.25",
+    "@consolelabs/mochi-formatter": "^0.0.1-rc.47",
     "@dwarvesf/react-hooks": "^0.7.0",
     "@dwarvesf/react-utils": "^0.4.1",
     "@fnando/sparkline": "^0.3.10",

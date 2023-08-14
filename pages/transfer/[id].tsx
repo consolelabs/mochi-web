@@ -13,7 +13,7 @@ import { SEO } from '~app/layout/seo'
 import ShareButton from '~components/Pay/ShareButton'
 import { heading } from '~components/Dashboard/Heading'
 import { fmt } from '~utils/formatter'
-import { Platform } from '@consolelabs/mochi-formatter'
+import { Platform, utils as mochiUtils } from '@consolelabs/mochi-formatter'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query
@@ -26,55 +26,25 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const transfer = await API.MOCHI_PAY.get(`/transfer/${id}`)
     .notFound(() => null)
-    .json((r) => r.data)
+    .json((r: any) => r.data)
 
-  let sender
-  if (transfer.from_profile) {
-    if (transfer.from_profile.application) {
-      sender = `app:${transfer.from_profile.application.name}`
-    } else {
-      const dc = await fmt.discord(transfer.from_profile.id)
-      const tg = await fmt.telegram(transfer.from_profile.id)
+  const type = transfer.type
 
-      switch (true) {
-        case dc.platform === Platform.Discord:
-          sender = `dc:${dc.value}`
-          break
-        case tg.platform === Platform.Telegram:
-          sender = `tg:${tg.value}`
-          break
-        default:
-          sender = dc.value
-      }
-    }
-  }
+  let [sender, receiver] = await fmt.account(
+    Platform.Web,
+    transfer.from_profile_id,
+    transfer.other_profile_id,
+  )
 
-  let receiver
-  if (transfer.other_profile) {
-    if (transfer.other_profile.application) {
-      receiver = `app:${transfer.other_profile.application.name}`
-    } else {
-      const dc = await fmt.discord(transfer.other_profile.id)
-      const tg = await fmt.telegram(transfer.other_profile.id)
-
-      switch (true) {
-        case dc.platform === Platform.Discord:
-          receiver = `dc:${dc.value}`
-          break
-        case tg.platform === Platform.Telegram:
-          receiver = `tg:${tg.value}`
-          break
-        default:
-          receiver = dc.value
-      }
-    }
+  if (type === 'in') {
+    ;[sender, receiver] = [receiver, sender]
   }
 
   return {
     props: {
       transfer,
-      sender,
-      receiver,
+      sender: sender?.plain ?? '',
+      receiver: receiver?.plain ?? '',
     },
   }
 }
@@ -97,9 +67,8 @@ export default function Transfer({
           title={'Payment Detail'}
           tailTitle
           image={`${HOME_URL}/api/transfer-og?id=${transfer.external_id}`}
-          description={`${sender} paid ${receiver} ${utils.formatUnits(
-            transfer.amount,
-            transfer.decimal,
+          description={`${sender} paid ${receiver} ${mochiUtils.formatTokenDigit(
+            utils.formatUnits(transfer.amount, transfer.decimal),
           )} ${transfer.token.symbol}`}
           url={`${HOME_URL}/transfer/${transfer.external_id}}`}
         />
@@ -122,7 +91,9 @@ export default function Transfer({
           </div>
           <div className="flex justify-center items-baseline mb-6">
             <div className="text-4xl">
-              {utils.formatUnits(transfer.amount, transfer.decimal)}
+              {mochiUtils.formatTokenDigit(
+                utils.formatUnits(transfer.amount, transfer.decimal),
+              )}
             </div>
             <div className="ml-1 text-xl">{transfer.token.symbol}</div>
           </div>
@@ -152,22 +123,18 @@ export default function Transfer({
             <li className="flex justify-between">
               <span className="text-gray-600">Tx ID</span>
               <span className="font-semibold text-gray-500">
-                {transfer.tx_id}
+                {transfer.external_id}
               </span>
             </li>
             <li>
               <hr className="border-gray-600" />
             </li>
             <li className="flex justify-between">
-              <span className="text-gray-600">Payment Type</span>
-              <span className="font-semibold text-gray-500">
-                {transfer.type}
-              </span>
-            </li>
-            <li className="flex justify-between">
               <span className="text-gray-600">Currency</span>
               <span className="font-semibold text-gray-500">
-                {utils.formatUnits(transfer.amount, transfer.decimal)}
+                {mochiUtils.formatTokenDigit(
+                  utils.formatUnits(transfer.amount, transfer.decimal),
+                )}
                 {` `}
                 {transfer.token.symbol}
               </span>
