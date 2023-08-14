@@ -130,6 +130,12 @@ export default function Transfer({
               <hr className="border-gray-600" />
             </li>
             <li className="flex justify-between">
+              <span className="text-gray-600">Payment Type</span>
+              <span className="font-semibold text-gray-500">
+                {transfer.action === 'transfer' ? 'tip' : transfer.action}
+              </span>
+            </li>
+            <li className="flex justify-between">
               <span className="text-gray-600">Currency</span>
               <span className="font-semibold text-gray-500">
                 {mochiUtils.formatTokenDigit(
