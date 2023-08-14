@@ -70,7 +70,7 @@ export function CardUI({
           src={tokenIcon}
           alt={`${symbol} token icon`}
         />
-        <span>{utils.formatUnits(amount, decimal)}</span>
+        <span>{utils.formatUnits(amount ?? 0, decimal)}</span>
         <span
           style={{
             fontWeight: 600,

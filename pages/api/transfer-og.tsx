@@ -3,6 +3,8 @@ import { NextRequest } from 'next/server'
 import { CardUI, Props } from '~components/Transfer/Card'
 import { API } from '~constants/api'
 import { format } from 'date-fns'
+import { fmt } from '~utils/formatter'
+import { Platform } from '@consolelabs/mochi-formatter'
 
 export const config = {
   runtime: 'edge',
@@ -36,6 +38,18 @@ const og = async (req: NextRequest) => {
       .json((r) => r.data)
   }
 
+  const type = transfer?.type
+
+  let [sender, receiver] = await fmt.account(
+    Platform.Web,
+    transfer?.from_profile_id,
+    transfer?.other_profile_id,
+  )
+
+  if (type === 'in') {
+    ;[sender, receiver] = [receiver, sender]
+  }
+
   const regular = await regularFont
   const bold = await boldFont
   const extrabold = await extraboldFont
@@ -43,14 +57,19 @@ const og = async (req: NextRequest) => {
   let tokenSrc = 'http://localhost:3001/assets/money.png'
 
   const data: Props = {
-    from: transfer.profile_id,
+    from: sender?.plain ?? '',
     tokenIcon: tokenSrc,
-    to: transfer.other_profile_id,
-    symbol: transfer.token.symbol,
-    decimal: transfer.token.decimal,
-    amount: transfer.amount,
-    date: format(new Date(transfer.created_at), 'yyyy-MM-dd hh:mm:ss'),
+    to: receiver?.plain ?? '',
+    symbol: transfer?.token.symbol,
+    decimal: transfer?.token.decimal,
+    amount: transfer?.amount,
+    date: '',
   }
+
+  if (transfer) {
+    data.date = format(new Date(transfer?.created_at), 'yyyy-MM-dd hh:mm:ss')
+  }
+
   return new ImageResponse(
     (
       <div
