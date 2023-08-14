@@ -71,7 +71,13 @@ export default function PayYourFrens() {
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
-            <img src={payMe.src} alt="Pay Me" className="w-full" />
+            <div className="pt-3 pl-3 h-[180px] flex items-start justify-end -mr-4">
+              <img
+                src={payMe.src}
+                alt="airdrop"
+                className="object-contain max-h-full"
+              />
+            </div>
             <div className="mt-auto">
               <div className="text-base text-[#EB459F] font-medium flex items-center mb-2">
                 <svg
@@ -98,7 +104,13 @@ export default function PayYourFrens() {
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
-            <img src={airdrop.src} alt="airdrop" className="w-full" />
+            <div className="h-[180px] flex items-center justify-center pb-4">
+              <img
+                src={airdrop.src}
+                alt="airdrop"
+                className="object-contain max-h-full"
+              />
+            </div>
             <div className="mt-auto">
               <div className="text-base text-[#15A55A] font-medium flex items-center mb-2">
                 <svg

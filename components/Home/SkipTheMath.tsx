@@ -15,7 +15,7 @@ export default function SkipTheMath() {
           <div className="bg-white p-4 rounded-[22px] overflow-hidden flex flex-col">
             <img src="/home/split.png" alt="Split" className="w-full" />
             <div className="mt-auto">
-              <div className="text-base text-[#ED4257] font-semibold flex items-center justify-center">
+              <div className="text-base text-[#ED4257] font-semibold flex items-center justify-center mt-4">
                 <svg
                   width="17"
                   height="16"

@@ -112,7 +112,7 @@ export default function Banner() {
       <div className="mt-auto z-10">
         <div className="relative p-3 xs:p-5 justify-self-end">
           <div className="mb-3">
-            <div className="max-w-[24rem] text-sm sm:text-lg text-white rounded-full p-5  overflow-hidden bg-gradient-to-b from-[#A7ACB5] to-[#BBB4BB] relative">
+            <div className="max-w-[18rem] sm:max-w-[25rem] text-sm sm:text-lg text-white rounded-full p-5  overflow-hidden bg-gradient-to-b from-[#A7ACB5] to-[#BBB4BB] relative">
               A secure, convenient, and borderless way to{' '}
               <b className="font-semibold">send and receive</b> money. 🤘
             </div>
@@ -161,7 +161,7 @@ export default function Banner() {
           />
           <img
             width={30}
-            className="absolute right-[2%] top-[10%]"
+            className="absolute right-[1%] top-[8%]"
             src={apple.src}
             alt="apple"
           />
