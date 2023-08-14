@@ -31,8 +31,8 @@ class MyDocument extends Document {
           <script
             defer
             data-domain={HOME_URL}
-            src="https://plausible.io/js/plausible.js"
-          />
+            src="https://plausible.io/js/script.js"
+          ></script>
         </Head>
         <body>
           <Main />

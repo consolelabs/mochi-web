@@ -41,7 +41,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   })
 
   const pages = await Promise.all(
-    db.results.map(async (p, i) => {
+    db.results.map(async (p: any, i) => {
       if (!isFullPage(p)) return null
       const filterProp = p.properties[property]
       if (
@@ -76,9 +76,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 }
 
 const ChangelogItem = ({ name, content }: Page) => (
-  <div className="mb-16 lg:flex gap-9">
-    <div className="flex-shrink-0 mb-5 relative lg:pt-2 inline-block">
-      <div className="lg:sticky top-36">
+  <div className="gap-9 mb-16 lg:flex">
+    <div className="inline-block relative flex-shrink-0 mb-5 lg:pt-2">
+      <div className="top-36 lg:sticky">
         <div className="border-gradient">
           <div className="bg-white border-gradient-entry" />
           <div className="relative px-4 font-semibold leading-9 text-center lg:px-5 text-mochi-500">
@@ -87,7 +87,7 @@ const ChangelogItem = ({ name, content }: Page) => (
         </div>
       </div>
     </div>
-    <div className="flex-1 pb-6 flex flex-col whitespace-pre-wrap max-w-prose">
+    <div className="flex flex-col flex-1 pb-6 max-w-prose whitespace-pre-wrap">
       {content.results.map((d: any, i: number) => {
         return (
           <NotionRenderer key={`changelog-d-${d.id}`} d={d} first={i === 0} />
@@ -101,7 +101,7 @@ export default function Changelog({ data }: Props) {
   return (
     <Layout>
       <SEO title={PAGES.CHANGE_LOG.title} tailTitle />
-      <div className="flex flex-col max-w-7xl px-6 md:px-12 py-16 mx-auto">
+      <div className="flex flex-col py-16 px-6 mx-auto max-w-7xl md:px-12">
         <p className="mb-12 text-3xl text-center md:text-4xl lg:text-5xl">
           Changelog
         </p>

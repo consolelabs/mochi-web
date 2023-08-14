@@ -175,7 +175,7 @@ export default function PaymentButton({
       if (payCode) {
         toast.custom(
           (t) => {
-            setToastId(t)
+            setToastId(Number(t))
             API.MOCHI_PAY.json({
               public_key: values.walletAddress,
             })
@@ -240,9 +240,8 @@ export default function PaymentButton({
                                   Track the transaction{' '}
                                   <a
                                     className="underline"
-                                    href={`${
-                                      new URL(chainExplorer).origin
-                                    }/tx/${pr.claim_tx}`}
+                                    href={`${new URL(chainExplorer).origin
+                                      }/tx/${pr.claim_tx}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                   >
@@ -327,9 +326,8 @@ export default function PaymentButton({
                         Track the transaction{' '}
                         <a
                           className="underline"
-                          href={`${new URL(chainExplorer).origin}/tx/${
-                            sendTx?.hash
-                          }`}
+                          href={`${new URL(chainExplorer).origin}/tx/${sendTx?.hash
+                            }`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -386,8 +384,8 @@ export default function PaymentButton({
         ? sendNativeEVM
         : sendNonNativeEVM
       : isNative
-      ? sendNativeSOL
-      : sendNonNativeSOL
+        ? sendNativeSOL
+        : sendNonNativeSOL
     if (!payFn || (isEVM && !switchNetworkAsync)) {
       if ((isEVM && !emptyConfigSOL) || (!isEVM && !emptyConfigEVM)) {
         disconnect()
@@ -512,7 +510,7 @@ export default function PaymentButton({
                   <hr className="hidden w-full bg-black" />
 
                   {(!isPayMe && wallets?.length && isLoggedIn) ||
-                  (isPayMe && recipientWallets?.length) ? (
+                    (isPayMe && recipientWallets?.length) ? (
                     (isPayMe ? recipientWallets : wallets)?.map((w) => {
                       return (
                         <WalletButton
