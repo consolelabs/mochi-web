@@ -7,6 +7,10 @@ module.exports = {
         heading: ['Poppins', 'sans-serif'],
       },
       colors: {
+        footer: {
+          title: '#474645',
+          body: '#A8A6A4'
+        },
         home: {
           gray: {
             'p': "#70707B",

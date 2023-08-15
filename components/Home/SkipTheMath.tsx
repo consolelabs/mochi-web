@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Heading from './Heading'
 
 export default function SkipTheMath() {
@@ -12,8 +13,14 @@ export default function SkipTheMath() {
           other socials."
         />
         <div className="grid md:grid-cols-2 gap-8 bg-home-gray-600 p-8 rounded-[32px] overflow-hidden">
-          <div className="bg-white p-4 rounded-[22px] overflow-hidden flex flex-col">
-            <img src="/home/split.png" alt="Split" className="w-full" />
+          <div className="bg-[#FFFFFF] p-4 rounded-[22px] overflow-hidden flex flex-col">
+            <Image
+              src="/home/split.svg"
+              alt="Split"
+              width="619"
+              height="335"
+              className="w-full"
+            />
             <div className="mt-auto">
               <div className="text-base text-[#ED4257] font-semibold flex items-center justify-center mt-4">
                 <svg
@@ -35,8 +42,14 @@ export default function SkipTheMath() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-[22px] overflow-hidden flex flex-col">
-            <img src="/home/tip-list.png" alt="Split" className="w-full" />
+          <div className="rounded-[22px] overflow-hidden flex flex-col">
+            <Image
+              src="/home/tip-list.svg"
+              alt="Tip List"
+              width="394"
+              height="329"
+              className="w-full"
+            />
           </div>
         </div>
       </div>

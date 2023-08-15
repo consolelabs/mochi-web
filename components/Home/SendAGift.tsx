@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Heading from './Heading'
 
 export default function SendAGift() {
@@ -11,7 +12,13 @@ export default function SendAGift() {
         />
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden flex flex-col">
-            <img src="/home/tip.png" alt="Tip" className="w-full" />
+            <Image
+              src="/home/tip.svg"
+              alt="Tip"
+              width="520"
+              height="274"
+              className="w-full"
+            />
             <div className="mt-auto">
               <div className="text-base text-[#017AFF] font-semibold flex items-center p-4 justify-center">
                 <svg
@@ -35,7 +42,13 @@ export default function SendAGift() {
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden flex flex-col">
-            <img src="/home/pay-link.png" alt="Tip" className="w-full" />
+            <Image
+              src="/home/pay-link.svg"
+              alt="Pay Link"
+              width="619"
+              height="335"
+              className="w-full"
+            />
             <div className="mt-auto">
               <div className="text-base justify-center text-[#E87607] font-semibold flex items-center p-4">
                 <svg

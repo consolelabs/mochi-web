@@ -1,5 +1,5 @@
+import Image from 'next/image'
 import Heading from './Heading'
-import { sendNReceive, swap, payMe, deposit, airdrop } from '~utils/image'
 
 export default function PayYourFrens() {
   return (
@@ -13,9 +13,11 @@ export default function PayYourFrens() {
         />
         <div className="grid md:grid-rows-2 md:grid-flow-col gap-8">
           <div className="row-span-2 bg-home-gray-600 rounded-[22px] overflow-hidden">
-            <img
-              src={sendNReceive.src}
-              alt="Send and receive money"
+            <Image
+              src="/home/send-n-receive.svg"
+              alt="send and receive"
+              width="330"
+              height="563"
               className="w-full"
             />
             <div className="p-4">
@@ -44,7 +46,15 @@ export default function PayYourFrens() {
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
-            <img src={swap.src} alt="Swap" className="w-full" />
+            <div className="flex justify-center items-start h-[180px] pt-4">
+              <Image
+                src="/home/swap.svg"
+                alt="swap"
+                width="210"
+                height="82"
+                className="w-full"
+              />
+            </div>
             <div className="mt-auto">
               <div className="text-base text-[#A259FF] font-medium flex items-center mb-2">
                 <svg
@@ -71,11 +81,13 @@ export default function PayYourFrens() {
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
-            <div className="pt-3 pl-3 h-[180px] flex items-start justify-end -mr-4">
-              <img
-                src={payMe.src}
-                alt="airdrop"
-                className="object-contain max-h-full"
+            <div className="flex justify-center items-center h-[180px] pt-4 pb-10">
+              <Image
+                src="/home/pay-me.svg"
+                alt="pay me"
+                width="408"
+                height="183"
+                className="max-h-full"
               />
             </div>
             <div className="mt-auto">
@@ -104,11 +116,13 @@ export default function PayYourFrens() {
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
-            <div className="h-[180px] flex items-center justify-center pb-4">
-              <img
-                src={airdrop.src}
+            <div className="h-[180px] flex items-center justify-center">
+              <Image
+                src="/home/airdrop.svg"
                 alt="airdrop"
-                className="object-contain max-h-full"
+                width="330"
+                height="232"
+                className="max-h-full"
               />
             </div>
             <div className="mt-auto">
@@ -138,7 +152,15 @@ export default function PayYourFrens() {
             </div>
           </div>
           <div className="bg-home-gray-600 rounded-[22px] overflow-hidden p-4 flex flex-col">
-            <img src={deposit.src} alt="deposit" className="w-full" />
+            <div className="flex justify-center items-center h-[180px] pt-4 pb-10">
+              <Image
+                src="/home/deposit.svg"
+                alt="deposit"
+                width="155"
+                height="146"
+                className="max-h-full"
+              />
+            </div>
             <div className="mt-auto">
               <div className="text-base text-[#333333] font-medium flex items-center mb-2">
                 <svg
