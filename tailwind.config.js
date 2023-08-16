@@ -9,14 +9,14 @@ module.exports = {
       colors: {
         footer: {
           title: '#474645',
-          body: '#A8A6A4'
+          body: '#A8A6A4',
         },
         home: {
           gray: {
-            'p': "#70707B",
-            '600': "#F2F2F2",
-            '700': "#7A7E85"
-          }
+            p: '#70707B',
+            600: '#F2F2F2',
+            700: '#7A7E85',
+          },
         },
         dashboard: {
           green: {
@@ -83,20 +83,23 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
         },
-        'move': {
+        move: {
           '0%, 100%': {
-            top: '-28px'
-          }
-        }
+            top: '-28px',
+          },
+        },
       },
       animation: {
         float: 'float 5s ease-in-out infinite',
-        'move': 'move 5s infinite 1s',
+        move: 'move 5s infinite 1s',
       },
       spacing: {
-        '18': '4.5rem',
-        '30': '7.5rem',
-      }
+        18: '4.5rem',
+        30: '7.5rem',
+      },
+      screens: {
+        xs: '400px',
+      },
     },
   },
   plugins: [],
