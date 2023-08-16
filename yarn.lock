@@ -1124,10 +1124,10 @@
     stream-browserify "^3.0.0"
     util "^0.12.4"
 
-"@consolelabs/mochi-formatter@^0.0.1-rc.47":
-  version "0.0.1-rc.47"
-  resolved "https://registry.yarnpkg.com/@consolelabs/mochi-formatter/-/mochi-formatter-0.0.1-rc.47.tgz#9c79f380924d40abe8d55e33710a77bceafb6c4c"
-  integrity sha512-nuq01A7LFZD3PXcTbdI8GdfzVfzU7AV5vzrpwi++53Uf7626hcSVBLM8bX//vmkCtCs+Ua1A2s0Rcgl+VsEbyw==
+"@consolelabs/mochi-formatter@^0.0.1-rc.50":
+  version "0.0.1-rc.50"
+  resolved "https://registry.yarnpkg.com/@consolelabs/mochi-formatter/-/mochi-formatter-0.0.1-rc.50.tgz#df371fb9ca9fed5e7e87c8e6b4087d37b853f2ac"
+  integrity sha512-NqWH/Fw9S11Ysaj/7PpNCSFIyFJuggq8uKXc0iOcATk++Ss3MnWeoftBdb+wAA/vg8tRpbiZd19hY6WsFjE8xQ==
   dependencies:
     "@bonfida/spl-name-service" "^1.0.9"
     "@solana/web3.js" "^1.78.3"
