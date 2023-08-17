@@ -38,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const type = transfer.type
 
+  let avatar = transfer.from_profile.avatar
   let [sender, receiver] = await fmt.account(
     Platform.Web,
     transfer.from_profile_id,
@@ -46,6 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   if (type === 'in') {
     ;[sender, receiver] = [receiver, sender]
+    avatar = transfer.other_profile.avatar
   }
 
   let platformIcon
@@ -68,7 +70,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       platformIcon,
       transfer,
-      sender: sender?.plain ?? '',
+      sender: {
+        value: sender?.plain ?? '',
+        avatar,
+      },
       receiver: receiver?.plain ?? '',
     },
   }
@@ -82,7 +87,10 @@ export default function Transfer({
 }: {
   platformIcon?: string
   transfer: any
-  sender: string
+  sender: {
+    value: string
+    avatar: string
+  }
   receiver: string
 }) {
   return (
@@ -93,7 +101,9 @@ export default function Transfer({
           title={'Payment Detail'}
           tailTitle
           image={`${HOME_URL}/api/transfer-og?id=${transfer.external_id}`}
-          description={`${sender} paid ${receiver} ${mochiUtils.formatTokenDigit(
+          description={`${
+            sender.value
+          } paid ${receiver} ${mochiUtils.formatTokenDigit(
             utils.formatUnits(transfer.amount, transfer.decimal),
           )} ${transfer.token.symbol}`}
           url={`${HOME_URL}/transfer/${transfer.external_id}}`}
@@ -122,16 +132,16 @@ export default function Transfer({
           />
           <div className="flex relative flex-col items-center">
             {!platformIcon ? (
-              <img src={transfer.from_profile.avatar} alt="" />
+              <img src={sender.avatar} alt="" />
             ) : (
               <CutoutAvatar
                 size="sm"
-                src={transfer.from_profile.avatar}
+                src={sender.avatar}
                 cutoutSrc={platformIcon}
               />
             )}
             <div className="mt-2 text-sm">
-              <span className="font-medium">{sender}</span>
+              <span className="font-medium">{sender.value}</span>
               <br />
               <span className="text-xs font-light text-gray-500">
                 made a payment
@@ -173,7 +183,9 @@ export default function Transfer({
               <ul className="relative px-2 space-y-2 text-xs fle-1">
                 <li className="flex gap-x-3 justify-between">
                   <span className="font-normal text-current">From</span>
-                  <span className="font-normal text-current">{sender}</span>
+                  <span className="font-normal text-current">
+                    {sender.value}
+                  </span>
                 </li>
                 <li className="flex gap-x-3 justify-between">
                   <span className="font-normal text-current">To</span>
