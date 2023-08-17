@@ -19,7 +19,7 @@ export default function Heading({
     <>
       <Tag
         className={clsx(
-          'text-[2rem] sm:text-5xl mb-4 tracking-tight leading-tight font-medium font-heading tracking-[-0.5px] text-[#343433]',
+          'text-[2rem] sm:text-4xl mb-4 tracking-tight leading-tight font-medium font-heading tracking-[-0.5px] text-[#343433]',
           className,
         )}
       >

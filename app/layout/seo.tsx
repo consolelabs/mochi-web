@@ -11,10 +11,10 @@ interface Props {
 }
 
 export const CONFIG = {
-  title: PAGES.HOME.title,
+  title: 'Mochi',
   description: 'Mochi Bot — Pay your frens using cryptocurrency',
   url: HOME_URL,
-  image: `${HOME_URL}/featured.png`,
+  image: `${HOME_URL}/logo.png`,
 }
 
 export const SEO = ({

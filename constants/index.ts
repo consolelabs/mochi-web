@@ -5,7 +5,7 @@ import {
   TELEGRAM_LINK,
   TWITTER_LINK,
   DOCUMENT_LINK,
-  GITHUB_LINK
+  GITHUB_LINK,
 } from '~envs'
 
 export const PAGES = {
