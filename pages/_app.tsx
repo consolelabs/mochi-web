@@ -96,7 +96,23 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
 }
 
 export default function App(props: AppPropsWithLayout) {
-  const { isOpen, onClose } = useDisclosure({ defaultIsOpen: isBeta })
+  const {
+    isOpen,
+    onClose: _onClose,
+    onOpen,
+  } = useDisclosure({ defaultIsOpen: false })
+
+  const onClose = () => {
+    localStorage.setItem('beta-consented', 'true')
+    _onClose()
+  }
+
+  useEffect(() => {
+    const consented = localStorage.getItem('beta-consented')
+    if (!consented && isBeta) {
+      onOpen()
+    }
+  }, [onOpen])
 
   return (
     <StrictMode>
