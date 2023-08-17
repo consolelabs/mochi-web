@@ -64,7 +64,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  platformIcon = xlogo.src
   return {
     props: {
       platformIcon,
@@ -145,7 +144,6 @@ export default function Transfer({
                 })}
               >
                 <div className="text-5xl">
-                  {/* 100,000,000 */}
                   {mochiUtils.formatTokenDigit(
                     utils.formatUnits(transfer.amount, transfer.decimal),
                   )}
