@@ -14,7 +14,7 @@ export const CONFIG = {
   title: 'Mochi',
   description: 'Mochi Bot — Pay your frens using cryptocurrency',
   url: HOME_URL,
-  image: `${HOME_URL}/logo.png`,
+  image: `${HOME_URL}/tip.png`,
 }
 
 export const SEO = ({
