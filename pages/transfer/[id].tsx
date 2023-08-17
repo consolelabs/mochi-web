@@ -106,7 +106,7 @@ export default function Transfer({
       skipAuth
       childSEO={
         <SEO
-          title={`${sender.value} --> ${receiver}`}
+          title={`Tip from ${sender.value} - Mochi`}
           image={`${HOME_URL}/api/transfer-og?id=${transfer.external_id}`}
           description={`${
             sender.value
@@ -183,7 +183,7 @@ export default function Transfer({
           <div className="relative -mx-6 text-gray-400">
             <div className="flex relative flex-col gap-y-2 gap-x-4 py-4 font-mono xs:flex-row">
               <div className="absolute top-0 left-0 w-full h-full scale-x-125 receipt-dashed-box" />
-              <ul className="relative px-2 space-y-2 text-xs fle-1">
+              <ul className="relative flex-1 px-2 space-y-2 text-xs">
                 <li className="flex gap-x-3 justify-between">
                   <span className="font-normal text-current">From</span>
                   <span className="font-normal text-current">
