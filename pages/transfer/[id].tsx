@@ -66,6 +66,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  const tokenIcon = await API.MOCHI.query({ codes: transfer.token.symbol })
+    .catcherFallback(() => transfer.token.icon)
+    .get(`/product-metadata/emoji`)
+    .json((r) => r.data.at(0)?.emoji_url ?? transfer.token.icon)
+
   return {
     props: {
       platformIcon,
@@ -75,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         avatar,
       },
       receiver: receiver?.plain ?? '',
+      tokenIcon,
     },
   }
 }
@@ -84,6 +90,7 @@ export default function Transfer({
   sender,
   receiver,
   platformIcon,
+  tokenIcon,
 }: {
   platformIcon?: string
   transfer: any
@@ -92,14 +99,14 @@ export default function Transfer({
     avatar: string
   }
   receiver: string
+  tokenIcon: string
 }) {
   return (
     <Layout
       skipAuth
       childSEO={
         <SEO
-          title={'Payment Detail'}
-          tailTitle
+          title={`${sender.value} --> ${receiver}`}
           image={`${HOME_URL}/api/transfer-og?id=${transfer.external_id}`}
           description={`${
             sender.value
@@ -159,11 +166,7 @@ export default function Transfer({
                   )}
                 </div>
                 <div className="flex items-center mt-1">
-                  <img
-                    className="mr-2 w-6 h-6"
-                    src={transfer.token.icon}
-                    alt=""
-                  />
+                  <img className="mr-1 w-7 h-7" src={tokenIcon} alt="" />
                   <div className="text-4xl">{transfer.token.symbol}</div>
                 </div>
               </div>
