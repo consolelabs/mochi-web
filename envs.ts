@@ -24,11 +24,9 @@ export const INVITE_LINK =
   (process.env.INVITE_LINK as string) ||
   'https://discord.com/api/oauth2/authorize?client_id=1062540132269432863&permissions=8&scope=bot%20applications.commands'
 export const TELEGRAM_LINK =
-  (process.env.TELEGRAM_LINK as string) ||
-  'https://telegram.me/dmmochibot'
+  (process.env.TELEGRAM_LINK as string) || 'https://t.me/dmmochibot'
 export const DOCUMENT_LINK =
-  (process.env.DOCUMENT_LINK as string) ||
-  'https://mochi.readme.io'
+  (process.env.DOCUMENT_LINK as string) || 'https://mochi.readme.io'
 export const GITHUB_LINK =
   (process.env.GITHUB_LINK as string) ||
   'https://github.com/consolelabs/mochi-discord'
