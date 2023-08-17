@@ -9,6 +9,7 @@ import ExpressYourSelf from '~components/Home/ExpressYourSelf'
 import List from '~components/Home/List'
 import ApiIntegration from '~components/Home/ApiIntegration'
 import SetupIsSimple from '~components/Home/SetupIsSimple'
+import ChainAndPartner from '~components/Home/ChainAndPartner'
 
 const Divider = () => (
   <div className="px-4 mx-auto max-w-5xl my-16 md:my-24">
@@ -29,6 +30,7 @@ export default function index() {
       <SkipTheMath />
       <Divider />
       <ExpressYourSelf />
+      <ChainAndPartner />
       <List />
       <ApiIntegration />
       <SetupIsSimple />
