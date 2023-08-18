@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     avatar = transfer.other_profile.avatar
   }
 
-  let platformIcon
+  let platformIcon = null
   switch (sender?.platform) {
     case Platform.Discord: {
       platformIcon = discordLogo.src
@@ -101,6 +101,11 @@ export default function Transfer({
   receiver: string
   tokenIcon: string
 }) {
+  const amountDisplay = mochiUtils.formatTokenDigit(
+    utils.formatUnits(transfer.amount, transfer.decimal),
+  )
+  const isLongNumber = amountDisplay.length >= 12
+
   return (
     <Layout
       skipAuth
@@ -139,7 +144,11 @@ export default function Transfer({
           />
           <div className="flex relative flex-col items-center">
             {!platformIcon ? (
-              <img src={sender.avatar} alt="" />
+              <img
+                className="w-14 h-14 rounded-full"
+                src={sender.avatar}
+                alt=""
+              />
             ) : (
               <CutoutAvatar
                 size="sm"
@@ -156,17 +165,35 @@ export default function Transfer({
             </div>
             <div className="flex justify-center items-center mt-8 font-medium">
               <div
-                className={clsx('flex flex-col items-center', {
-                  'flex-col': '',
+                className={clsx('flex', {
+                  'flex-col': isLongNumber,
+                  'items-center': isLongNumber,
+                  'items-baseline': !isLongNumber,
                 })}
               >
-                <div className="text-5xl">
-                  {mochiUtils.formatTokenDigit(
-                    utils.formatUnits(transfer.amount, transfer.decimal),
-                  )}
-                </div>
-                <div className="flex items-center mt-1">
-                  <img className="mr-1 w-7 h-7" src={tokenIcon} alt="" />
+                <img
+                  className={clsx('mr-1 w-7 h-7', {
+                    'inline-block': !isLongNumber,
+                    hidden: isLongNumber,
+                  })}
+                  src={tokenIcon}
+                  alt=""
+                />
+                <div className="text-5xl">{amountDisplay}</div>
+                <div
+                  className={clsx('flex mt-1', {
+                    'items-center': isLongNumber,
+                    'items-baseline ml-1': !isLongNumber,
+                  })}
+                >
+                  <img
+                    className={clsx('mr-1 w-7 h-7', {
+                      'inline-block': isLongNumber,
+                      hidden: !isLongNumber,
+                    })}
+                    src={tokenIcon}
+                    alt=""
+                  />
                   <div className="text-4xl">{transfer.token.symbol}</div>
                 </div>
               </div>

@@ -33,6 +33,11 @@ module.exports = {
         destination: 'tg://user?id=:id',
         permanent: false,
       },
+      {
+        source: '/transfer/:external_id',
+        destination: '/tx/:external_id',
+        permanent: false,
+      },
     ]
 
     // TODO: remove after done dashboard
