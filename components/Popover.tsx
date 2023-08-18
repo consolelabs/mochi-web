@@ -47,7 +47,7 @@ export const Popover = (props: Props) => {
         </HeadlessPopover.Button>
         <HeadlessPopover.Panel
           className={clsx(
-            'relative z-50 rounded-md shadow-xl',
+            'relative z-50 rounded-md shadow-md',
             props.panelClassname,
           )}
         >

@@ -6,6 +6,7 @@ import { PAGES, SOCIAL_LINKS } from '~constants'
 import { logo } from '~utils/image'
 import { Icon } from '@iconify/react'
 import ConnectButton from '~components/ConnectButton'
+import AddBotButton from '~components/AddBotButton'
 
 const NavLink = (props: any) => {
   if (!props.href) {
@@ -164,7 +165,7 @@ export const Navbar = () => (
           </span>
         </Link>
         <div className="order-1 ml-auto md:order-2 md:ml-10">
-          <ConnectButton />
+          <AddBotButton />
         </div>
       </div>
     </nav>

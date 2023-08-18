@@ -22,7 +22,7 @@ import clsx from 'clsx'
 
 const ConnectButtonTrigger = () => (
   <Fragment>
-    Connect bot
+    Connect
     <Icon icon="iconamoon:arrow-down-2-light" className="w-4 h-4" />
   </Fragment>
 )
