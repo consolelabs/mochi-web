@@ -26,10 +26,9 @@ export const INVITE_LINK =
 export const TELEGRAM_LINK =
   (process.env.TELEGRAM_LINK as string) || 'https://t.me/dmmochibot'
 export const DOCUMENT_LINK =
-  (process.env.DOCUMENT_LINK as string) || 'https://mochi.readme.io'
+  (process.env.DOCUMENT_LINK as string) || 'https://docs.mochi.gg/'
 export const GITHUB_LINK =
-  (process.env.GITHUB_LINK as string) ||
-  'https://github.com/consolelabs/mochi-discord'
+  (process.env.GITHUB_LINK as string) || 'https://github.com/consolelabs'
 
 export const HOME_URL = process.env.NEXT_PUBLIC_HOME_URL || 'https://mochi.gg'
 
