@@ -4,9 +4,10 @@ import { Icon } from '@iconify/react'
 const codeString = `
   curl --request GET \\\n --url https://api.mochi-pay.console.so/api/\nv1/profile/0/monthly-stats \\\n --header 'accept: application/json'
   `
+const codeCopy = `curl --request GET \\\n --url https://api.mochi-pay.console.so/api/v1/profile/0/monthly-stats \\\n --header 'accept: application/json'`
 
 export default function ApiIntegration() {
-  const { hasCopied, onCopy } = useClipboard(codeString)
+  const { hasCopied, onCopy } = useClipboard(codeCopy)
 
   return (
     <section className="bg-[#26272B] py-16 md:py-24">
