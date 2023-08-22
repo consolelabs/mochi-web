@@ -29,6 +29,7 @@ export { default as logo } from '../public/logo.png'
 export { default as apple } from '../public/home/apple.png'
 export { default as avatar } from '../public/home/avatar.png'
 export { default as socialIcons } from '../public/home/social-icons.png'
+export { default as coinIcon } from '../public/assets/coin.png'
 
 export { default as successStampIcon } from '../public/assets/success-stamp.png'
 export { default as failStampIcon } from '../public/assets/fail-stamp.png'

@@ -14,6 +14,7 @@ import {
   successStampIcon,
   telegramLogo,
   xlogo,
+  coinIcon,
 } from '~utils/image'
 import clsx from 'clsx'
 
@@ -70,6 +71,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .catcherFallback(() => transfer.token.icon)
     .get(`/product-metadata/emoji`)
     .json((r) => r.data.at(0)?.emoji_url ?? transfer.token.icon)
+
+  // try to see if the avatar is an image
+  try {
+    const res = await fetch(avatar)
+    if (!res.ok) throw new Error()
+  } catch (e: any) {
+    avatar = `https://boring-avatars-api.vercel.app/api/avatar?name=${sender?.id}size=40&variant=beam`
+  }
 
   return {
     props: {
@@ -176,7 +185,7 @@ export default function Transfer({
                     'inline-block': !isLongNumber,
                     hidden: isLongNumber,
                   })}
-                  src={tokenIcon}
+                  src={tokenIcon || coinIcon.src}
                   alt=""
                 />
                 <div className="text-5xl">{amountDisplay}</div>
@@ -191,7 +200,7 @@ export default function Transfer({
                       'inline-block': isLongNumber,
                       hidden: !isLongNumber,
                     })}
-                    src={tokenIcon}
+                    src={tokenIcon ?? coinIcon.src}
                     alt=""
                   />
                   <div className="text-4xl">{transfer.token.symbol}</div>
