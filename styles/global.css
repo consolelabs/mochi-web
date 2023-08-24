@@ -9,7 +9,7 @@
 }
 
 body {
-  @apply bg-white;
+  @apply bg-white-pure;
   font-family: 'Inter', sans-serif;
   overflow: hidden;
   position: relative;

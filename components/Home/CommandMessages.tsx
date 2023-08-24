@@ -81,8 +81,8 @@ export default function CommandMessages() {
 
   return (
     <section id="slider" className="text-center" ref={ref}>
-      <div className="container mx-auto px-6">
-        <div className="max-h-[9rem] sm:max-h-[15rem] overflow-hidden relative">
+      <div className="container px-6 mx-auto">
+        <div className="overflow-hidden relative max-h-[9rem] sm:max-h-[15rem]">
           <ul
             className={clsx(
               'text-center transition-all delay-150 duration-500',
@@ -99,7 +99,7 @@ export default function CommandMessages() {
                 key={item.sender + i}
               >
                 <img
-                  className="mr-2 h-6 w-6 sm:h-10 sm:w-10"
+                  className="mr-2 w-6 h-6 sm:w-10 sm:h-10"
                   src={`/assets/tip/${item.sender}.png`}
                   alt="social icons"
                 />
@@ -114,10 +114,10 @@ export default function CommandMessages() {
               </li>
             ))}
           </ul>
-          <div className="bg-gradient-to-b from-white to-transparent absolute left-0 right-0 top-0 h-[50%]">
+          <div className="bg-gradient-to-b from-white-pure to-transparent absolute left-0 right-0 top-0 h-[50%]">
             &nbsp;
           </div>
-          <div className="bg-gradient-to-t from-white to-transparent absolute left-0 right-0 bottom-0 h-[50%]">
+          <div className="bg-gradient-to-t from-white-pure to-transparent absolute left-0 right-0 bottom-0 h-[50%]">
             &nbsp;
           </div>
         </div>
