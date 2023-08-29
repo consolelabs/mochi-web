@@ -111,7 +111,7 @@ export default function Transfer({
   tokenIcon: string
 }) {
   const amountDisplay = mochiUtils.formatTokenDigit(
-    utils.formatUnits(transfer.amount, transfer.decimal),
+    utils.formatUnits(transfer.amount, transfer.token.decimal),
   )
   const isLongNumber = amountDisplay.length >= 12
 
@@ -211,9 +211,9 @@ export default function Transfer({
               &asymp; {mochiUtils.formatUsdDigit(transfer.usd_amount)}
             </span>
           </div>
-          {transfer.message && (
+          {transfer.metadata.message && (
             <span className="relative mt-3 font-normal text-justify">
-              &ldquo;{transfer.message}&rdquo;
+              &ldquo;{transfer.metadata.message}&rdquo;
             </span>
           )}
           <div className="relative -mx-6 text-gray-400">
