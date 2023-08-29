@@ -122,11 +122,7 @@ export default function Transfer({
         <SEO
           title={`Tip from ${sender.value} - Mochi`}
           image={`${HOME_URL}/api/transfer-og?id=${transfer.external_id}`}
-          description={`${
-            sender.value
-          } paid ${receiver} ${mochiUtils.formatTokenDigit(
-            utils.formatUnits(transfer.amount, transfer.decimal),
-          )} ${transfer.token.symbol}`}
+          description={`${sender.value} paid ${receiver} ${amountDisplay} ${transfer.token.symbol}`}
           url={`${HOME_URL}/transfer/${transfer.external_id}}`}
         />
       }
@@ -234,9 +230,7 @@ export default function Transfer({
                 <li className="flex gap-x-3 justify-between">
                   <span className="font-normal text-current">Amount</span>
                   <span className="font-normal text-current">
-                    {mochiUtils.formatTokenDigit(
-                      utils.formatUnits(transfer.amount, transfer.decimal),
-                    )}
+                    {amountDisplay}
                     <span className="ml-1 font-normal text-current">
                       {transfer.token.symbol}
                     </span>
