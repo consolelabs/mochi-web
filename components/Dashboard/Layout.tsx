@@ -12,6 +12,7 @@ import { useAuthStore } from '~store'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDashboardStore } from '~store'
+import Link from 'next/link'
 
 export default function DashboardLayout({
   children,
@@ -61,7 +62,7 @@ export default function DashboardLayout({
             },
           )}
         >
-          <div className="flex gap-x-3 items-center">
+          <Link href="/" className="flex gap-x-3 items-center">
             <Image
               src={logo}
               alt="Logo"
@@ -72,7 +73,7 @@ export default function DashboardLayout({
             <span className="text-xl font-black uppercase text-foreground">
               Mochi<span className="text-mochi">.</span>
             </span>
-          </div>
+          </Link>
           {isLoggedIn || skipAuth ? (
             <div className="flex gap-x-3 items-center">
               {isLoggedIn && <Icon icon="mdi:bell" width={20} />}
