@@ -2,18 +2,19 @@ import { ImageResponse } from '@vercel/og'
 import { NextRequest } from 'next/server'
 import { API } from '~constants/api'
 import { format } from 'date-fns'
-import { fmt } from '~utils/formatter'
-import { Platform, utils as mochiUtils } from '@consolelabs/mochi-formatter'
 import { HOME_URL } from '~envs'
 import { utils } from 'ethers'
+import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
+import { UI } from '~constants/mochi'
 
 export const config = {
   runtime: 'edge',
   unstable_allowDynamic: [
     '/node_modules/js-sha256/src/sha256.js',
     '/node_modules/lodash.merge/index.js',
+    '/node_modules/lodash.snakecase/index.js',
     '/node_modules/@babel/runtime/regenerator/index.js',
-    '/node_modules/@consolelabs/mochi-formatter/dist/index.mjs',
+    '/node_modules/@consolelabs/mochi-ui/dist/index.mjs',
   ],
 }
 
@@ -47,7 +48,7 @@ const og = async (req: NextRequest) => {
 
   const type = transfer?.type
 
-  let [sender, receiver] = await fmt.account(
+  let [sender, receiver] = await UI.resolve(
     Platform.Web,
     transfer?.from_profile_id,
     transfer?.other_profile_id,

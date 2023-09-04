@@ -1,16 +1,11 @@
 import { GetStaticProps } from 'next'
-import { Client, isFullPage } from '@notionhq/client'
-import {
-  CHANGELOG_DATABASE_ID,
-  CHANGELOG_FILTER_PROPERTY_NAME,
-  CHANGELOG_FILTER_PROPERTY_VALUE,
-  CHANGELOG_SORT_PROPERTY_NAME,
-  NOTION_KEY,
-} from '~envs'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
 import { PAGES } from '~constants'
-import { NotionRenderer } from '~components/NotionRenderer'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
+import { api } from '~constants/mochi'
 
 type Page = {
   name: string
@@ -18,81 +13,65 @@ type Page = {
 }
 
 type Props = {
-  data: Array<Page | null>
-}
-
-function toNotionPageId(id: string) {
-  return `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(
-    16,
-    20,
-  )}-${id.slice(20, 32)}`
+  data: Array<Page>
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const property = CHANGELOG_FILTER_PROPERTY_NAME
-  const propertyVal = CHANGELOG_FILTER_PROPERTY_VALUE
-
-  const sortProperty = CHANGELOG_SORT_PROPERTY_NAME
-
-  const notion = new Client({ auth: NOTION_KEY })
-  const db = await notion.databases.query({
-    database_id: toNotionPageId(CHANGELOG_DATABASE_ID),
-    sorts: [{ property: sortProperty, direction: 'descending' }],
-  })
-
-  const pages = await Promise.all(
-    db.results.map(async (p: any, i) => {
-      if (!isFullPage(p)) return null
-      const filterProp = p.properties[property]
-      if (
-        filterProp.type !== 'select' ||
-        (filterProp.type === 'select' &&
-          filterProp.select?.name !== propertyVal)
-      )
-        return null
-      let name = `Changelog #${i + 1}`
-      if (
-        p.properties.Name.type === 'title' &&
-        p.properties.Name.title[0].plain_text
-      ) {
-        name = p.properties.Name.title[0].plain_text
-      }
-
-      return notion.blocks.children
-        .list({
-          block_id: p.id,
-        })
-        .then((p) => ({ name, content: p }))
-        .catch(() => null)
-    }),
-  )
+  const changelogs = api.changelogs
 
   return {
     props: {
-      data: pages.filter(Boolean),
+      data: changelogs.map((c: any) => ({ name: c.title, content: c.content })),
     },
     revalidate: 60 * 10,
   }
+}
+
+const Heading = ({ children }: { children: React.ReactNode }) => {
+  return <p className="text-2xl font-medium">{children}</p>
+}
+
+const Paragraph = ({ children }: { children: React.ReactNode }) => {
+  return <span className="mb-8">{children}</span>
+}
+
+const Image = (props: any) => {
+  return (
+    <img
+      className="-mt-5 w-[70%] mx-auto rounded-lg"
+      src={props.src}
+      alt={props.alt || ''}
+    />
+  )
 }
 
 const ChangelogItem = ({ name, content }: Page) => (
   <div className="gap-9 mb-16 lg:flex">
     <div className="inline-block relative flex-shrink-0 mb-5 lg:pt-2">
       <div className="top-36 lg:sticky">
-        <div className="border-gradient">
-          <div className="bg-white border-gradient-entry" />
-          <div className="relative px-4 font-semibold leading-9 text-center lg:px-5 text-mochi-500">
+        <div className="bg-white rounded-xl border border-gray-200">
+          <div className="relative px-4 font-semibold leading-9 text-center text-gray-600 lg:px-5">
             {name}
           </div>
         </div>
       </div>
     </div>
     <div className="flex flex-col flex-1 pb-6 max-w-prose whitespace-pre-wrap">
-      {content.results.map((d: any, i: number) => {
-        return (
-          <NotionRenderer key={`changelog-d-${d.id}`} d={d} first={i === 0} />
-        )
-      })}
+      <ReactMarkdown
+        components={{
+          h1: Heading,
+          h2: Heading,
+          h3: Heading,
+          h4: Heading,
+          h5: Heading,
+          h6: Heading,
+          p: Paragraph,
+          img: Image,
+        }}
+        remarkPlugins={[remarkGfm, remarkBreaks]}
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   </div>
 )

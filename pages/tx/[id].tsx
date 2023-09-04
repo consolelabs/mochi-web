@@ -5,8 +5,7 @@ import { format } from 'date-fns'
 import Layout from '~components/Dashboard/Layout'
 import { HOME_URL } from '~envs'
 import { SEO } from '~app/layout/seo'
-import { fmt } from '~utils/formatter'
-import { Platform, utils as mochiUtils } from '@consolelabs/mochi-formatter'
+import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
 import { Icon } from '@iconify/react'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import {
@@ -17,6 +16,7 @@ import {
   coinIcon,
 } from '~utils/image'
 import clsx from 'clsx'
+import { UI } from '~constants/mochi'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const type = transfer.type
 
   let avatar = transfer.from_profile.avatar
-  let [sender, receiver] = await fmt.account(
+  let [sender, receiver] = await UI.resolve(
     Platform.Web,
     transfer.from_profile_id,
     transfer.other_profile_id,
@@ -208,7 +208,7 @@ export default function Transfer({
             </span>
           </div>
           {transfer.metadata.message && (
-            <span className="relative mt-3 font-normal text-justify">
+            <span className="relative mt-3 font-normal text-center">
               &ldquo;{transfer.metadata.message}&rdquo;
             </span>
           )}

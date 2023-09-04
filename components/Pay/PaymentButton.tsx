@@ -192,7 +192,7 @@ export default function PaymentButton({
               )
               .res(() => {
                 setTimeout(() => {
-                  refresh().then((pr) => {
+                  refresh().then((pr: any) => {
                     if (pr?.claim_tx) {
                       toast.custom(
                         () => {
@@ -240,8 +240,9 @@ export default function PaymentButton({
                                   Track the transaction{' '}
                                   <a
                                     className="underline"
-                                    href={`${new URL(chainExplorer).origin
-                                      }/tx/${pr.claim_tx}`}
+                                    href={`${
+                                      new URL(chainExplorer).origin
+                                    }/tx/${pr.claim_tx}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                   >
@@ -326,8 +327,9 @@ export default function PaymentButton({
                         Track the transaction{' '}
                         <a
                           className="underline"
-                          href={`${new URL(chainExplorer).origin}/tx/${sendTx?.hash
-                            }`}
+                          href={`${new URL(chainExplorer).origin}/tx/${
+                            sendTx?.hash
+                          }`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -384,8 +386,8 @@ export default function PaymentButton({
         ? sendNativeEVM
         : sendNonNativeEVM
       : isNative
-        ? sendNativeSOL
-        : sendNonNativeSOL
+      ? sendNativeSOL
+      : sendNonNativeSOL
     if (!payFn || (isEVM && !switchNetworkAsync)) {
       if ((isEVM && !emptyConfigSOL) || (!isEVM && !emptyConfigEVM)) {
         disconnect()
@@ -510,7 +512,7 @@ export default function PaymentButton({
                   <hr className="hidden w-full bg-black" />
 
                   {(!isPayMe && wallets?.length && isLoggedIn) ||
-                    (isPayMe && recipientWallets?.length) ? (
+                  (isPayMe && recipientWallets?.length) ? (
                     (isPayMe ? recipientWallets : wallets)?.map((w) => {
                       return (
                         <WalletButton
