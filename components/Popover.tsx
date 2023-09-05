@@ -1,7 +1,4 @@
-import {
-  Popover as HeadlessPopover,
-  PopoverPanelProps,
-} from '@headlessui/react'
+import { Popover as HeadlessPopover } from '@headlessui/react'
 import clsx from 'clsx'
 import { Float } from '@headlessui-float/react'
 import { useState } from 'react'
@@ -9,7 +6,7 @@ import { useState } from 'react'
 type Props = {
   trigger: React.ReactNode
   triggerClassname?: string
-  children: PopoverPanelProps<any>['children']
+  children: Parameters<typeof HeadlessPopover.Panel>[0]['children']
   panelClassname?: string
   offset?: number
 }

@@ -67,7 +67,7 @@ const og = async (req: NextRequest) => {
           transformOrigin: 'top left',
           fontFamily: '"Inter"',
           display: 'flex',
-          width: 340,
+          width: w,
         }}
       >
         <CardUI {...data} isOG />

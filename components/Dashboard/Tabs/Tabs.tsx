@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tab as HeadlessTab, TabGroupProps } from '@headlessui/react'
+import { Tab as HeadlessTab } from '@headlessui/react'
 import { tab } from './styles'
 import clsx from 'clsx'
 
@@ -11,11 +11,13 @@ type Props = {
   children?: React.ReactNode
 }
 
+type TabGroupProps = Parameters<typeof HeadlessTab.Group>[0]
+
 export const Tabs = ({
   children,
   headings,
   ...rest
-}: Props & TabGroupProps<'div'>) => {
+}: Props & TabGroupProps) => {
   return (
     <div className={tab({})}>
       <HeadlessTab.Group {...rest}>

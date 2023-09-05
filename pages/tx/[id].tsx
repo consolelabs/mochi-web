@@ -80,8 +80,25 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     avatar = `https://boring-avatars-api.vercel.app/api/avatar?name=${sender?.id}size=40&variant=beam`
   }
 
+  const data = {
+    from: sender?.plain ?? '',
+    tokenIcon: `${HOME_URL}/assets/money.png`,
+    to: receiver?.plain ?? '',
+    symbol: transfer?.token.symbol,
+    amount: mochiUtils.formatTokenDigit(
+      utils.formatUnits(transfer?.amount ?? 0, transfer?.token.decimal ?? 0),
+    ),
+    date: '',
+    external_id: transfer.external_id,
+  }
+
+  if (transfer) {
+    data.date = format(new Date(transfer?.created_at), 'dd/MM/yyyy hh:mmaa')
+  }
+
   return {
     props: {
+      ogData: data,
       platformIcon,
       transfer,
       sender: {
@@ -100,7 +117,9 @@ export default function Transfer({
   receiver,
   platformIcon,
   tokenIcon,
+  ogData,
 }: {
+  ogData: any
   platformIcon?: string
   transfer: any
   sender: {
@@ -121,9 +140,11 @@ export default function Transfer({
       childSEO={
         <SEO
           title={`Tip from ${sender.value} - Mochi`}
-          image={`${HOME_URL}/api/transfer-og?id=${transfer.external_id}`}
+          image={`${HOME_URL}/api/transfer-og?data=${encodeURIComponent(
+            JSON.stringify(ogData),
+          )}`}
           description={`${sender.value} paid ${receiver} ${amountDisplay} ${transfer.token.symbol}`}
-          url={`${HOME_URL}/transfer/${transfer.external_id}}`}
+          url={`${HOME_URL}/transfer/${transfer.external_id}`}
         />
       }
     >
