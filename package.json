@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "proxy-ssl": "local-ssl-proxy --config proxy-config.json",
-    "dev:https": "(trap 'kill 0' SIGINT; yarn proxy-ssl & next dev -p 3001)",
+    "dev:https": "(trap 'kill 0' SIGINT; pnpm proxy-ssl & next dev -p 3001)",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^0.1.67",
-    "@consolelabs/mochi-rest": "^1.5.1",
-    "@consolelabs/mochi-ui": "^6.0.2",
+    "@consolelabs/mochi-rest": "^1.6.1",
+    "@consolelabs/mochi-ui": "^7.0.1",
     "@dwarvesf/react-hooks": "^0.7.0",
     "@dwarvesf/react-utils": "^0.4.1",
     "@fnando/sparkline": "^0.3.10",
@@ -21,7 +21,7 @@
     "@fontsource/poppins": "^5.0.8",
     "@fontsource/sora": "^4.5.10",
     "@headlessui-float/react": "^0.11.0",
-    "@headlessui/react": "^1.7.5",
+    "@headlessui/react": "1.7.5",
     "@solana/spl-token": "^0.3.7",
     "@solana/wallet-adapter-base": "0.9.22",
     "@solana/wallet-adapter-react": "^0.15.30",
@@ -33,7 +33,7 @@
     "clsx": "^1.2.1",
     "date-fns": "^2.28.0",
     "dom-to-image": "^2.6.0",
-    "ethers": "^5",
+    "ethers": "^5.7.0",
     "lodash.capitalize": "^4.2.1",
     "next": "^13.2.4",
     "nprogress": "^0.2.0",
@@ -58,7 +58,7 @@
     "use-timer": "^2.0.1",
     "wagmi": "^0.12.1",
     "webp-converter": "^2.3.3",
-    "wretch": "^2.5.1",
+    "wretch": "^2.6.0",
     "zustand": "^4.3.6"
   },
   "devDependencies": {

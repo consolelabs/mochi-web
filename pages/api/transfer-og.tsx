@@ -1,21 +1,9 @@
 import { ImageResponse } from '@vercel/og'
 import { NextRequest } from 'next/server'
-import { API } from '~constants/api'
-import { format } from 'date-fns'
 import { HOME_URL } from '~envs'
-import { utils } from 'ethers'
-import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
-import { UI } from '~constants/mochi'
 
 export const config = {
   runtime: 'edge',
-  unstable_allowDynamic: [
-    '/node_modules/js-sha256/src/sha256.js',
-    '/node_modules/lodash.merge/index.js',
-    '/node_modules/lodash.snakecase/index.js',
-    '/node_modules/@babel/runtime/regenerator/index.js',
-    '/node_modules/@consolelabs/mochi-ui/dist/index.mjs',
-  ],
 }
 
 const regularFont = fetch(
@@ -33,50 +21,16 @@ const extraboldFont = fetch(
 const w = 450
 const h = 140
 
-const scale = 1
+const scale = 2
 
 const og = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl
-  const id = searchParams.get('id')
-  let transfer = null
-
-  if (id) {
-    transfer = await API.MOCHI_PAY.get(`/transfer/${id}`)
-      .notFound(() => null)
-      .json((r) => r.data)
-  }
-
-  const type = transfer?.type
-
-  let [sender, receiver] = await UI.resolve(
-    Platform.Web,
-    transfer?.from_profile_id,
-    transfer?.other_profile_id,
-  )
-
-  if (type === 'in') {
-    ;[sender, receiver] = [receiver, sender]
-  }
+  const ogData = searchParams.get('data') ?? '{}'
+  const data = JSON.parse(decodeURIComponent(ogData))
 
   const regular = await regularFont
   const bold = await boldFont
   const extrabold = await extraboldFont
-
-  let tokenSrc = `${HOME_URL}/assets/money.png`
-
-  const data = {
-    from: sender?.plain ?? '',
-    tokenIcon: tokenSrc,
-    to: receiver?.plain ?? '',
-    symbol: transfer?.token.symbol,
-    decimal: transfer?.token.decimal,
-    amount: transfer?.amount,
-    date: '',
-  }
-
-  if (transfer) {
-    data.date = format(new Date(transfer?.created_at), 'yyyy-MM-dd hh:mm:ss')
-  }
 
   return new ImageResponse(
     (
@@ -122,27 +76,19 @@ const og = async (req: NextRequest) => {
             <li tw="flex justify-between">
               <span tw="font-normal text-current">Amount</span>
               <span tw="ml-4 font-normal text-current">
-                {mochiUtils.formatTokenDigit(
-                  utils.formatUnits(transfer.amount, transfer.decimal),
-                )}
-                <span tw="ml-1 font-normal text-current">
-                  {transfer.token.symbol}
-                </span>
+                {data.amount}
+                <span tw="ml-1 font-normal text-current">{data.symbol}</span>
               </span>
             </li>
           </ul>
           <ul tw="relative flex flex-col px-2">
             <li tw="flex justify-between">
               <span tw="font-normal text-current">Tx ID</span>
-              <span tw="ml-4 font-normal text-current">
-                {transfer.external_id}
-              </span>
+              <span tw="ml-4 font-normal text-current">{data.external_id}</span>
             </li>
             <li tw="flex justify-between">
               <span tw="font-normal text-current">Date</span>
-              <span tw="ml-4 font-normal text-current">
-                {format(new Date(transfer.created_at), 'dd/MM/yyyy hh:mmaa')}
-              </span>
+              <span tw="ml-4 font-normal text-current">{data.date}</span>
             </li>
             <li tw="flex justify-between">
               <span tw="font-normal text-current">Status</span>

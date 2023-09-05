@@ -12,7 +12,7 @@ Front-end repo for Mochi Web.
 1. Install dependencies:
 
 ```
-yarn
+pnpm
 ```
 
 2. Prepare env by looking into the `.env.example` file. At the moment, you can
@@ -29,7 +29,7 @@ debug wallet connect to mobile locally the origin must be a secure protocol in
 order to generate the connection URI.
 
 ```
-yarn dev:https
+pnpm dev:https
 ```
 
 ### Development for Profile Dashboard
