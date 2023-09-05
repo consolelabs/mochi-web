@@ -143,7 +143,11 @@ export default function Transfer({
           image={`${HOME_URL}/api/transfer-og?data=${encodeURIComponent(
             JSON.stringify(ogData),
           )}`}
-          description={`${sender.value} paid ${receiver} ${amountDisplay} ${transfer.token.symbol}`}
+          description={`${sender.value} paid ${receiver} ${amountDisplay} ${transfer.token.symbol
+            }${transfer.metadata.message
+              ? ` with message: "${transfer.metadata.message}"`
+              : ''
+            }`}
           url={`${HOME_URL}/transfer/${transfer.external_id}`}
         />
       }
