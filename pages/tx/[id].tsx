@@ -144,7 +144,7 @@ export default function Transfer({
             JSON.stringify(ogData),
           )}`}
           description={`${sender.value} paid ${receiver} ${amountDisplay} ${transfer.token.symbol}`}
-          url={`${HOME_URL}/transfer/${transfer.external_id}}`}
+          url={`${HOME_URL}/transfer/${transfer.external_id}`}
         />
       }
     >

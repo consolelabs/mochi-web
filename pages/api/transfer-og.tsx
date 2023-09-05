@@ -35,7 +35,12 @@ const og = async (req: NextRequest) => {
   return new ImageResponse(
     (
       <div
-        style={{ width: w, height: h }}
+        style={{
+          width: w,
+          height: h,
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+        }}
         tw="rounded-md flex flex-col items-center relative text-gray-500 bg-white"
       >
         <div
