@@ -2,10 +2,10 @@ import { INVITE_LINK, TELEGRAM_LINK } from '~envs'
 
 export default function SetupIsSimple() {
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden">
-      <div className="container mx-auto max-w-5xl px-6">
-        <div className="md:w-3/5 justify-center">
-          <h2 className="text-[2rem] sm:text-5xl mb-4 sm:mb-6 font-heading tracking-[-0.5px] font-medium">
+    <section className="overflow-hidden relative py-16 md:py-24">
+      <div className="container px-6 mx-auto max-w-5xl">
+        <div className="justify-center md:w-3/5">
+          <h2 className="mb-4 font-medium sm:mb-6 sm:text-5xl text-[2rem] font-heading tracking-[-0.5px]">
             Setup is <span className="text-[#ACACBD] font-normal">simple</span>
           </h2>
           <div className="mb-8 text-base sm:text-xl md:w-3/4">
@@ -15,7 +15,7 @@ export default function SetupIsSimple() {
           <a
             target="blank"
             href={INVITE_LINK}
-            className="inline-flex rounded-full overflow-hidden bg-discord text-white px-5 py-[10px] items-center font-semibold mr-2 text-xs sm:text-sm"
+            className="inline-flex overflow-hidden items-center px-5 mr-2 text-xs font-semibold text-white rounded-full sm:text-sm bg-discord py-[10px]"
           >
             <svg
               width="20"
@@ -58,7 +58,7 @@ export default function SetupIsSimple() {
         viewBox="0 0 842 443"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute hidden md:block top-0 bottom-0 right-0 h-full w-1/2"
+        className="hidden absolute top-0 right-0 bottom-0 w-1/2 h-full md:block"
       >
         <path
           d="M148.509 74.3257C162.556 71.7672 173.097 70.7091 183.058 67.7381C190.735 65.4487 197.937 61.1557 204.859 56.9622C209.056 54.4169 211.339 54.6356 213.769 58.7704C222.565 73.7173 231.43 88.6334 240.424 103.464C243.09 107.854 242.099 110.627 238.14 113.768C221.329 127.125 201.42 131.885 180.766 133.355C161.557 134.735 144.174 140.282 128.323 150.849C124.51 153.394 121.527 152.284 119.363 149.092C109.738 134.91 100.175 120.674 91.0182 106.19C90.105 104.746 91.3056 100.333 92.8933 99.2529C99.9397 94.4306 107.109 89.4489 114.93 86.1708C127.01 81.104 139.669 77.3795 148.509 74.3257ZM171.477 116.485C171.485 116.23 171.481 115.977 171.489 115.722C173.443 115.102 175.445 114.609 177.334 113.842C183.687 111.283 187.699 105.351 187.377 99.2243C187.079 93.6618 182.873 89.009 176.219 86.8941C166.579 83.847 154.306 87.3929 148.412 94.9268C141.797 103.387 145.735 114.729 156.347 116.542C161.248 117.372 166.435 116.555 171.489 116.482L171.477 116.485Z"
@@ -81,8 +81,8 @@ export default function SetupIsSimple() {
           fill="#91D5DD"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M71.8872 296.217C51.1152 296.668 39.6834 307.465 39.8202 326.492C39.9059 339.043 45.9212 349.161 55.3286 354.182C50.946 359.239 46.884 365.48 43.8474 371.723C43.5266 372.383 43.1795 373.09 42.8136 373.834C36.9308 385.806 26.1948 407.654 41.8898 407.617C110.463 407.45 114.454 407.028 104.947 385.351L104.946 385.339C98.5397 370.736 93.0567 360.402 87.9955 353.608C96.7922 348.719 101.229 339.372 101.26 325.615C101.307 307.465 89.6847 295.831 71.8872 296.217Z"
           fill="#91D5DD"
         />
