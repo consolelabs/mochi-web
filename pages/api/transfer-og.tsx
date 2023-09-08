@@ -1,5 +1,7 @@
+import { truncate } from '@dwarvesf/react-utils'
 import { ImageResponse } from '@vercel/og'
 import { NextRequest } from 'next/server'
+import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { HOME_URL } from '~envs'
 
 export const config = {
@@ -18,8 +20,8 @@ const extraboldFont = fetch(
   new URL('../../assets/Inter-ExtraBold.ttf', import.meta.url),
 ).then((res) => res.arrayBuffer())
 
-const w = 450
-const h = 140
+const w = 340
+const h = 200
 
 const scale = 2
 
@@ -36,79 +38,189 @@ const og = async (req: NextRequest) => {
     (
       <div
         style={{
-          width: w,
-          height: h,
           transform: `scale(${scale})`,
           transformOrigin: 'top left',
+          fontFamily: '"Inter"',
+          display: 'flex',
+          width: w,
         }}
-        tw="rounded-md flex flex-col items-center relative text-gray-500 bg-white"
       >
         <div
           style={{
-            display: 'flex',
-            position: 'absolute',
-            top: 0,
-            height: '100%',
+            borderRadius: 16,
+            padding: 1,
+            background: 'linear-gradient(135deg, #e9dbda, #eec3fd, #8fc6e4)',
+            filter: 'drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.2))',
             width: '100%',
-            background:
-              'linear-gradient(0deg, #f4c4c2 0%, #eec3fd 48.96%, #8fc6e4 100%)',
-            filter: 'blur(60px)',
-            opacity: 0.3,
+            height: h,
+            position: 'relative',
           }}
-        />
-        <img
-          width={100}
-          height={100}
-          src={`${HOME_URL}/assets/success-stamp.png`}
-          style={{
-            position: 'absolute',
-            right: 0,
-            bottom: 0,
-          }}
-          alt=""
-        />
-        <div tw="flex relative py-4 font-mono">
-          <ul tw="relative flex flex-col px-2">
-            <li tw="flex justify-between">
-              <span tw="font-normal text-current">From</span>
-              <span tw="ml-4 font-normal text-current">{data.from}</span>
-            </li>
-            <li tw="flex justify-between">
-              <span tw="font-normal text-current">To</span>
-              <span tw="ml-4 font-normal text-current">{data.to}</span>
-            </li>
+          tw="flex"
+        >
+          <div
+            style={{
+              width: '100%',
+              borderRadius: 16,
+              padding: '10px 10px 10px 0px',
+            }}
+            tw="flex flex-col items-center relative bg-white"
+          >
+            <div
+              style={{
+                display: 'flex',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: h,
+                width: w,
+                background:
+                  'linear-gradient(0deg, #f4c4c2 0%, #eec3fd 48.96%, #8fc6e4 100%)',
+                filter: 'blur(60px)',
+                opacity: 0.3,
+              }}
+            />
+            <img
+              style={{
+                transform: 'scaleX(-1)',
+                display: 'flex',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                opacity: 0.25,
+                width: 180,
+                height: 180,
+              }}
+              src={`${HOME_URL}/assets/mochisan-money.png`}
+              alt="mochisan"
+            />
 
-            <li tw="flex justify-between">
-              <span tw="font-normal text-current">Amount</span>
-              <span tw="ml-4 font-normal text-current">
-                {data.amount}
-                <span tw="ml-1 font-normal text-current">{data.symbol}</span>
-              </span>
-            </li>
-          </ul>
-          <ul tw="relative flex flex-col px-2">
-            <li tw="flex justify-between">
-              <span tw="font-normal text-current">Tx ID</span>
-              <span tw="ml-4 font-normal text-current">{data.external_id}</span>
-            </li>
-            <li tw="flex justify-between">
-              <span tw="font-normal text-current">Date</span>
-              <span tw="ml-4 font-normal text-current">{data.date}</span>
-            </li>
-            <li tw="flex justify-between">
-              <span tw="font-normal text-current">Status</span>
-              <span tw="ml-4 font-normal text-current">Success</span>
-            </li>
-          </ul>
-        </div>
-        <div tw="flex justify-center px-2 mt-5 font-light">
-          <a tw="text-xs text-current" href="#">
-            Mochi &copy; 2023
-          </a>
+            <div tw="w-full h-full flex flex-col items-end">
+              <div tw="flex flex-col text-xs">
+                <ul tw="relative flex flex-col">
+                  <li tw="flex justify-between">
+                    <span tw="font-normal text-current">From</span>
+                    <span tw="ml-4 font-normal text-current">{data.from}</span>
+                  </li>
+                  <li tw="flex justify-between">
+                    <span tw="font-normal text-current">To</span>
+                    <span tw="ml-4 font-normal text-current">{data.to}</span>
+                  </li>
+                </ul>
+                <ul tw="relative flex flex-col">
+                  <li tw="flex justify-between">
+                    <span tw="font-normal text-current">Tx ID</span>
+                    <span tw="ml-4 font-normal text-current">
+                      {truncate(data.external_id, 5, true)}
+                    </span>
+                  </li>
+                  <li tw="flex justify-between">
+                    <span tw="font-normal text-current">Date</span>
+                    <span tw="ml-4 font-normal text-current">{data.date}</span>
+                  </li>
+                  <li tw="flex justify-between">
+                    <span tw="font-normal text-current">Status</span>
+                    <span tw="relative ml-4 font-normal text-green-700 font-semibold">
+                      Success
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <img
+                width={150}
+                height={150}
+                src={`${HOME_URL}/assets/success-stamp.png`}
+                style={{
+                  top: '50%',
+                  left: '50%',
+                  position: 'absolute',
+                  transform: 'translateX(-50%) translateY(-50%)',
+                  opacity: 0.6,
+                }}
+                alt=""
+              />
+
+              <div
+                style={{
+                  paddingTop: '0.5rem',
+                  margin: 'auto 0px',
+                  display: 'flex',
+                  position: 'relative',
+                  alignItems: 'center',
+                  columnGap: 6,
+                  minHeight: 0,
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    position: 'relative',
+                    width: 36,
+                    height: 36,
+                    borderRadius: '100%',
+                  }}
+                >
+                  {true ? (
+                    <img
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: 36,
+                        height: 36,
+                      }}
+                      src={data.tokenIcon}
+                      alt=""
+                    />
+                  ) : (
+                    <CutoutAvatar
+                      cutoutSrc={`${HOME_URL}/assets/coin.png`}
+                      src={data.tokenIcon}
+                      size="xs"
+                    />
+                  )}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'baseline',
+                  }}
+                >
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      maxWidth: '100%',
+                      fontWeight: 600,
+                      color: '#111827',
+                      fontSize: 32,
+                    }}
+                  >
+                    {!data.amount ? '???' : data.amount}
+                  </span>
+                  <span
+                    style={{
+                      marginLeft: 4,
+                      fontSize: 14,
+                      lineHeight: '27px',
+                      fontWeight: 600,
+                      whiteSpace: 'nowrap',
+                      color: '#111827',
+                    }}
+                  >
+                    {data.symbol}
+                  </span>
+                </div>
+              </div>
+              <div tw="flex relative mt-auto ml-auto text-[10px] font-normal text-right">
+                Powered by Mochi
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     ),
     {
+      emoji: 'openmoji',
       debug: false,
       width: w * scale,
       height: h * scale,
