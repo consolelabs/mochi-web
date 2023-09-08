@@ -90,8 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     symbol: transfer?.token.symbol,
     amount: mochiUtils.formatTokenDigit({
       value: utils.formatUnits(
-        '1000000',
-        /* transfer?.amount ?? 0, */
+        transfer?.amount ?? 0,
         transfer?.token.decimal ?? 0,
       ),
       scientificFormat: true,
