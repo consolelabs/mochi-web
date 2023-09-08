@@ -82,18 +82,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const data = {
     from: sender?.plain ?? '',
-    tokenIcon: `${HOME_URL}/assets/money.png`,
+    native: transfer?.token.native,
+    tokenIcon:
+      transfer?.token.icon.replace('.webp', '.png') ||
+      `${HOME_URL}/assets/money.png`,
     to: receiver?.plain ?? '',
     symbol: transfer?.token.symbol,
-    amount: mochiUtils.formatTokenDigit(
-      utils.formatUnits(transfer?.amount ?? 0, transfer?.token.decimal ?? 0),
-    ),
+    amount: mochiUtils.formatTokenDigit({
+      value: utils.formatUnits(
+        '1000000',
+        /* transfer?.amount ?? 0, */
+        transfer?.token.decimal ?? 0,
+      ),
+      scientificFormat: true,
+    }),
     date: '',
     external_id: transfer.external_id,
   }
 
   if (transfer) {
-    data.date = format(new Date(transfer?.created_at), 'dd/MM/yyyy hh:mmaa')
+    data.date = format(new Date(transfer?.created_at), 'MMM do, yyyy')
   }
 
   return {
@@ -143,11 +151,13 @@ export default function Transfer({
           image={`${HOME_URL}/api/transfer-og?data=${encodeURIComponent(
             JSON.stringify(ogData),
           )}`}
-          description={`${sender.value} paid ${receiver} ${amountDisplay} ${transfer.token.symbol
-            }${transfer.metadata.message
+          description={`${sender.value} paid ${receiver} ${amountDisplay} ${
+            transfer.token.symbol
+          }${
+            transfer.metadata.message
               ? ` with message: "${transfer.metadata.message}"`
               : ''
-            }`}
+          }`}
           url={`${HOME_URL}/transfer/${transfer.external_id}`}
         />
       }
