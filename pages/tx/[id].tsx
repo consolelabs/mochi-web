@@ -98,6 +98,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     usd_amount: mochiUtils.formatUsdDigit(transfer.usd_amount),
     date: '',
     external_id: transfer.external_id,
+    moniker: transfer.metadata.moniker || '',
+    original_amount: transfer.metadata.original_amount || '',
   }
 
   if (transfer) {
@@ -137,9 +139,14 @@ export default function Transfer({
   receiver: string
   tokenIcon: string
 }) {
-  const amountDisplay = mochiUtils.formatTokenDigit(
+  const amountSymbol = mochiUtils.formatTokenDigit(
     utils.formatUnits(transfer.amount, transfer.token.decimal),
-  )
+    )
+  const amountDisplay = transfer.metadata.moniker ? transfer.metadata.original_amount : amountSymbol
+  const unitCurrency = transfer.metadata.moniker ? transfer.metadata.moniker : transfer.token.symbol
+  const amountApproxMoniker = transfer.metadata.moniker ? `${amountSymbol} ${transfer.token.symbol}` : ``
+  const amountSection = transfer.metadata.moniker ? `${amountDisplay} ${transfer.metadata.moniker}` : `${amountSymbol}`
+  const unitAmountSection = transfer.metadata.moniker ? `(${amountSymbol} ${transfer.token.symbol})` : `${transfer.token.symbol}`
   const isLongNumber = amountDisplay.length >= 12
 
   return (
@@ -152,7 +159,7 @@ export default function Transfer({
             JSON.stringify(ogData),
           )}`}
           description={`${sender.value} paid ${receiver} ${amountDisplay} ${
-            transfer.token.symbol
+            unitCurrency
           }${
             transfer.metadata.message
               ? ` with message: "${transfer.metadata.message}"`
@@ -200,7 +207,7 @@ export default function Transfer({
               <span className="font-medium">{sender.value}</span>
               <br />
               <span className="text-xs font-light text-gray-500">
-                made a payment
+                sent
               </span>
             </div>
             <div className="flex justify-center items-center mt-8 font-medium">
@@ -234,12 +241,12 @@ export default function Transfer({
                     src={tokenIcon ?? coinIcon.src}
                     alt=""
                   />
-                  <div className="text-4xl">{transfer.token.symbol}</div>
+                  <div className="text-4xl">{unitCurrency}</div>
                 </div>
               </div>
             </div>
             <span className="text-xl">
-              &asymp; {mochiUtils.formatUsdDigit(transfer.usd_amount)}
+              {amountApproxMoniker} &asymp; {mochiUtils.formatUsdDigit(transfer.usd_amount)}
             </span>
           </div>
           {transfer.metadata.message && (
@@ -265,9 +272,9 @@ export default function Transfer({
                 <li className="flex gap-x-3 justify-between">
                   <span className="font-normal text-current">Amount</span>
                   <span className="font-normal text-current">
-                    {amountDisplay}
+                    {amountSection}
                     <span className="ml-1 font-normal text-current">
-                      {transfer.token.symbol}
+                      {unitAmountSection}
                     </span>
                   </span>
                 </li>

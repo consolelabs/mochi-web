@@ -29,6 +29,8 @@ const og = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl
   const ogData = searchParams.get('data') ?? '{}'
   const data = JSON.parse(decodeURIComponent(ogData))
+  const unitCurrency = data.moniker ? data.moniker : data.symbol
+  const amount = !data.amount ? '???' : data.moniker ? data.original_amount : data.amount
 
   const regular = await regularFont
   const bold = await boldFont
@@ -189,7 +191,7 @@ const og = async (req: NextRequest) => {
                         fontSize: 32,
                       }}
                     >
-                      {!data.amount ? '???' : data.amount}
+                      {amount}
                     </span>
                     <span
                       style={{
@@ -201,7 +203,7 @@ const og = async (req: NextRequest) => {
                         color: '#111827',
                       }}
                     >
-                      {data.symbol}
+                      {unitCurrency}
                     </span>
                   </div>
                 </div>
