@@ -95,6 +95,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ),
       scientificFormat: true,
     }),
+    usd_amount: mochiUtils.formatUsdDigit(transfer.usd_amount),
     date: '',
     external_id: transfer.external_id,
   }

@@ -117,12 +117,6 @@ const og = async (req: NextRequest) => {
                     <span tw="font-normal text-current">Date</span>
                     <span tw="ml-4 font-normal text-current">{data.date}</span>
                   </li>
-                  <li tw="flex justify-between">
-                    <span tw="font-normal text-current">Status</span>
-                    <span tw="relative ml-4 font-normal text-green-700 font-semibold">
-                      Success
-                    </span>
-                  </li>
                 </ul>
               </div>
 
@@ -140,76 +134,78 @@ const og = async (req: NextRequest) => {
                 alt=""
               />
 
-              <div
-                style={{
-                  paddingTop: '0.5rem',
-                  margin: 'auto 0px',
-                  display: 'flex',
-                  position: 'relative',
-                  alignItems: 'center',
-                  columnGap: 6,
-                  minHeight: 0,
-                }}
-              >
+              <div tw="flex flex-col items-end my-auto">
                 <div
                   style={{
+                    paddingTop: '0.5rem',
                     display: 'flex',
                     position: 'relative',
-                    width: 36,
-                    height: 36,
-                    borderRadius: '100%',
+                    alignItems: 'center',
+                    columnGap: 6,
+                    minHeight: 0,
                   }}
                 >
-                  {true ? (
-                    <img
+                  <div
+                    style={{
+                      display: 'flex',
+                      position: 'relative',
+                      width: 36,
+                      height: 36,
+                      borderRadius: '100%',
+                    }}
+                  >
+                    {true ? (
+                      <img
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: 36,
+                          height: 36,
+                        }}
+                        src={data.tokenIcon}
+                        alt=""
+                      />
+                    ) : (
+                      <CutoutAvatar
+                        cutoutSrc={`${HOME_URL}/assets/coin.png`}
+                        src={data.tokenIcon}
+                        size="xs"
+                      />
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <span
                       style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: 36,
-                        height: 36,
+                        flexShrink: 0,
+                        maxWidth: '100%',
+                        fontWeight: 600,
+                        color: '#111827',
+                        fontSize: 32,
                       }}
-                      src={data.tokenIcon}
-                      alt=""
-                    />
-                  ) : (
-                    <CutoutAvatar
-                      cutoutSrc={`${HOME_URL}/assets/coin.png`}
-                      src={data.tokenIcon}
-                      size="xs"
-                    />
-                  )}
+                    >
+                      {!data.amount ? '???' : data.amount}
+                    </span>
+                    <span
+                      style={{
+                        marginLeft: 4,
+                        fontSize: 14,
+                        lineHeight: '27px',
+                        fontWeight: 600,
+                        whiteSpace: 'nowrap',
+                        color: '#111827',
+                      }}
+                    >
+                      {data.symbol}
+                    </span>
+                  </div>
                 </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                  }}
-                >
-                  <span
-                    style={{
-                      flexShrink: 0,
-                      maxWidth: '100%',
-                      fontWeight: 600,
-                      color: '#111827',
-                      fontSize: 32,
-                    }}
-                  >
-                    {!data.amount ? '???' : data.amount}
-                  </span>
-                  <span
-                    style={{
-                      marginLeft: 4,
-                      fontSize: 14,
-                      lineHeight: '27px',
-                      fontWeight: 600,
-                      whiteSpace: 'nowrap',
-                      color: '#111827',
-                    }}
-                  >
-                    {data.symbol}
-                  </span>
-                </div>
+                <span tw="text-xs">&asymp; {data.usd_amount}</span>
               </div>
               <div tw="flex relative mt-auto ml-auto text-[10px] font-normal text-right">
                 Powered by Mochi
