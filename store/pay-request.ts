@@ -26,6 +26,7 @@ export type PayRequest = {
     symbol: string
   }
   type: 'paylink' | 'payme'
+  usd_amount: number
 }
 
 type State = {

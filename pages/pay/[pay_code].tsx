@@ -22,6 +22,7 @@ import Link from 'next/link'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { useEffect } from 'react'
 import { PayRequest, usePayRequest } from '~store/pay-request'
+import { utils as mochiUtils } from '@consolelabs/mochi-ui'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -225,9 +226,11 @@ export default function PayCode({
                   )}
                   <div className="flex gap-x-1 items-baseline">
                     <span className="text-3xl font-semibold text-foreground">
-                      {utils.formatUnits(
-                        payRequest.amount,
-                        payRequest.token.decimal,
+                      {mochiUtils.formatTokenDigit(
+                        utils.formatUnits(
+                          payRequest.amount,
+                          payRequest.token.decimal,
+                        ),
                       )}
                     </span>
                     <span className="text-sm font-bold text-foreground">
@@ -236,7 +239,7 @@ export default function PayCode({
                   </div>
                 </div>
                 <span className="mt-1 text-sm font-normal text-dashboard-gray-8">
-                  &asymp; $??.??
+                  &asymp; {mochiUtils.formatUsdDigit(payRequest.usd_amount)}
                 </span>
               </div>
             ) : (
