@@ -22,7 +22,8 @@ import Link from 'next/link'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { useEffect } from 'react'
 import { PayRequest, usePayRequest } from '~store/pay-request'
-import { utils as mochiUtils } from '@consolelabs/mochi-ui'
+import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
+import { UI } from '../../constants/mochi'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { pay_code } = ctx.query
@@ -47,8 +48,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   if (profile) {
+    const [name] = await UI.resolve(Platform.Web, payRequest?.profile_id)
     payRequest.profile = {
-      name: profile.profile_name ?? '',
+      name: name?.plain ?? '',
       avatar: profile.avatar ?? '',
     }
   }
