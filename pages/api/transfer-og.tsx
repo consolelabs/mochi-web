@@ -30,7 +30,11 @@ const og = async (req: NextRequest) => {
   const ogData = searchParams.get('data') ?? '{}'
   const data = JSON.parse(decodeURIComponent(ogData))
   const unitCurrency = data.moniker ? data.moniker : data.symbol
-  const amount = !data.amount ? '???' : data.moniker ? data.original_amount : data.amount
+  const amount = !data.amount
+    ? '???'
+    : data.moniker
+    ? data.original_amount
+    : data.amount
 
   const regular = await regularFont
   const bold = await boldFont
@@ -101,11 +105,13 @@ const og = async (req: NextRequest) => {
                 <ul tw="relative flex flex-col">
                   <li tw="flex justify-between">
                     <span tw="font-normal text-current">From</span>
-                    <span tw="ml-4 font-normal text-current">{data.from}</span>
+                    <span tw="ml-4 font-semibold text-current">
+                      {data.from}
+                    </span>
                   </li>
                   <li tw="flex justify-between">
                     <span tw="font-normal text-current">To</span>
-                    <span tw="ml-4 font-normal text-current">{data.to}</span>
+                    <span tw="ml-4 font-semibold text-current">{data.to}</span>
                   </li>
                 </ul>
                 <ul tw="relative flex flex-col">

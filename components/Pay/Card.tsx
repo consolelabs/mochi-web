@@ -3,6 +3,7 @@ import { shallow } from 'zustand/shallow'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { HOME_URL } from '~envs'
 import { usePayRequest } from '~store/pay-request'
+import { utils as mochiUtils } from '@consolelabs/mochi-ui'
 
 export type Props = {
   isDone: boolean
@@ -180,7 +181,11 @@ export function CardUI({
                 ? '???'
                 : status === 'claimed' && isDone
                 ? 0
-                : utils.formatUnits(amount, decimal)}
+                : mochiUtils.formatTokenDigit({
+                    value: utils.formatUnits(amount, decimal),
+                    scientificFormat: true,
+                    shorten: true,
+                  })}
             </span>
             <span
               style={{

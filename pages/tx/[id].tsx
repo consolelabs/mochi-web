@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const tokenIcon = await API.MOCHI.query({ codes: transfer.token.symbol })
     .catcherFallback(() => transfer.token.icon)
     .get(`/product-metadata/emoji`)
-    .json((r) => r.data.at(0)?.emoji_url ?? transfer.token.icon)
+    .json((r) => r.data.at(0)?.emoji_url || `${HOME_URL}/assets/coin.png`)
 
   // try to see if the avatar is an image
   try {
@@ -83,9 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const data = {
     from: sender?.plain ?? '',
     native: transfer?.token.native,
-    tokenIcon:
-      transfer?.token.icon.replace('.webp', '.png') ||
-      `${HOME_URL}/assets/money.png`,
+    tokenIcon,
     to: receiver?.plain ?? '',
     symbol: transfer?.token.symbol,
     amount: mochiUtils.formatTokenDigit({
@@ -94,6 +92,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         transfer?.token.decimal ?? 0,
       ),
       scientificFormat: true,
+      shorten: true,
     }),
     usd_amount: mochiUtils.formatUsdDigit(transfer.usd_amount),
     date: '',
@@ -139,14 +138,22 @@ export default function Transfer({
   receiver: string
   tokenIcon: string
 }) {
-  const amountSymbol = mochiUtils.formatTokenDigit(
-    utils.formatUnits(transfer.amount, transfer.token.decimal),
-    )
-  const amountDisplay = transfer.metadata.moniker ? transfer.metadata.original_amount : amountSymbol
-  const unitCurrency = transfer.metadata.moniker ? transfer.metadata.moniker : transfer.token.symbol
-  const amountApproxMoniker = transfer.metadata.moniker ? `${amountSymbol} ${transfer.token.symbol}` : ``
-  const amountSection = transfer.metadata.moniker ? `${amountDisplay} ${transfer.metadata.moniker}` : `${amountSymbol}`
-  const unitAmountSection = transfer.metadata.moniker ? `(${amountSymbol} ${transfer.token.symbol})` : `${transfer.token.symbol}`
+  const amountSymbol = ogData.amount
+  const amountDisplay = transfer.metadata.moniker
+    ? transfer.metadata.original_amount
+    : amountSymbol
+  const unitCurrency = transfer.metadata.moniker
+    ? transfer.metadata.moniker
+    : transfer.token.symbol
+  const amountApproxMoniker = transfer.metadata.moniker
+    ? `${amountSymbol} ${transfer.token.symbol}`
+    : ``
+  const amountSection = transfer.metadata.moniker
+    ? `${amountDisplay} ${transfer.metadata.moniker}`
+    : `${amountSymbol}`
+  const unitAmountSection = transfer.metadata.moniker
+    ? `(${amountSymbol} ${transfer.token.symbol})`
+    : `${transfer.token.symbol}`
   const isLongNumber = amountDisplay.length >= 12
 
   return (
@@ -158,9 +165,9 @@ export default function Transfer({
           image={`${HOME_URL}/api/transfer-og?data=${encodeURIComponent(
             JSON.stringify(ogData),
           )}`}
-          description={`${sender.value} paid ${receiver} ${amountDisplay} ${
-            unitCurrency
-          }${
+          description={`${
+            sender.value
+          } paid ${receiver} ${amountDisplay} ${unitCurrency}${
             transfer.metadata.message
               ? ` with message: "${transfer.metadata.message}"`
               : ''
@@ -206,9 +213,7 @@ export default function Transfer({
             <div className="mt-2 text-sm">
               <span className="font-medium">{sender.value}</span>
               <br />
-              <span className="text-xs font-light text-gray-500">
-                sent
-              </span>
+              <span className="text-xs font-light text-gray-500">sent</span>
             </div>
             <div className="flex justify-center items-center mt-8 font-medium">
               <div
@@ -246,7 +251,8 @@ export default function Transfer({
               </div>
             </div>
             <span className="text-xl">
-              {amountApproxMoniker} &asymp; {mochiUtils.formatUsdDigit(transfer.usd_amount)}
+              {amountApproxMoniker} &asymp;{' '}
+              {mochiUtils.formatUsdDigit(transfer.usd_amount)}
             </span>
           </div>
           {transfer.metadata.message && (
