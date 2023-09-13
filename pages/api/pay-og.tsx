@@ -1,7 +1,6 @@
 import { ImageResponse } from '@vercel/og'
 import { NextRequest } from 'next/server'
-import { CardUI, Props } from '~components/Pay/Card'
-import { API } from '~constants/api'
+import { CardUI } from '~components/Pay/Card'
 
 export const config = {
   runtime: 'edge',
@@ -26,39 +25,22 @@ const scale = 2
 
 const og = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl
-  const code = searchParams.get('code')
-  let payRequest = null
+  const ogData = searchParams.get('data') ?? '{}'
+  const data = JSON.parse(decodeURIComponent(ogData))
+  const unitCurrency = data.moniker ? data.moniker : data.symbol
+  const amount = !data.amount
+    ? '???'
+    : data.moniker
+    ? data.original_amount
+    : data.amount
 
-  if (code) {
-    payRequest = await API.MOCHI_PAY.get(`/pay-requests/${code}`)
-      .notFound(() => null)
-      .json((r) => r.data)
-  }
+  data.amount = amount
+  data.symbol = unitCurrency
 
   const regular = await regularFont
   const bold = await boldFont
   const extrabold = await extraboldFont
 
-  let tokenSrc = 'https://mochi.gg/assets/coin.png'
-  let tmpSrc = payRequest?.token.icon
-  if (tmpSrc?.includes('.webp')) {
-    // try to use png as webp is not supported
-    tmpSrc = tmpSrc.replace('.webp', '.png')
-  }
-  try {
-    await fetch(tmpSrc)
-    tokenSrc = tmpSrc
-  } catch {}
-
-  const data: Props = {
-    isDone: payRequest?.status !== 'submitted',
-    tokenIcon: tokenSrc,
-    status: payRequest?.status,
-    native: true,
-    symbol: payRequest?.token.symbol,
-    decimal: payRequest?.token.decimal,
-    amount: payRequest?.amount,
-  }
   return new ImageResponse(
     (
       <div

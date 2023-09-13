@@ -1,9 +1,7 @@
-import { utils } from 'ethers'
 import { shallow } from 'zustand/shallow'
 import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { HOME_URL } from '~envs'
 import { usePayRequest } from '~store/pay-request'
-import { utils as mochiUtils } from '@consolelabs/mochi-ui'
 
 export type Props = {
   isDone: boolean
@@ -22,7 +20,6 @@ export type Props = {
 // so it's better to stick with native css
 export function CardUI({
   amount,
-  decimal,
   symbol,
   native,
   isDone,
@@ -177,15 +174,7 @@ export function CardUI({
                 fontSize: 32,
               }}
             >
-              {!amount
-                ? '???'
-                : status === 'claimed' && isDone
-                ? 0
-                : mochiUtils.formatTokenDigit({
-                    value: utils.formatUnits(amount, decimal),
-                    scientificFormat: true,
-                    shorten: true,
-                  })}
+              {!amount ? '???' : status === 'claimed' && isDone ? 0 : amount}
             </span>
             <span
               style={{

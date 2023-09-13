@@ -55,6 +55,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  payRequest.amount = mochiUtils.formatTokenDigit({
+    value: utils.formatUnits(payRequest.amount, payRequest.decimal),
+    scientificFormat: true,
+    shorten: true,
+  })
+
   return {
     props: {
       payRequest,
@@ -136,7 +142,9 @@ export default function PayCode({
         <SEO
           title={isPayMe ? 'Pay Me' : 'Pay Link'}
           tailTitle
-          image={`${HOME_URL}/api/pay-og?code=${payRequest.code}&balance=${payRequest.amount}`}
+          image={`${HOME_URL}/api/pay-og?data=${encodeURIComponent(
+            JSON.stringify(initialPayRequest),
+          )}`}
           description={
             isPayMe
               ? `${

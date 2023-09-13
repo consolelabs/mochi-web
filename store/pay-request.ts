@@ -36,6 +36,7 @@ type State = {
 
 export const usePayRequest = create<State>((set) => ({
   payRequest: {
+    usd_amount: 0,
     code: '',
     amount: '',
     status: 'submitted',
