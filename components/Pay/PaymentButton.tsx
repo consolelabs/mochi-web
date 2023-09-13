@@ -23,7 +23,6 @@ import { DropdownButton } from './DropdownButton'
 import { WalletButton } from './WalletButton'
 import { shallow } from 'zustand/shallow'
 import { PayRequest, usePayRequest } from '~store/pay-request'
-import { utils } from 'ethers'
 import { useSendEVMToken } from '~hooks/wallets/useSendEVMToken'
 import { useSendSOLToken } from '~hooks/wallets/useSendSOLToken'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
@@ -87,10 +86,7 @@ export default function PaymentButton({
     isEVM,
   } = usePayRequest(
     (s) => ({
-      payAmountFormatted: `${utils.formatUnits(
-        s.payRequest.amount,
-        s.payRequest.token.decimal,
-      )} ${s.payRequest.token.symbol}`,
+      payAmountFormatted: `${s.payRequest.amount} ${s.payRequest.token.symbol}`,
       payProfileId: s.payRequest.profile_id,
       payCode: s.payRequest.code,
       chainSymbol: s.payRequest.token.chain.symbol,

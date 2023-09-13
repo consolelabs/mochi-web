@@ -92,7 +92,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         transfer?.token.decimal ?? 0,
       ),
       scientificFormat: true,
-      shorten: true,
     }),
     usd_amount: mochiUtils.formatUsdDigit(transfer.usd_amount),
     date: '',

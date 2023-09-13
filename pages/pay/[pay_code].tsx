@@ -56,9 +56,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   payRequest.amount = mochiUtils.formatTokenDigit({
-    value: utils.formatUnits(payRequest.amount, payRequest.decimal),
+    value: utils.formatUnits(payRequest.amount, payRequest.token.decimal),
     scientificFormat: true,
-    shorten: true,
   })
 
   return {
@@ -149,14 +148,10 @@ export default function PayCode({
             isPayMe
               ? `${
                   initialPayRequest?.profile?.name ?? 'Someone'
-                } wants to be paid with ${utils.formatUnits(
-                  payRequest.amount,
-                  payRequest.token.decimal,
-                )} ${payRequest.token.symbol}`
-              : `Visit this Pay Link to withdraw ${utils.formatUnits(
-                  payRequest.amount,
-                  payRequest.token.decimal,
-                )} ${payRequest.token.symbol} to your wallet!`
+                } wants to be paid with ${payRequest.amount} ${
+                  payRequest.token.symbol
+                }`
+              : `Visit this Pay Link to withdraw ${payRequest.amount} ${payRequest.token.symbol} to your wallet!`
           }
           url={`${HOME_URL}/pay/${payRequest.code}`}
         />
@@ -236,12 +231,7 @@ export default function PayCode({
                   )}
                   <div className="flex gap-x-1 items-baseline">
                     <span className="text-3xl font-semibold text-foreground">
-                      {mochiUtils.formatTokenDigit(
-                        utils.formatUnits(
-                          payRequest.amount,
-                          payRequest.token.decimal,
-                        ),
-                      )}
+                      {payRequest.amount}
                     </span>
                     <span className="text-sm font-bold text-foreground">
                       {payRequest.token.symbol}
