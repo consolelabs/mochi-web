@@ -139,18 +139,23 @@ export default function PayCode({
       skipAuth
       childSEO={
         <SEO
-          title={isPayMe ? 'Pay Me' : 'Pay Link'}
+          title={
+            isPayMe
+              ? `Pay ${initialPayRequest?.profile?.name} ${payRequest.amount} ${payRequest.token.symbol}`
+              : 'Pay Link'
+          }
           tailTitle
           image={`${HOME_URL}/api/pay-og?data=${encodeURIComponent(
             JSON.stringify(initialPayRequest),
           )}`}
           description={
             isPayMe
-              ? `${
-                  initialPayRequest?.profile?.name ?? 'Someone'
-                } wants to be paid with ${payRequest.amount} ${
-                  payRequest.token.symbol
-                }`
+              ? `${initialPayRequest?.profile?.name ?? 'Someone'
+              } requests you to pay ${payRequest.amount} ${payRequest.token.symbol
+              }${initialPayRequest?.note
+                ? ` with the message: "${initialPayRequest.note}"`
+                : ''
+              }`
               : `Visit this Pay Link to withdraw ${payRequest.amount} ${payRequest.token.symbol} to your wallet!`
           }
           url={`${HOME_URL}/pay/${payRequest.code}`}
