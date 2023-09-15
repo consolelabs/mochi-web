@@ -19,6 +19,7 @@ import clsx from 'clsx'
 import { UI } from '~constants/mochi'
 import { hpbd, appreciation, achievement, wedding } from 'utils/image'
 import Image from 'next/image'
+import { truncate } from '@dwarvesf/react-utils'
 
 type TemplateName =
   | 'happy_birthday'
@@ -247,7 +248,11 @@ export default function Transfer({
           )}`}
           description={`${sender.value
             } paid ${receiver} ${amountDisplay} ${unitCurrency}${transfer.metadata.message
-              ? ` with message: "${transfer.metadata.message}"`
+              ? ` with message: "${truncate(
+                transfer.metadata.message,
+                30,
+                false,
+              )}"`
               : ''
             }`}
           url={`${HOME_URL}/transfer/${transfer.external_id}`}
@@ -337,7 +342,7 @@ export default function Transfer({
               </span>
             </div>
             {transfer.metadata.message && (
-              <span className="relative mt-3 font-normal text-center">
+              <span className="relative mt-3 font-normal text-center break-words">
                 &ldquo;{transfer.metadata.message}&rdquo;
               </span>
             )}
