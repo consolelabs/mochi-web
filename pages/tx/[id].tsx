@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   )
 
   if (sender?.plain) {
-    template.title.replace('<user>', sender.plain)
+    template.title = template.title.replaceAll('<user>', sender.plain)
   }
 
   if (type === 'in') {
