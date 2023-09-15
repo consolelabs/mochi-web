@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   const templateName =
-    transfer.metadata.template.slug.toLowerCase() as TemplateName
+    transfer.metadata?.template?.slug.toLowerCase() as TemplateName
   const template = templates[templateName]
 
   const type = transfer.type
@@ -83,8 +83,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     transfer.other_profile_id,
   )
 
-  if (sender?.plain) {
-    template.title = template.title.replaceAll('<user>', sender.plain)
+  if (sender?.plain && template?.title) {
+    template.title = template.title.replace('<user>', sender.plain)
   }
 
   if (type === 'in') {
