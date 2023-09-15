@@ -33,8 +33,8 @@ const og = async (req: NextRequest) => {
   const amount = !data.amount
     ? '???'
     : data.moniker
-    ? data.original_amount
-    : data.amount
+      ? data.original_amount
+      : data.amount
 
   const regular = await regularFont
   const bold = await boldFont
@@ -201,7 +201,7 @@ const og = async (req: NextRequest) => {
                     </span>
                     <span
                       style={{
-                        marginLeft: 4,
+                        marginLeft: 8,
                         fontSize: 14,
                         lineHeight: '27px',
                         fontWeight: 600,
