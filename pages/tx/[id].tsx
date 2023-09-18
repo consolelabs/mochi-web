@@ -228,10 +228,10 @@ export default function Transfer({
     : ``
   const amountSection = transfer.metadata.moniker
     ? `${amountDisplay} ${transfer.metadata.moniker}`
-    : `${amountSymbol}`
+    : `${amountDisplay} ${transfer.token.symbol}`
   const unitAmountSection = transfer.metadata.moniker
     ? `(${amountSymbol} ${transfer.token.symbol})`
-    : `${transfer.token.symbol}`
+    : null
   const isLongNumber = amountDisplay.length >= 12
 
   const { isOpen: isViewFullMessage, onToggle } = useDisclosure({
@@ -384,11 +384,15 @@ export default function Transfer({
 
                   <li className="flex gap-x-3 justify-between">
                     <span className="font-normal text-current">Amount</span>
-                    <span className="font-normal text-current">
-                      {amountSection}
-                      <span className="ml-1 font-normal text-current">
-                        {unitAmountSection}
+                    <span className="flex flex-col items-end text-current">
+                      <span className="font-normal text-current">
+                        {amountSection}
                       </span>
+                      {unitAmountSection && (
+                        <span className="ml-1 font-normal text-current">
+                          {unitAmountSection}
+                        </span>
+                      )}
                     </span>
                   </li>
                 </ul>
