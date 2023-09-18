@@ -47,6 +47,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       .json((r) => r)
   }
 
+  const tokenIcon = await API.MOCHI.query({ codes: payRequest.token.symbol })
+    .catcherFallback(() => payRequest.token.icon)
+    .get(`/product-metadata/emoji`)
+    .json((r) => r.data.at(0)?.emoji_url || `${HOME_URL}/assets/coin.png`)
+
+  payRequest.token.icon = tokenIcon
+
   if (profile) {
     const [name] = await UI.resolve(Platform.Web, payRequest?.profile_id)
     payRequest.profile = {
@@ -150,12 +157,15 @@ export default function PayCode({
           )}`}
           description={
             isPayMe
-              ? `${initialPayRequest?.profile?.name ?? 'Someone'
-              } requests you to pay ${payRequest.amount} ${payRequest.token.symbol
-              }${initialPayRequest?.note
-                ? ` with the message: "${initialPayRequest.note}"`
-                : ''
-              }`
+              ? `${
+                  initialPayRequest?.profile?.name ?? 'Someone'
+                } requests you to pay ${payRequest.amount} ${
+                  payRequest.token.symbol
+                }${
+                  initialPayRequest?.note
+                    ? ` with the message: "${initialPayRequest.note}"`
+                    : ''
+                }`
               : `Visit this Pay Link to withdraw ${payRequest.amount} ${payRequest.token.symbol} to your wallet!`
           }
           url={`${HOME_URL}/pay/${payRequest.code}`}
