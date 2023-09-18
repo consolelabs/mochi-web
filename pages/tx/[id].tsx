@@ -20,6 +20,7 @@ import { UI } from '~constants/mochi'
 import { hpbd, appreciation, achievement, wedding } from 'utils/image'
 import Image from 'next/image'
 import { truncate } from '@dwarvesf/react-utils'
+import { useDisclosure } from '@dwarvesf/react-hooks'
 
 type TemplateName =
   | 'happy_birthday'
@@ -73,7 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const templateName =
     transfer.metadata?.template?.slug.toLowerCase() as TemplateName
-  const template = templates[templateName]
+  const template = templates[templateName] ?? null
 
   const type = transfer.type
 
@@ -233,6 +234,10 @@ export default function Transfer({
     : `${transfer.token.symbol}`
   const isLongNumber = amountDisplay.length >= 12
 
+  const { isOpen: isViewFullMessage, onToggle } = useDisclosure({
+    defaultIsOpen: false,
+  })
+
   return (
     <Layout
       skipAuth
@@ -246,15 +251,17 @@ export default function Transfer({
           image={`${HOME_URL}/api/transfer-og?data=${encodeURIComponent(
             JSON.stringify(ogData),
           )}`}
-          description={`${sender.value
-            } paid ${receiver} ${amountDisplay} ${unitCurrency}${transfer.metadata.message
+          description={`${
+            sender.value
+          } paid ${receiver} ${amountDisplay} ${unitCurrency}${
+            transfer.metadata.message
               ? ` with message: "${truncate(
-                transfer.metadata.message,
-                30,
-                false,
-              )}"`
+                  transfer.metadata.message,
+                  30,
+                  false,
+                )}"`
               : ''
-            }`}
+          }`}
           url={`${HOME_URL}/transfer/${transfer.external_id}`}
         />
       }
@@ -342,9 +349,23 @@ export default function Transfer({
               </span>
             </div>
             {transfer.metadata.message && (
-              <span className="relative mt-3 font-normal text-center break-words">
-                &ldquo;{transfer.metadata.message}&rdquo;
-              </span>
+              <div className="flex flex-col gap-y-3">
+                <span className="relative mt-3 font-normal text-center break-words">
+                  &ldquo;
+                  {isViewFullMessage
+                    ? transfer.metadata.message
+                    : truncate(transfer.metadata.message, 300, false)}
+                  &rdquo;
+                </span>
+                {transfer.metadata.message.length > 300 ? (
+                  <button
+                    className="font-normal text-gray-500 underline"
+                    onClick={onToggle}
+                  >
+                    {isViewFullMessage ? 'view less' : 'view more'}
+                  </button>
+                ) : null}
+              </div>
             )}
             <div className="relative -mx-6 text-gray-400">
               <div className="flex relative flex-col gap-y-2 gap-x-4 py-4 font-mono xs:flex-row">

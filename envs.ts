@@ -18,11 +18,15 @@ export const GITHUB_LINK =
 
 export const HOME_URL = process.env.NEXT_PUBLIC_HOME_URL || 'https://mochi.gg'
 
-export const MOCHI_PROFILE_API =
-  process.env.NEXT_PUBLIC_MOCHI_PROFILE_API || 'mochi-profile-api'
-export const MOCHI_PAY_API =
-  process.env.NEXT_PUBLIC_MOCHI_PAY_API || 'mochi-pay-api'
-export const MOCHI_API = process.env.NEXT_PUBLIC_MOCHI_API || 'mochi-api'
+export const MOCHI_PROFILE_API = `${
+  process.env.NEXT_PUBLIC_MOCHI_PROFILE_API_HOST || 'mochi-profile-api'
+}/api/v1`
+export const MOCHI_PAY_API = `${
+  process.env.NEXT_PUBLIC_MOCHI_PAY_API_HOST || 'mochi-pay-api'
+}/api/v1`
+export const MOCHI_API = `${
+  process.env.NEXT_PUBLIC_MOCHI_API_HOST || 'mochi-api'
+}/api/v1`
 
 export const AUTH_DISCORD_URL = `${MOCHI_PROFILE_API}/profiles/auth/discord`
 

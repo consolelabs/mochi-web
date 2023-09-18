@@ -9,11 +9,11 @@ dependencies:
     specifier: ^0.1.67
     version: 0.1.67(@solana/buffer-layout@4.0.1)(@solana/spl-token@0.3.7)(@solana/web3.js@1.74.0)(bn.js@5.2.1)(borsh@0.7.0)
   '@consolelabs/mochi-rest':
-    specifier: ^2.0.10
-    version: 2.0.10
+    specifier: ^3.0.0
+    version: 3.0.0
   '@consolelabs/mochi-ui':
-    specifier: ^9.1.21
-    version: 9.1.21(@consolelabs/mochi-rest@2.0.10)(ioredis@5.3.2)
+    specifier: ^10.0.0
+    version: 10.0.0(@consolelabs/mochi-rest@3.0.0)(ioredis@5.3.2)
   '@dwarvesf/react-hooks':
     specifier: ^0.7.0
     version: 0.7.0(react-dom@18.2.0)(react@18.2.0)
@@ -2923,8 +2923,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@consolelabs/mochi-rest@2.0.10:
-    resolution: {integrity: sha512-O1eJwE2ffoUasfj0A5JW8pbr8iDvIjyKEsRRCjBZjkSxDpl1kCSKTyKxSQ32gmewZIlNxfvgQMG+YfQwU4TMXg==}
+  /@consolelabs/mochi-rest@3.0.0:
+    resolution: {integrity: sha512-63uVyjUlscVxJfOW0JFXQ90EdfM/REgHJe4NcY/8fyKMKWqsL362proDJbBzTYb3V0KZzmzcYQ3aFO28AUJk0w==}
     dependencies:
       deepmerge: 4.3.1
       lodash.snakecase: 4.1.1
@@ -2936,14 +2936,14 @@ packages:
       zod: 3.22.2
     dev: false
 
-  /@consolelabs/mochi-ui@9.1.21(@consolelabs/mochi-rest@2.0.10)(ioredis@5.3.2):
-    resolution: {integrity: sha512-5TpyC/V6oyOZyV6EJTxQRSvTTX8/yhkOCtXoowk5mxz5FdSoE7LyGPhYm8rVGEVbb3i9HL8O92YubBrtJR5iGw==}
+  /@consolelabs/mochi-ui@10.0.0(@consolelabs/mochi-rest@3.0.0)(ioredis@5.3.2):
+    resolution: {integrity: sha512-9jtO11uw7bHN1rSTNQFA4V+Crax5i9pn627jcClJ2UKI0PPSs7tsDN5w601QqG7PMeXHzpy0n5yTEfy+XY11pA==}
     peerDependencies:
-      '@consolelabs/mochi-rest': ^2.0.10
+      '@consolelabs/mochi-rest': ^3.0.0
       ioredis: ^5.x.x
     dependencies:
       '@bonfida/spl-name-service': 1.1.1(@solana/web3.js@1.78.5)
-      '@consolelabs/mochi-rest': 2.0.10
+      '@consolelabs/mochi-rest': 3.0.0
       '@solana/web3.js': 1.78.5
       change-case: 4.1.2
       ethers: 6.7.1
