@@ -373,13 +373,15 @@ export default function Transfer({
                 <ul className="relative flex-1 px-2 space-y-2 text-xs">
                   <li className="flex gap-x-3 justify-between">
                     <span className="font-normal text-current">From</span>
-                    <span className="font-normal text-current">
+                    <span className="font-semibold text-current">
                       {sender.value}
                     </span>
                   </li>
                   <li className="flex gap-x-3 justify-between">
                     <span className="font-normal text-current">To</span>
-                    <span className="font-normal text-current">{receiver}</span>
+                    <span className="font-semibold text-current">
+                      {receiver}
+                    </span>
                   </li>
 
                   <li className="flex gap-x-3 justify-between">
@@ -406,10 +408,7 @@ export default function Transfer({
                   <li className="flex justify-between">
                     <span className="font-normal text-current">Date</span>
                     <span className="font-normal text-current">
-                      {format(
-                        new Date(transfer.created_at),
-                        'dd/MM/yyyy hh:mmaa',
-                      )}
+                      {ogData.date}
                     </span>
                   </li>
                   <li className="flex justify-between">
