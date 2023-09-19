@@ -47,12 +47,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       .json((r) => r)
   }
 
-  const tokenIcon = await API.MOCHI.query({ codes: payRequest.token.symbol })
-    .catcherFallback(() => payRequest.token.icon)
-    .get(`/product-metadata/emoji`)
-    .json((r) => r.data.at(0)?.emoji_url || `${HOME_URL}/assets/coin.png`)
+  const { image } = await UI.components.amount({
+    on: Platform.Web,
+    amount: utils.formatUnits(
+      payRequest?.amount ?? 0,
+      payRequest?.token.decimal ?? 0,
+    ),
+    symbol: payRequest.token.symbol,
+  })
 
-  payRequest.token.icon = tokenIcon
+  payRequest.token.icon = image || `${HOME_URL}/assets/coin.png`
 
   if (profile) {
     const [name] = await UI.resolve(Platform.Web, payRequest?.profile_id)

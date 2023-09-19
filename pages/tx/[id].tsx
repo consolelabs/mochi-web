@@ -110,10 +110,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  const tokenIcon = await API.MOCHI.query({ codes: transfer.token.symbol })
-    .catcherFallback(() => transfer.token.icon)
-    .get(`/product-metadata/emoji`)
-    .json((r) => r.data.at(0)?.emoji_url || `${HOME_URL}/assets/coin.png`)
+  const { image } = await UI.components.amount({
+    on: Platform.Web,
+    amount: utils.formatUnits(
+      transfer?.amount ?? 0,
+      transfer?.token.decimal ?? 0,
+    ),
+    symbol: transfer.token.symbol,
+  })
 
   // try to see if the avatar is an image
   try {
@@ -126,7 +130,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const data = {
     from: sender?.plain ?? '',
     native: transfer?.token.native,
-    tokenIcon,
+    tokenIcon: image || `${HOME_URL}/assets/coin.png`,
     to: receiver?.plain ?? '',
     symbol: transfer?.token.symbol,
     amount: mochiUtils.formatTokenDigit({
@@ -158,7 +162,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         avatar,
       },
       receiver: receiver?.plain ?? '',
-      tokenIcon,
     },
   }
 }
@@ -203,7 +206,6 @@ export default function Transfer({
   sender,
   receiver,
   platformIcon,
-  tokenIcon,
   ogData,
 }: {
   ogData: any
@@ -214,7 +216,6 @@ export default function Transfer({
     avatar: string
   }
   receiver: string
-  tokenIcon: string
 }) {
   const amountSymbol = ogData.amount
   const amountDisplay = transfer.metadata.moniker
@@ -316,14 +317,6 @@ export default function Transfer({
                     'items-baseline': !isLongNumber,
                   })}
                 >
-                  <img
-                    className={clsx('mr-1 w-7 h-7', {
-                      'inline-block': !isLongNumber,
-                      hidden: isLongNumber,
-                    })}
-                    src={tokenIcon || coinIcon.src}
-                    alt=""
-                  />
                   <div className="text-5xl">{amountDisplay}</div>
                   <div
                     className={clsx('flex mt-1', {
@@ -331,15 +324,12 @@ export default function Transfer({
                       'items-baseline ml-1': !isLongNumber,
                     })}
                   >
+                    <div className="text-4xl">{unitCurrency}</div>
                     <img
-                      className={clsx('mr-1 w-7 h-7', {
-                        'inline-block': isLongNumber,
-                        hidden: !isLongNumber,
-                      })}
-                      src={tokenIcon ?? coinIcon.src}
+                      className={clsx('ml-1 w-7 h-7', {})}
+                      src={ogData.tokenIcon || coinIcon.src}
                       alt=""
                     />
-                    <div className="text-4xl">{unitCurrency}</div>
                   </div>
                 </div>
               </div>
