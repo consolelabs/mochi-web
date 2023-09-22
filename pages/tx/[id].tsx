@@ -317,6 +317,11 @@ export default function Transfer({
                     'items-baseline': !isLongNumber,
                   })}
                 >
+                  <img
+                    className={clsx('mr-1 w-7 h-7', {})}
+                    src={ogData.tokenIcon || coinIcon.src}
+                    alt=""
+                  />
                   <div className="text-5xl">{amountDisplay}</div>
                   <div
                     className={clsx('flex mt-1', {
@@ -325,11 +330,6 @@ export default function Transfer({
                     })}
                   >
                     <div className="text-4xl">{unitCurrency}</div>
-                    <img
-                      className={clsx('ml-1 w-7 h-7', {})}
-                      src={ogData.tokenIcon || coinIcon.src}
-                      alt=""
-                    />
                   </div>
                 </div>
               </div>
