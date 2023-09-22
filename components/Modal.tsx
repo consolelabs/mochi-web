@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 
-type Props = {
+export type Props = {
   isOpen: boolean
   onOpen?: () => void
   onClose: () => void
