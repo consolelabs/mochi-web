@@ -74,6 +74,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       payRequest,
+      ogData: {
+        amount: payRequest.amount,
+        symbol: payRequest.token.symbol,
+        native: true,
+        chainIcon: payRequest.token.chain.icon,
+        tokenIcon: payRequest.token.icon,
+      },
     },
   }
 }
@@ -81,11 +88,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 export type Props = {
   payRequest?: PayRequest
   isPayMe?: boolean
+  ogData: any
 }
 
 export default function PayCode({
   isPayMe,
   payRequest: initialPayRequest,
+  ogData,
 }: Props) {
   const setPayRequestStore = usePayRequest((s) => s.set)
   const { data: payRequest = initialPayRequest, mutate } = useSWR<PayRequest>(
@@ -152,25 +161,25 @@ export default function PayCode({
         <SEO
           title={
             isPayMe
-              ? `Pay ${initialPayRequest?.profile?.name} ${payRequest.amount} ${payRequest.token.symbol}`
+              ? `Pay ${initialPayRequest?.profile?.name} ${initialPayRequest?.amount} ${payRequest.token.symbol}`
               : 'Pay Link'
           }
           tailTitle
           image={`${HOME_URL}/api/pay-og?data=${encodeURIComponent(
-            JSON.stringify(initialPayRequest),
+            JSON.stringify(ogData),
           )}`}
           description={
             isPayMe
               ? `${
                   initialPayRequest?.profile?.name ?? 'Someone'
-                } requests you to pay ${payRequest.amount} ${
-                  payRequest.token.symbol
+                } requests you to pay ${initialPayRequest?.amount} ${
+                  initialPayRequest?.token.symbol
                 }${
                   initialPayRequest?.note
                     ? ` with the message: "${initialPayRequest.note}"`
                     : ''
                 }`
-              : `Visit this Pay Link to withdraw ${payRequest.amount} ${payRequest.token.symbol} to your wallet!`
+              : `Visit this Pay Link to withdraw ${initialPayRequest?.amount} ${initialPayRequest?.token.symbol} to your wallet!`
           }
           url={`${HOME_URL}/pay/${payRequest.code}`}
         />
@@ -238,7 +247,7 @@ export default function PayCode({
                       <Image
                         fill
                         src={payRequest.token.icon}
-                        alt={`${payRequest.token.symbol} token icon`}
+                        alt={`${initialPayRequest?.token.symbol} token icon`}
                       />
                     </div>
                   ) : (
@@ -250,10 +259,10 @@ export default function PayCode({
                   )}
                   <div className="flex gap-x-1 items-baseline">
                     <span className="text-3xl font-semibold text-foreground">
-                      {payRequest.amount}
+                      {initialPayRequest?.amount}
                     </span>
                     <span className="text-sm font-bold text-foreground">
-                      {payRequest.token.symbol}
+                      {initialPayRequest?.token.symbol}
                     </span>
                   </div>
                 </div>
