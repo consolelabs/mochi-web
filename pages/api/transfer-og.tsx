@@ -33,12 +33,13 @@ const og = async (req: NextRequest) => {
   const amount = !data.amount
     ? '???'
     : data.moniker
-      ? data.original_amount
-      : data.amount
+    ? data.original_amount
+    : data.amount
 
   const regular = await regularFont
   const bold = await boldFont
   const extrabold = await extraboldFont
+  const randomInt = Math.random()
 
   return new ImageResponse(
     (
@@ -56,7 +57,6 @@ const og = async (req: NextRequest) => {
             borderRadius: 16,
             padding: 1,
             background: 'linear-gradient(135deg, #e9dbda, #eec3fd, #8fc6e4)',
-            filter: 'drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.2))',
             width: '100%',
             height: h,
             position: 'relative',
@@ -96,7 +96,15 @@ const og = async (req: NextRequest) => {
                 width: 180,
                 height: 180,
               }}
-              src={`${HOME_URL}/assets/mochisan-money.png`}
+              src={`${HOME_URL}/assets/${
+                randomInt <= 0.2
+                  ? 'mochisan-money'
+                  : randomInt <= 0.5
+                  ? 'mochisan-vault'
+                  : randomInt <= 0.7
+                  ? 'mochisan-stars'
+                  : 'mochisan-spaceship'
+              }.png`}
               alt="mochisan"
             />
 
@@ -213,7 +221,10 @@ const og = async (req: NextRequest) => {
                     </span>
                   </div>
                 </div>
-                <span tw="text-xs">&asymp; {data.usd_amount}</span>
+                <span tw="text-xs">
+                  {data.usd_amount.startsWith('<') ? '' : <>&asymp;</>}{' '}
+                  {data.usd_amount}
+                </span>
               </div>
               <div tw="flex relative mt-auto ml-auto text-[10px] font-normal text-right">
                 Powered by Mochi

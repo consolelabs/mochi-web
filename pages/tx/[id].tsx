@@ -235,6 +235,8 @@ export default function Transfer({
     : null
   const isLongNumber = amountDisplay.length >= 12
 
+  const amountUsd = mochiUtils.formatUsdDigit(transfer.usd_amount)
+
   const { isOpen: isViewFullMessage, onToggle } = useDisclosure({
     defaultIsOpen: false,
   })
@@ -334,8 +336,8 @@ export default function Transfer({
                 </div>
               </div>
               <span className="text-xl">
-                {amountApproxMoniker} &asymp;{' '}
-                {mochiUtils.formatUsdDigit(transfer.usd_amount)}
+                {amountApproxMoniker}{' '}
+                {amountUsd.startsWith('<') ? '' : <>&asymp;</>} {amountUsd}
               </span>
             </div>
             {transfer.metadata.message && (
