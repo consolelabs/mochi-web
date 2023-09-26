@@ -147,7 +147,7 @@ export default function TipNetwork({ data }: TipNetworkProps) {
         />
       }
     >
-      <div className="flex w-full h-full relative">
+      <div className="flex relative w-full h-full">
         <TipNetworkGraph
           graphData={graphData}
           selectedNode={selectedNode}
@@ -168,7 +168,7 @@ export default function TipNetwork({ data }: TipNetworkProps) {
           onSelectNode={(val) => setSelectedNode(val as SelectedProfileNode)}
           selectedNode={selectedNode}
           graphData={graphData}
-          className="absolute top-0 right-[15px] z-10 overflow-auto"
+          className="overflow-auto absolute top-0 z-10 right-[15px]"
         />
       </div>
     </Layout>
