@@ -25,6 +25,15 @@ const h = 200
 
 const scale = 2
 
+const gradients = [
+  'linear-gradient(to left, #6EA6FA, #F3F8FF)',
+  'linear-gradient(to left, #858DDA, #F3F8FF)',
+  'linear-gradient(to left, #81F5FA, #F1FEFF)',
+  'linear-gradient(to left, #FFAD83, #FFF7F3)',
+  'linear-gradient(to left, #FFA3A9, #FFFAFA)',
+  'linear-gradient(to left, #FFEA7A, #FFFCF2)',
+]
+
 const og = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl
   const ogData = searchParams.get('data') ?? '{}'
@@ -40,6 +49,7 @@ const og = async (req: NextRequest) => {
   const bold = await boldFont
   const extrabold = await extraboldFont
   const randomInt = Math.random()
+  const randomGradientIdx = Math.floor(Math.random() * (gradients.length - 1))
 
   return new ImageResponse(
     (
@@ -56,7 +66,7 @@ const og = async (req: NextRequest) => {
           style={{
             borderRadius: 16,
             padding: 1,
-            background: 'linear-gradient(135deg, #e9dbda, #eec3fd, #8fc6e4)',
+            /* background: 'linear-gradient(135deg, #e9dbda, #eec3fd, #8fc6e4)', */
             width: '100%',
             height: h,
             position: 'relative',
@@ -79,10 +89,9 @@ const og = async (req: NextRequest) => {
                 left: 0,
                 height: h,
                 width: w,
-                background:
-                  'linear-gradient(0deg, #f4c4c2 0%, #eec3fd 48.96%, #8fc6e4 100%)',
+                background: gradients[randomGradientIdx],
                 filter: 'blur(60px)',
-                opacity: 0.3,
+                opacity: 0.2,
               }}
             />
             <img
@@ -92,7 +101,7 @@ const og = async (req: NextRequest) => {
                 position: 'absolute',
                 bottom: 0,
                 left: 0,
-                opacity: 0.25,
+                opacity: 0.45,
                 width: 180,
                 height: 180,
               }}

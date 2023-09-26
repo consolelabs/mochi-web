@@ -3,6 +3,15 @@ import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import { HOME_URL } from '~envs'
 import { usePayRequest } from '~store/pay-request'
 
+const gradients = [
+  'linear-gradient(to left, #6EA6FA, #F3F8FF)',
+  'linear-gradient(to left, #858DDA, #F3F8FF)',
+  'linear-gradient(to left, #81F5FA, #F1FEFF)',
+  'linear-gradient(to left, #FFAD83, #FFF7F3)',
+  'linear-gradient(to left, #FFA3A9, #FFFAFA)',
+  'linear-gradient(to left, #FFEA7A, #FFFCF2)',
+]
+
 export type Props = {
   isDone: boolean
   chainIcon?: string
@@ -28,6 +37,8 @@ export function CardUI({
   tokenIcon,
   isOG = false,
 }: Props) {
+  const randomGradientIdx = Math.floor(Math.random() * (gradients.length - 1))
+
   return (
     <div
       style={{
@@ -67,10 +78,9 @@ export function CardUI({
             position: 'absolute',
             width: 230,
             height: 200,
-            background:
-              'linear-gradient(0deg, #f4c4c2 0%, #eec3fd 48.96%, #8fc6e4 100%)',
+            background: gradients[randomGradientIdx],
             filter: 'blur(60px)',
-            opacity: 0.7,
+            opacity: 0.2,
           }}
         />
         <img
@@ -80,7 +90,7 @@ export function CardUI({
             position: 'absolute',
             top: 0,
             right: 0,
-            opacity: 0.25,
+            opacity: 0.45,
             width: 200,
             height: 200,
           }}
