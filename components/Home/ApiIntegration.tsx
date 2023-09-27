@@ -11,9 +11,9 @@ export default function ApiIntegration() {
 
   return (
     <section className="bg-[#26272B] py-16 md:py-24">
-      <div className="container mx-auto max-w-5xl px-6">
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="md:w-3/5 justify-center items-start flex flex-col">
+      <div className="container px-6 mx-auto max-w-5xl">
+        <div className="flex flex-col gap-8 md:flex-row">
+          <div className="flex flex-col justify-center items-start md:w-3/5">
             <h2 className="font-medium text-4xl sm:text-5xl mb-4 sm:mb-6 text-[#D1D3D6] font-heading tracking-[-0.5px]">
               A fully integrated suite of{' '}
               <span className="text-[#5CD97D] font-normal">APIs</span>
@@ -22,14 +22,14 @@ export default function ApiIntegration() {
               <a
                 target="blank"
                 href="https://docs.mochi.gg"
-                className="inline-flex rounded-full overflow-hidden bg-white px-4 py-[10px] font-normal hover:bg-gray-200 transition-all duration-300 ease-in-out mr-auto"
+                className="inline-flex overflow-hidden px-4 mr-auto font-normal bg-white rounded-full transition-all duration-300 ease-in-out hover:bg-gray-200 py-[10px]"
               >
                 Read the docs
               </a>
             </div>
           </div>
-          <div className="bg-black px-8 py-8 rounded-3xl relative leading-7">
-            <span className="px-4 uppercase text-gray-500">curl request</span>
+          <div className="relative py-8 px-8 leading-7 bg-black rounded-3xl">
+            <span className="px-4 text-gray-500 uppercase">curl request</span>
             <pre className="bg-black">
               <code>
                 <span className="text-gray-400">{codeString}</span>
@@ -37,7 +37,7 @@ export default function ApiIntegration() {
             </pre>
             <button
               onClick={onCopy}
-              className="p-1 rounded-lg bg-slate-500 absolute top-6 right-6"
+              className="absolute top-6 right-6 p-1 rounded-lg bg-slate-500"
               type="button"
             >
               {hasCopied ? (
