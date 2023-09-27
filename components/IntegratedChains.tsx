@@ -19,15 +19,10 @@ const Image = (props: any) => (
 export const IntegratedChains = () => {
   return (
     <Marquee
-      className="flex overflow-hidden py-3 w-20 h-20"
+      className="flex overflow-hidden flex-shrink-0 py-3 w-20 h-20"
       pauseOnHover
       direction="right"
     >
-      <Image
-        className="h-full"
-        src="/integrated-chains/aptos.png"
-        alt="aptos-logo"
-      />
       <Image
         className="h-full"
         src="/integrated-chains/eth.png"
@@ -37,11 +32,6 @@ export const IntegratedChains = () => {
         className="h-full"
         src="/integrated-chains/ftm.png"
         alt="ftm-logo"
-      />
-      <Image
-        className="h-full"
-        src="/integrated-chains/onus.webp"
-        alt="onus-logo"
       />
       <Image
         className="h-full"
@@ -55,14 +45,20 @@ export const IntegratedChains = () => {
       />
       <Image
         className="h-full"
-        src="/integrated-chains/sui.png"
-        alt="sui-logo"
+        src="/integrated-chains/bnb.png"
+        alt="bnb-logo"
       />
       <Image
         className="h-full"
-        src="/integrated-chains/okx.png"
-        alt="okx-logo"
+        src="/integrated-chains/base.webp"
+        alt="base-logo"
       />
+      <Image
+        className="h-full"
+        src="/integrated-chains/arb.png"
+        alt="arb-logo"
+      />
+      <Image className="h-full" src="/integrated-chains/op.png" alt="op-logo" />
     </Marquee>
   )
 }

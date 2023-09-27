@@ -45,6 +45,9 @@ module.exports = {
         discord: {
           DEFAULT: '#6875ED',
         },
+        telegram: {
+          DEFAULT: '#26A8EA',
+        },
         mochi: {
           DEFAULT: '#E88B88',
           50: '#FBE9E8',

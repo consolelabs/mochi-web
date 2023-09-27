@@ -11,9 +11,9 @@ export const Footer = () => {
   const year = new Date().getFullYear()
   return (
     <footer className="pt-16 pb-24 mt-auto">
-      <div className="container mx-auto max-w-5xl px-6">
+      <div className="container px-6 mx-auto max-w-5xl">
         <div className="flex flex-wrap">
-          <div className="flex space-x-8 sm:space-x-12 mb-10 sm:mb-0">
+          <div className="flex mb-10 space-x-8 sm:mb-0 sm:space-x-12">
             <div className="w-9 h-9 rounded-full">
               <Image
                 src={logo}
@@ -23,7 +23,41 @@ export const Footer = () => {
                 className="block rounded-full"
               />
             </div>
-            <div className="text-[13px] space-y-2">
+            <div className="space-y-2 text-[13px]">
+              <div className="text-footer-title">Home</div>
+              <Link className="block text-footer-body" href="/feature">
+                Feature
+              </Link>
+              <Link
+                className="block text-footer-body"
+                target="blank"
+                href="/developer"
+              >
+                Developer
+              </Link>
+              <Link
+                className="block text-footer-body"
+                target="blank"
+                href="/team"
+              >
+                For team
+              </Link>
+              <Link
+                className="block text-footer-body"
+                target="blank"
+                href="/changelog"
+              >
+                What&apos;s new
+              </Link>
+              <Link
+                className="block text-footer-body"
+                target="blank"
+                href="/status"
+              >
+                Status
+              </Link>
+            </div>
+            <div className="space-y-2 text-[13px]">
               <div className="text-footer-title">Developer</div>
               <a
                 className="block text-footer-body"
@@ -40,35 +74,21 @@ export const Footer = () => {
                 GitHub
               </a>
             </div>
-            <div className="text-[13px] space-y-2">
-              <div className="text-footer-title">Resources</div>
-              <Link
-                className="block text-footer-body"
-                target="blank"
-                href="/changelog"
-              >
-                Changelog
-              </Link>
-            </div>
-            <div className="text-[13px] space-y-2">
+            <div className="space-y-2 text-[13px]">
               <div className="text-footer-title">Company</div>
               <a className="block text-footer-body" href="mailto:gm@mochi.gg">
-                Contact
+                Support
               </a>
-              <a
-                className="block text-footer-body"
-                target="blank"
-                href={SOCIAL_LINKS.TWITTER}
-              >
-                Twitter
+              <a className="block text-footer-body" href="mailto:gm@mochi.gg">
+                ToS
               </a>
             </div>
           </div>
-          <div className="ml-auto flex flex-col justify-center items-end">
-            <div className="mb-6 text-xs font-normal text-footer-body text-right">
+          <div className="flex flex-col justify-center items-end ml-auto">
+            <div className="mb-6 text-xs font-normal text-right text-footer-body">
               Copyright © {year} Mochi, All rights reserved
             </div>
-            <div className="flex gap-4 items-center justify-end">
+            <div className="flex gap-4 justify-end items-center">
               <a
                 href={SOCIAL_LINKS.TWITTER}
                 target="_blank"

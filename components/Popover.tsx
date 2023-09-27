@@ -2,6 +2,7 @@ import { Popover as HeadlessPopover } from '@headlessui/react'
 import clsx from 'clsx'
 import { Float } from '@headlessui-float/react'
 import { useState } from 'react'
+import { Icon } from '@iconify/react'
 
 type Props = {
   trigger: React.ReactNode
@@ -35,16 +36,27 @@ export const Popover = (props: Props) => {
       >
         <HeadlessPopover.Button
           className={({ open }) =>
-            clsx('outline-none h-full', props.triggerClassname ?? '', {
-              'text-mochi': open,
-            })
+            clsx(
+              'outline-none h-full flex items-center',
+              props.triggerClassname ?? '',
+              {
+                'text-mochi': open,
+              },
+            )
           }
         >
           {props.trigger}
+          <Icon
+            width={18}
+            height={18}
+            icon={
+              isShowing ? 'majesticons:chevron-up' : 'majesticons:chevron-down'
+            }
+          />
         </HeadlessPopover.Button>
         <HeadlessPopover.Panel
           className={clsx(
-            'relative z-50 rounded-md shadow-md',
+            'relative z-50 rounded-md shadow-md border border-gray-200',
             props.panelClassname,
           )}
         >

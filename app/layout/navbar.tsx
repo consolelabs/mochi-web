@@ -5,7 +5,6 @@ import { Popover } from '~components/Popover'
 import { PAGES, SOCIAL_LINKS } from '~constants'
 import { logo } from '~utils/image'
 import { Icon } from '@iconify/react'
-import ConnectButton from '~components/ConnectButton'
 import AddBotButton from '~components/AddBotButton'
 
 const NavLink = (props: any) => {
@@ -39,46 +38,30 @@ const NavLink = (props: any) => {
   )
 }
 
-const NavLinks = ({ className }: { className: string }) => (
-  <div
-    className={['flex flex-wrap items-stretch gap-y-2', className].join(' ')}
-  >
+const NavLinks = ({ className }: { className?: string }) => (
+  <div className={['flex flex-wrap items-stretch gap-5', className].join(' ')}>
+    <Link href="/feature" className="flex items-center text-sm font-semibold">
+      Feature
+    </Link>
     <Popover
-      trigger={<span className="text-sm font-semibold">Features</span>}
+      trigger={<span className="text-sm font-semibold">Developer</span>}
       panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       {[
         {
-          href: '/server-management',
-          text: 'DAO Management',
-          icon: (
-            <Icon
-              icon="heroicons:globe-americas-20-solid"
-              className="w-5 h-5"
-            />
-          ),
+          href: '/developer',
+          text: 'App',
+          icon: <Icon icon="bxs:component" className="w-5 h-5" />,
         },
         {
-          href: '/crypto-utils',
-          text: 'Crypto Utilities',
-          icon: (
-            <Icon
-              icon="heroicons:viewfinder-circle-20-solid"
-              className="w-5 h-5"
-            />
-          ),
+          href: 'https://mochi.readme.io',
+          text: 'Documentation',
+          icon: <Icon icon="fa-brands:readme" className="w-5 h-5" />,
         },
         {
-          href: '/nft',
-          text: 'NFT',
-          icon: <Icon icon="heroicons:cpu-chip-20-solid" className="w-5 h-5" />,
-        },
-        {
-          href: '/social',
-          text: 'Social',
-          icon: (
-            <Icon icon="heroicons:user-group-20-solid" className="w-5 h-5" />
-          ),
+          href: 'https://github.com/consolelabs',
+          text: 'Github',
+          icon: <Icon icon="mdi:github" className="w-5 h-5" />,
         },
       ].map((l) => {
         return (
@@ -89,7 +72,7 @@ const NavLinks = ({ className }: { className: string }) => (
       })}
     </Popover>
     <Popover
-      trigger={<span className="text-sm font-semibold">Community</span>}
+      trigger={<span className="text-sm font-semibold">What&apos; new</span>}
       panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
     >
       <NavLink
@@ -104,55 +87,55 @@ const NavLinks = ({ className }: { className: string }) => (
         Blog (Coming Soon)
       </NavLink>
     </Popover>
-    <Popover
-      trigger={<span className="text-sm font-semibold">Support</span>}
-      panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
-    >
-      <NavLink
-        icon={<Icon icon="heroicons:heart-20-solid" className="w-5 h-5" />}
-        href={SOCIAL_LINKS.DISCORD}
-      >
-        Support Server
-      </NavLink>
-      <NavLink
-        icon={
-          <Icon
-            icon="heroicons:information-circle-20-solid"
-            className="w-5 h-5"
-          />
-        }
-        href={SOCIAL_LINKS.GITBOOK}
-      >
-        Instruction
-      </NavLink>
-    </Popover>
-    <Popover
-      trigger={<span className="text-sm font-semibold">Credibility</span>}
-      panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
-    >
-      <NavLink
-        icon={
-          <Icon icon="heroicons:arrow-up-circle-20-solid" className="w-5 h-5" />
-        }
-        href={SOCIAL_LINKS.TOP_GG}
-      >
-        Vote on Top.gg
-      </NavLink>
-      <NavLink
-        icon={<Icon icon="ic:baseline-discord" className="w-5 h-5" />}
-        href={SOCIAL_LINKS.DISCORBOTLIST}
-      >
-        Vote on Discordbotlist.com
-      </NavLink>
-    </Popover>
+    {/* <Popover */}
+    {/*   trigger={<span className="text-sm font-semibold">Support</span>} */}
+    {/*   panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary" */}
+    {/* > */}
+    {/*   <NavLink */}
+    {/*     icon={<Icon icon="heroicons:heart-20-solid" className="w-5 h-5" />} */}
+    {/*     href={SOCIAL_LINKS.DISCORD} */}
+    {/*   > */}
+    {/*     Support Server */}
+    {/*   </NavLink> */}
+    {/*   <NavLink */}
+    {/*     icon={ */}
+    {/*       <Icon */}
+    {/*         icon="heroicons:information-circle-20-solid" */}
+    {/*         className="w-5 h-5" */}
+    {/*       /> */}
+    {/*     } */}
+    {/*     href={SOCIAL_LINKS.GITBOOK} */}
+    {/*   > */}
+    {/*     Instruction */}
+    {/*   </NavLink> */}
+    {/* </Popover> */}
+    {/* <Popover */}
+    {/*   trigger={<span className="text-sm font-semibold">Credibility</span>} */}
+    {/*   panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary" */}
+    {/* > */}
+    {/*   <NavLink */}
+    {/*     icon={ */}
+    {/*       <Icon icon="heroicons:arrow-up-circle-20-solid" className="w-5 h-5" /> */}
+    {/*     } */}
+    {/*     href={SOCIAL_LINKS.TOP_GG} */}
+    {/*   > */}
+    {/*     Vote on Top.gg */}
+    {/*   </NavLink> */}
+    {/*   <NavLink */}
+    {/*     icon={<Icon icon="ic:baseline-discord" className="w-5 h-5" />} */}
+    {/*     href={SOCIAL_LINKS.DISCORBOTLIST} */}
+    {/*   > */}
+    {/*     Vote on Discordbotlist.com */}
+    {/*   </NavLink> */}
+    {/* </Popover> */}
   </div>
 )
 
 export const Navbar = () => (
   <Fragment>
-    <nav className="relative sticky top-0 z-20 bg-white">
-      <div className="flex justify-between items-center py-5 px-6 mx-auto max-w-7xl md:px-12">
-        <Link className="flex gap-x-3 items-center" href="/">
+    <nav className="sticky top-0 z-20 bg-white shadow">
+      <div className="flex flex-col gap-y-4 justify-between py-5 px-6 mx-auto max-w-7xl sm:flex-row md:px-12">
+        <Link className="flex gap-x-3 items-center self-start" href="/">
           <Image
             src={logo}
             alt="Logo"
@@ -164,7 +147,8 @@ export const Navbar = () => (
             Mochi<span className="text-mochi">.</span>
           </span>
         </Link>
-        <div className="order-1 ml-auto md:order-2 md:ml-10">
+        <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:ml-auto md:order-2">
+          <NavLinks />
           <AddBotButton />
         </div>
       </div>

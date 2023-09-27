@@ -41,3 +41,5 @@ export { default as hpbd } from '../public/assets/tx/hpbd.png'
 export { default as appreciation } from '../public/assets/tx/appreciation.png'
 export { default as wedding } from '../public/assets/tx/wedding.png'
 export { default as achievement } from '../public/assets/tx/achievement.png'
+
+export { default as home } from '../public/home.png'

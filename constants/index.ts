@@ -23,7 +23,7 @@ export const PAGES = {
   },
   CHANGE_LOG: {
     path: '/changelog',
-    title: 'Update',
+    title: 'Changelog',
   },
   VERIFY: {
     path: '/verify',
