@@ -19,10 +19,15 @@ const Image = (props: any) => (
 export const IntegratedChains = () => {
   return (
     <Marquee
-      className="flex overflow-hidden flex-shrink-0 py-3 w-20 h-20"
+      className="flex overflow-hidden flex-shrink-0 py-3 w-full h-14"
       pauseOnHover
       direction="right"
     >
+      <Image
+        className="h-full"
+        src="/integrated-chains/btc.png"
+        alt="btc-logo"
+      />
       <Image
         className="h-full"
         src="/integrated-chains/eth.png"

@@ -1,21 +1,14 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { button } from './Dashboard/Button'
 import { Icon } from '@iconify/react'
 import { Popover } from './Popover'
 import clsx from 'clsx'
 import { INVITE_LINK, TELEGRAM_LINK } from '~envs'
 
-const ConnectButtonTrigger = () => (
-  <Fragment>
-    Connect bot
-    <Icon icon="iconamoon:arrow-down-2-light" className="w-4 h-4" />
-  </Fragment>
-)
-
 export default function AddBotButton() {
   return (
     <Popover
-      trigger={<ConnectButtonTrigger />}
+      trigger="Connect bot"
       triggerClassname={clsx(
         button({ size: 'sm', appearance: 'pill' }),
         'inline-flex items-center',

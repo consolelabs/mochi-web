@@ -6,6 +6,7 @@ import {
   TWITTER_LINK,
   DOCUMENT_LINK,
   GITHUB_LINK,
+  CONSOLE_LINK,
 } from '~envs'
 
 export const PAGES = {
@@ -52,6 +53,7 @@ export const SOCIAL_LINKS = {
   GITHUB: GITHUB_LINK,
   TOP_GG: 'https://top.gg/bot/963123183131709480/vote',
   DISCORBOTLIST: 'https://discordbotlist.com/bots/mochi-bot/upvote',
+  CONSOLE: CONSOLE_LINK,
 }
 
 export const TOKEN_NAME = '$MOCHI'

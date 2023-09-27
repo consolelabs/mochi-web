@@ -41,7 +41,7 @@ const NavLink = (props: any) => {
 const NavLinks = ({ className }: { className?: string }) => (
   <div className={['flex flex-wrap items-stretch gap-5', className].join(' ')}>
     <Link href="/feature" className="flex items-center text-sm font-semibold">
-      Feature
+      Features
     </Link>
     <Popover
       trigger={<span className="text-sm font-semibold">Developer</span>}
@@ -71,22 +71,25 @@ const NavLinks = ({ className }: { className?: string }) => (
         )
       })}
     </Popover>
-    <Popover
-      trigger={<span className="text-sm font-semibold">What&apos; new</span>}
-      panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary"
-    >
-      <NavLink
-        icon={<Icon icon="heroicons:bell-alert-20-solid" className="w-5 h-5" />}
-        href={PAGES.CHANGE_LOG.path}
-      >
-        {PAGES.CHANGE_LOG.title}
-      </NavLink>
-      <NavLink
-        icon={<Icon icon="heroicons:newspaper-20-solid" className="w-5 h-5" />}
-      >
-        Blog (Coming Soon)
-      </NavLink>
-    </Popover>
+    <Link href="/changelog" className="flex items-center text-sm font-semibold">
+      What&apos;s new
+    </Link>
+    {/* <Popover */}
+    {/*   trigger={<span className="text-sm font-semibold">What&apos;s new</span>} */}
+    {/*   panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary" */}
+    {/* > */}
+    {/*   <NavLink */}
+    {/*     icon={<Icon icon="heroicons:bell-alert-20-solid" className="w-5 h-5" />} */}
+    {/*     href={PAGES.CHANGE_LOG.path} */}
+    {/*   > */}
+    {/*     {PAGES.CHANGE_LOG.title} */}
+    {/*   </NavLink> */}
+    {/*   <NavLink */}
+    {/*     icon={<Icon icon="heroicons:newspaper-20-solid" className="w-5 h-5" />} */}
+    {/*   > */}
+    {/*     Blog (Coming Soon) */}
+    {/*   </NavLink> */}
+    {/* </Popover> */}
     {/* <Popover */}
     {/*   trigger={<span className="text-sm font-semibold">Support</span>} */}
     {/*   panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary" */}

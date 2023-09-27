@@ -12,49 +12,30 @@ export const Footer = () => {
   return (
     <footer className="pt-16 pb-24 mt-auto">
       <div className="container px-6 mx-auto max-w-5xl">
-        <div className="flex flex-wrap">
-          <div className="flex mb-10 space-x-8 sm:mb-0 sm:space-x-12">
-            <div className="w-9 h-9 rounded-full">
-              <Image
-                src={logo}
-                alt="Logo"
-                width={36}
-                height={36}
-                className="block rounded-full"
-              />
-            </div>
+        <div className="flex flex-col gap-y-5 gap-x-8 sm:gap-x-12 md:flex-row">
+          <div className="w-9 h-9 rounded-full">
+            <Image
+              src={logo}
+              alt="Logo"
+              width={36}
+              height={36}
+              className="block rounded-full"
+            />
+          </div>
+          <div className="flex flex-wrap gap-x-8 mb-10 sm:gap-x-12 sm:mb-0">
             <div className="space-y-2 text-[13px]">
               <div className="text-footer-title">Home</div>
               <Link className="block text-footer-body" href="/feature">
-                Feature
+                Features
               </Link>
-              <Link
-                className="block text-footer-body"
-                target="blank"
-                href="/developer"
-              >
-                Developer
+              <Link className="block text-footer-body" href="/developer">
+                For developer
               </Link>
-              <Link
-                className="block text-footer-body"
-                target="blank"
-                href="/team"
-              >
+              <Link className="block text-footer-body" href="/team">
                 For team
               </Link>
-              <Link
-                className="block text-footer-body"
-                target="blank"
-                href="/changelog"
-              >
+              <Link className="block text-footer-body" href="/changelog">
                 What&apos;s new
-              </Link>
-              <Link
-                className="block text-footer-body"
-                target="blank"
-                href="/status"
-              >
-                Status
               </Link>
             </div>
             <div className="space-y-2 text-[13px]">
@@ -66,6 +47,13 @@ export const Footer = () => {
               >
                 Documentation
               </a>
+              <Link
+                className="block text-footer-body"
+                target="blank"
+                href="/api-status"
+              >
+                API status
+              </Link>
               <a
                 className="block text-footer-body"
                 target="blank"
@@ -76,10 +64,13 @@ export const Footer = () => {
             </div>
             <div className="space-y-2 text-[13px]">
               <div className="text-footer-title">Company</div>
+              <a className="block text-footer-body" href="#">
+                Become a partner
+              </a>
               <a className="block text-footer-body" href="mailto:gm@mochi.gg">
                 Support
               </a>
-              <a className="block text-footer-body" href="mailto:gm@mochi.gg">
+              <a className="block text-footer-body" href="#">
                 ToS
               </a>
             </div>
@@ -89,6 +80,19 @@ export const Footer = () => {
               Copyright © {year} Mochi, All rights reserved
             </div>
             <div className="flex gap-4 justify-end items-center">
+              <a
+                href={SOCIAL_LINKS.CONSOLE}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center w-8 h-8 p-[6px] border border-[#26272B1A] rounded-full overflow-hidden"
+              >
+                <Image
+                  width={64}
+                  height={64}
+                  alt=""
+                  src="/consolelabs-black.svg"
+                />
+              </a>
               <a
                 href={SOCIAL_LINKS.TWITTER}
                 target="_blank"
