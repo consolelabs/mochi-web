@@ -4,9 +4,6 @@ import { logo } from '~utils/image'
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
 
-const TITLE_COLOR = '#474645'
-const BODY_COLOR = '#A8A6A4'
-
 export const Footer = () => {
   const year = new Date().getFullYear()
   return (
@@ -37,6 +34,13 @@ export const Footer = () => {
               <Link className="block text-footer-body" href="/changelog">
                 What&apos;s new
               </Link>
+              <a
+                className="block text-footer-body"
+                target="_blank"
+                href={SOCIAL_LINKS.GITBOOK}
+              >
+                Tutorial
+              </a>
             </div>
             <div className="space-y-2 text-[13px]">
               <div className="text-footer-title">Developer</div>
@@ -67,7 +71,11 @@ export const Footer = () => {
               <a className="block text-footer-body" href="#">
                 Become a partner
               </a>
-              <a className="block text-footer-body" href="mailto:gm@mochi.gg">
+              <a
+                className="block text-footer-body"
+                target="_blank"
+                href={SOCIAL_LINKS.DISCORD}
+              >
                 Support
               </a>
               <a className="block text-footer-body" href="#">

@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
 import { Popover } from '~components/Popover'
-import { PAGES, SOCIAL_LINKS } from '~constants'
 import { logo } from '~utils/image'
 import { Icon } from '@iconify/react'
 import AddBotButton from '~components/AddBotButton'
@@ -40,7 +39,7 @@ const NavLink = (props: any) => {
 
 const NavLinks = ({ className }: { className?: string }) => (
   <div className={['flex flex-wrap items-stretch gap-5', className].join(' ')}>
-    <Link href="/feature" className="flex items-center text-sm font-semibold">
+    <Link href="/features" className="flex items-center text-sm font-semibold">
       Features
     </Link>
     <Popover
@@ -71,9 +70,6 @@ const NavLinks = ({ className }: { className?: string }) => (
         )
       })}
     </Popover>
-    <Link href="/changelog" className="flex items-center text-sm font-semibold">
-      What&apos;s new
-    </Link>
     {/* <Popover */}
     {/*   trigger={<span className="text-sm font-semibold">What&apos;s new</span>} */}
     {/*   panelClassname="p-2 bg-white flex flex-col whitespace-nowrap text-sm font-semibold text-foreground-secondary" */}

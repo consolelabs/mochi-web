@@ -2,7 +2,7 @@ import { INVITE_LINK, TELEGRAM_LINK } from '~envs'
 
 export default function SetupIsSimple() {
   return (
-    <section className="overflow-hidden relative py-16 md:py-24">
+    <section className="relative py-16 md:py-24">
       <div className="container px-6 mx-auto max-w-5xl">
         <div className="justify-center md:w-3/5">
           <h2 className="mb-4 font-medium sm:mb-6 sm:text-5xl text-[2rem] font-heading tracking-[-0.5px]">

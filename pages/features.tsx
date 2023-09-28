@@ -17,7 +17,7 @@ const Divider = () => (
   </div>
 )
 
-export default function Feature() {
+export default function Features() {
   return (
     <Layout>
       <SEO />

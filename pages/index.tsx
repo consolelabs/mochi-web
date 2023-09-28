@@ -7,6 +7,7 @@ import { IntegratedChains } from '~components/IntegratedChains'
 import Typed from 'typed.js'
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
+import Feed from '~components/Feed'
 
 export default function Index() {
   const currency = useRef<HTMLSpanElement>(null)
@@ -93,13 +94,9 @@ export default function Index() {
               <span className="text-sm font-medium">Soon available on:</span>
               <div className="flex gap-2">
                 {[
-                  /* { icon: 'simple-icons:discord', text: 'Discord' }, */
-                  /* { icon: 'simple-icons:telegram', text: 'Telegram' }, */
-                  { icon: 'simple-icons:slack', text: 'Slack', soon: true },
+                  { icon: 'simple-icons:slack' },
                   {
                     icon: 'simple-icons:windowsterminal',
-                    text: 'Terminal',
-                    soon: true,
                   },
                 ].map(({ icon }) => {
                   return (
@@ -135,6 +132,7 @@ export default function Index() {
           </div>
         </div>
       </div>
+      <Feed />
       <div className="flex gap-3 justify-center mt-10 mb-20 md:gap-10">
         <p className="flex flex-col items-center">
           <span className="text-lg md:text-2xl">1602+</span>

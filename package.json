@@ -13,7 +13,7 @@
   "dependencies": {
     "@bonfida/spl-name-service": "^0.1.67",
     "@consolelabs/mochi-rest": "^3.0.9",
-    "@consolelabs/mochi-ui": "^10.0.20",
+    "@consolelabs/mochi-ui": "^10.0.23",
     "@dwarvesf/react-hooks": "^0.7.0",
     "@dwarvesf/react-utils": "^0.4.1",
     "@fnando/sparkline": "^0.3.10",

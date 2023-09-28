@@ -5,7 +5,8 @@ module.exports = {
     extend: {
       fontFamily: {
         text: ['Inter', 'sans-serif'],
-        heading: ['Poppins', 'sans-serif'],
+        heading: ['Inter', 'sans-serif'],
+        /* heading: ['Poppins', 'sans-serif'], */
       },
       colors: {
         footer: {

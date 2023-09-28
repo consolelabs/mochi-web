@@ -17,6 +17,8 @@ export const GITHUB_LINK =
   (process.env.GITHUB_LINK as string) || 'https://github.com/consolelabs'
 export const CONSOLE_LINK =
   (process.env.CONSOLE_LINK as string) || 'https://console.so'
+export const README_LINK =
+  (process.env.README_LINK as string) || 'https://mochi.readme.io'
 
 export const HOME_URL = process.env.NEXT_PUBLIC_HOME_URL || 'https://mochi.gg'
 

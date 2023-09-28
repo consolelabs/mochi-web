@@ -10,16 +10,16 @@ export default function Banner() {
       className="grid grid-cols-[1fr_minmax(0,36rem)_1fr] pb-4 sm:pb-10 pt-10 lg:py-30"
     >
       <div className="overflow-hidden relative">
-        <div className="absolute top-0 bottom-0 right-0">
+        <div className="absolute top-0 right-0 bottom-0">
           <Left className="h-full" />
         </div>
       </div>
       <div>
-        <h1 className="text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl font-medium tracking-tight leading-tight mb-12 mx-auto font-normal font-heading text-[#343433]">
+        <h1 className="font-text text-center text-5xl sm:text-6xl lg:leading-tight lg:text-7xl tracking-tight leading-tight mb-12 mx-auto font-normal text-[#343433]">
           Pay your frens using crypto
         </h1>
-        <div className="mt-auto z-10 flex items-center flex-col">
-          <div className="relative p-3 xs:p-5 mx-auto text-center">
+        <div className="flex z-10 flex-col items-center mt-auto">
+          <div className="relative p-3 mx-auto text-center xs:p-5">
             <div className="mb-3">
               <div className="max-w-[18rem] sm:max-w-[25rem] text-sm sm:text-lg text-white rounded-full p-5  overflow-hidden bg-gradient-to-b from-[#A7ACB5] to-[#BBB4BB] relative">
                 A secure, convenient, and borderless way to{' '}
@@ -47,7 +47,7 @@ export default function Banner() {
                 />
               </span>
             </div>
-            <div className="text-center mt-4">
+            <div className="mt-4 text-center">
               <button
                 type="button"
                 onClick={() => {
@@ -55,7 +55,7 @@ export default function Banner() {
                     ?.getElementById('slider')
                     ?.scrollIntoView({ behavior: 'smooth' })
                 }}
-                className="animate-bounce inline"
+                className="inline animate-bounce"
               >
                 <Icon
                   height={50}
@@ -67,7 +67,7 @@ export default function Banner() {
             </div>
             <img
               width={60}
-              className="absolute left-0 top-0"
+              className="absolute top-0 left-0"
               src={socialIcons.src}
               alt="social icons"
             />

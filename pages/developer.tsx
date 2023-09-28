@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
-import ApiIntegration from '~components/Home/ApiIntegration'
+import { SOCIAL_LINKS } from '~constants'
 
 const gray1 = '#F7F6F4'
 const gray2 = '#E5E5E3'
@@ -12,7 +12,7 @@ export default function Developer() {
     <Layout>
       <SEO />
       <div className="flex flex-col items-center mx-auto mt-24 max-w-3xl">
-        <p className="text-5xl text-center font-text">
+        <p className="text-5xl font-medium text-center font-text">
           Bring Mochi power into
           <br />
           your space
@@ -22,7 +22,11 @@ export default function Developer() {
           platform and reliable data infrastructure are developer-friendly,
           ensuring effortless management at any scale.
         </span>
-        <button className="flex gap-x-1 items-center py-1 px-3 pr-2 mt-5 whitespace-nowrap bg-green-700 rounded-full">
+        <a
+          target="_blank"
+          href={`${SOCIAL_LINKS.README}/reference/getting-started-with-your-api-1`}
+          className="flex gap-x-1 items-center py-1 px-3 pr-2 mt-5 whitespace-nowrap bg-green-700 rounded-full"
+        >
           <span className="text-sm font-medium text-white-pure">
             Get API key
           </span>
@@ -30,7 +34,7 @@ export default function Developer() {
             icon="basil:arrow-right-solid"
             className="w-6 h-6 text-white-pure"
           />
-        </button>
+        </a>
       </div>
 
       <div className="flex gap-3 justify-center mt-16 md:gap-10">
@@ -125,13 +129,17 @@ export default function Developer() {
               <div className="mt-4 font-medium text-gray-500 font-text">
                 <span className="font-medium text-foreground">Profile</span> API
               </div>
-              <span className="text-sm font-text">
+              <span className="mb-5 text-sm font-text">
                 Provides end-users data on balance, transaction, and payment
                 requests.
               </span>
-              <button className="self-start py-1 px-3 mt-4 text-sm font-medium rounded-lg border border-gray-200 shadow bg-white-pure">
+              <a
+                target="_blank"
+                href={`${SOCIAL_LINKS.README}/reference/get-profile-from-id`}
+                className="self-start py-1 px-3 mt-auto text-sm font-medium rounded-lg border border-gray-200 shadow bg-white-pure"
+              >
                 Read the docs
-              </button>
+              </a>
             </div>
           </div>
           <div
@@ -147,12 +155,16 @@ export default function Developer() {
               <div className="mt-4 font-medium text-gray-500 font-text">
                 <span className="font-medium text-foreground">Balance</span> API
               </div>
-              <span className="text-sm font-text">
+              <span className="mb-5 text-sm font-text">
                 Query user balance on multichains.
               </span>
-              <button className="self-start py-1 px-3 mt-4 text-sm font-medium rounded-lg border border-gray-200 shadow bg-white-pure">
+              <a
+                target="_blank"
+                href={`${SOCIAL_LINKS.README}/reference/get-application-balances`}
+                className="self-start py-1 px-3 mt-auto text-sm font-medium rounded-lg border border-gray-200 shadow bg-white-pure"
+              >
                 Read the docs
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -169,7 +181,11 @@ export default function Developer() {
           </span>
         </div>
         <div className="flex gap-2 w-1/3">
-          <button className="flex gap-x-1 items-center py-1 px-3 pr-2 mt-3 whitespace-nowrap bg-green-700 rounded-full">
+          <a
+            target="_blank"
+            href={`${SOCIAL_LINKS.README}/reference/getting-started-with-your-api-1`}
+            className="flex gap-x-1 items-center py-1 px-3 pr-2 mt-3 whitespace-nowrap bg-green-700 rounded-full"
+          >
             <span className="text-sm font-medium text-white-pure">
               Get API key
             </span>
@@ -177,13 +193,15 @@ export default function Developer() {
               icon="basil:arrow-right-solid"
               className="w-6 h-6 text-white-pure"
             />
-          </button>
-          <button
+          </a>
+          <a
+            target="_blank"
+            href={`${SOCIAL_LINKS.README}/reference/getting-started-with-your-api-1`}
             style={{ backgroundColor: gray1 }}
             className="flex gap-x-1 items-center py-1 px-3 mt-3 whitespace-nowrap rounded-full border border-gray-200"
           >
             <span className="text-sm">view docs</span>
-          </button>
+          </a>
         </div>
       </div>
     </Layout>
