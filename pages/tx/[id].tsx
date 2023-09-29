@@ -11,6 +11,7 @@ import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
 import {
   discordLogo,
   successStampIcon,
+  failStampIcon,
   telegramLogo,
   xlogo,
   coinIcon,
@@ -21,6 +22,7 @@ import { hpbd, appreciation, achievement, wedding } from 'utils/image'
 import Image from 'next/image'
 import { truncate } from '@dwarvesf/react-utils'
 import { useDisclosure } from '@dwarvesf/react-hooks'
+import cc from 'clsx'
 
 type TemplateName =
   | 'happy_birthday'
@@ -81,8 +83,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let avatar = transfer.from_profile.avatar
   let [sender, receiver] = await UI.resolve(
     Platform.Web,
-    transfer.from_profile_id,
-    transfer.other_profile_id,
+    transfer.from_profile_source === 'mochi-vault'
+      ? {
+          type: 'vault',
+          id: transfer.metadata.vault_request.vault_id.toString(),
+        }
+      : transfer.from_profile_id,
+    transfer.other_profile_source === 'mochi-vault'
+      ? {
+          type: 'vault',
+          id: transfer.metadata.vault_request.vault_id.toString(),
+        }
+      : transfer.other_profile_id,
   )
 
   if (sender?.plain && template?.title) {
@@ -127,6 +139,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     avatar = `https://boring-avatars-api.vercel.app/api/avatar?name=${sender?.id}size=40&variant=beam`
   }
 
+  const success = transfer.status === 'success'
   const data = {
     from: sender?.plain ?? '',
     native: transfer?.token.native,
@@ -146,6 +159,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     moniker: transfer.metadata.moniker || '',
     original_amount: transfer.metadata.original_amount || '',
     template,
+    success,
   }
 
   if (transfer) {
@@ -405,11 +419,21 @@ export default function Transfer({
                   </li>
                   <li className="flex justify-between">
                     <span className="font-normal text-current">Status</span>
-                    <span className="font-normal text-current">Success</span>
+                    <span className="font-normal text-current">
+                      {ogData.success ? 'Success' : 'Failed'}
+                    </span>
                   </li>
                   <img
-                    src={successStampIcon.src}
-                    className="absolute right-0 top-1/2 flex-shrink-0 h-full opacity-30 scale-[2]"
+                    src={
+                      ogData.success ? successStampIcon.src : failStampIcon.src
+                    }
+                    className={cc(
+                      'absolute right-0 top-1/2 flex-shrink-0 h-full opacity-30',
+                      {
+                        'scale-[2]': ogData.success,
+                        '': !ogData.success,
+                      },
+                    )}
                     alt=""
                   />
                 </ul>

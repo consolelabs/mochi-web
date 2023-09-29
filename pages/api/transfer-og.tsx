@@ -146,9 +146,10 @@ const og = async (req: NextRequest) => {
               </div>
 
               <img
-                width={150}
-                height={150}
-                src={`${HOME_URL}/assets/success-stamp.png`}
+                height={data.success ? 150 : 80}
+                src={`${HOME_URL}/assets/${
+                  data.success ? 'success' : 'fail'
+                }-stamp.png`}
                 style={{
                   top: '50%',
                   left: '50%',
