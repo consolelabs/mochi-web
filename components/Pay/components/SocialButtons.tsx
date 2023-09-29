@@ -2,7 +2,11 @@ import { Icon } from '@iconify/react'
 import { button } from '~components/Dashboard/Button'
 import { AUTH_DISCORD_URL } from '~envs'
 
-export default function SocialButtons() {
+export default function SocialButtons({
+  iconOnly = false,
+}: {
+  iconOnly?: boolean
+}) {
   const data = [
     {
       link: `${AUTH_DISCORD_URL}?url_location=${window.location.href}`,
@@ -36,8 +40,8 @@ export default function SocialButtons() {
           })}
           href={item.link}
         >
-          <Icon icon={item.icon} />
-          <div>{item.name}</div>
+          <Icon icon={item.icon} className="flex-shrink-0" />
+          {!iconOnly && <div>{item.name}</div>}
         </a>
       ))}
     </div>

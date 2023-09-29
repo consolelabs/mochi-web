@@ -132,7 +132,6 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <Feed />
       <div className="flex gap-3 justify-center mt-10 mb-20 md:gap-10">
         <p className="flex flex-col items-center">
           <span className="text-lg md:text-2xl">1602+</span>
@@ -153,6 +152,7 @@ export default function Index() {
           </span>
         </p>
       </div>
+      <Feed />
       <div className="flex flex-col mb-20">
         <p className="mx-auto mb-3 text-xl">Mochi supports these chains</p>
         <IntegratedChains />

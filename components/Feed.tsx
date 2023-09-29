@@ -1,10 +1,29 @@
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
+import { useEffect } from 'react'
+import PayWidget from './PayWidget'
 
 export default function Feed() {
+  useEffect(() => {
+    const ws = new WebSocket(
+      'wss://api-preview.mochi-pay.console.so/ws/transactions',
+    )
+    ws.onopen = function (e) {
+      console.log('open', e)
+    }
+
+    ws.onmessage = function (e) {
+      console.log('message', e)
+    }
+
+    return () => {
+      ws.close()
+    }
+  }, [])
+
   return (
     <div className="flex relative justify-start items-center py-7 px-8 bg-white md:py-14 md:px-16 max-h-[400px]">
-      <div className="flex relative flex-col h-full">
+      <div className="flex relative flex-col flex-1 h-full">
         <div className="flex gap-x-2 items-center">
           <Icon
             icon="octicon:feed-star-16"
@@ -145,7 +164,7 @@ export default function Feed() {
                   df86a
                 </a>
                 <span className="mr-1 ml-0.5">/</span>
-                <span className="flex text-sm font-medium whitespace-normal sm:text-base font-text">
+                <span className="flex text-sm font-medium whitespace-nowrap sm:text-base font-text">
                   {txn.from} sent{' '}
                   <Image
                     width={16}
@@ -163,6 +182,9 @@ export default function Feed() {
       </div>
       <div className="pointer-events-none bg-gradient-to-t from-white-pure to-transparent absolute left-0 right-0 bottom-0 h-[50%]">
         &nbsp;
+      </div>
+      <div className="flex flex-1 justify-center items-center realtive">
+        <PayWidget />
       </div>
     </div>
   )
