@@ -126,9 +126,9 @@ export default function Feed() {
                   key={item.code}
                   appear
                   show
-                  enter="transition-opacity duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
+                  enter="transition duration-300"
+                  enterFrom="opacity-0 -translate-x-5"
+                  enterTo="opacity-100 translate-x-0"
                   leave="transition-opacity duration-150"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
@@ -155,6 +155,9 @@ export default function Feed() {
                 </Transition>
               )
             })}
+            <div className="pointer-events-none bg-gradient-to-l from-white to-transparent absolute right-0 h-full w-[10%]">
+              &nbsp;
+            </div>
           </ul>
         </div>
         <div className="pointer-events-none bg-gradient-to-t from-white-pure to-transparent absolute left-0 right-0 bottom-0 h-[50%]">
