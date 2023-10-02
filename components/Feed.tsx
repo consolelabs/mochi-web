@@ -1,190 +1,168 @@
 import { Icon } from '@iconify/react'
-import Image from 'next/image'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import PayWidget from './PayWidget'
+import { api, UI } from '../constants/mochi'
+import { Transition } from '@headlessui/react'
+import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
+import { utils } from 'ethers'
+
+type Tx = {
+  code: string
+  from: string
+  to: string
+  token: {
+    icon: string
+    symbol: string
+  }
+  amount: string
+}
 
 export default function Feed() {
+  const [txns, setTxns] = useState<Tx[]>([])
+
+  const addNewTxn = useCallback((tx: Tx) => {
+    setTxns((old) => {
+      return [tx, ...old].slice(0, 10)
+    })
+  }, [])
+
+  useEffect(() => {
+    api.pay.transactions
+      .getAll({ action: 'transfer', page: 0, size: 10 })
+      .then(({ ok, data }) => {
+        if (!ok) return
+        Promise.allSettled(
+          data.map(async (d) => {
+            const [from, to] = await UI.resolve(
+              Platform.Web,
+              d.from_profile_id,
+              d.other_profile_id,
+            )
+
+            return {
+              code: d.external_id.slice(0, 5),
+              from: d.type === 'in' ? to?.plain : from?.plain,
+              to: d.type === 'in' ? from?.plain : to?.plain,
+              token: {
+                icon: d.token.icon,
+                symbol: d.token.symbol,
+              },
+              amount: mochiUtils.formatTokenDigit(
+                utils.formatUnits(d.amount, d.token.decimal),
+              ),
+            }
+          }),
+        ).then((results) => {
+          setTxns(
+            results
+              .map((c) => (c.status === 'fulfilled' ? c.value : null))
+              .filter(Boolean) as any,
+          )
+        })
+      })
+  }, [setTxns])
+
   useEffect(() => {
     const ws = new WebSocket(
       'wss://api-preview.mochi-pay.console.so/ws/transactions',
     )
     ws.onopen = function (e) {
-      console.log('open', e)
+      console.log('feed connected', e)
     }
 
-    ws.onmessage = function (e) {
-      console.log('message', e)
+    ws.onmessage = async function (e) {
+      try {
+        const payload = JSON.parse(e.data)
+        const { event, data } = payload
+        if (event !== 'TRANSFER_CREATED') return
+        const [from, to] = await UI.resolve(
+          Platform.Web,
+          data.from_profile_id,
+          data.other_profile_id,
+        )
+        addNewTxn({
+          code: data.external_id.slice(0, 5),
+          from: (data?.type === 'in' ? to?.plain : from?.plain) ?? '',
+          to: (data?.type === 'in' ? from?.plain : to?.plain) ?? '',
+          amount: mochiUtils.formatTokenDigit(
+            utils.formatUnits(data.amount, data.token.decimal),
+          ),
+          token: {
+            icon: data.token.icon,
+            symbol: data.token.symbol,
+          },
+        })
+      } catch (e) {}
+    }
+
+    ws.onclose = function () {
+      console.log('disconnect')
+    }
+
+    ws.onerror = function (e) {
+      console.log('error', e)
     }
 
     return () => {
       ws.close()
     }
-  }, [])
+  }, [addNewTxn])
 
   return (
-    <div className="flex relative justify-start items-center py-7 px-8 bg-white md:py-14 md:px-16 max-h-[400px]">
-      <div className="flex relative flex-col flex-1 h-full">
-        <div className="flex gap-x-2 items-center">
-          <Icon
-            icon="octicon:feed-star-16"
-            className="w-5 h-5 text-yellow-500"
-          />
-          <p className="text-2xl">Recent transactions</p>
-        </div>
-        <ul className="flex overflow-hidden relative flex-col gap-y-2 py-3 px-1 w-full h-full">
-          {[
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/1007247521468403744.png?size=240&quality=lossless',
-                symbol: 'BUTTTT',
-              },
-              amount: '1',
-              from: '👾 vincent.console',
-              to: '👾 minh_cloud',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/1049620715374133288.png?size=240&quality=lossless',
-                symbol: 'ICY',
-              },
-              amount: '2',
-              from: '👾 0xm',
-              to: '👾 trkhoi',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/1049620715374133288.png?size=240&quality=lossless',
-                symbol: 'ICY',
-              },
-              amount: '5',
-              from: '👾 vitran',
-              to: '👾 thanh',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/1093923016691421205.png?size=240&quality=lossless',
-                symbol: 'KEKK',
-              },
-              amount: '10',
-              from: '🔌 app:Mochi',
-              to: '🔹 tg:cuang00',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-            {
-              token: {
-                icon: 'https://cdn.discordapp.com/emojis/967285237686108212.png?size=240&quality=lossless',
-                symbol: 'FTM',
-              },
-              amount: '0.01',
-              from: '👾 minh_cloud',
-              to: '📩 minh@console.so',
-            },
-          ].map((txn, i) => {
-            return (
-              <li
-                key={`${txn.from} to ${txn.to} ${txn.amount} ${txn.token} ${i}`}
-                className="flex items-center"
-              >
-                <a
-                  href="#"
-                  target="_blank"
-                  className="p-0.5 font-mono text-sm underline rounded opacity-80 hover:opacity-90"
+    <div className="flex relative justify-center py-7 px-8 bg-white md:py-14 md:px-16 h-[400px]">
+      <div className="flex justify-start items-center w-full max-w-5xl">
+        <div className="flex relative flex-col flex-1 h-full">
+          <div className="flex gap-x-2 items-center">
+            <Icon
+              icon="octicon:feed-star-16"
+              className="w-5 h-5 text-yellow-500"
+            />
+            <p className="text-2xl">Recent transactions</p>
+          </div>
+          <ul className="flex overflow-hidden relative flex-col gap-y-2 py-3 px-1 w-full h-full">
+            {txns.map((item) => {
+              return (
+                <Transition
+                  key={item.code}
+                  appear
+                  show
+                  enter="transition-opacity duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="transition-opacity duration-150"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
                 >
-                  df86a
-                </a>
-                <span className="mr-1 ml-0.5">/</span>
-                <span className="flex text-sm font-medium whitespace-nowrap sm:text-base font-text">
-                  {txn.from} sent{' '}
-                  <Image
-                    width={16}
-                    height={16}
-                    className="object-contain mx-1 mt-1 rounded-full max-h-[16px]"
-                    src={txn.token.icon}
-                    alt=""
-                  />{' '}
-                  {txn.amount} {txn.token.symbol} to {txn.to}
-                </span>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-      <div className="pointer-events-none bg-gradient-to-t from-white-pure to-transparent absolute left-0 right-0 bottom-0 h-[50%]">
-        &nbsp;
-      </div>
-      <div className="flex flex-1 justify-center items-center realtive">
-        <PayWidget />
+                  <li className="flex items-center">
+                    <a
+                      href="#"
+                      target="_blank"
+                      className="p-0.5 font-mono text-sm underline rounded opacity-80 hover:opacity-90"
+                    >
+                      {item.code}
+                    </a>
+                    <span className="mr-1 ml-0.5">/</span>
+                    <span className="flex text-sm font-medium whitespace-nowrap sm:text-base font-text">
+                      {item.from} sent{' '}
+                      <img
+                        className="object-contain mx-1 mt-1 w-4 h-4 rounded-full"
+                        src={item.token.icon}
+                        alt=""
+                      />{' '}
+                      {item.amount} {item.token.symbol} to {item.to}
+                    </span>
+                  </li>
+                </Transition>
+              )
+            })}
+          </ul>
+        </div>
+        <div className="pointer-events-none bg-gradient-to-t from-white-pure to-transparent absolute left-0 right-0 bottom-0 h-[50%]">
+          &nbsp;
+        </div>
+        <div className="flex flex-1 justify-center items-center realtive">
+          <PayWidget />
+        </div>
       </div>
     </div>
   )

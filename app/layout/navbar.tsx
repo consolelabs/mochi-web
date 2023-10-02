@@ -146,9 +146,11 @@ export const Navbar = () => (
             Mochi<span className="text-mochi">.</span>
           </span>
         </Link>
-        <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:ml-auto md:order-2">
+        <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:self-center sm:ml-auto md:order-2">
           <NavLinks />
-          <AddBotButton />
+          <Link href="/dashboard" className="text-sm font-semibold">
+            Login
+          </Link>
         </div>
       </div>
     </nav>
