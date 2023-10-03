@@ -5,54 +5,26 @@ import {
   ViewActivityResponseData,
   ViewProfile,
 } from '~types/mochi-profile-schema'
-import { isSolAddress } from '~utils/sol'
-import { utils } from 'ethers'
+import { UI } from '~constants/mochi'
+import { Platform } from '@consolelabs/mochi-ui'
 
 type State = {
   me: ViewProfile | null
-  setMe: (me: ViewProfile) => void
-  shouldTruncateAddress: boolean
+  setMe: (me: ViewProfile) => Promise<void>
   getActivites: (query: Pagination) => Promise<ViewActivityResponseData>
   updateActivityReadStatus: (ids: number[]) => void
 }
 
 export const useProfileStore = create<State>((set, get) => ({
   me: null,
-  shouldTruncateAddress: true,
-  setMe: (me: ViewProfile) => {
-    const evmAcc = me.associated_accounts?.find(
-      (aa: any) => aa.platform === 'evm-chain',
-    )
-    // do the same with solana
-    const solAcc = me.associated_accounts?.find(
-      (aa: any) => aa.platform === 'solana-chain',
-    )
-    // probably social accounts
-    const other = me.associated_accounts?.[0]
-
-    // priority evm > sol > socials
-    let profile_name =
-      me.profile_name ??
-      evmAcc?.platform_identifier ??
-      solAcc?.platform_identifier ??
-      other?.platform_identifier ??
-      ''
-
-    const isRoninAddress = profile_name.startsWith('ronin:')
-
-    if (isRoninAddress) {
-      profile_name = profile_name.slice(6)
-    }
+  setMe: async (me: ViewProfile) => {
+    const [p] = await UI.resolve(Platform.Web, me.id ?? '')
 
     set({
       me: {
         ...me,
-        profile_name,
+        profile_name: p?.plain,
       },
-      shouldTruncateAddress:
-        profile_name.startsWith('0x') ||
-        isSolAddress(profile_name) ||
-        utils.isAddress(profile_name),
     })
   },
 

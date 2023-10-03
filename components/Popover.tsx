@@ -10,6 +10,7 @@ type Props = {
   children: Parameters<typeof HeadlessPopover.Panel>[0]['children']
   panelClassname?: string
   offset?: number
+  showChevron?: boolean
 }
 
 export const Popover = (props: Props) => {
@@ -46,17 +47,21 @@ export const Popover = (props: Props) => {
           }
         >
           {props.trigger}
-          <Icon
-            width={18}
-            height={18}
-            icon={
-              isShowing ? 'majesticons:chevron-up' : 'majesticons:chevron-down'
-            }
-          />
+          {(props.showChevron ?? true) && (
+            <Icon
+              width={18}
+              height={18}
+              icon={
+                isShowing
+                  ? 'majesticons:chevron-up'
+                  : 'majesticons:chevron-down'
+              }
+            />
+          )}
         </HeadlessPopover.Button>
         <HeadlessPopover.Panel
           className={clsx(
-            'relative z-50 rounded-md shadow-md border border-gray-200',
+            'mt-3 relative z-50 rounded-md shadow-md border border-gray-200',
             props.panelClassname,
           )}
         >
