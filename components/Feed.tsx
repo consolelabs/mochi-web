@@ -67,11 +67,11 @@ export default function Feed() {
     const ws = new WebSocket(
       'wss://api-preview.mochi-pay.console.so/ws/transactions',
     )
-    ws.onopen = function(e) {
+    ws.onopen = function (e) {
       console.log('feed connected', e)
     }
 
-    ws.onmessage = async function(e) {
+    ws.onmessage = async function (e) {
       try {
         const payload = JSON.parse(e.data)
         const { event, data } = payload
@@ -93,14 +93,14 @@ export default function Feed() {
             symbol: data.token.symbol,
           },
         })
-      } catch (e) { }
+      } catch (e) {}
     }
 
-    ws.onclose = function() {
+    ws.onclose = function () {
       console.log('disconnect')
     }
 
-    ws.onerror = function(e) {
+    ws.onerror = function (e) {
       console.log('error', e)
     }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { ReactElement } from 'react'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { NextPageWithLayout } from '~pages/_app'
@@ -12,6 +12,8 @@ import Dialog from '~components/Dialog'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import Drawer from '~components/Dashboard/Drawer'
 import { Icon } from '@iconify/react'
+import { API } from '~constants/api'
+import useSWR from 'swr'
 
 const Pattern = (props: any) => {
   return (
@@ -133,7 +135,7 @@ const Home: NextPageWithLayout = () => {
     onClose: closeDrawer,
     onOpen: openDrawer,
   } = useDisclosure()
-  const { name } = useProfileStore(
+  const { id, name } = useProfileStore(
     (s) => ({
       id: s.me?.id,
       name: s.me?.profile_name,
@@ -141,6 +143,21 @@ const Home: NextPageWithLayout = () => {
     }),
     shallow,
   )
+
+  const { data: apps, mutate: refresh } = useSWR(
+    ['get-list-apps', id],
+    async ([_, id]) => {
+      if (!id) return []
+      return API.MOCHI_PROFILE.get(`/applications/list-by-owner/${id}`).json(
+        (r) => r ?? [],
+      )
+    },
+  )
+
+  const [app, setApp] = useState({
+    appId: '',
+    appName: '',
+  })
 
   return (
     <div className="flex justify-center items-center h-full">
@@ -191,9 +208,33 @@ const Home: NextPageWithLayout = () => {
             </span>
           </Box>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-y-4">
           <span className="text-lg font-medium">App list</span>
-          <div className="grid grid-cols-6 auto-rows-fr"></div>
+          <div className="flex flex-wrap gap-3">
+            {apps?.map((a: any) => {
+              return (
+                <button
+                  onClick={() => {
+                    setApp({ appId: a.application_profile_id, appName: a.name })
+                    openDrawer()
+                  }}
+                  type="button"
+                  key={a.application_profile_id}
+                  className="flex flex-col gap-y-2 items-center w-20"
+                >
+                  <div className="p-1 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
+                    <img
+                      src={`https://boring-avatars-api.vercel.app/api/avatar?name=${a.application_profile_id}size=20&variant=beam`}
+                      alt=""
+                    />
+                  </div>
+                  <span className="text-xs font-medium break-words">
+                    {a.name}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -201,8 +242,20 @@ const Home: NextPageWithLayout = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault()
-              onClose()
-              openDrawer()
+              const formData = new FormData(e.target as HTMLFormElement)
+              const appName = formData.get('appName')
+              API.MOCHI_PROFILE.post(
+                { app_name: appName },
+                '/applications',
+              ).json((r) => {
+                onClose()
+                setApp({
+                  appId: r.data.application_profile_id,
+                  appName: r.data.name,
+                })
+                openDrawer()
+                refresh()
+              })
             }}
             className="flex flex-col"
           >
@@ -210,6 +263,7 @@ const Home: NextPageWithLayout = () => {
               <span className="text-xs font-medium text-gray-500">NAME</span>
               <input
                 required
+                name="appName"
                 className="py-2 px-4 rounded-lg border border-gray-200 outline-none"
               />
             </div>
@@ -256,6 +310,7 @@ const Home: NextPageWithLayout = () => {
                 APP NAME
               </span>
               <input
+                value={app.appName}
                 required
                 className="py-2 px-4 rounded-lg border border-gray-200 outline-none"
               />
