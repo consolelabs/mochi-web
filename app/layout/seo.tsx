@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { PAGES } from '~constants'
 import { HOME_URL } from '~envs'
 
 interface Props {

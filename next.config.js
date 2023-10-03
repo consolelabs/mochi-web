@@ -3,6 +3,7 @@ const isBeta = process.env.NEXT_PUBLIC_BETA_PAGE === 'true'
 
 /** @type {import('next').NextConfig} */
 module.exports = {
+  swcMinify: false,
   experimental: {
     appDir: false,
   },

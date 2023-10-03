@@ -2,7 +2,6 @@ import { Popover as HeadlessPopover } from '@headlessui/react'
 import clsx from 'clsx'
 import { Float } from '@headlessui-float/react'
 import { useState } from 'react'
-import { Icon } from '@iconify/react'
 
 type Props = {
   trigger: React.ReactNode
@@ -10,7 +9,6 @@ type Props = {
   children: Parameters<typeof HeadlessPopover.Panel>[0]['children']
   panelClassname?: string
   offset?: number
-  showChevron?: boolean
 }
 
 export const Popover = (props: Props) => {
@@ -47,23 +45,9 @@ export const Popover = (props: Props) => {
           }
         >
           {props.trigger}
-          {(props.showChevron ?? true) && (
-            <Icon
-              width={18}
-              height={18}
-              icon={
-                isShowing
-                  ? 'majesticons:chevron-up'
-                  : 'majesticons:chevron-down'
-              }
-            />
-          )}
         </HeadlessPopover.Button>
         <HeadlessPopover.Panel
-          className={clsx(
-            'mt-3 relative z-50 rounded-md shadow-md border border-gray-200',
-            props.panelClassname,
-          )}
+          className={clsx('mt-3 relative z-50', props.panelClassname)}
         >
           {props.children}
         </HeadlessPopover.Panel>

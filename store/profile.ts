@@ -23,7 +23,7 @@ export const useProfileStore = create<State>((set, get) => ({
     set({
       me: {
         ...me,
-        profile_name: p?.plain,
+        profile_name: p?.plain ?? '',
       },
     })
   },

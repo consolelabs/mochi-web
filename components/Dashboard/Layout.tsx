@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import { logo } from '~utils/image'
 import clsx from 'clsx'
-import { Icon } from '@iconify/react'
-import ConnectButton from '~components/ConnectButton'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import Login from './Login'
 import Sidebar from './Sidebar'
@@ -13,6 +11,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDashboardStore } from '~store'
 import Link from 'next/link'
+import ProfileDropdown from './ProfileDropdrown'
 
 export default function DashboardLayout({
   children,
@@ -51,10 +50,10 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-dashboard-gray-1">
+      <div className="flex flex-col w-screen min-h-screen bg-dashboard-gray-1">
         <div
           className={clsx(
-            'sticky top-0 flex py-2 px-3 md:py-4 md:px-7 flex-shrink-0 justify-between z-20',
+            'sticky top-0 flex px-3 py-5 md:px-7 flex-shrink-0 justify-between z-20',
             {
               'border-b border-b-dashboard-gray-6 bg-dashboard-gray-5':
                 isLoggedIn || pathname !== '/dashboard',
@@ -62,7 +61,7 @@ export default function DashboardLayout({
             },
           )}
         >
-          <Link href="/" className="flex gap-x-3 items-center">
+          <Link href="/" className="flex gap-x-2 items-center">
             <Image
               src={logo}
               alt="Logo"
@@ -73,11 +72,12 @@ export default function DashboardLayout({
             <span className="text-xl font-black uppercase text-foreground">
               Mochi<span className="text-mochi">.</span>
             </span>
+            <span className="text-base text-gray-500">Developer</span>
           </Link>
           {isLoggedIn || skipAuth ? (
-            <div className="flex gap-x-3 items-center">
-              {isLoggedIn && <Icon icon="mdi:bell" width={20} />}
-              <ConnectButton />
+            <div className="flex gap-x-5 items-center">
+              <span className="text-sm font-medium">See Docs</span>
+              <ProfileDropdown />
             </div>
           ) : null}
         </div>
@@ -87,9 +87,9 @@ export default function DashboardLayout({
               {isLoggedIn || skipAuth ? (
                 <div
                   className={clsx(
-                    'flex items-start gap-x-24 mx-auto w-full relative',
+                    'flex items-start gap-x-24 mx-auto w-full max-w-full relative',
                     {
-                      'max-w-6xl my-10 px-0 sm:px-5': !fullWidth,
+                      'max-w-5xl my-10 px-4': !fullWidth,
                     },
                   )}
                 >

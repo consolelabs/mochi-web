@@ -5,6 +5,7 @@ import { api, UI } from '../constants/mochi'
 import { Transition } from '@headlessui/react'
 import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
 import { utils } from 'ethers'
+import Link from 'next/link'
 
 type Tx = {
   code: string
@@ -40,7 +41,7 @@ export default function Feed() {
             )
 
             return {
-              code: d.external_id.slice(0, 5),
+              code: d.external_id,
               from: d.type === 'in' ? to?.plain : from?.plain,
               to: d.type === 'in' ? from?.plain : to?.plain,
               token: {
@@ -66,11 +67,11 @@ export default function Feed() {
     const ws = new WebSocket(
       'wss://api-preview.mochi-pay.console.so/ws/transactions',
     )
-    ws.onopen = function (e) {
+    ws.onopen = function(e) {
       console.log('feed connected', e)
     }
 
-    ws.onmessage = async function (e) {
+    ws.onmessage = async function(e) {
       try {
         const payload = JSON.parse(e.data)
         const { event, data } = payload
@@ -81,7 +82,7 @@ export default function Feed() {
           data.other_profile_id,
         )
         addNewTxn({
-          code: data.external_id.slice(0, 5),
+          code: data.external_id,
           from: (data?.type === 'in' ? to?.plain : from?.plain) ?? '',
           to: (data?.type === 'in' ? from?.plain : to?.plain) ?? '',
           amount: mochiUtils.formatTokenDigit(
@@ -92,14 +93,14 @@ export default function Feed() {
             symbol: data.token.symbol,
           },
         })
-      } catch (e) {}
+      } catch (e) { }
     }
 
-    ws.onclose = function () {
+    ws.onclose = function() {
       console.log('disconnect')
     }
 
-    ws.onerror = function (e) {
+    ws.onerror = function(e) {
       console.log('error', e)
     }
 
@@ -134,13 +135,13 @@ export default function Feed() {
                   leaveTo="opacity-0"
                 >
                   <li className="flex items-center">
-                    <a
-                      href="#"
+                    <Link
+                      href={`/tx/${item.code}`}
                       target="_blank"
                       className="p-0.5 font-mono text-sm underline rounded opacity-80 hover:opacity-90"
                     >
-                      {item.code}
-                    </a>
+                      {item.code.slice(0, 5)}
+                    </Link>
                     <span className="mr-1 ml-0.5">/</span>
                     <span className="flex text-sm font-medium whitespace-nowrap sm:text-base font-text">
                       {item.from} sent{' '}

@@ -1,9 +1,12 @@
 import { button } from './Button'
 import { heading } from './Heading'
 import { Icon } from '@iconify/react'
-import { AUTH_DISCORD_URL } from '~envs'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
+import useSWR from 'swr'
+import { api } from '~constants/mochi'
+import Script from 'next/script'
+import { HOME_URL } from '~envs'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -47,67 +50,81 @@ const Divider = ({ children }: { children: React.ReactNode }) => {
 export default function Login() {
   const { showConnectModal } = useAppWalletContext()
   const loginAfterConnect = useLoginAfterConnect()
+  const { data: discordAuthUrl } = useSWR('login-discord', async () => {
+    const { data } = await api.profile.auth.byDiscord({
+      urlLocation: window.location.href,
+      platform: 'web',
+    })
+    return data?.url
+  })
 
   return (
     <div className="flex flex-1 justify-center items-center w-full">
+      <Script
+        async
+        src="https://telegram.org/js/telegram-widget.js?22"
+        data-telegram-login="dmmochibot"
+        data-size="large"
+        data-auth-url="https://api.mochi-profile.console.so/api/v1/profiles/auth/telegram"
+        data-request-access="write"
+      ></Script>
       <div className="flex flex-col items-center">
         <h2 className={heading({ className: 'mb-6', size: 'lg' })}>Log in</h2>
         <div className="flex flex-col gap-y-5">
           <Divider>Sign in with an extension wallet</Divider>
-          <button className="flex items-center self-center py-3 px-7 my-3 font-medium text-white bg-black rounded-xl">
+          <button
+            type="button"
+            onClick={() => showConnectModal(loginAfterConnect)}
+            className="flex items-center self-center py-3 px-7 my-3 font-medium text-white bg-black rounded-xl"
+          >
             <WalletAddIcon className="mr-2 w-5 h-5" />
             Connect Wallet
           </button>
           <Divider>Or connect with verified social links</Divider>
           <div className="grid grid-cols-2 grid-rows-2 gap-3 mt-3">
             <a
-              href={`${AUTH_DISCORD_URL}?url_location=${window.location.href}`}
+              href={discordAuthUrl ?? ''}
               className={button({
                 appearance: 'text',
-                className: 'border border-gray-300 rounded-lg',
               })}
             >
               <Icon icon="mingcute:discord-fill" className="text-foreground" />
               <div>Discord</div>
             </a>
-            <button
+            <a
+              href={`https://oauth.telegram.org/auth?bot_id=6298380973&origin=${encodeURI(
+                HOME_URL,
+              )}&embed=1&request_access=write&return_to=${encodeURI(HOME_URL)}`}
               className={button({
                 appearance: 'text',
-                className: 'border border-gray-300 rounded-lg',
+              })}
+            >
+              <Icon icon="mingcute:telegram-fill" className="text-foreground" />
+              <div>Telegram</div>
+            </a>
+            <a
+              href="#"
+              className={button({
+                appearance: 'text',
+              })}
+            >
+              <Icon icon="mingcute:twitter-fill" className="text-foreground" />
+              <div>Twitter</div>
+            </a>
+            <a
+              href="#"
+              className={button({
+                appearance: 'text',
               })}
             >
               <Icon icon="mingcute:google-fill" className="text-foreground" />
               <div>Google</div>
-            </button>
+            </a>
             <button
-              type="button"
-              onClick={() => showConnectModal(loginAfterConnect)}
+              disabled
               className={button({
                 appearance: 'text',
-                className: 'border border-gray-300 rounded-lg',
-              })}
-            >
-              <Icon icon="mingcute:ethereum-fill" className="text-foreground" />
-              <div>Ethereum</div>
-            </button>
-            <button
-              type="button"
-              onClick={() => showConnectModal(loginAfterConnect)}
-              className={button({
-                appearance: 'text',
-                className: 'border border-gray-300 rounded-lg',
-              })}
-            >
-              <Icon
-                icon="mingcute:solana-sol-line"
-                className="text-foreground"
-              />
-              <div>Solana</div>
-            </button>
-            <button
-              className={button({
-                appearance: 'text',
-                className: 'col-span-2 border border-gray-300 rounded-lg',
+                className: 'col-span-2',
               })}
             >
               Another email
