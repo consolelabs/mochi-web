@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Alert from '~components/alert'
 import Dialog from '~components/Dialog'
 import { API } from '~constants/api'
 import { button } from './Button'
@@ -44,7 +45,11 @@ export default function NewAppForm({ onCreated, onClose }: Props) {
             className="py-2 px-4 rounded-lg border border-gray-200 outline-none"
           />
         </div>
-        {err && <span className="mt-1 text-sm text-red-500">{err}</span>}
+        {err && (
+          <Alert title="Error" appearance="error" className="mt-2">
+            <span className="mt-1 text-sm">{err}</span>
+          </Alert>
+        )}
         <div className="flex gap-2 justify-end mt-7">
           <button
             type="button"

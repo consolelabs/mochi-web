@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import type { ReactElement } from 'react'
 import DashboardLayout from '~components/Dashboard/Layout'
 import { NextPageWithLayout } from '~pages/_app'
@@ -8,10 +8,8 @@ import { useProfileStore } from '~store'
 import cc from 'clsx'
 import CopyButton from '~components/CopyButton'
 import Modal from '~components/Modal'
-import Dialog from '~components/Dialog'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import Drawer from '~components/Dashboard/Drawer'
-import { Icon } from '@iconify/react'
 import { API } from '~constants/api'
 import useSWR from 'swr'
 import NewAppForm from '~components/Dashboard/NewAppForm'
@@ -130,6 +128,13 @@ const Box = ({
   )
 }
 
+export type App = {
+  id: string
+  profileId: string
+  name: string
+  key: string
+}
+
 const Home: NextPageWithLayout = () => {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const {
@@ -156,10 +161,10 @@ const Home: NextPageWithLayout = () => {
     },
   )
 
-  const [app, setApp] = useState({
-    appId: '',
-    appName: '',
-    newAppName: '',
+  const [app, setApp] = useState<App>({
+    id: '',
+    profileId: '',
+    name: '',
     key: '',
   })
 
@@ -214,15 +219,15 @@ const Home: NextPageWithLayout = () => {
         </div>
         <div className="flex flex-col gap-y-4">
           <span className="text-lg font-medium">App list</span>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 max-w-3xl">
             {apps?.map((a: any) => {
               return (
                 <button
                   onClick={() => {
                     setApp({
-                      appId: a.application_profile_id,
-                      appName: a.name,
-                      newAppName: a.name,
+                      id: a.id,
+                      profileId: a.application_profile_id,
+                      name: a.name,
                       key: '',
                     })
                     openDrawer()
@@ -233,7 +238,7 @@ const Home: NextPageWithLayout = () => {
                 >
                   <div className="p-1 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
                     <img
-                      src={`https://boring-avatars-api.vercel.app/api/avatar?name=${a.application_profile_id}&variant=beam`}
+                      src={`https://boring-avatars-api.vercel.app/api/avatar?name=${a.id}&variant=beam`}
                       alt=""
                       className="w-full h-full"
                     />
@@ -252,10 +257,10 @@ const Home: NextPageWithLayout = () => {
           onClose={onClose}
           onCreated={(a) => {
             setApp({
-              appId: a.application_profile_id,
-              appName: a.name,
-              newAppName: a.name,
-              key: '',
+              id: a.id,
+              profileId: a.application_profile_id,
+              name: a.name,
+              key: a.private_key,
             })
             openDrawer()
             refresh()
@@ -263,13 +268,7 @@ const Home: NextPageWithLayout = () => {
         />
       </Modal>
       <Drawer isOpen={isOpenDrawer} onClose={closeDrawer}>
-        <AppDetail
-          key={app.key}
-          newName={app.newAppName}
-          name={app.appName}
-          id={app.appId}
-          closeDrawer={closeDrawer}
-        />
+        <AppDetail app={app} closeDrawer={closeDrawer} refresh={refresh} />
       </Drawer>
     </div>
   )

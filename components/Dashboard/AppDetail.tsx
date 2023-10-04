@@ -1,25 +1,21 @@
+import { useClipboard } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import Alert from '~components/alert'
 import { API } from '~constants/api'
+import { App } from '~pages/dashboard/home'
 import { button } from './Button'
 
 type Props = {
-  id: string
-  name: string
-  newName: string
-  key: string
+  app: App
   closeDrawer: () => void
+  refresh: () => void
 }
 
-export default function AppDetail({
-  id,
-  newName,
-  name,
-  closeDrawer,
-  key,
-}: Props) {
+export default function AppDetail({ closeDrawer, refresh, app }: Props) {
   const [updated, setUpdated] = useState(false)
-  const [keyReset, setKeyReset] = useState(false)
+  const [keyReset, setKeyReset] = useState('')
+  const { hasCopied, onCopy } = useClipboard(keyReset)
 
   return (
     <div className="flex flex-col gap-y-3 py-3 px-4 h-full rounded-lg w-[530px] bg-white-pure">
@@ -40,7 +36,7 @@ export default function AppDetail({
       <div className="flex justify-center py-5">
         <div className="w-24 h-24">
           <img
-            src={`https://boring-avatars-api.vercel.app/api/avatar?name=${id}&variant=beam`}
+            src={`https://boring-avatars-api.vercel.app/api/avatar?name=${app.id}&variant=beam`}
             alt=""
             className="w-full h-full"
           />
@@ -49,11 +45,14 @@ export default function AppDetail({
       <form
         onSubmit={(e) => {
           e.preventDefault()
+          setUpdated(false)
           const formData = new FormData(e.target as HTMLFormElement)
           const name = formData.get('appName')
-          API.MOCHI_PROFILE.put({ name }, `/applications/${id}`).json(() => {
-            setUpdated(true)
-          })
+          API.MOCHI_PROFILE.put({ name }, `/applications/${app.id}`)
+            .json(() => {
+              setUpdated(true)
+            })
+            .then(refresh)
         }}
         className="flex flex-col flex-1 gap-y-3"
       >
@@ -61,7 +60,7 @@ export default function AppDetail({
           <span className="text-xs font-medium text-gray-500">APP NAME</span>
           <input
             name="appName"
-            defaultValue={newName}
+            defaultValue={app.name}
             required
             className="py-2 px-4 rounded-lg border border-gray-200 outline-none"
           />
@@ -70,7 +69,7 @@ export default function AppDetail({
           <span className="text-xs font-medium text-gray-500">KEY</span>
           <div className="overflow-hidden relative rounded-lg border border-gray-200">
             <input
-              value={key ? key : '*'.repeat(100)}
+              value={keyReset || app.key || '*'.repeat(100)}
               disabled
               className="py-2 px-4 w-full bg-transparent outline-none"
             />
@@ -81,23 +80,23 @@ export default function AppDetail({
               {keyReset && (
                 <button
                   type="button"
+                  onClick={onCopy}
                   className={button({
                     appearance: 'text',
                     className: 'bg-white-pure',
                     size: 'xs',
                   })}
                 >
-                  Copy
+                  {hasCopied ? 'Copied' : 'Copy'}
                 </button>
               )}
               <button
                 onClick={() => {
                   API.MOCHI_PROFILE.put(
-                    { app_name: name },
-                    `/applications/${id}/reset-key`,
+                    { app_name: app.name },
+                    `/applications/${app.id}/reset-key`,
                   ).json((r) => {
-                    console.log(r)
-                    setKeyReset(true)
+                    setKeyReset(r.private_key)
                   })
                 }}
                 type="button"
@@ -113,21 +112,27 @@ export default function AppDetail({
           </div>
         </div>
         {keyReset ? (
-          <span className="text-sm">
-            The key has been reset, please make sure to remember new key as it
-            will not be shown again
-          </span>
+          <Alert title="New key generated" appearance="success">
+            <span className="text-sm">
+              The key has been reset, please make sure to remember new key as it
+              will not be shown again
+            </span>
+          </Alert>
         ) : (
-          <span className="text-sm">
-            The key can only be seen once, for security purposes. If you lose or
-            forget your key, you will need to generate a new one.
-          </span>
+          <Alert title="API key" appearance="warn">
+            <span className="text-sm">
+              For security purposes the api key is only shown once (when you
+              create an app or reset current key). If you lose or forget or your
+              key got leaked, you will need to generate a new one.
+            </span>
+          </Alert>
         )}
         {updated && (
-          <div className="flex items-center">
-            <Icon icon="ic:round-check" className="text-green-500" />
-            <span className="text-sm text-green-500">Your app was updated</span>
-          </div>
+          <Alert title="Success" appearance="success">
+            <span className="text-sm">
+              All information of the app was updated
+            </span>
+          </Alert>
         )}
         <div className="flex justify-between mt-auto">
           <button
