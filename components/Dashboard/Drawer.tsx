@@ -27,10 +27,10 @@ export default function Drawer({ onClose, isOpen, children }: Props) {
         <div className="flex fixed inset-0 justify-end p-4">
           <Transition.Child
             as={Fragment}
-            enter="transition duration-500"
+            enter="transition duration-300 ease-out"
             enterFrom="translate-x-full"
             enterTo="translate-x-0"
-            leave="transition duration-300"
+            leave="transition duration-200 ease-in"
             leaveFrom="translate-x-0"
             leaveTo="translate-x-full"
           >

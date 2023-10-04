@@ -14,6 +14,8 @@ import Drawer from '~components/Dashboard/Drawer'
 import { Icon } from '@iconify/react'
 import { API } from '~constants/api'
 import useSWR from 'swr'
+import NewAppForm from '~components/Dashboard/NewAppForm'
+import AppDetail from '~components/Dashboard/AppDetail'
 
 const Pattern = (props: any) => {
   return (
@@ -157,6 +159,8 @@ const Home: NextPageWithLayout = () => {
   const [app, setApp] = useState({
     appId: '',
     appName: '',
+    newAppName: '',
+    key: '',
   })
 
   return (
@@ -215,7 +219,12 @@ const Home: NextPageWithLayout = () => {
               return (
                 <button
                   onClick={() => {
-                    setApp({ appId: a.application_profile_id, appName: a.name })
+                    setApp({
+                      appId: a.application_profile_id,
+                      appName: a.name,
+                      newAppName: a.name,
+                      key: '',
+                    })
                     openDrawer()
                   }}
                   type="button"
@@ -224,8 +233,9 @@ const Home: NextPageWithLayout = () => {
                 >
                   <div className="p-1 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
                     <img
-                      src={`https://boring-avatars-api.vercel.app/api/avatar?name=${a.application_profile_id}size=20&variant=beam`}
+                      src={`https://boring-avatars-api.vercel.app/api/avatar?name=${a.application_profile_id}&variant=beam`}
                       alt=""
+                      className="w-full h-full"
                     />
                   </div>
                   <span className="text-xs font-medium break-words">
@@ -238,120 +248,28 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <Dialog close={onClose} title="Create an application">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault()
-              const formData = new FormData(e.target as HTMLFormElement)
-              const appName = formData.get('appName')
-              API.MOCHI_PROFILE.post(
-                { app_name: appName },
-                '/applications',
-              ).json((r) => {
-                onClose()
-                setApp({
-                  appId: r.data.application_profile_id,
-                  appName: r.data.name,
-                })
-                openDrawer()
-                refresh()
-              })
-            }}
-            className="flex flex-col"
-          >
-            <div className="flex flex-col gap-y-1">
-              <span className="text-xs font-medium text-gray-500">NAME</span>
-              <input
-                required
-                name="appName"
-                className="py-2 px-4 rounded-lg border border-gray-200 outline-none"
-              />
-            </div>
-            <div className="flex gap-2 justify-end mt-7">
-              <button
-                type="button"
-                onClick={onClose}
-                className={button({ appearance: 'text', size: 'sm' })}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className={button({ appearance: 'secondary', size: 'sm' })}
-              >
-                Create
-              </button>
-            </div>
-          </form>
-        </Dialog>
+        <NewAppForm
+          onClose={onClose}
+          onCreated={(a) => {
+            setApp({
+              appId: a.application_profile_id,
+              appName: a.name,
+              newAppName: a.name,
+              key: '',
+            })
+            openDrawer()
+            refresh()
+          }}
+        />
       </Modal>
       <Drawer isOpen={isOpenDrawer} onClose={closeDrawer}>
-        <div className="flex flex-col gap-y-3 py-3 px-4 h-full rounded-lg w-[530px] bg-white-pure">
-          <button
-            type="button"
-            onClick={closeDrawer}
-            className="w-8 h-8 p-1 bg-[#faf9f7] rounded-lg"
-          >
-            <Icon icon="ic:round-chevron-left" className="w-full h-full" />
-          </button>
-          <div className="flex flex-col gap-y-1">
-            <span className="text-lg font-medium">App details</span>
-            <span className="text-sm text-gray-500">
-              General information about your creation, such as name, icon app,
-              and amazing things to build it.
-            </span>
-          </div>
-          <div className="flex justify-center py-10">
-            <div className="w-24 h-24 bg-gray-200 rounded-full" />
-          </div>
-          <form className="flex flex-col flex-1 gap-y-3">
-            <div className="flex flex-col gap-y-1">
-              <span className="text-xs font-medium text-gray-500">
-                APP NAME
-              </span>
-              <input
-                value={app.appName}
-                required
-                className="py-2 px-4 rounded-lg border border-gray-200 outline-none"
-              />
-            </div>
-            <div className="flex flex-col gap-y-1">
-              <span className="text-xs font-medium text-gray-500">
-                PUBLIC KEY
-              </span>
-              <CopyButton>asdadadadasdasd</CopyButton>
-            </div>
-            <div className="flex flex-col gap-y-1">
-              <span className="text-xs font-medium text-gray-500">
-                PRIVATE KEY
-              </span>
-              <CopyButton>asdadadadasdasd</CopyButton>
-            </div>
-            <span className="text-sm">
-              The key can only be seen once, for security purposes. If you lose
-              or forget your key, you will need to generate a new one.
-            </span>
-            <div className="flex justify-between mt-auto">
-              <button
-                className={button({
-                  appearance: 'text',
-                  size: 'sm',
-                  className: 'text-red-400',
-                })}
-              >
-                Delete app
-              </button>
-              <button
-                className={button({
-                  appearance: 'secondary',
-                  size: 'sm',
-                })}
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </div>
+        <AppDetail
+          key={app.key}
+          newName={app.newAppName}
+          name={app.appName}
+          id={app.appId}
+          closeDrawer={closeDrawer}
+        />
       </Drawer>
     </div>
   )
