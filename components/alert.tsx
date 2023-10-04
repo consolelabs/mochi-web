@@ -4,7 +4,7 @@ import { cva, VariantProps } from 'class-variance-authority'
 const variant = cva(['flex gap-x-2 rounded-lg p-3'], {
   variants: {
     appearance: {
-      info: ['bg-gray-100', 'text-foreground'],
+      info: ['bg-gray-100', 'text-foreground', 'border', 'border-gray-300/70'],
       success: ['bg-green-50', 'text-green-700'],
       warn: ['bg-yellow-50', 'text-yellow-700'],
       error: ['bg-red-50', 'text-red-700'],

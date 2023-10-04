@@ -72,7 +72,7 @@ export default function DashboardLayout({
             <span className="text-xl font-black uppercase text-foreground">
               Mochi<span className="text-mochi">.</span>
             </span>
-            <span className="text-base text-gray-500">Developer</span>
+            <span className="text-base text-gray-500">Dashboard</span>
           </Link>
           {isLoggedIn || skipAuth ? (
             <div className="flex gap-x-5 items-center">

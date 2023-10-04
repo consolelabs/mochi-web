@@ -8,7 +8,7 @@ type Props = {
 
 export default function Dialog({ children, close, title }: Props) {
   return (
-    <div className="flex overflow-hidden flex-col rounded-xl min-w-[380px]">
+    <div className="flex overflow-hidden flex-col rounded-xl min-w-[380px] max-w-[420px]">
       <div className="px-6 py-3 flex items-center justify-between bg-[#faf9f7] border-b border-gray-200">
         <span className="text-sm font-medium text-gray-500">{title}</span>
         <button

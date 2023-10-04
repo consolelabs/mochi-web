@@ -23,6 +23,7 @@ export const useAuthStore = create<State>((set, get) => ({
   isLoggedIn: false,
   isLoadingSession: true,
   logout: () => {
+    window.location.href = '/'
     localStorage.removeItem(STORAGE_KEY)
     set({ token: null, isLoggedIn: false })
     apiLogout()

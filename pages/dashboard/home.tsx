@@ -14,6 +14,10 @@ import { API } from '~constants/api'
 import useSWR from 'swr'
 import NewAppForm from '~components/Dashboard/NewAppForm'
 import AppDetail from '~components/Dashboard/AppDetail'
+import Alert from '~components/alert'
+import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import { logo } from '~utils/image'
+import Dialog from '~components/Dialog'
 
 const Pattern = (props: any) => {
   return (
@@ -135,8 +139,21 @@ export type App = {
   key: string
 }
 
+export type Server = {
+  id: string
+  name: string
+  icon: string
+  hasMochi: boolean
+  isOwner: boolean
+}
+
 const Home: NextPageWithLayout = () => {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const {
+    isOpen: addServerOpen,
+    onClose: closeAddServer,
+    onOpen: openAddServer,
+  } = useDisclosure()
   const {
     isOpen: isOpenDrawer,
     onClose: closeDrawer,
@@ -151,13 +168,39 @@ const Home: NextPageWithLayout = () => {
     shallow,
   )
 
-  const { data: apps, mutate: refresh } = useSWR(
+  const { data: apps, mutate: refresh } = useSWR<Array<App>>(
     ['get-list-apps', id],
-    async ([_, id]) => {
+    async ([_, id]: [any, string]) => {
       if (!id) return []
       return API.MOCHI_PROFILE.get(`/applications/list-by-owner/${id}`).json(
         (r) => r ?? [],
       )
+    },
+  )
+
+  const { data: servers } = useSWR<Array<Server>>(
+    ['get-list-servers', id],
+    async ([_, id]: [any, string]) => {
+      return [
+        {
+          id: 'dwarves-network',
+          name: 'Dwarves Network',
+          hasMochi: true,
+          isOwner: false,
+        },
+        {
+          id: 'console.so',
+          name: 'console.so',
+          hasMochi: true,
+          isOwner: false,
+        },
+        {
+          id: "hollow's server",
+          name: "hollow's server",
+          hasMochi: false,
+          isOwner: true,
+        },
+      ]
     },
   )
 
@@ -168,12 +211,113 @@ const Home: NextPageWithLayout = () => {
     key: '',
   })
 
+  const [server, setServer] = useState<Server>({
+    id: '',
+    name: '',
+    hasMochi: false,
+    icon: '',
+    isOwner: false,
+  })
+
   return (
     <div className="flex justify-center items-center h-full">
       <div className="flex flex-col gap-y-12">
         <span className="text-4xl font-medium">
           Welcome to Mochi APIs, {name}
         </span>
+        <div className="flex flex-col gap-y-4">
+          <span className="text-lg font-medium">Server list</span>
+          <div className="flex flex-wrap gap-3 max-w-3xl">
+            {servers?.length ? (
+              servers?.map((s) => {
+                return (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setServer(s)
+                      openAddServer()
+                    }}
+                    key={s.id}
+                    className="flex flex-col gap-y-2 items-center w-20"
+                  >
+                    <div className="p-1 w-20 h-20 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
+                      {s.hasMochi ? (
+                        <CutoutAvatar
+                          src={
+                            s.icon ||
+                            `https://boring-avatars-api.vercel.app/api/avatar?name=${s.id}&variant=beam`
+                          }
+                          cutoutSrc={logo.src}
+                          size="parent"
+                        />
+                      ) : (
+                        <img
+                          src={
+                            s.icon ||
+                            `https://boring-avatars-api.vercel.app/api/avatar?name=${s.id}&variant=beam`
+                          }
+                          alt=""
+                          className="w-full h-full"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs font-medium break-words">
+                      {s.name}
+                    </span>
+                  </button>
+                )
+              })
+            ) : (
+              <Alert title="There are nothing yet" className="w-full">
+                <span className="text-sm">
+                  You have no Discord server, might consider creating one
+                </span>
+              </Alert>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-y-4">
+          <span className="text-lg font-medium">App list</span>
+          <div className="flex flex-wrap gap-3 max-w-3xl">
+            {servers?.length ? (
+              apps?.map((a: any) => {
+                return (
+                  <button
+                    onClick={() => {
+                      setApp({
+                        id: a.id,
+                        profileId: a.application_profile_id,
+                        name: a.name,
+                        key: '',
+                      })
+                      openDrawer()
+                    }}
+                    type="button"
+                    key={a.application_profile_id}
+                    className="flex flex-col gap-y-2 items-center w-20"
+                  >
+                    <div className="p-1 w-20 h-20 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
+                      <img
+                        src={`https://boring-avatars-api.vercel.app/api/avatar?name=${a.id}&variant=beam`}
+                        alt=""
+                        className="w-full h-full"
+                      />
+                    </div>
+                    <span className="text-xs font-medium break-words">
+                      {a.name}
+                    </span>
+                  </button>
+                )
+              })
+            ) : (
+              <Alert title="There are nothing yet" className="w-full">
+                <span className="text-sm">
+                  You have no apps right now, might consider creating one
+                </span>
+              </Alert>
+            )}
+          </div>
+        </div>
         <div className="flex flex-col gap-y-2">
           <Box
             title="Build an app"
@@ -217,40 +361,6 @@ const Home: NextPageWithLayout = () => {
             </span>
           </Box>
         </div>
-        <div className="flex flex-col gap-y-4">
-          <span className="text-lg font-medium">App list</span>
-          <div className="flex flex-wrap gap-3 max-w-3xl">
-            {apps?.map((a: any) => {
-              return (
-                <button
-                  onClick={() => {
-                    setApp({
-                      id: a.id,
-                      profileId: a.application_profile_id,
-                      name: a.name,
-                      key: '',
-                    })
-                    openDrawer()
-                  }}
-                  type="button"
-                  key={a.application_profile_id}
-                  className="flex flex-col gap-y-2 items-center w-20"
-                >
-                  <div className="p-1 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
-                    <img
-                      src={`https://boring-avatars-api.vercel.app/api/avatar?name=${a.id}&variant=beam`}
-                      alt=""
-                      className="w-full h-full"
-                    />
-                  </div>
-                  <span className="text-xs font-medium break-words">
-                    {a.name}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
         <NewAppForm
@@ -270,6 +380,38 @@ const Home: NextPageWithLayout = () => {
       <Drawer isOpen={isOpenDrawer} onClose={closeDrawer}>
         <AppDetail app={app} closeDrawer={closeDrawer} refresh={refresh} />
       </Drawer>
+      <Modal isOpen={addServerOpen} onClose={closeAddServer}>
+        <Dialog
+          title={server.isOwner ? 'Add Mochi' : 'Error'}
+          close={closeAddServer}
+        >
+          <div className="flex flex-col">
+            <span>
+              {server.isOwner
+                ? 'Continue to begin adding Mochi to your server'
+                : "Unfortunately you're not the owner of this server to add Mochi"}
+            </span>
+            <div className="flex gap-x-2 justify-end mt-7">
+              <button
+                type="button"
+                onClick={closeAddServer}
+                className={button({ appearance: 'text', size: 'sm' })}
+              >
+                Cancel
+              </button>
+              {server.isOwner ? (
+                <button
+                  type="button"
+                  onClick={closeAddServer}
+                  className={button({ appearance: 'secondary', size: 'sm' })}
+                >
+                  Continue
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </Dialog>
+      </Modal>
     </div>
   )
 }

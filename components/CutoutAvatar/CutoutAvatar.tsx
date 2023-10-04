@@ -10,6 +10,7 @@ const style = cva([], {
       base: ['w-20', 'h-20'],
       lg: ['w-28', 'h-28'],
       xl: ['w-36', 'h-36'],
+      parent: ['w-full', 'h-full'],
     },
   },
   defaultVariants: {

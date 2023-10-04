@@ -1,6 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
+import { LoginPanel } from '~components/Dashboard/Login'
+import { Popover } from '~components/Popover'
+import { useAuthStore } from '~store'
 import { logo } from '~utils/image'
 
 const NavLinks = ({ className }: { className?: string }) => (
@@ -11,29 +14,39 @@ const NavLinks = ({ className }: { className?: string }) => (
   </div>
 )
 
-export const Navbar = () => (
-  <Fragment>
-    <nav className="sticky top-0 z-20 w-screen bg-white shadow">
-      <div className="flex flex-col gap-y-4 justify-between py-5 px-3 mx-auto sm:flex-row md:px-7">
-        <Link className="flex gap-x-2 items-center self-start" href="/">
-          <Image
-            src={logo}
-            alt="Logo"
-            width={32}
-            height={32}
-            className="block rounded-full"
-          />
-          <span className="text-xl font-black uppercase text-foreground">
-            Mochi<span className="text-mochi">.</span>
-          </span>
-        </Link>
-        <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:self-center sm:ml-auto md:order-2">
-          <NavLinks />
-          <Link href="/dashboard" className="text-sm font-semibold">
-            Login
+export const Navbar = () => {
+  const { isLoggedIn } = useAuthStore()
+  return (
+    <Fragment>
+      <nav className="sticky top-0 z-20 w-screen bg-white shadow">
+        <div className="flex flex-col gap-y-4 justify-between py-5 px-3 mx-auto sm:flex-row md:px-7">
+          <Link className="flex gap-x-2 items-center self-start" href="/">
+            <Image
+              src={logo}
+              alt="Logo"
+              width={32}
+              height={32}
+              className="block rounded-full"
+            />
+            <span className="text-xl font-black uppercase text-foreground">
+              Mochi<span className="text-mochi">.</span>
+            </span>
           </Link>
+          <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:self-center sm:ml-auto md:order-2">
+            <NavLinks />
+            <Popover
+              trigger={
+                <span className="text-sm font-semibold">
+                  {isLoggedIn ? 'Dashboard' : 'Login'}
+                </span>
+              }
+              panelClassname="px-6 py-4 bg-white-pure border border-gray-200 rounded-xl shadow-md"
+            >
+              <LoginPanel />
+            </Popover>
+          </div>
         </div>
-      </div>
-    </nav>
-  </Fragment>
-)
+      </nav>
+    </Fragment>
+  )
+}
