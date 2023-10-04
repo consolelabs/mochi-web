@@ -23,7 +23,7 @@ import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
 import Modal from '~components/Modal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { isBeta } from '~constants'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,

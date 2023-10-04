@@ -1,6 +1,6 @@
 import { useClipboard } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import { button } from './Dashboard/Button'
+import { button } from './button'
 import cc from 'clsx'
 import { truncate } from '@dwarvesf/react-utils'
 

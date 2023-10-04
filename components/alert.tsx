@@ -1,13 +1,13 @@
 import { Icon } from '@iconify/react'
 import { cva, VariantProps } from 'class-variance-authority'
 
-const variant = cva(['flex gap-x-2 rounded-lg p-3'], {
+const variant = cva(['flex gap-x-2 rounded-lg p-3 border'], {
   variants: {
     appearance: {
       info: ['bg-gray-100', 'text-foreground', 'border', 'border-gray-300/70'],
-      success: ['bg-green-50', 'text-green-700'],
-      warn: ['bg-yellow-50', 'text-yellow-700'],
-      error: ['bg-red-50', 'text-red-700'],
+      success: ['bg-green-50', 'text-green-700', 'border-green-200'],
+      warn: ['bg-yellow-50', 'text-yellow-700', 'border-yellow-300/70'],
+      error: ['bg-red-50', 'text-red-700', 'border-red-200'],
     },
   },
   defaultVariants: {

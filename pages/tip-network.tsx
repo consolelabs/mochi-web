@@ -1,6 +1,6 @@
 'use client'
 import { GetServerSideProps } from 'next'
-import Layout from '~components/Dashboard/Layout'
+import { Layout } from '~app/layout'
 import { HOME_URL } from '~envs'
 import { SEO } from '~app/layout/seo'
 import { API } from '~constants/api'
@@ -136,17 +136,12 @@ export default function TipNetwork({ data }: TipNetworkProps) {
   }, [data.edges, transformedNodes, selectedNode])
 
   return (
-    <Layout
-      skipAuth
-      fullWidth
-      childSEO={
-        <SEO
-          title={`Tip network from server`}
-          description={`Tip network from server`}
-          url={`${HOME_URL}/tip-network/`}
-        />
-      }
-    >
+    <Layout>
+      <SEO
+        title={`Tip network from server`}
+        description={`Tip network from server`}
+        url={`${HOME_URL}/tip-network/`}
+      />
       <div className="flex relative w-full h-full">
         <TipNetworkGraph
           graphData={graphData}

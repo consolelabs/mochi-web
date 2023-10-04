@@ -1,6 +1,7 @@
 import React from 'react'
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
+import { boringAvatar } from '~utils/string'
 
 const style = cva([], {
   variants: {
@@ -36,10 +37,16 @@ const cutoutMaskRadius = cva([], {
 
 type Props = VariantProps<typeof style> & {
   src: string
+  srcFallbackText?: string
   cutoutSrc: string
 }
 
-export default function CutoutAvatar({ size, src, cutoutSrc }: Props) {
+export default function CutoutAvatar({
+  size,
+  srcFallbackText,
+  src,
+  cutoutSrc,
+}: Props) {
   const id = String(Date.now())
 
   return (
@@ -59,6 +66,14 @@ export default function CutoutAvatar({ size, src, cutoutSrc }: Props) {
           width="100%"
           xlinkHref={src}
           mask={`url(#circle-mask-${id})`}
+          onError={(e) => {
+            if (e.isTrusted) {
+              ;(e.target as SVGImageElement).setAttribute(
+                'xlink:href',
+                boringAvatar(srcFallbackText),
+              )
+            }
+          }}
         ></image>
         <image
           height="40%"

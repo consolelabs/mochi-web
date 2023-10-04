@@ -2,6 +2,7 @@ import { Popover } from '~components/Popover'
 import { Icon } from '@iconify/react'
 import { useAuthStore, useProfileStore } from '~store'
 import { shallow } from 'zustand/shallow'
+import Link from 'next/link'
 
 export default function ProfileDropdown() {
   const { logout } = useAuthStore()
@@ -26,10 +27,10 @@ export default function ProfileDropdown() {
       }
     >
       <div className="flex flex-col px-2 rounded-xl border border-gray-200 w-[250px] bg-white-pure">
-        <div className="flex flex-col px-3 pt-4">
+        <Link href="/profile" className="flex flex-col px-3 pt-4">
           <span className="text-sm text-gray-500">Logged in as</span>
           <span>{name}</span>
-        </div>
+        </Link>
         <hr className="my-3 w-full h-px bg-gray-200" />
         <a href="#" className="flex justify-between px-3 pb-2">
           <span className="text-sm">Docs</span>

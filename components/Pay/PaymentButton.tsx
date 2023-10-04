@@ -1,7 +1,7 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 import Modal from '~components/Modal'
 import { toast } from 'sonner'
 import ConnectSocialButton from './ConnectSocialButton'

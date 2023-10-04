@@ -1,6 +1,6 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 import Modal from '~components/Modal'
 import { QRCode as QRCodeGenerator } from '~components/Wallet/QRCode'
 import { useMedia } from '@dwarvesf/react-hooks'
@@ -72,7 +72,7 @@ function Inner({ setIdx, links, refs, image, qrSize }: any) {
   )
 }
 
-export default function QRCodeInfo({ children, user, links, image }: Props) {
+export default function QRCodeInfo({ children, links, image }: Props) {
   const {
     isOpen: justCopied,
     onOpen: copied,

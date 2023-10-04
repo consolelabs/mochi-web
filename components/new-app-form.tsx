@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Alert from '~components/alert'
 import Dialog from '~components/Dialog'
 import { API } from '~constants/api'
-import { button } from './Button'
+import { button } from './button'
 
 type Props = {
   onClose: () => void

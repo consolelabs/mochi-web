@@ -1,6 +1,6 @@
 import { useClipboard } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 
 export default function ShareButton({ link }: { link: string }) {
   const { onCopy } = useClipboard(link)

@@ -1,7 +1,7 @@
 import { Float } from '@headlessui-float/react'
 import { Popover } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { button } from '../Dashboard/Button'
+import { button } from '~components/button'
 import SocialButtons from '../Pay/components/SocialButtons'
 import cc from 'clsx'
 import Input from './input'

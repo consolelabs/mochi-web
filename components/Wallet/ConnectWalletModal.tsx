@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
-import { heading } from '~components/Dashboard/Heading'
+import { heading } from '~components/heading'
 import { useAppWalletContext } from '~context/wallet-context'
 import {
   isMetaMask,

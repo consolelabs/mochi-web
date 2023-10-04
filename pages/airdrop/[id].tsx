@@ -2,8 +2,7 @@ import { GetServerSideProps } from 'next'
 import { SEO } from '~app/layout/seo'
 import { API } from '~constants/api'
 import { HOME_URL } from '~envs'
-import Layout from '~components/Dashboard/Layout'
-import Footer from '~components/Pay/Footer'
+import { Layout } from '~app/layout'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
@@ -217,19 +216,14 @@ export default function Airdrop({
   const redirectingToPaylink = ended && valid
 
   return (
-    <Layout
-      skipAuth
-      childSEO={
-        <SEO
-          title="Airdrop"
-          tailTitle
-          description="There is an airdrop ongoing, join now!"
-          url={`${HOME_URL}/airdrop/${airdropId}`}
-          image={`${HOME_URL}/mochisan-stars.png`}
-        />
-      }
-      footer={<Footer />}
-    >
+    <Layout>
+      <SEO
+        title="Airdrop"
+        tailTitle
+        description="There is an airdrop ongoing, join now!"
+        url={`${HOME_URL}/airdrop/${airdropId}`}
+        image={`${HOME_URL}/mochisan-stars.png`}
+      />
       <div
         className={clsx(
           'flex flex-col p-4 sm:p-8 sm:pt-4 mx-auto text-center bg-white rounded-2xl mb-32 md:mb-64 max-w-sm',

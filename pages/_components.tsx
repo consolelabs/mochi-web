@@ -1,7 +1,6 @@
 import { Icon } from '@iconify/react'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 import { label as labelStyles } from '~components/Dashboard/Form/styles'
-import { heading } from '~components/Dashboard/Heading'
 import { FileInput, Input } from '~components/Dashboard/Input'
 import { Menu } from '~components/Dashboard/Menu'
 import { RadioGroup } from '~components/Dashboard/Radio'

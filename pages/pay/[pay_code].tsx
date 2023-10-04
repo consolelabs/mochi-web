@@ -1,16 +1,15 @@
-import { heading } from '~components/Dashboard/Heading'
+import { heading } from '~components/heading'
 import { SEO } from '~app/layout/seo'
 import QRCodeButton from '~components/Pay/QRCodeButton'
 import CopyLinkButton from '~components/Pay/CopyLinkButton'
 import ShareButton from '~components/Pay/ShareButton'
 import PaymentButton from '~components/Pay/PaymentButton'
-import Layout from '~components/Dashboard/Layout'
-import Footer from '~components/Pay/Footer'
+import { Layout } from '~app/layout'
 import { GetServerSideProps } from 'next'
 import { API } from '~constants/api'
 import { utils } from 'ethers'
 import clsx from 'clsx'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { isSSR, truncate } from '@dwarvesf/react-utils'
@@ -114,19 +113,14 @@ export default function PayCode({
 
   if (!payRequest) {
     return (
-      <Layout
-        skipAuth
-        childSEO={
-          <SEO
-            title={isPayMe ? 'Pay Me' : 'Pay Link'}
-            tailTitle
-            image={`${HOME_URL}/api/pay-og`}
-            description="We couldn't find the Pay Link you were looking for."
-            url={`${HOME_URL}/pay`}
-          />
-        }
-        footer={<Footer />}
-      >
+      <Layout>
+        <SEO
+          title={isPayMe ? 'Pay Me' : 'Pay Link'}
+          tailTitle
+          image={`${HOME_URL}/api/pay-og`}
+          description="We couldn't find the Pay Link you were looking for."
+          url={`${HOME_URL}/pay`}
+        />
         <div
           className={clsx(
             'flex flex-col p-8 pt-4 mx-auto text-center bg-white rounded-2xl md:mb-64 max-w-[450px]',
@@ -155,37 +149,32 @@ export default function PayCode({
   }
 
   return (
-    <Layout
-      skipAuth
-      childSEO={
-        <SEO
-          title={
-            isPayMe
-              ? `Pay ${initialPayRequest?.profile?.name} ${initialPayRequest?.amount} ${payRequest.token.symbol}`
-              : 'Pay Link'
-          }
-          tailTitle
-          image={`${HOME_URL}/api/pay-og?data=${encodeURIComponent(
-            JSON.stringify(ogData),
-          )}`}
-          description={
-            isPayMe
-              ? `${
-                  initialPayRequest?.profile?.name ?? 'Someone'
-                } requests you to pay ${initialPayRequest?.amount} ${
-                  initialPayRequest?.token.symbol
-                }${
-                  initialPayRequest?.note
-                    ? ` with the message: "${initialPayRequest.note}"`
-                    : ''
-                }`
-              : `Visit this Pay Link to withdraw ${initialPayRequest?.amount} ${initialPayRequest?.token.symbol} to your wallet!`
-          }
-          url={`${HOME_URL}/pay/${payRequest.code}`}
-        />
-      }
-      footer={<Footer />}
-    >
+    <Layout>
+      <SEO
+        title={
+          isPayMe
+            ? `Pay ${initialPayRequest?.profile?.name} ${initialPayRequest?.amount} ${payRequest.token.symbol}`
+            : 'Pay Link'
+        }
+        tailTitle
+        image={`${HOME_URL}/api/pay-og?data=${encodeURIComponent(
+          JSON.stringify(ogData),
+        )}`}
+        description={
+          isPayMe
+            ? `${
+                initialPayRequest?.profile?.name ?? 'Someone'
+              } requests you to pay ${initialPayRequest?.amount} ${
+                initialPayRequest?.token.symbol
+              }${
+                initialPayRequest?.note
+                  ? ` with the message: "${initialPayRequest.note}"`
+                  : ''
+              }`
+            : `Visit this Pay Link to withdraw ${initialPayRequest?.amount} ${initialPayRequest?.token.symbol} to your wallet!`
+        }
+        url={`${HOME_URL}/pay/${payRequest.code}`}
+      />
       <div
         className={clsx(
           'flex flex-col p-4 sm:p-8 sm:pt-4 mx-auto text-center bg-white rounded-2xl mb-32 md:mb-64',

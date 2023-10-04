@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
-import { LoginPanel } from '~components/Dashboard/Login'
+import { LoginPanel } from '~components/login'
 import { Popover } from '~components/Popover'
 import { useAuthStore } from '~store'
 import { logo } from '~utils/image'
@@ -35,7 +35,7 @@ export const Navbar = () => {
           <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:self-center sm:ml-auto md:order-2">
             <NavLinks />
             {isLoggedIn ? (
-              <Link href="/dashboard" className="text-sm font-semibold">
+              <Link href="/profile" className="text-sm font-semibold">
                 Dashboard
               </Link>
             ) : (

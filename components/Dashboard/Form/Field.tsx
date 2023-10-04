@@ -7,7 +7,6 @@ import type {
   UseFormStateReturn,
   ControllerFieldState,
 } from 'react-hook-form'
-import { heading } from '../Heading'
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>
 
@@ -42,7 +41,7 @@ export default function Field<T extends FieldValues = FieldValues>({
           <label className={labelProps?.className ?? 'text-base font-medium'}>
             {label}
             {rest.rules?.required && (
-              <span className="text-mochi-900 text-xs"> *</span>
+              <span className="text-xs text-mochi-900"> *</span>
             )}
           </label>
         )}

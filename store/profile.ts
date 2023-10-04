@@ -5,12 +5,13 @@ import {
   ViewActivityResponseData,
   ViewProfile,
 } from '~types/mochi-profile-schema'
-import { UI } from '~constants/mochi'
+import { api, UI } from '~constants/mochi'
 import { Platform } from '@consolelabs/mochi-ui'
 
 type State = {
   me: ViewProfile | null
   setMe: (me: ViewProfile) => Promise<void>
+  wallets: any
   getActivites: (query: Pagination) => Promise<ViewActivityResponseData>
   updateActivityReadStatus: (ids: number[]) => void
 }
@@ -19,14 +20,21 @@ export const useProfileStore = create<State>((set, get) => ({
   me: null,
   setMe: async (me: ViewProfile) => {
     const [p] = await UI.resolve(Platform.Web, me.id ?? '')
+    const { ok, data } = await api.pay.mochiWallet.getWallets(me.id ?? '')
+    let wallets: any[] = []
+    if (ok) {
+      wallets = data
+    }
 
     set({
       me: {
         ...me,
         profile_name: p?.plain ?? '',
       },
+      wallets,
     })
   },
+  wallets: null,
 
   getActivites: (query) => {
     return API.MOCHI_PROFILE.query(query)

@@ -1,7 +1,7 @@
 import { noop } from '@dwarvesf/react-utils'
 import clsx from 'clsx'
 import React from 'react'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 
 export const DropdownButton = ({
   icon,

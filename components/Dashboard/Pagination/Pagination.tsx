@@ -2,7 +2,6 @@ import { Icon } from '@iconify/react'
 import clsx from 'clsx'
 import { useMemo } from 'react'
 import { pagination } from '~utils/pagination'
-import { button } from '../Button'
 
 type Props = {
   page: number
@@ -18,25 +17,25 @@ export const Pagination = (props: Props) => {
   }, [page, totalPage])
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex gap-x-2 gap-4 items-center">
       <button
         type="button"
         onClick={() => onChange(page - 1)}
         disabled={page === 0}
-        className={button({ appearance: 'tertiary', size: 'icon' })}
+        className="p-1 rounded-full transition hover:bg-gray-200"
       >
         <Icon className="w-4 h-4" icon="heroicons:chevron-left" />
       </button>
-      <div className="flex items-center px-4 py-2 gap-2 text-sm bg-dashboard-gray-6 rounded-lg">
+      <div className="flex gap-2 items-center py-1 px-2 text-sm font-medium rounded">
         {paginationArray.map((i: any, index: number) => {
           return (
             <button
               type="button"
               key={index}
               disabled={i === '...'}
-              className={clsx('w-4', {
-                'opacity-40': i !== page,
-                'opacity-100': i === page,
+              className={clsx('transition hover:opacity-80 w-4', {
+                'opacity-30': i !== page,
+                'opacity-100 underline': i === page,
               })}
               onClick={() => onChange(i)}
             >
@@ -49,7 +48,7 @@ export const Pagination = (props: Props) => {
         type="button"
         onClick={() => onChange(page + 1)}
         disabled={page === totalPage - 1}
-        className={button({ appearance: 'tertiary', size: 'icon' })}
+        className="p-1 rounded-full transition hover:bg-gray-200"
       >
         <Icon className="w-4 h-4" icon="heroicons:chevron-right" />
       </button>

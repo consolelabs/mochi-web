@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next'
 import { API } from '~constants/api'
 import { utils } from 'ethers'
 import { format } from 'date-fns'
-import Layout from '~components/Dashboard/Layout'
+import { Layout } from '~app/layout'
 import { HOME_URL } from '~envs'
 import { SEO } from '~app/layout/seo'
 import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
@@ -23,6 +23,7 @@ import Image from 'next/image'
 import { truncate } from '@dwarvesf/react-utils'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import cc from 'clsx'
+import { boringAvatar } from '~utils/string'
 
 type TemplateName =
   | 'happy_birthday'
@@ -136,7 +137,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const res = await fetch(avatar)
     if (!res.ok) throw new Error()
   } catch (e: any) {
-    avatar = `https://boring-avatars-api.vercel.app/api/avatar?name=${sender?.id}size=40&variant=beam`
+    avatar = boringAvatar(sender?.id)
   }
 
   const success = transfer.status === 'success'
@@ -256,33 +257,29 @@ export default function Transfer({
   })
 
   return (
-    <Layout
-      skipAuth
-      childSEO={
-        <SEO
-          title={
-            ogData.template
-              ? ogData.template.title
-              : `Tip from ${sender.value} - Mochi`
-          }
-          image={`${HOME_URL}/api/transfer-og?data=${encodeURIComponent(
-            JSON.stringify(ogData),
-          )}`}
-          description={`${
-            sender.value
-          } paid ${receiver} ${amountDisplay} ${unitCurrency}${
-            transfer.metadata.message
-              ? ` with message: "${truncate(
-                  transfer.metadata.message,
-                  30,
-                  false,
-                )}"`
-              : ''
-          }`}
-          url={`${HOME_URL}/transfer/${transfer.external_id}`}
-        />
-      }
-    >
+    <Layout>
+      <SEO
+        title={
+          ogData.template
+            ? ogData.template.title
+            : `Tip from ${sender.value} - Mochi`
+        }
+        image={`${HOME_URL}/api/transfer-og?data=${encodeURIComponent(
+          JSON.stringify(ogData),
+        )}`}
+        description={`${
+          sender.value
+        } paid ${receiver} ${amountDisplay} ${unitCurrency}${
+          transfer.metadata.message
+            ? ` with message: "${truncate(
+                transfer.metadata.message,
+                30,
+                false,
+              )}"`
+            : ''
+        }`}
+        url={`${HOME_URL}/transfer/${transfer.external_id}`}
+      />
       <div className="px-4 mx-auto w-full max-w-md font-sans drop-shadow-md">
         <div className="flex overflow-hidden relative flex-col gap-y-6 w-full text-center bg-white rounded receipt">
           {ogData.template ? (

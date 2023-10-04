@@ -1,6 +1,6 @@
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
-import { button } from '~components/Dashboard/Button'
+import { button } from '~components/button'
 import { PAGES } from '~constants'
 import { useHasMounted } from '@dwarvesf/react-hooks'
 import { GetServerSideProps } from 'next'
