@@ -34,16 +34,18 @@ export const Navbar = () => {
           </Link>
           <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:self-center sm:ml-auto md:order-2">
             <NavLinks />
-            <Popover
-              trigger={
-                <span className="text-sm font-semibold">
-                  {isLoggedIn ? 'Dashboard' : 'Login'}
-                </span>
-              }
-              panelClassname="px-6 py-4 bg-white-pure border border-gray-200 rounded-xl shadow-md"
-            >
-              <LoginPanel />
-            </Popover>
+            {isLoggedIn ? (
+              <Link href="/dashboard" className="text-sm font-semibold">
+                Dashboard
+              </Link>
+            ) : (
+              <Popover
+                trigger={<span className="text-sm font-semibold">Login</span>}
+                panelClassname="px-6 py-4 bg-white-pure border border-gray-200 rounded-xl shadow-md"
+              >
+                <LoginPanel />
+              </Popover>
+            )}
           </div>
         </div>
       </nav>
