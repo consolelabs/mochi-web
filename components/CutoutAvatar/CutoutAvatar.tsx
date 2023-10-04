@@ -26,6 +26,7 @@ const cutoutMaskRadius = cva([], {
       base: '24%',
       lg: '23%',
       xl: '22.5%',
+      parent: '24%',
     },
   },
   defaultVariants: {

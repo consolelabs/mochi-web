@@ -168,7 +168,7 @@ const Home: NextPageWithLayout = () => {
     shallow,
   )
 
-  const { data: apps, mutate: refresh } = useSWR<Array<App>>(
+  const { data: apps, mutate: refresh } = useSWR(
     ['get-list-apps', id],
     async ([_, id]: [any, string]) => {
       if (!id) return []
@@ -178,31 +178,28 @@ const Home: NextPageWithLayout = () => {
     },
   )
 
-  const { data: servers } = useSWR<Array<Server>>(
-    ['get-list-servers', id],
-    async ([_, id]: [any, string]) => {
-      return [
-        {
-          id: 'dwarves-network',
-          name: 'Dwarves Network',
-          hasMochi: true,
-          isOwner: false,
-        },
-        {
-          id: 'console.so',
-          name: 'console.so',
-          hasMochi: true,
-          isOwner: false,
-        },
-        {
-          id: "hollow's server",
-          name: "hollow's server",
-          hasMochi: false,
-          isOwner: true,
-        },
-      ]
-    },
-  )
+  const { data: servers } = useSWR(['get-list-servers', id], async () => {
+    return [
+      {
+        id: 'dwarves-network',
+        name: 'Dwarves Network',
+        hasMochi: true,
+        isOwner: false,
+      },
+      {
+        id: 'console.so',
+        name: 'console.so',
+        hasMochi: true,
+        isOwner: false,
+      },
+      {
+        id: "hollow's server",
+        name: "hollow's server",
+        hasMochi: false,
+        isOwner: true,
+      },
+    ]
+  })
 
   const [app, setApp] = useState<App>({
     id: '',
@@ -229,7 +226,7 @@ const Home: NextPageWithLayout = () => {
           <span className="text-lg font-medium">Server list</span>
           <div className="flex flex-wrap gap-3 max-w-3xl">
             {servers?.length ? (
-              servers?.map((s) => {
+              servers?.map((s: any) => {
                 return (
                   <button
                     type="button"
