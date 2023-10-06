@@ -235,7 +235,7 @@ const Home: NextPageWithLayout = () => {
         <div className="flex flex-col gap-y-3">
           <span className="text-lg font-medium">App list</span>
           <div className="flex flex-wrap gap-3 max-w-3xl">
-            {servers?.length ? (
+            {apps?.length ? (
               apps?.map((a: any) => {
                 return (
                   <Link
@@ -245,9 +245,9 @@ const Home: NextPageWithLayout = () => {
                   >
                     <div className="p-1 w-20 h-20 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
                       <img
-                        src={boringAvatar(a.id)}
+                        src={a.avatar || boringAvatar(a.id)}
                         alt=""
-                        className="w-full h-full"
+                        className="w-full h-full rounded-full"
                       />
                     </div>
                     <span className="text-xs font-medium break-words">

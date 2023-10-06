@@ -21,7 +21,6 @@
     "@fontsource/poppins": "^5.0.8",
     "@headlessui-float/react": "^0.11.0",
     "@headlessui/react": "1.7.5",
-    "@react-spring/web": "^9.7.3",
     "@solana/spl-token": "^0.3.7",
     "@solana/wallet-adapter-base": "0.9.22",
     "@solana/wallet-adapter-react": "^0.15.30",

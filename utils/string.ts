@@ -12,6 +12,6 @@ export function getWalletLoginSignMessage(code: string) {
   return sprintf(WALLET_LOGIN_SIGN_MESSAGE, code)
 }
 
-export function boringAvatar(name = '') {
-  return `https://source.boringavatars.com/beam/120/${name}?colors=665c52,74b3a7,a3ccaf,E6E1CF,CC5B14`
+export function boringAvatar(name = '', variant: 'beam' | 'ring' = 'beam') {
+  return `https://source.boringavatars.com/${variant}/120/${name}?colors=665c52,74b3a7,a3ccaf,E6E1CF,CC5B14`
 }

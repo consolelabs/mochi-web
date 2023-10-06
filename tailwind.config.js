@@ -94,6 +94,9 @@ module.exports = {
           },
         },
       },
+      transitionTimingFunction: {
+        rubber: 'cubic-bezier(0.68,-0.55,0.27,1.55)',
+      },
       animation: {
         float: 'float 5s ease-in-out infinite',
         move: 'move 5s infinite 1s',

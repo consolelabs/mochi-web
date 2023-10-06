@@ -38,12 +38,14 @@ const cutoutMaskRadius = cva([], {
 type Props = VariantProps<typeof style> & {
   src: string
   srcFallbackText?: string
+  srcFallbackVariant?: 'beam' | 'ring'
   cutoutSrc: string
 }
 
 export default function CutoutAvatar({
   size,
   srcFallbackText,
+  srcFallbackVariant = 'beam',
   src,
   cutoutSrc,
 }: Props) {
@@ -70,7 +72,7 @@ export default function CutoutAvatar({
             if (e.isTrusted) {
               ;(e.target as SVGImageElement).setAttribute(
                 'xlink:href',
-                boringAvatar(srcFallbackText),
+                boringAvatar(srcFallbackText, srcFallbackVariant),
               )
             }
           }}
