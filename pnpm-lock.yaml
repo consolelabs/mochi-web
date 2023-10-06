@@ -35,9 +35,6 @@ dependencies:
   '@headlessui/react':
     specifier: 1.7.5
     version: 1.7.5(react-dom@18.2.0)(react@18.2.0)
-  '@react-spring/web':
-    specifier: ^9.7.3
-    version: 9.7.3(react-dom@18.2.0)(react@18.2.0)
   '@solana/spl-token':
     specifier: ^0.3.7
     version: 0.3.7(@solana/web3.js@1.74.0)
@@ -77,9 +74,6 @@ dependencies:
   lodash.capitalize:
     specifier: ^4.2.1
     version: 4.2.1
-  lodash.groupby:
-    specifier: ^4.6.0
-    version: 4.6.0
   next:
     specifier: ^13.2.4
     version: 13.2.4(@babel/core@7.23.0)(react-dom@18.2.0)(react@18.2.0)
@@ -175,9 +169,6 @@ devDependencies:
   '@types/lodash.capitalize':
     specifier: ^4.2.7
     version: 4.2.7
-  '@types/lodash.groupby':
-    specifier: ^4.6.7
-    version: 4.6.7
   '@types/node':
     specifier: ^18.15.5
     version: 18.15.5
@@ -1765,16 +1756,16 @@ packages:
       borsh: 0.7.0
     dev: false
 
-  /@bonfida/spl-name-service@1.4.0(@solana/web3.js@1.78.7):
+  /@bonfida/spl-name-service@1.4.0(@solana/web3.js@1.81.0):
     resolution: {integrity: sha512-R34e7dlK4xFiRgFTBK11g19/OiJrC/QzOzNOxQYrfqj+CQPy7KqmU3OqP0D7J87BrAUzAmkFZ3J9viqX/as+Yw==}
     peerDependencies:
       '@solana/web3.js': ^1.75.0
     dependencies:
       '@ethersproject/sha2': 5.7.0
-      '@pythnetwork/client': 2.19.0(@solana/web3.js@1.78.7)
+      '@pythnetwork/client': 2.19.0(@solana/web3.js@1.81.0)
       '@solana/buffer-layout': 4.0.1
-      '@solana/spl-token': 0.3.7(@solana/web3.js@1.78.7)
-      '@solana/web3.js': 1.78.7
+      '@solana/spl-token': 0.3.7(@solana/web3.js@1.81.0)
+      '@solana/web3.js': 1.81.0
       bech32-buffer: 0.2.1
       bn.js: 5.2.1
       borsh: 0.7.0
@@ -1845,7 +1836,7 @@ packages:
       deepmerge: 4.3.1
       lodash.snakecase: 4.1.1
       path-parser: 6.1.0
-      pino: 8.15.5
+      pino: 8.15.6
       pino-pretty: 10.2.3
       snakecase-keys: 5.4.7
       wretch: 2.6.0
@@ -1858,9 +1849,9 @@ packages:
       '@consolelabs/mochi-rest': ^3.0.14
       ioredis: ^5.x.x
     dependencies:
-      '@bonfida/spl-name-service': 1.4.0(@solana/web3.js@1.78.7)
+      '@bonfida/spl-name-service': 1.4.0(@solana/web3.js@1.81.0)
       '@consolelabs/mochi-rest': 3.0.14
-      '@solana/web3.js': 1.78.7
+      '@solana/web3.js': 1.81.0
       change-case: 4.1.2
       ethers: 6.7.1
       ioredis: 5.3.2
@@ -1912,13 +1903,13 @@ packages:
       buffer-layout: 1.2.2
     dev: false
 
-  /@coral-xyz/borsh@0.28.0(@solana/web3.js@1.78.7):
+  /@coral-xyz/borsh@0.28.0(@solana/web3.js@1.81.0):
     resolution: {integrity: sha512-/u1VTzw7XooK7rqeD7JLUSwOyRSesPUk0U37BV9zK0axJc1q0nRbKFGFLYCQ16OtdOJTTwGfGp11Lx9B45bRCQ==}
     engines: {node: '>=10'}
     peerDependencies:
       '@solana/web3.js': ^1.68.0
     dependencies:
-      '@solana/web3.js': 1.78.7
+      '@solana/web3.js': 1.81.0
       bn.js: 5.2.1
       buffer-layout: 1.2.2
     dev: false
@@ -1954,7 +1945,7 @@ packages:
       ajv: 6.12.6
       debug: 4.3.4
       espree: 9.6.1
-      globals: 13.22.0
+      globals: 13.23.0
       ignore: 5.2.4
       import-fresh: 3.3.0
       js-yaml: 4.1.0
@@ -3053,14 +3044,14 @@ packages:
       eventemitter3: 4.0.7
     dev: false
 
-  /@pythnetwork/client@2.19.0(@solana/web3.js@1.78.7):
+  /@pythnetwork/client@2.19.0(@solana/web3.js@1.81.0):
     resolution: {integrity: sha512-0VSQ0NqBOa5EtloXbOVYZ6Wpu8CLP3oaOKVTaUMSX/HXbB00S6G+xdwF7stxo6emgrAMopotx3icEVug5Lpomg==}
     peerDependencies:
       '@solana/web3.js': ^1.30.2
     dependencies:
       '@coral-xyz/anchor': 0.28.1-beta.2
-      '@coral-xyz/borsh': 0.28.0(@solana/web3.js@1.78.7)
-      '@solana/web3.js': 1.78.7
+      '@coral-xyz/borsh': 0.28.0(@solana/web3.js@1.81.0)
+      '@solana/web3.js': 1.81.0
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
@@ -3586,54 +3577,6 @@ packages:
       react-native: 0.72.5(@babel/core@7.23.0)(@babel/preset-env@7.22.20)(react@18.2.0)
     dev: false
 
-  /@react-spring/animated@9.7.3(react@18.2.0):
-    resolution: {integrity: sha512-5CWeNJt9pNgyvuSzQH+uy2pvTg8Y4/OisoscZIR8/ZNLIOI+CatFBhGZpDGTF/OzdNFsAoGk3wiUYTwoJ0YIvw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@react-spring/shared': 9.7.3(react@18.2.0)
-      '@react-spring/types': 9.7.3
-      react: 18.2.0
-    dev: false
-
-  /@react-spring/core@9.7.3(react@18.2.0):
-    resolution: {integrity: sha512-IqFdPVf3ZOC1Cx7+M0cXf4odNLxDC+n7IN3MDcVCTIOSBfqEcBebSv+vlY5AhM0zw05PDbjKrNmBpzv/AqpjnQ==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@react-spring/animated': 9.7.3(react@18.2.0)
-      '@react-spring/shared': 9.7.3(react@18.2.0)
-      '@react-spring/types': 9.7.3
-      react: 18.2.0
-    dev: false
-
-  /@react-spring/shared@9.7.3(react@18.2.0):
-    resolution: {integrity: sha512-NEopD+9S5xYyQ0pGtioacLhL2luflh6HACSSDUZOwLHoxA5eku1UPuqcJqjwSD6luKjjLfiLOspxo43FUHKKSA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@react-spring/types': 9.7.3
-      react: 18.2.0
-    dev: false
-
-  /@react-spring/types@9.7.3:
-    resolution: {integrity: sha512-Kpx/fQ/ZFX31OtlqVEFfgaD1ACzul4NksrvIgYfIFq9JpDHFwQkMVZ10tbo0FU/grje4rcL4EIrjekl3kYwgWw==}
-    dev: false
-
-  /@react-spring/web@9.7.3(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-BXt6BpS9aJL/QdVqEIX9YoUy8CE6TJrU0mNCqSoxdXlIeNcEBWOfIyE6B14ENNsyQKS3wOWkiJfco0tCr/9tUg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@react-spring/animated': 9.7.3(react@18.2.0)
-      '@react-spring/core': 9.7.3(react@18.2.0)
-      '@react-spring/shared': 9.7.3(react@18.2.0)
-      '@react-spring/types': 9.7.3
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
   /@resvg/resvg-wasm@2.4.1:
     resolution: {integrity: sha512-yi6R0HyHtsoWTRA06Col4WoDs7SvlXU3DLMNP2bdAgs7HK18dTEVl1weXgxRzi8gwLteGUbIg29zulxIB3GSdg==}
     engines: {node: '>= 10'}
@@ -3828,7 +3771,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@solana/spl-token@0.3.7(@solana/web3.js@1.78.7):
+  /@solana/spl-token@0.3.7(@solana/web3.js@1.81.0):
     resolution: {integrity: sha512-bKGxWTtIw6VDdCBngjtsGlKGLSmiu/8ghSt/IOYJV24BsymRbgq7r12GToeetpxmPaZYLddKwAz7+EwprLfkfg==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -3836,7 +3779,7 @@ packages:
     dependencies:
       '@solana/buffer-layout': 4.0.1
       '@solana/buffer-layout-utils': 0.2.0
-      '@solana/web3.js': 1.78.7
+      '@solana/web3.js': 1.81.0
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
@@ -4558,8 +4501,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@solana/web3.js@1.78.7:
-    resolution: {integrity: sha512-BiAuCaHnbxgHsjNt/4dfMYjvPDRw+tollg6uWdVZpPogQW2GJj51LQ2NeVhfIGlJIU75O03YZeIc0r0H6LH1vA==}
+  /@solana/web3.js@1.81.0:
+    resolution: {integrity: sha512-KgbYOC/dGX9W3IvQ6wKXQa2P5qKzHk3nc4Lc6ZlgwIUB1U2QnDnVD1fysD/4fg9W9xIufbLAC2z5j8QRixjUew==}
     dependencies:
       '@babel/runtime': 7.23.1
       '@noble/curves': 1.2.0
@@ -5200,12 +5143,6 @@ packages:
 
   /@types/lodash.capitalize@4.2.7:
     resolution: {integrity: sha512-NKtwU9vJFCx7Q6RYMAKQS0Vo2QUF81tyjvfYnhMxw8+ZMj8R4iv2zmLq5ARy28dGXuK0MqqWg45zGRuTnsnFag==}
-    dependencies:
-      '@types/lodash': 4.14.199
-    dev: true
-
-  /@types/lodash.groupby@4.6.7:
-    resolution: {integrity: sha512-dFUR1pqdMgjIBbgPJ/8axJX6M1C7zsL+HF4qdYMQeJ7XOp0Qbf37I3zh9gpXr/ks6tgEYPDRqyZRAnFYvewYHQ==}
     dependencies:
       '@types/lodash': 4.14.199
     dev: true
@@ -6234,7 +6171,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.22.1
-      caniuse-lite: 1.0.30001542
+      caniuse-lite: 1.0.30001546
       fraction.js: 4.3.6
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -6561,8 +6498,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001542
-      electron-to-chromium: 1.4.539
+      caniuse-lite: 1.0.30001546
+      electron-to-chromium: 1.4.543
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
 
@@ -6713,8 +6650,8 @@ packages:
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
     dev: false
 
-  /caniuse-lite@1.0.30001542:
-    resolution: {integrity: sha512-UrtAXVcj1mvPBFQ4sKd38daP8dEcXXr5sQe6QNNinaPd0iA/cxg9/l3VrSdL73jgw5sKyuQ6jNgiKO12W3SsVA==}
+  /caniuse-lite@1.0.30001546:
+    resolution: {integrity: sha512-zvtSJwuQFpewSyRrI3AsftF6rM0X80mZkChIt1spBGEvRglCrjTniXvinc8JKRoqTwXAgvqTImaN9igfSMtUBw==}
 
   /canvas-color-tracker@1.2.1:
     resolution: {integrity: sha512-i5clg2pEdaWqHuEM/B74NZNLkHh5+OkXbA/T4iaBiaNDagkOCXkLNrhqUfdUugsRwuaNRU20e/OygzxWRor3yg==}
@@ -7636,8 +7573,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /electron-to-chromium@1.4.539:
-    resolution: {integrity: sha512-wRmWJ8F7rgmINuI32S6r2SLrw/h/bJQsDSvBiq9GBfvc2Lh73qTOwn73r3Cf67mjVgFGJYcYtmERzySa5jIWlg==}
+  /electron-to-chromium@1.4.543:
+    resolution: {integrity: sha512-t2ZP4AcGE0iKCCQCBx/K2426crYdxD3YU6l0uK2EO3FZH0pbC4pFz/sZm2ruZsND6hQBTcDWWlo/MLpiOdif5g==}
 
   /elliptic@6.5.4:
     resolution: {integrity: sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==}
@@ -7757,7 +7694,7 @@ packages:
       get-symbol-description: 1.0.0
       globalthis: 1.0.3
       gopd: 1.0.1
-      has: 1.0.3
+      has: 1.0.4
       has-property-descriptors: 1.0.0
       has-proto: 1.0.1
       has-symbols: 1.0.3
@@ -7811,14 +7748,14 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       get-intrinsic: 1.2.1
-      has: 1.0.3
+      has: 1.0.4
       has-tostringtag: 1.0.0
     dev: true
 
   /es-shim-unscopables@1.0.0:
     resolution: {integrity: sha512-Jm6GPcCdC30eMLbZ2x8z2WuRwAws3zTBBKuusffYVUrNj/GVSUAZ+xKMaUpfNDR5IbyNA5LJbaecoUVbmUcB1w==}
     dependencies:
-      has: 1.0.3
+      has: 1.0.4
     dev: true
 
   /es-to-primitive@1.2.1:
@@ -7979,7 +7916,7 @@ packages:
       eslint: 8.13.0
       eslint-import-resolver-node: 0.3.9
       eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.13.0)
-      has: 1.0.3
+      has: 1.0.4
       is-core-module: 2.13.0
       is-glob: 4.0.3
       minimatch: 3.1.2
@@ -8010,7 +7947,7 @@ packages:
       damerau-levenshtein: 1.0.8
       emoji-regex: 9.2.2
       eslint: 8.13.0
-      has: 1.0.3
+      has: 1.0.4
       jsx-ast-utils: 3.3.5
       language-tags: 1.0.5
       minimatch: 3.1.2
@@ -8104,7 +8041,7 @@ packages:
       file-entry-cache: 6.0.1
       functional-red-black-tree: 1.0.1
       glob-parent: 6.0.2
-      globals: 13.22.0
+      globals: 13.23.0
       ignore: 5.2.4
       import-fresh: 3.3.0
       imurmurhash: 0.1.4
@@ -8648,7 +8585,7 @@ packages:
     resolution: {integrity: sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==}
     dependencies:
       function-bind: 1.1.1
-      has: 1.0.3
+      has: 1.0.4
       has-proto: 1.0.1
       has-symbols: 1.0.3
 
@@ -8731,8 +8668,8 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /globals@13.22.0:
-    resolution: {integrity: sha512-H1Ddc/PbZHTDVJSnj8kWptIRSD6AM3pK+mKytuIVF4uoBV7rshFlhhvA58ceJ5wp3Er58w6zj7bykMpYXt3ETw==}
+  /globals@13.23.0:
+    resolution: {integrity: sha512-XAmF0RjlrjY23MA51q3HltdlGxUpXPvg0GioKiD9X6HD28iMjo2dKC8Vqwm7lne4GNr78+RHTfliktR6ZH09wA==}
     engines: {node: '>=8'}
     dependencies:
       type-fest: 0.20.2
@@ -8796,11 +8733,9 @@ packages:
     dependencies:
       has-symbols: 1.0.3
 
-  /has@1.0.3:
-    resolution: {integrity: sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==}
+  /has@1.0.4:
+    resolution: {integrity: sha512-qdSAmqLF6209RFj4VVItywPMbm3vWylknmB3nvNiUIs72xAimcM8nVYxYr7ncvZq5qzk9MKIZR8ijqD/1QuYjQ==}
     engines: {node: '>= 0.4.0'}
-    dependencies:
-      function-bind: 1.1.1
 
   /hash-base@3.1.0:
     resolution: {integrity: sha512-1nmYp/rhMDiE7AYkDw+lLwlAzz0AntGIe51F3RfFfEqyQ3feY2eI/NcwC6umIQVOASPMsWJLJScWKSSvzL9IVA==}
@@ -8961,7 +8896,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       get-intrinsic: 1.2.1
-      has: 1.0.3
+      has: 1.0.4
       side-channel: 1.0.4
     dev: true
 
@@ -9065,7 +9000,7 @@ packages:
   /is-core-module@2.13.0:
     resolution: {integrity: sha512-Z7dk6Qo8pOCp3l4tsX2C5ZVas4V+UxwQodwZhLopL91TX8UyyHEXafPcyoeeWuLrwzHcr3igO78wNLwHJHsMCQ==}
     dependencies:
-      has: 1.0.3
+      has: 1.0.4
 
   /is-date-object@1.0.5:
     resolution: {integrity: sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ==}
@@ -9735,10 +9670,6 @@ packages:
 
   /lodash.defaults@4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
-    dev: false
-
-  /lodash.groupby@4.6.0:
-    resolution: {integrity: sha512-5dcWxm23+VAoz+awKmBaiBvzox8+RqMgFhi7UvX9DHZr2HdxHXM/Wrf8cfKpsW37RNrvtPn6hSwNqurSILbmJw==}
     dev: false
 
   /lodash.isarguments@3.1.0:
@@ -10749,7 +10680,7 @@ packages:
     dependencies:
       '@next/env': 13.2.4
       '@swc/helpers': 0.4.14
-      caniuse-lite: 1.0.30001542
+      caniuse-lite: 1.0.30001546
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -11314,7 +11245,7 @@ packages:
       pump: 3.0.0
       readable-stream: 4.4.2
       secure-json-parse: 2.7.0
-      sonic-boom: 3.5.0
+      sonic-boom: 3.6.0
       strip-json-comments: 3.1.1
     dev: false
 
@@ -11343,8 +11274,8 @@ packages:
       thread-stream: 0.15.2
     dev: false
 
-  /pino@8.15.5:
-    resolution: {integrity: sha512-KoTDSVRLiCWIJXTeAHNaflEXqsqCmyZkxfL09y+wT+NRo7j2Ieq30jBEC+GpE4HTQCQQyt3pDRhmwvCKjqzxfQ==}
+  /pino@8.15.6:
+    resolution: {integrity: sha512-GuxHr61R0ZFD1npu58tB3a3FSVjuy21OwN/haw4OuKiZBL63Pg11Y51WWeD52RENS2mjwPZOwt+2OQOSkck6kQ==}
     hasBin: true
     dependencies:
       atomic-sleep: 1.0.0
@@ -11356,7 +11287,7 @@ packages:
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.4.3
-      sonic-boom: 3.5.0
+      sonic-boom: 3.6.0
       thread-stream: 2.4.1
     dev: false
 
@@ -12715,8 +12646,8 @@ packages:
       atomic-sleep: 1.0.0
     dev: false
 
-  /sonic-boom@3.5.0:
-    resolution: {integrity: sha512-02A0wEmj4d3aEIW/Sp6LMP1dNcG5cYmQPjhgtytIXa9tNmFZx3ragUPFmyBdgdM0yJJVSWwlLLEVHgrYfA0wtQ==}
+  /sonic-boom@3.6.0:
+    resolution: {integrity: sha512-5Rs7m4IO/mW1WHouC6q6PGJsXO6hSAduwB3ltTsKaDU0Bd7sc5QEUK/jF0YL583g3BG7QV0Dg0rQNZrwZhY6Xg==}
     dependencies:
       atomic-sleep: 1.0.0
     dev: false
