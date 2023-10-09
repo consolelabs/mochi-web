@@ -7,6 +7,7 @@ import {
 } from '~types/mochi-profile-schema'
 import { api, UI } from '~constants/mochi'
 import { Platform } from '@consolelabs/mochi-ui'
+import { boringAvatar } from '~utils/string'
 
 type State = {
   me: ViewProfile | null
@@ -26,10 +27,13 @@ export const useProfileStore = create<State>((set, get) => ({
       wallets = data
     }
 
+    const avatar = boringAvatar(p?.plain)
+
     set({
       me: {
         ...me,
         profile_name: p?.plain ?? '',
+        avatar,
       },
       wallets,
     })
