@@ -7,20 +7,20 @@ import { Menu } from './Menu'
 import { MenuItem } from './Menu/Menu'
 
 const routesMap: Record<string, { activeId: string; activeIdx?: number }> = {
-  '/dashboard/[server_id]': { activeId: 'overview' },
-  '/dashboard/[server_id]/ads': { activeId: 'ads' },
-  '/dashboard/[server_id]/quests': { activeId: 'quests' },
-  '/dashboard/[server_id]/quests/recurrence': {
+  '/profile/[server_id]': { activeId: 'overview' },
+  '/profile/[server_id]/ads': { activeId: 'ads' },
+  '/profile/[server_id]/quests': { activeId: 'quests' },
+  '/profile/[server_id]/quests/recurrence': {
     activeId: 'quests',
     activeIdx: 0,
   },
-  '/dashboard/[server_id]/quests/one-time': {
+  '/profile/[server_id]/quests/one-time': {
     activeId: 'quests',
     activeIdx: 1,
   },
-  '/dashboard/[server_id]/quests/event': { activeId: 'quests', activeIdx: 2 },
-  '/dashboard/[server_id]/dao': { activeId: 'dao' },
-  '/dashboard/[server_id]/members': { activeId: 'members' },
+  '/profile/[server_id]/quests/event': { activeId: 'quests', activeIdx: 2 },
+  '/profile/[server_id]/dao': { activeId: 'dao' },
+  '/profile/[server_id]/members': { activeId: 'members' },
 }
 
 const getDefaultItems = (query: ParsedUrlQuery): [string, MenuItem[]][] => [
@@ -31,13 +31,13 @@ const getDefaultItems = (query: ParsedUrlQuery): [string, MenuItem[]][] => [
         id: 'overview',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Overview',
-        url: `/dashboard/${query.server_id}`,
+        url: `/profile/${query.server_id}`,
       },
       {
         id: 'ads',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Ads',
-        url: `/dashboard/${query.server_id}/ads`,
+        url: `/profile/${query.server_id}/ads`,
       },
       {
         id: 'quests',
@@ -46,30 +46,30 @@ const getDefaultItems = (query: ParsedUrlQuery): [string, MenuItem[]][] => [
         subItems: [
           {
             text: 'Recurrence',
-            url: `/dashboard/${query.server_id}/quests/recurrence`,
+            url: `/profile/${query.server_id}/quests/recurrence`,
           },
           {
             text: 'One-time',
-            url: `/dashboard/${query.server_id}/quests/one-time`,
+            url: `/profile/${query.server_id}/quests/one-time`,
           },
           {
             text: 'Event',
-            url: `/dashboard/${query.server_id}/quests/event`,
+            url: `/profile/${query.server_id}/quests/event`,
           },
         ],
-        url: `/dashboard/${query.server_id}/quests`,
+        url: `/profile/${query.server_id}/quests`,
       },
       {
         id: 'dao',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'DAO',
-        url: `/dashboard/${query.server_id}/dao`,
+        url: `/profile/${query.server_id}/dao`,
       },
       {
         id: 'members',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Members',
-        url: `/dashboard/${query.server_id}/members`,
+        url: `/profile/${query.server_id}/members`,
       },
     ],
   ],
@@ -83,31 +83,31 @@ const getSettingItems = (): [string, MenuItem[]][] => [
         id: 'settings-account',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Account',
-        url: `/dashboard/settings/account`,
+        url: `/profile/settings/account`,
       },
       {
         id: 'settings-notification',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Notifications',
-        url: `/dashboard/settings/notifications`,
+        url: `/profile/settings/notifications`,
       },
       {
         id: 'settings-reminders',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Reminders',
-        url: `/dashboard/settings/reminders`,
+        url: `/profile/settings/reminders`,
       },
       {
         id: 'settings-integrations',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Integrations',
-        url: `/dashboard/settings/integrations`,
+        url: `/profile/settings/integrations`,
       },
       {
         id: 'settings-currency',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Currency',
-        url: `/dashboard/settings/currency`,
+        url: `/profile/settings/currency`,
       },
     ],
   ],
@@ -118,19 +118,19 @@ const getSettingItems = (): [string, MenuItem[]][] => [
         id: 'settings-quests',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Quests',
-        url: `/dashboard/settings/quests`,
+        url: `/profile/settings/quests`,
       },
       {
         id: 'settings-activities',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Activities',
-        url: `/dashboard/settings/activities`,
+        url: `/profile/settings/activities`,
       },
       {
         id: 'settings-game-overlay',
         icon: <Icon icon="mingcute:copy-2-fill" className="w-5 h-5" />,
         text: 'Game Overlay',
-        url: `/dashboard/settings/game-overlay`,
+        url: `/profile/settings/game-overlay`,
       },
     ],
   ],
@@ -140,15 +140,15 @@ const settingRoutesMap: Record<
   string,
   { activeId: string; activeIdx?: number }
 > = {
-  '/dashboard/settings/account': { activeId: 'settings-account' },
-  '/dashboard/settings/activities': { activeId: 'settings-activities' },
+  '/profile/settings/account': { activeId: 'settings-account' },
+  '/profile/settings/activities': { activeId: 'settings-activities' },
 }
 
 export default function Sidebar() {
   const { pathname, query } = useRouter()
   const { disconnect } = useAppWalletContext()
 
-  if (pathname.startsWith('/dashboard/settings')) {
+  if (pathname.startsWith('/profile/settings')) {
     return (
       <Menu
         {...settingRoutesMap[pathname]}
@@ -160,7 +160,7 @@ export default function Sidebar() {
                 id: 'logout',
                 icon: <Icon icon="majesticons:logout" className="w-5 h-5" />,
                 text: 'Logout',
-                url: '/dashboard',
+                url: '/profile',
                 onClick: () => disconnect(),
               },
             ],

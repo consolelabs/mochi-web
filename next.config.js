@@ -44,7 +44,7 @@ module.exports = {
     // TODO: remove after done dashboard
     if (isProduction && !isBeta) {
       redirects.push({
-        source: '/dashboard/:slug*',
+        source: '/profile/:slug*',
         destination: '/',
         permanent: false,
       })

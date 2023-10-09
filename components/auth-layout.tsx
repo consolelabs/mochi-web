@@ -8,7 +8,7 @@ import Link from 'next/link'
 import ProfileDropdown from './profile-dropdrown'
 import Login from './login'
 
-const authenticatedRoute = ['/dashboard', '/app', '/server']
+const authenticatedRoute = ['/profile', '/app', '/server']
 
 export default function AuthenticatedLayout({
   children,

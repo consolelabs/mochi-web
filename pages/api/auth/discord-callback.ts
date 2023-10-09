@@ -7,6 +7,6 @@ export default async function handler(
 ) {
   const { token, url_location } = req.query
   return res.redirect(
-    `${HOME_URL}/dashboard?token=${token}&url_location=${url_location}`,
+    `${HOME_URL}/profile?token=${token}&url_location=${url_location}`,
   )
 }
