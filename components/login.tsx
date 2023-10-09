@@ -5,7 +5,8 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
-import { AUTH_TELEGRAM_ID, HOME_URL, MOCHI_PROFILE_API } from '~envs'
+import { AUTH_TELEGRAM_ID } from '~envs'
+import { API } from '~constants/api'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -58,20 +59,16 @@ export function LoginPanel() {
   })
 
   const { data: twitterAuthUrl } = useSWR('login-twitter', async () => {
-    const res = await fetch(
-      `${MOCHI_PROFILE_API}/profiles/auth/twitter?platform=web&url_location=${window.location.href}`,
-    )
-    const json = await res.json()
-    const data = json.data
+    const data = await API.MOCHI_PROFILE.get(
+      `/profiles/auth/twitter?platform=web&url_location=${window.location.href}`,
+    ).json((r) => r.data)
     return data?.url
   })
 
   const { data: mailAuthUrl } = useSWR('login-mail', async () => {
-    const res = await fetch(
-      `${MOCHI_PROFILE_API}/profiles/auth/mail?platform=web&url_location=${window.location.href}`,
-    )
-    const json = await res.json()
-    const data = json.data
+    const data = await API.MOCHI_PROFILE.get(
+      `/profiles/auth/mail?platform=web&url_location=${window.location.href}`,
+    ).json((r) => r.data)
     return data?.url
   })
 
@@ -101,7 +98,8 @@ export function LoginPanel() {
           </a>
           <a
             href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
-              HOME_URL,
+              'https://ecf2-115-76-183-11.ngrok-free.app/',
+              /* HOME_URL, */
             )}&embed=1&request_access=write&return_to=${encodeURI(
               window.location.href,
             )}`}

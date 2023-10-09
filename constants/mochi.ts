@@ -5,6 +5,7 @@ const api = new MochiApi({
   payUrl: MOCHI_PAY_API,
   profileUrl: MOCHI_PROFILE_API,
   baseUrl: MOCHI_API,
+  log: false,
 })
 api.init()
 

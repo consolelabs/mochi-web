@@ -26,6 +26,7 @@ import { isBeta } from '~constants'
 import { button } from '~components/button'
 import Script from 'next/script'
 import { AUTH_TELEGRAM_USERNAME, MOCHI_PROFILE_API } from '~envs'
+import { stringify } from 'querystring'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -114,6 +115,19 @@ export default function App(props: AppPropsWithLayout) {
     }
   }, [onOpen])
 
+  useEffect(() => {
+    // @ts-ignore
+    window.onTelegramAuth = function (user) {
+      console.log(user)
+      window.location.href = `${MOCHI_PROFILE_API}/profiles/auth/telegram?${stringify(
+        {
+          ...user,
+          url_location: window.location.href,
+        },
+      )}`
+    }
+  }, [])
+
   return (
     <StrictMode>
       <Toaster
@@ -129,7 +143,7 @@ export default function App(props: AppPropsWithLayout) {
           async
           src="https://telegram.org/js/telegram-widget.js?22"
           data-telegram-login={AUTH_TELEGRAM_USERNAME}
-          data-auth-url={`${MOCHI_PROFILE_API}/profiles/auth/telegram`}
+          data-onauth="onTelegramAuth(user)"
           data-size="large"
           data-request-access="write"
         ></Script>
