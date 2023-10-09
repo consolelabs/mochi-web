@@ -6,7 +6,7 @@ import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
 import Script from 'next/script'
-import { HOME_URL } from '~envs'
+import { AUTH_TELEGRAM_USERNAME, HOME_URL, MOCHI_PROFILE_API } from '~envs'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -63,9 +63,9 @@ export function LoginPanel() {
       <Script
         async
         src="https://telegram.org/js/telegram-widget.js?22"
-        data-telegram-login="dmmochibot"
+        data-telegram-login={AUTH_TELEGRAM_USERNAME}
         data-size="large"
-        data-auth-url="https://api.mochi-profile.console.so/api/v1/profiles/auth/telegram"
+        data-auth-url={`${MOCHI_PROFILE_API}/profiles/auth/telegram`}
         data-request-access="write"
       ></Script>
       <h2 className={heading({ className: 'mb-6', size: 'lg' })}>Log in</h2>
@@ -101,24 +101,24 @@ export function LoginPanel() {
             <Icon icon="mingcute:telegram-fill" className="text-foreground" />
             <div>Telegram</div>
           </a>
-          <a
-            href="#"
+          <button
+            disabled
             className={button({
               appearance: 'text',
             })}
           >
             <Icon icon="mingcute:twitter-fill" className="text-foreground" />
             <div>Twitter</div>
-          </a>
-          <a
-            href="#"
+          </button>
+          <button
+            disabled
             className={button({
               appearance: 'text',
             })}
           >
             <Icon icon="mingcute:google-fill" className="text-foreground" />
             <div>Google</div>
-          </a>
+          </button>
           <button
             disabled
             className={button({

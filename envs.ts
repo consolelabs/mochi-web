@@ -33,6 +33,9 @@ export const MOCHI_API = `${
 }/api/v1`
 
 export const AUTH_DISCORD_URL = `${MOCHI_PROFILE_API}/profiles/auth/discord`
+export const AUTH_TELEGRAM_ID = process.env.NEXT_PUBLIC_AUTH_TELEGRAM_ID || ''
+export const AUTH_TELEGRAM_USERNAME =
+  process.env.NEXT_PUBLIC_AUTH_TELEGRAM_USERNAME || 'dmmochibot'
 
 export const WALLET_LOGIN_SIGN_MESSAGE =
   process.env.NEXT_PUBLIC_WALLET_LOGIN_SIGN_MESSAGE || ''
