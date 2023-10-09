@@ -5,7 +5,7 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
-import { AUTH_TELEGRAM_ID, MOCHI_PROFILE_API } from '~envs'
+import { AUTH_TELEGRAM_ID, HOME_URL, MOCHI_PROFILE_API } from '~envs'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -101,9 +101,9 @@ export function LoginPanel() {
           </a>
           <a
             href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
-              MOCHI_PROFILE_API,
+              HOME_URL,
             )}&embed=1&request_access=write&return_to=${encodeURI(
-              `${MOCHI_PROFILE_API}/profiles/auth/telegram?url_location=${window.location.href}`,
+              window.location.href,
             )}`}
             className={button({
               appearance: 'text',

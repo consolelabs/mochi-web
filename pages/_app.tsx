@@ -24,6 +24,8 @@ import Modal from '~components/Modal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { isBeta } from '~constants'
 import { button } from '~components/button'
+import Script from 'next/script'
+import { AUTH_TELEGRAM_USERNAME, MOCHI_PROFILE_API } from '~envs'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -123,6 +125,14 @@ export default function App(props: AppPropsWithLayout) {
       />
       <TopProgressBar />
       <WalletProvider>
+        <Script
+          async
+          src="https://telegram.org/js/telegram-widget.js?22"
+          data-telegram-login={AUTH_TELEGRAM_USERNAME}
+          data-auth-url={`${MOCHI_PROFILE_API}/profiles/auth/telegram?url_location=${window.location.href}`}
+          data-size="large"
+          data-request-access="write"
+        ></Script>
         <InnerApp {...props} />
       </WalletProvider>
       <Modal isOpen={isOpen} onClose={onClose}>
