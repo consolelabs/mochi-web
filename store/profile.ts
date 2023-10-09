@@ -27,7 +27,7 @@ export const useProfileStore = create<State>((set, get) => ({
       wallets = data
     }
 
-    const avatar = boringAvatar(p?.plain)
+    const avatar = me.avatar || boringAvatar(p?.plain)
 
     set({
       me: {

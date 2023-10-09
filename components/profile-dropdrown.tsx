@@ -26,25 +26,34 @@ export default function ProfileDropdown() {
         </div>
       }
     >
-      <div className="flex flex-col px-2 rounded-xl border border-gray-200 w-[250px] bg-white-pure">
-        <Link href="/profile" className="flex flex-col px-3 pt-4">
+      <div className="flex flex-col gap-y-1 py-2 px-2 rounded-xl border border-gray-200 w-[250px] bg-white-pure">
+        <Link
+          href="/profile"
+          className="flex flex-col py-1 px-3 rounded-md transition hover:bg-gray-100"
+        >
           <span className="text-sm text-gray-500">Logged in as</span>
           <span>{name}</span>
         </Link>
-        <hr className="my-3 w-full h-px bg-gray-200" />
-        <a href="#" className="flex justify-between px-3 pb-2">
+        <hr className="my-1 w-full h-px bg-gray-200" />
+        <a
+          href="#"
+          className="flex justify-between items-center py-1 px-3 rounded-md transition hover:bg-gray-100"
+        >
           <span className="text-sm">Docs</span>
           <Icon icon="eva:diagonal-arrow-right-up-fill" className="w-4 h-4" />
         </a>
-        <a href="#" className="flex justify-between px-3 pt-2">
+        <a
+          href="#"
+          className="flex justify-between items-center py-1 px-3 rounded-md transition hover:bg-gray-100"
+        >
           <span className="text-sm">Mochi Web</span>
           <Icon icon="eva:diagonal-arrow-right-up-fill" className="w-4 h-4" />
         </a>
-        <hr className="my-3 w-full h-px bg-gray-200" />
+        <hr className="my-1 w-full h-px bg-gray-200" />
         <button
           type="button"
           onClick={logout}
-          className="self-start px-3 pb-4 text-sm text-red-400"
+          className="py-1 px-3 text-sm text-left text-red-400 rounded-md transition hover:bg-gray-100"
         >
           Log Out
         </button>
