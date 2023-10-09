@@ -148,6 +148,10 @@ export default function Feed() {
                       <img
                         className="object-contain mx-1 mt-1 w-4 h-4 rounded-full"
                         src={item.token.icon}
+                        onError={(e) => {
+                          ;(e.target as HTMLImageElement).src =
+                            api.fallbackCoinEmoji.emoji_url
+                        }}
                         alt=""
                       />{' '}
                       {item.amount} {item.token.symbol} to {item.to}
