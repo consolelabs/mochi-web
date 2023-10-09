@@ -6,7 +6,12 @@ import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
 import Script from 'next/script'
-import { AUTH_TELEGRAM_USERNAME, HOME_URL, MOCHI_PROFILE_API } from '~envs'
+import {
+  AUTH_TELEGRAM_ID,
+  AUTH_TELEGRAM_USERNAME,
+  HOME_URL,
+  MOCHI_PROFILE_API,
+} from '~envs'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -91,7 +96,7 @@ export function LoginPanel() {
             <div>Discord</div>
           </a>
           <a
-            href={`https://oauth.telegram.org/auth?bot_id=6298380973&origin=${encodeURI(
+            href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}}&origin=${encodeURI(
               HOME_URL,
             )}&embed=1&request_access=write&return_to=${encodeURI(HOME_URL)}`}
             className={button({
