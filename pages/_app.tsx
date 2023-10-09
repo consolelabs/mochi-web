@@ -115,7 +115,7 @@ export default function App(props: AppPropsWithLayout) {
     }
   }, [onOpen])
 
-  const urlLocation = isSSR() ? '/' : window.location.href
+  const urlLocation = isSSR() ? '' : window.location.href
 
   return (
     <StrictMode>
@@ -132,7 +132,7 @@ export default function App(props: AppPropsWithLayout) {
           async
           src="https://telegram.org/js/telegram-widget.js?22"
           data-telegram-login={AUTH_TELEGRAM_USERNAME}
-          data-auth-url={`${MOCHI_PROFILE_API}/profiles/auth/telegram?url_location=${urlLocation}`}
+          data-auth-url={`${MOCHI_PROFILE_API}/profiles/auth/telegram`}
           data-size="large"
           data-request-access="write"
         ></Script>
