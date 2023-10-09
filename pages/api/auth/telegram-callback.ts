@@ -6,5 +6,9 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const { token, url_location } = req.query
-  return res.redirect(`${HOME_URL}?token=${token}&url_location=${url_location}`)
+  return res.redirect(
+    `${HOME_URL}?token=${token}${
+      url_location ? `&url_location=${url_location}` : ''
+    }`,
+  )
 }

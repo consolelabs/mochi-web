@@ -26,7 +26,6 @@ import { isBeta } from '~constants'
 import { button } from '~components/button'
 import Script from 'next/script'
 import { AUTH_TELEGRAM_USERNAME, MOCHI_PROFILE_API } from '~envs'
-import { isSSR } from '@dwarvesf/react-utils'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -115,8 +114,6 @@ export default function App(props: AppPropsWithLayout) {
     }
   }, [onOpen])
 
-  const urlLocation = isSSR() ? '' : window.location.href
-
   return (
     <StrictMode>
       <Toaster
@@ -132,11 +129,7 @@ export default function App(props: AppPropsWithLayout) {
           async
           src="https://telegram.org/js/telegram-widget.js?22"
           data-telegram-login={AUTH_TELEGRAM_USERNAME}
-          data-auth-url={encodeURI(
-            `${MOCHI_PROFILE_API}/profiles/auth/telegram${
-              urlLocation ? `?url_location=${urlLocation}` : ''
-            }`,
-          )}
+          data-auth-url={`${MOCHI_PROFILE_API}/profiles/auth/telegram`}
           data-size="large"
           data-request-access="write"
         ></Script>
