@@ -9,7 +9,6 @@ import Script from 'next/script'
 import {
   AUTH_TELEGRAM_ID,
   AUTH_TELEGRAM_USERNAME,
-  HOME_URL,
   MOCHI_PROFILE_API,
 } from '~envs'
 
@@ -63,6 +62,24 @@ export function LoginPanel() {
     return data?.url
   })
 
+  const { data: twitterAuthUrl } = useSWR('login-twitter', async () => {
+    const res = await fetch(
+      `${MOCHI_PROFILE_API}/profiles/auth/twitter?platform=web&url_location=${window.location.href}`,
+    )
+    const json = await res.json()
+    const data = json.data
+    return data?.url
+  })
+
+  const { data: twitterAuthUrl } = useSWR('login-twitter', async () => {
+    const res = await fetch(
+      `${MOCHI_PROFILE_API}/profiles/auth/twitter?platform=web&url_location=${window.location.href}`,
+    )
+    const json = await res.json()
+    const data = json.data
+    return data?.url
+  })
+
   return (
     <div className="flex flex-col items-center bg-inherit">
       <Script
@@ -97,7 +114,7 @@ export function LoginPanel() {
           </a>
           <a
             href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
-              HOME_URL,
+              MOCHI_PROFILE_API,
             )}&embed=1&request_access=write&return_to=${encodeURI(
               `${MOCHI_PROFILE_API}/profiles/auth/telegram`,
             )}`}
@@ -108,15 +125,15 @@ export function LoginPanel() {
             <Icon icon="mingcute:telegram-fill" className="text-foreground" />
             <div>Telegram</div>
           </a>
-          <button
-            disabled
+          <a
+            href={twitterAuthUrl ?? ''}
             className={button({
               appearance: 'text',
             })}
           >
             <Icon icon="mingcute:twitter-fill" className="text-foreground" />
             <div>Twitter</div>
-          </button>
+          </a>
           <button
             disabled
             className={button({
