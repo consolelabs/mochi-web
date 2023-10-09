@@ -71,9 +71,9 @@ export function LoginPanel() {
     return data?.url
   })
 
-  const { data: twitterAuthUrl } = useSWR('login-twitter', async () => {
+  const { data: mailAuthUrl } = useSWR('login-mail', async () => {
     const res = await fetch(
-      `${MOCHI_PROFILE_API}/profiles/auth/twitter?platform=web&url_location=${window.location.href}`,
+      `${MOCHI_PROFILE_API}/profiles/auth/mail?platform=web&url_location=${window.location.href}`,
     )
     const json = await res.json()
     const data = json.data
@@ -134,15 +134,15 @@ export function LoginPanel() {
             <Icon icon="mingcute:twitter-fill" className="text-foreground" />
             <div>Twitter</div>
           </a>
-          <button
-            disabled
+          <a
+            href={mailAuthUrl ?? ''}
             className={button({
               appearance: 'text',
             })}
           >
             <Icon icon="mingcute:google-fill" className="text-foreground" />
             <div>Google</div>
-          </button>
+          </a>
           <button
             disabled
             className={button({
