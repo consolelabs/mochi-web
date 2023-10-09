@@ -5,12 +5,7 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
-import Script from 'next/script'
-import {
-  AUTH_TELEGRAM_ID,
-  AUTH_TELEGRAM_USERNAME,
-  MOCHI_PROFILE_API,
-} from '~envs'
+import { AUTH_TELEGRAM_ID, MOCHI_PROFILE_API } from '~envs'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -82,14 +77,6 @@ export function LoginPanel() {
 
   return (
     <div className="flex flex-col items-center bg-inherit">
-      <Script
-        async
-        src="https://telegram.org/js/telegram-widget.js?22"
-        data-telegram-login={AUTH_TELEGRAM_USERNAME}
-        data-size="large"
-        data-auth-url={`${MOCHI_PROFILE_API}/profiles/auth/telegram`}
-        data-request-access="write"
-      ></Script>
       <h2 className={heading({ className: 'mb-6', size: 'lg' })}>Log in</h2>
       <div className="flex flex-col gap-y-5 bg-inherit">
         <Divider>Sign in with an extension wallet</Divider>
@@ -116,7 +103,7 @@ export function LoginPanel() {
             href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
               MOCHI_PROFILE_API,
             )}&embed=1&request_access=write&return_to=${encodeURI(
-              `${MOCHI_PROFILE_API}/profiles/auth/telegram`,
+              `${MOCHI_PROFILE_API}/profiles/auth/telegram?url_location=${window.location.href}`,
             )}`}
             className={button({
               appearance: 'text',
