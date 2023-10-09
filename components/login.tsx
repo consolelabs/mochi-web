@@ -96,9 +96,11 @@ export function LoginPanel() {
             <div>Discord</div>
           </a>
           <a
-            href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}}&origin=${encodeURI(
+            href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
               HOME_URL,
-            )}&embed=1&request_access=write&return_to=${encodeURI(HOME_URL)}`}
+            )}&embed=1&request_access=write&return_to=${encodeURI(
+              `${MOCHI_PROFILE_API}/profiles/auth/telegram`,
+            )}`}
             className={button({
               appearance: 'text',
             })}
