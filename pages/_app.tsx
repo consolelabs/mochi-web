@@ -119,12 +119,14 @@ export default function App(props: AppPropsWithLayout) {
     // @ts-ignore
     window.onTelegramAuth = function (user) {
       console.log(user)
-      window.location.href = `${MOCHI_PROFILE_API}/profiles/auth/telegram?${stringify(
+      const telegramAuth = `${MOCHI_PROFILE_API}/profiles/auth/telegram?${stringify(
         {
           ...user,
           url_location: window.location.href,
         },
       )}`
+      console.log(telegramAuth)
+      window.location.href = telegramAuth
     }
   }, [])
 
