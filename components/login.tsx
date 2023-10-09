@@ -5,7 +5,7 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
-import { AUTH_TELEGRAM_ID } from '~envs'
+import { AUTH_TELEGRAM_ID, HOME_URL } from '~envs'
 import { API } from '~constants/api'
 
 const WalletAddIcon = (props: any) => (
@@ -98,8 +98,7 @@ export function LoginPanel() {
           </a>
           <a
             href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
-              'https://ecf2-115-76-183-11.ngrok-free.app/',
-              /* HOME_URL, */
+              HOME_URL,
             )}&embed=1&request_access=write&return_to=${encodeURI(
               window.location.href,
             )}`}
