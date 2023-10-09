@@ -16,6 +16,7 @@ const NavLinks = ({ className }: { className?: string }) => (
 
 export const Navbar = () => {
   const { isLoggedIn } = useAuthStore()
+
   return (
     <Fragment>
       <nav className="sticky top-0 z-20 w-screen bg-white shadow">
