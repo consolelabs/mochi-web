@@ -5,8 +5,10 @@ import { useAppWalletContext } from '~context/wallet-context'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
-import { AUTH_TELEGRAM_ID, HOME_URL } from '~envs'
+import { AUTH_TELEGRAM_ID, MOCHI_PROFILE_API } from '~envs'
 import { API } from '~constants/api'
+import qs from 'query-string'
+import { useCallback } from 'react'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -72,6 +74,30 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
     return data?.url
   })
 
+  const onAuthTelegram = useCallback(() => {
+    // @ts-ignore
+    window.Telegram.Login.auth(
+      {
+        bot_id: AUTH_TELEGRAM_ID,
+        request_access: true,
+        return_to: encodeURI(window.location.href),
+        lang: 'en',
+      },
+      (user: any) => {
+        console.log(user)
+
+        const telegramAuth = `${MOCHI_PROFILE_API}/profiles/auth/telegram?${qs.stringify(
+          {
+            ...user,
+            url_location: window.location.href,
+          },
+        )}`
+
+        window.location.href = telegramAuth
+      },
+    )
+  }, [])
+
   if (compact) {
     return (
       <div className="grid grid-cols-2 grid-rows-3 gap-3 p-3">
@@ -98,12 +124,8 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
             className="flex-shrink-0 text-foreground"
           />
         </a>
-        <a
-          href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
-            HOME_URL,
-          )}&embed=1&request_access=write&return_to=${encodeURI(
-            window.location.href,
-          )}`}
+        <button
+          onClick={onAuthTelegram}
           className={button({
             appearance: 'text',
           })}
@@ -112,7 +134,7 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
             icon="mingcute:telegram-fill"
             className="flex-shrink-0 text-foreground"
           />
-        </a>
+        </button>
         <a
           href={twitterAuthUrl ?? ''}
           className={button({
@@ -164,15 +186,7 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
             <div>Discord</div>
           </a>
           <button
-            onClick={() => {
-              // @ts-ignore
-              window.Telegram.Login.auth({
-                bot_id: AUTH_TELEGRAM_ID,
-                request_access: true,
-                return_to: encodeURI(window.location.href),
-                lang: 'en',
-              })
-            }}
+            onClick={onAuthTelegram}
             className={button({
               appearance: 'text',
             })}
