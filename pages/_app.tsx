@@ -24,6 +24,8 @@ import Modal from '~components/Modal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { isBeta } from '~constants'
 import { button } from '~components/button'
+import Script from 'next/script'
+import { AUTH_TELEGRAM_USERNAME } from '~envs'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -121,6 +123,10 @@ export default function App(props: AppPropsWithLayout) {
       />
       <TopProgressBar />
       <WalletProvider>
+        <Script
+          async
+          src="https://telegram.org/js/telegram-widget.js?22"
+        ></Script>
         <InnerApp {...props} />
       </WalletProvider>
       <Modal isOpen={isOpen} onClose={onClose}>
