@@ -52,7 +52,7 @@ export const ConnectDetail = ({
                 <img
                   alt="Logo"
                   className="object-cover w-full"
-                  src="/favicon.ico"
+                  src="/logo.png"
                 />
               </div>
               <hr className="flex-1 border-t-2 border-dashed border-[#33B4DD]" />

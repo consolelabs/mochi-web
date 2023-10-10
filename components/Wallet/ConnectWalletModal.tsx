@@ -96,6 +96,7 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           method: 'personal_sign',
           params: [msg, accounts[0]],
         })
+        clearSignCode()
         if (connectModalCallback) {
           connectModalCallback({
             signature,

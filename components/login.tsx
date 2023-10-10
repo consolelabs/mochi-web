@@ -47,7 +47,7 @@ const Divider = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export function LoginPanel() {
+export function LoginPanel({ compact = false }: { compact?: boolean }) {
   const { showConnectModal } = useAppWalletContext()
   const loginAfterConnect = useLoginAfterConnect()
   const { data: discordAuthUrl } = useSWR('login-discord', async () => {
@@ -71,6 +71,73 @@ export function LoginPanel() {
     ).json((r) => r.data)
     return data?.url
   })
+
+  if (compact) {
+    return (
+      <div className="grid grid-cols-2 grid-rows-3 gap-3 p-3">
+        <button
+          type="button"
+          onClick={() => showConnectModal(loginAfterConnect)}
+          className={button({
+            appearance: 'secondary',
+            size: 'sm',
+            className: 'col-span-2',
+          })}
+        >
+          <WalletAddIcon className="mr-2 w-5 h-5" />
+          Connect Wallet
+        </button>
+        <a
+          href={discordAuthUrl ?? ''}
+          className={button({
+            appearance: 'text',
+          })}
+        >
+          <Icon
+            icon="mingcute:discord-fill"
+            className="flex-shrink-0 text-foreground"
+          />
+        </a>
+        <a
+          href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
+            HOME_URL,
+          )}&embed=1&request_access=write&return_to=${encodeURI(
+            window.location.href,
+          )}`}
+          className={button({
+            appearance: 'text',
+          })}
+        >
+          <Icon
+            icon="mingcute:telegram-fill"
+            className="flex-shrink-0 text-foreground"
+          />
+        </a>
+        <a
+          href={twitterAuthUrl ?? ''}
+          className={button({
+            appearance: 'text',
+          })}
+        >
+          <Icon
+            icon="mingcute:twitter-fill"
+            className="flex-shrink-0 text-foreground"
+          />
+        </a>
+        <a
+          href={mailAuthUrl ?? ''}
+          className={button({
+            appearance: 'text',
+          })}
+        >
+          <Icon
+            icon="mingcute:google-fill"
+            className="flex-shrink-0 text-foreground"
+          />
+        </a>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col items-center bg-inherit">
@@ -127,15 +194,6 @@ export function LoginPanel() {
             <Icon icon="mingcute:google-fill" className="text-foreground" />
             <div>Google</div>
           </a>
-          <button
-            disabled
-            className={button({
-              appearance: 'text',
-              className: 'col-span-2',
-            })}
-          >
-            Another email
-          </button>
         </div>
       </div>
     </div>

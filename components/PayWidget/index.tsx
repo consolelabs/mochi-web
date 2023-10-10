@@ -7,6 +7,7 @@ import cc from 'clsx'
 import Input from './input'
 import Recipient from './recipient'
 import { useAuthStore } from '~store'
+import { LoginPanel } from '~components/login'
 
 export default function PayWidget() {
   const [value, setValue] = useState('')
@@ -100,9 +101,7 @@ export default function PayWidget() {
               </Popover.Button>
               <div className="w-full">
                 <Popover.Panel className="z-40 bg-white rounded-lg shadow-full">
-                  <div className="p-3">
-                    <SocialButtons iconOnly />
-                  </div>
+                  <LoginPanel compact />
                 </Popover.Panel>
               </div>
             </Float>
