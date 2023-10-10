@@ -9,6 +9,19 @@ module.exports = {
         /* heading: ['Poppins', 'sans-serif'], */
       },
       colors: {
+        blue: {
+          50: '#edfaff',
+          100: '#d6f2ff',
+          200: '#b5eaff',
+          300: '#83dfff',
+          400: '#48caff',
+          500: '#1eabff',
+          600: '#068dff',
+          700: '#017aff',
+          800: '#085dc5',
+          900: '#0d509b',
+          950: '#0e315d',
+        },
         footer: {
           title: '#474645',
           body: '#A8A6A4',

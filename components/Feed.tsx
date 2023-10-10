@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react'
 import { useCallback, useEffect, useState } from 'react'
-import PayWidget from './PayWidget'
+import MochiWidget from './MochiWidget'
 import { api, UI } from '../constants/mochi'
 import { Transition } from '@headlessui/react'
 import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
@@ -18,18 +18,20 @@ type Tx = {
   amount: string
 }
 
+const limit = 25 as const
+
 export default function Feed() {
   const [txns, setTxns] = useState<Tx[]>([])
 
   const addNewTxn = useCallback((tx: Tx) => {
     setTxns((old) => {
-      return [tx, ...old].slice(0, 10)
+      return [tx, ...old].slice(0, limit)
     })
   }, [])
 
   useEffect(() => {
     api.pay.transactions
-      .getAll({ action: 'transfer', page: 0, size: 10 })
+      .getAll({ action: 'transfer', page: 0, size: limit })
       .then(({ ok, data }) => {
         if (!ok) return
         Promise.allSettled(
@@ -110,7 +112,7 @@ export default function Feed() {
   }, [addNewTxn])
 
   return (
-    <div className="flex relative justify-center py-7 px-8 bg-white md:py-14 md:px-16 h-[400px]">
+    <div className="flex relative justify-center py-7 px-8 bg-white md:py-14 md:px-16 h-[800px]">
       <div className="flex justify-start items-center w-full max-w-5xl">
         <div className="flex relative flex-col flex-1 h-full">
           <div className="flex gap-x-2 items-center">
@@ -169,7 +171,7 @@ export default function Feed() {
           &nbsp;
         </div>
         <div className="flex flex-1 justify-center items-center realtive">
-          <PayWidget />
+          <MochiWidget />
         </div>
       </div>
     </div>
