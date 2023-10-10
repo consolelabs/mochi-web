@@ -163,19 +163,27 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
             <Icon icon="mingcute:discord-fill" className="text-foreground" />
             <div>Discord</div>
           </a>
-          <a
-            href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI(
-              HOME_URL,
-            )}&embed=1&request_access=write&return_to=${encodeURI(
-              window.location.href,
-            )}`}
+          <button
+            onClick={() => {
+              // @ts-ignore
+              window.Telegram.Login.auth({
+                bot_id: AUTH_TELEGRAM_ID,
+                request_access: true,
+                return_to: encodeURI(window.location.href),
+              })
+            }}
+            /* href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI( */
+            /*   HOME_URL, */
+            /* )}&embed=1&request_access=write&return_to=${encodeURI( */
+            /*   window.location.href, */
+            /* )}`} */
             className={button({
               appearance: 'text',
             })}
           >
             <Icon icon="mingcute:telegram-fill" className="text-foreground" />
             <div>Telegram</div>
-          </a>
+          </button>
           <a
             href={twitterAuthUrl ?? ''}
             className={button({

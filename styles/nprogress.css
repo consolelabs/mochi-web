@@ -1,5 +1,5 @@
 #nprogress .bar {
-  @apply bg-mochi;
+  @apply bg-gray-500;
 }
 
 #nprogress .peg {

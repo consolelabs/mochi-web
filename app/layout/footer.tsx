@@ -22,7 +22,7 @@ export const Footer = () => {
           <div className="flex flex-wrap gap-x-8 mb-10 sm:gap-x-12 sm:mb-0">
             <div className="space-y-2 text-[13px]">
               <div className="text-footer-title">Home</div>
-              <Link className="block text-footer-body" href="/feature">
+              <Link className="block text-footer-body" href="/features">
                 Features
               </Link>
               <Link className="block text-footer-body" href="/developer">

@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { Layout } from '~app/layout'
 import { SEO } from '~app/layout/seo'
+import Stats from '~components/stats'
 import { SOCIAL_LINKS } from '~constants'
 
 const gray1 = '#F7F6F4'
@@ -37,26 +38,7 @@ export default function Developer() {
         </a>
       </div>
 
-      <div className="flex gap-3 justify-center mt-16 md:gap-10">
-        <p className="flex flex-col items-center">
-          <span className="text-lg md:text-2xl">1602+</span>
-          <span className="text-sm text-gray-500 md:text-base font-text">
-            tips given ❤️
-          </span>
-        </p>
-        <p className="flex flex-col items-center">
-          <span className="text-lg md:text-2xl">$271,023</span>
-          <span className="text-sm text-gray-500 md:text-base font-text">
-            total volume 💰
-          </span>
-        </p>
-        <p className="flex flex-col items-center">
-          <span className="text-lg md:text-2xl">1000+</span>
-          <span className="text-sm text-gray-500 md:text-base font-text">
-            users 👱
-          </span>
-        </p>
-      </div>
+      <Stats />
       <hr className="mx-auto mt-16 mb-10 w-full max-w-3xl" />
       <div className="grid grid-cols-2 grid-rows-2 gap-2 mx-auto max-w-3xl">
         {[
