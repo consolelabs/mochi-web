@@ -6,13 +6,15 @@ import SocialButtons from '../Pay/components/SocialButtons'
 import cc from 'clsx'
 import Input from './input'
 import Recipient from './recipient'
+import { useAuthStore } from '~store'
 
 export default function PayWidget() {
   const [value, setValue] = useState('')
   const [typeIdx, setTypeIndex] = useState(0)
+  const { isLoggedIn } = useAuthStore()
 
   return (
-    <div className="flex flex-col rounded-xl border border-gray-200 shadow-xl bg-white-pure w-[300px]">
+    <div className="flex relative flex-col rounded-xl border border-gray-200 shadow-xl bg-white-pure w-[300px]">
       <div className="flex">
         {['Tip', 'Pay Link', 'Pay Me'].map((t, i) => {
           return (
@@ -63,39 +65,49 @@ export default function PayWidget() {
           )}
         </div>
 
-        <Popover className="relative">
-          <Float
-            as="div"
-            floatingAs={Fragment}
-            className="relative"
-            enter="transition ease-out duration-200"
-            enterFrom="opacity-0 translate-y-1"
-            enterTo="opacity-100 translate-y-0"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100 translate-y-0"
-            leaveTo="opacity-0 translate-y-1"
-            placement="bottom"
-            offset={8}
+        {isLoggedIn ? (
+          <button
+            className={button({
+              appearance: 'secondary',
+            })}
           >
-            <Popover.Button
-              type="button"
-              className={button({
-                appearance: 'secondary',
-                className: 'w-full',
-                size: 'base',
-              })}
+            Pay
+          </button>
+        ) : (
+          <Popover className="relative">
+            <Float
+              as="div"
+              floatingAs={Fragment}
+              className="relative"
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 translate-y-1"
+              placement="bottom"
+              offset={8}
             >
-              Connect Options
-            </Popover.Button>
-            <div className="w-full">
-              <Popover.Panel className="z-40 bg-white rounded-lg shadow-full">
-                <div className="p-3">
-                  <SocialButtons iconOnly />
-                </div>
-              </Popover.Panel>
-            </div>
-          </Float>
-        </Popover>
+              <Popover.Button
+                type="button"
+                className={button({
+                  appearance: 'secondary',
+                  className: 'w-full',
+                  size: 'base',
+                })}
+              >
+                Connect Options
+              </Popover.Button>
+              <div className="w-full">
+                <Popover.Panel className="z-40 bg-white rounded-lg shadow-full">
+                  <div className="p-3">
+                    <SocialButtons iconOnly />
+                  </div>
+                </Popover.Panel>
+              </div>
+            </Float>
+          </Popover>
+        )}
       </div>
     </div>
   )

@@ -15,6 +15,7 @@ type State = {
   isLoadingSession: boolean
   login: (props: LoginProps) => Promise<void>
   logout: () => void
+  removeToken: () => void
 }
 
 export const useAuthStore = create<State>((set, get) => ({
@@ -22,10 +23,11 @@ export const useAuthStore = create<State>((set, get) => ({
   token: null,
   isLoggedIn: false,
   isLoadingSession: true,
-  logout: () => {
-    window.location.href = '/'
-    localStorage.removeItem(STORAGE_KEY)
+  removeToken: () => {
     set({ token: null, isLoggedIn: false })
+  },
+  logout: () => {
+    localStorage.removeItem(STORAGE_KEY)
     apiLogout()
   },
   login: async ({ token: tokenParam, showLoading = false }: LoginProps) => {

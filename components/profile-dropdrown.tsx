@@ -50,13 +50,13 @@ export default function ProfileDropdown() {
           <Icon icon="eva:diagonal-arrow-right-up-fill" className="w-4 h-4" />
         </a>
         <hr className="my-1 w-full h-px bg-gray-200" />
-        <button
-          type="button"
+        <Link
+          href="/#logout"
           onClick={logout}
           className="py-1 px-3 text-sm text-left text-red-400 rounded-md transition hover:bg-gray-100"
         >
           Log Out
-        </button>
+        </Link>
       </div>
     </Popover>
   )

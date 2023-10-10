@@ -26,7 +26,7 @@ import { isBeta } from '~constants'
 import { button } from '~components/button'
 import Script from 'next/script'
 import { AUTH_TELEGRAM_USERNAME, MOCHI_PROFILE_API } from '~envs'
-import { stringify } from 'querystring'
+import qs from 'query-string'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -47,8 +47,12 @@ export function handleCancelRendering(e: any) {
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
   const { isShowingConnectModal, closeConnectModal } = useAppWalletContext()
   const { query, asPath, pathname, replace, push, isReady } = useRouter()
-  const { isLoggedIn, login } = useAuthStore(
-    (s) => ({ isLoggedIn: s.isLoggedIn, login: s.login }),
+  const { isLoggedIn, login, removeToken } = useAuthStore(
+    (s) => ({
+      isLoggedIn: s.isLoggedIn,
+      login: s.login,
+      removeToken: s.removeToken,
+    }),
     shallow,
   )
   const getLayout = Component.getLayout ?? ((page) => page)
@@ -85,6 +89,18 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
     replace,
   ])
 
+  useEffect(() => {
+    const parts = asPath.split('#')
+    const hash = parts.at(1)
+    const path = parts.at(0)?.split('?').at(0)
+    if (hash && hash === 'logout') {
+      removeToken()
+      replace({ pathname: path }, undefined, {
+        shallow: true,
+      }).catch(handleCancelRendering)
+    }
+  }, [asPath, removeToken, replace])
+
   return (
     <>
       {getLayout(<Component {...pageProps} />)}
@@ -119,7 +135,7 @@ export default function App(props: AppPropsWithLayout) {
     // @ts-ignore
     window.onTelegramAuth = function (user) {
       console.log(user)
-      const telegramAuth = `${MOCHI_PROFILE_API}/profiles/auth/telegram?${stringify(
+      const telegramAuth = `${MOCHI_PROFILE_API}/profiles/auth/telegram?${qs.stringify(
         {
           ...user,
           url_location: window.location.href,
