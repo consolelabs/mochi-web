@@ -89,37 +89,24 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       // special case for ronin
       if (wallet.id === 'ronin') {
         const msg = encodeURIComponent(getWalletLoginSignMessage(code))
-        const axieWindow = window.open(
-          'https://ronin.axiedao.org/sso/?ref=' +
-            window.parent.location.href +
-            `&message=${msg}`,
-        )
-        window.addEventListener('message', function receiveSig(event) {
-          if (
-            typeof event.data === 'object' &&
-            'key' in event.data &&
-            event.data.key === 'signature' &&
-            event.origin === 'https://ronin.axiedao.org'
-          ) {
-            window.removeEventListener('message', receiveSig, false) // Remove listener
-            const { address, signature, message } = event.data.message ?? {}
-            axieWindow?.close()
-
-            clearSignCode()
-
-            if (connectModalCallback) {
-              connectModalCallback({
-                signature,
-                address,
-                msg: message,
-                code,
-                platform: 'ronin',
-              })
-            } else {
-              disconnect()
-            }
-          }
+        const accounts = await window.ronin.provider.request({
+          method: 'eth_requestAccounts',
         })
+        const signature = await window.ronin.provider.request({
+          method: 'personal_sign',
+          params: [msg, accounts[0]],
+        })
+        if (connectModalCallback) {
+          connectModalCallback({
+            signature,
+            address: accounts[0],
+            msg,
+            code,
+            platform: 'ronin',
+          })
+        } else {
+          disconnect()
+        }
         return
       }
       await wallet.connect?.().catch((e) => {

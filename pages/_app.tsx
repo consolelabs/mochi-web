@@ -46,7 +46,7 @@ export function handleCancelRendering(e: any) {
 
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
   const { isShowingConnectModal, closeConnectModal } = useAppWalletContext()
-  const { query, asPath, pathname, replace, push, isReady } = useRouter()
+  const { query, asPath, replace, isReady } = useRouter()
   const { isLoggedIn, login, removeToken } = useAuthStore(
     (s) => ({
       isLoggedIn: s.isLoggedIn,
@@ -67,27 +67,9 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
       if (!query.token) return
       replace({ pathname: asPath.split('?')[0] }, undefined, {
         shallow: true,
-      })
-        .catch(handleCancelRendering)
-        .then(() => {
-          if (query.url_location && typeof query.url_location === 'string') {
-            push(query.url_location, undefined, { shallow: true }).catch(
-              handleCancelRendering,
-            )
-          }
-        })
+      }).catch(handleCancelRendering)
     })
-  }, [
-    asPath,
-    isLoggedIn,
-    isReady,
-    login,
-    pathname,
-    push,
-    query.token,
-    query.url_location,
-    replace,
-  ])
+  }, [asPath, isLoggedIn, isReady, login, query.token, replace])
 
   useEffect(() => {
     const parts = asPath.split('#')
