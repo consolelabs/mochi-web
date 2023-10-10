@@ -170,13 +170,9 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
                 bot_id: AUTH_TELEGRAM_ID,
                 request_access: true,
                 return_to: encodeURI(window.location.href),
+                lang: 'en',
               })
             }}
-            /* href={`https://oauth.telegram.org/auth?bot_id=${AUTH_TELEGRAM_ID}&origin=${encodeURI( */
-            /*   HOME_URL, */
-            /* )}&embed=1&request_access=write&return_to=${encodeURI( */
-            /*   window.location.href, */
-            /* )}`} */
             className={button({
               appearance: 'text',
             })}
