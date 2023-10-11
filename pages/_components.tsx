@@ -130,14 +130,6 @@ export default function Default() {
                             Small
                           </Button>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                          <Button appearance="primary" size="icon">
-                            <Icon icon="ic:baseline-discord" />
-                          </Button>
-                          <Button appearance="secondary" size="icon">
-                            <Icon icon="ic:baseline-discord" />
-                          </Button>
-                        </div>
                       </div>,
                     ),
                   },
