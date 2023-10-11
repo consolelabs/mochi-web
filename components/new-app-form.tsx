@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import Alert from '~components/alert'
+import Alert from '~cpn/base/alert'
 import Dialog from '~components/Dialog'
 import { API } from '~constants/api'
 import Button from '~cpn/base/button'

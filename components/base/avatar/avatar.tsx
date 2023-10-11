@@ -23,7 +23,7 @@ type Props = VariantProps<typeof style> & {
   src: string
   srcFallbackText?: string
   srcFallbackVariant?: 'beam' | 'ring'
-  cutoutSrc: string
+  cutoutSrc?: string
   className?: string
 }
 
@@ -36,6 +36,23 @@ export default function Avatar({
   className,
 }: Props) {
   const id = String(Date.now())
+
+  if (!cutoutSrc)
+    return (
+      <img
+        src={src}
+        alt=""
+        onError={(e) => {
+          if (e.isTrusted) {
+            ;(e.target as HTMLImageElement).setAttribute(
+              'src',
+              boringAvatar(srcFallbackText, srcFallbackVariant),
+            )
+          }
+        }}
+        className={size ? style({ size }) : cc(className, 'flex')}
+      />
+    )
 
   return (
     <div className={size ? style({ size }) : cc(className, 'flex')}>

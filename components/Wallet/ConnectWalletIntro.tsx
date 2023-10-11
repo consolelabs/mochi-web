@@ -1,4 +1,4 @@
-import { heading } from '~components/heading'
+import Text from '~cpn/base/text'
 
 export const ConnectWalletIntro = () => {
   return (
@@ -12,7 +12,7 @@ export const ConnectWalletIntro = () => {
           src="/assets/wallet-intro.png"
         />
       </div>
-      <h1 className={heading({ size: 'xs' })}>Connect your wallet</h1>
+      <Text size="xs">Connect your wallet</Text>
       <span className="mt-1 max-w-xs text-xs font-medium text-center text-dashboard-gray-2">
         By connecting your wallet, you agree to our{' '}
         <span className="text-dashboard-gray-2">Term of Service</span> and{' '}

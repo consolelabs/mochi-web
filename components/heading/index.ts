@@ -1,1 +1,0 @@
-export { heading } from './styles'

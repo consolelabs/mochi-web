@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { WalletConnector } from 'context/wallets/useWalletConnectors'
 import { QRCode } from './QRCode'
-import { heading } from '~components/heading'
+import Text from '~cpn/base/text'
 import { button } from '~cpn/base/button'
 
 export type ConnectDetailProps = {
@@ -30,7 +30,7 @@ export const ConnectDetail = ({
 
     return (
       <div className="flex flex-col items-center h-full">
-        <h1 className={heading({ size: 'xs' })}>Scan with {name}</h1>
+        <Text size="xs">Scan with {name}</Text>
         <div className="flex flex-1 justify-center items-center my-3">
           <QRCode
             logoBackground={iconBackground}
@@ -69,9 +69,9 @@ export const ConnectDetail = ({
                 />
               </div>
             </div>
-            <h1 className={heading({ className: 'mt-8', size: 'xs' })}>
+            <Text size="xs" className="mt-8">
               Opening {wallet.name}
-            </h1>
+            </Text>
             {connectionError || signError ? (
               <span className="text-sm font-semibold text-red-400">
                 {signError ? 'Failed to sign message' : connectionErrorMsg}

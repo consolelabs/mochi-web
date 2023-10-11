@@ -1,5 +1,5 @@
 import Button, { button } from '~cpn/base/button'
-import { heading } from './heading'
+import Text from '~cpn/base/text'
 import { Icon } from '@iconify/react'
 import { useAppWalletContext } from '~context/wallet-context'
 import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
@@ -161,7 +161,9 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
 
   return (
     <div className="flex flex-col items-center bg-inherit">
-      <h2 className={heading({ className: 'mb-6', size: 'lg' })}>Log in</h2>
+      <Text size="lg" className="mb-6">
+        Log in
+      </Text>
       <div className="flex flex-col gap-y-5 bg-inherit">
         <Divider>Sign in with an extension wallet</Divider>
         <button

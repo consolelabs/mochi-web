@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react'
 import { cva, VariantProps } from 'class-variance-authority'
 
-const variant = cva(['flex gap-x-2 rounded-lg p-3 border'], {
+const alert = cva(['flex gap-x-2 rounded-lg p-3 border'], {
   variants: {
     appearance: {
       info: ['bg-gray-100', 'text-foreground', 'border', 'border-gray-300/70'],
@@ -15,7 +15,7 @@ const variant = cva(['flex gap-x-2 rounded-lg p-3 border'], {
   },
 })
 
-type Props = VariantProps<typeof variant> & {
+type Props = VariantProps<typeof alert> & {
   children: React.ReactNode
   className?: string
   title: string
@@ -34,7 +34,7 @@ export default function Alert({
   appearance = 'info',
 }: Props) {
   return (
-    <div className={variant({ className, appearance })}>
+    <div className={alert({ className, appearance })}>
       <Icon
         icon={icons[appearance as keyof typeof icons] || icons.info}
         className="flex-shrink-0 w-5 h-5 text-current"

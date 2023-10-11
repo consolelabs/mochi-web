@@ -1,4 +1,4 @@
-import { heading } from '~components/heading'
+import Text from '~cpn/base/text'
 import { SEO } from '~app/layout/seo'
 import QRCodeButton from '~components/Pay/QRCodeButton'
 import CopyLinkButton from '~components/Pay/CopyLinkButton'
@@ -126,7 +126,7 @@ export default function PayCode({
             'flex flex-col p-8 pt-4 mx-auto text-center bg-white rounded-2xl md:mb-64 max-w-[450px]',
           )}
         >
-          <h1 className={heading({ size: 'base' })}>Pay Me</h1>
+          <Text size="base">Pay Me</Text>
           <Icon icon="tabler:error-404" className="my-6 mx-auto w-20 h-20" />
           <span className="text-lg font-semibold text-foreground">
             This Pay Me Link couldn&apos;t be found
@@ -184,9 +184,7 @@ export default function PayCode({
           },
         )}
       >
-        <h1 className={heading({ size: 'base' })}>
-          Pay {isPayMe ? 'Me' : 'Link'}
-        </h1>
+        <Text size="base">Pay {isPayMe ? 'Me' : 'Link'}</Text>
         {payRequest.status === 'expired' ? (
           <>
             <div className="relative my-6 h-10">

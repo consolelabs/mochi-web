@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react'
 import { ConnectorAlreadyConnectedError } from 'wagmi'
-import { heading } from '~components/heading'
+import Text from '~cpn/base/text'
 import { useAppWalletContext } from '~context/wallet-context'
 import {
   isMetaMask,
@@ -339,15 +339,12 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
             >
               <Dialog.Panel className="flex overflow-hidden absolute bottom-0 flex-col w-full bg-white rounded-t-2xl md:max-w-md lg:relative lg:flex-row lg:mx-auto lg:w-auto lg:max-w-none lg:rounded-lg lg:shadow-lg">
                 <div className="flex flex-col flex-shrink-0 max-w-full border-b lg:p-5 lg:border-b-0 lg:border-r bg-dashboard-gray-9 border-dashboard-gray-3">
-                  <h1
-                    className={heading({
-                      size: isMobile() ? 'xs' : 'sm',
-                      className:
-                        'whitespace-nowrap text-center font-semibold p-4 lg:p-0 lg:text-left',
-                    })}
+                  <Text
+                    size={isMobile() ? 'xs' : 'sm'}
+                    className="p-4 font-semibold text-center whitespace-nowrap lg:p-0 lg:text-left"
                   >
                     Choose your wallet
-                  </h1>
+                  </Text>
                   <div className="flex overflow-x-auto flex-row gap-x-10 p-4 pt-0 lg:flex-col lg:gap-x-0 lg:gap-y-5 lg:p-0 lg:mt-5">
                     {isAndroid() && (
                       <div className="flex flex-col flex-shrink-0 gap-y-0.5 lg:gap-y-2">

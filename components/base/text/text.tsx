@@ -1,7 +1,7 @@
 import type { VariantProps } from 'class-variance-authority'
 import { cva } from 'class-variance-authority'
 
-const variant = cva(['display'], {
+export const text = cva([], {
   variants: {
     appearance: {
       primary: ['text-foreground'],
@@ -19,7 +19,20 @@ const variant = cva(['display'], {
   },
 })
 
-type Props = VariantProps<typeof variant> & { className?: string }
+type Props = VariantProps<typeof text> & {
+  className?: string
+} & Omit<React.HTMLProps<HTMLSpanElement>, 'size'>
 
-export const heading = ({ className = '', ...rest }: Props) =>
-  variant({ className, ...rest })
+export default function Text({
+  className,
+  appearance,
+  size,
+  children,
+  ...rest
+}: Props) {
+  return (
+    <span className={text({ appearance, size, className })} {...rest}>
+      {children}
+    </span>
+  )
+}

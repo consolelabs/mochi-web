@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react'
-
 import Button from './button'
 
 const meta: Meta<typeof Button> = {
@@ -11,15 +10,33 @@ const meta: Meta<typeof Button> = {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
+  argTypes: {
+    appearance: {
+      control: 'select',
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'gray',
+        'mochi',
+        'text',
+        'pill',
+      ],
+      defaultValue: 'primary',
+    },
+    size: {
+      control: 'select',
+      options: ['xs', 'sm', 'base', 'icon', 'icon-sm'],
+      defaultValue: 'base',
+    },
+  },
 }
 
 export default meta
 type Story = StoryObj<typeof Button>
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Primary: Story = {
+export const Default: Story = {
   args: {
-    appearance: 'primary',
     children: 'Button',
   },
 }
