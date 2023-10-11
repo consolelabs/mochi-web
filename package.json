@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
-    "fetch-definitions": "swagger-typescript-api --no-client -p https://api.mochi-profile.console.so/swagger/doc.json -o ./types -n mochi-profile-schema.ts && swagger-typescript-api --no-client -p https://api.mochi.pod.town/swagger/doc.json -o ./types -n mochi-schema.ts"
+    "fetch-definitions": "swagger-typescript-api --no-client -p https://api.mochi-profile.console.so/swagger/doc.json -o ./types -n mochi-profile-schema.ts && swagger-typescript-api --no-client -p https://api.mochi.pod.town/swagger/doc.json -o ./types -n mochi-schema.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^0.1.67",
@@ -65,6 +67,15 @@
   },
   "devDependencies": {
     "@iconify/react": "^4.1.0",
+    "@storybook/addon-essentials": "^7.4.6",
+    "@storybook/addon-interactions": "^7.4.6",
+    "@storybook/addon-links": "^7.4.6",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/addon-styling-webpack": "^0.0.5",
+    "@storybook/blocks": "^7.4.6",
+    "@storybook/nextjs": "^7.4.6",
+    "@storybook/react": "^7.4.6",
+    "@storybook/testing-library": "^0.2.2",
     "@types/dom-to-image": "^2.6.4",
     "@types/fnando__sparkline": "^0.3.4",
     "@types/lodash.capitalize": "^4.2.7",
@@ -82,6 +93,7 @@
     "local-ssl-proxy": "^2.0.5",
     "postcss": "^8.4.12",
     "prettier": "^2.7.1",
+    "storybook": "^7.4.6",
     "swagger-typescript-api": "^12.0.3",
     "tailwindcss": "^3.2.7",
     "typescript": "4.9.5"
