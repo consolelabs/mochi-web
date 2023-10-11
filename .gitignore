@@ -39,3 +39,4 @@ yarn-error.log*
 components/icons/components
 
 .env
+storybook-static
