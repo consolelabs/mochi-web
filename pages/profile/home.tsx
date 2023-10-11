@@ -2,7 +2,7 @@ import React from 'react'
 import type { ReactElement } from 'react'
 import DashboardLayout from '~components/auth-layout'
 import { NextPageWithLayout } from '~pages/_app'
-import { button } from '~components/button'
+import Button from '~cpn/base/button'
 import { shallow } from 'zustand/shallow'
 import { useProfileStore } from '~store'
 import cc from 'clsx'
@@ -13,7 +13,7 @@ import { API, GET_PATHS } from '~constants/api'
 import useSWR from 'swr'
 import NewAppForm from '~components/new-app-form'
 import Alert from '~components/alert'
-import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import Avatar from '~cpn/base/avatar'
 import { logo } from '~utils/image'
 import Profile from '~components/profile'
 import { boringAvatar } from '~utils/string'
@@ -204,7 +204,7 @@ const Home: NextPageWithLayout = () => {
                   >
                     <div className="p-1 w-20 h-20 rounded-lg border border-gray-300 hover:bg-gray-200 aspect-square">
                       {s.hasMochi ? (
-                        <CutoutAvatar
+                        <Avatar
                           src={s.icon || boringAvatar(s.id)}
                           cutoutSrc={logo.src}
                           size="parent"
@@ -270,16 +270,14 @@ const Home: NextPageWithLayout = () => {
             title="Build an app"
             className="relative bg-[#faf9f7]"
             cta={
-              <button
+              <Button
                 type="button"
                 onClick={onOpen}
-                className={button({
-                  appearance: 'secondary',
-                  size: 'sm',
-                })}
+                appearance="secondary"
+                size="sm"
               >
                 Create an app
-              </button>
+              </Button>
             }
           >
             <Pattern className="absolute top-0 left-0 w-full" />
@@ -297,9 +295,9 @@ const Home: NextPageWithLayout = () => {
           <Box
             title="Account settings"
             cta={
-              <button className={button({ appearance: 'text', size: 'sm' })}>
+              <Button appearance="text" size="sm">
                 Edit
-              </button>
+              </Button>
             }
           >
             <span className="text-sm text-gray-500">

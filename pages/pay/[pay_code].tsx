@@ -9,7 +9,7 @@ import { GetServerSideProps } from 'next'
 import { API } from '~constants/api'
 import { utils } from 'ethers'
 import clsx from 'clsx'
-import { button } from '~components/button'
+import Button, { button } from '~cpn/base/button'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { isSSR, truncate } from '@dwarvesf/react-utils'
@@ -18,7 +18,7 @@ import { useDisclosure } from '@dwarvesf/react-hooks'
 import useSWR from 'swr'
 import Card from '~components/Pay/Card'
 import Link from 'next/link'
-import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import Avatar from '~cpn/base/avatar'
 import { useEffect } from 'react'
 import { PayRequest, usePayRequest } from '~store/pay-request'
 import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
@@ -204,14 +204,9 @@ export default function PayCode({
               This Pay Link expires after 3 days and can only be used once.
               Please ask your friend for a new link!
             </span>
-            <button
-              className={button({
-                appearance: 'secondary',
-                className: 'mt-8',
-              })}
-            >
+            <Button appearance="secondary" className="mt-8">
               <div>Back to Home page</div>
-            </button>
+            </Button>
           </>
         ) : (
           <>
@@ -240,7 +235,7 @@ export default function PayCode({
                       />
                     </div>
                   ) : (
-                    <CutoutAvatar
+                    <Avatar
                       src={payRequest.token.icon}
                       cutoutSrc={payRequest.token.chain.icon}
                       size="xs"

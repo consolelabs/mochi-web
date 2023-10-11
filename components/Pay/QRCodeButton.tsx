@@ -1,6 +1,6 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import { button } from '~components/button'
+import Button from '~cpn/base/button'
 import Modal from '~components/Modal'
 import { QRCode as QRCodeGenerator } from '~components/Wallet/QRCode'
 import { useMedia } from '@dwarvesf/react-hooks'
@@ -92,19 +92,13 @@ export default function QRCodeInfo({ children, links, image }: Props) {
 
   return (
     <>
-      <button
-        className={button({
-          size: 'sm',
-          className: 'flex-1',
-        })}
-        onClick={onOpen}
-      >
+      <Button size="sm" className="flex-1" onClick={onOpen}>
         <Icon
           icon="fluent:qr-code-28-filled"
           className="w-4 h-4 text-dashboard-gray-4"
         />
         {children ?? <div className="whitespace-nowrap">QR Code</div>}
-      </button>
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <div className="flex flex-col gap-y-1 pb-2 w-full max-w-xs bg-white rounded-lg sm:max-w-md p-[14px]">
@@ -115,7 +109,7 @@ export default function QRCodeInfo({ children, links, image }: Props) {
             </div>
           </div>
 
-          <button
+          <Button
             onClick={async () => {
               const ref = refs.current[idx]
               if (!ref) return
@@ -135,10 +129,11 @@ export default function QRCodeInfo({ children, links, image }: Props) {
                 .then(copied)
                 .then(setTimeout.bind(window, clearCopied, 500))
             }}
-            className={button({ size: 'sm', className: 'mx-auto my-2' })}
+            size="sm"
+            className="my-2 mx-auto"
           >
             {justCopied ? 'Copied!' : 'Copy QR Code'}
-          </button>
+          </Button>
           <Inner
             setIdx={setIdx}
             refs={refs}

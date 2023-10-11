@@ -23,9 +23,8 @@ import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
 import Modal from '~components/Modal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { isBeta } from '~constants'
-import { button } from '~components/button'
+import Button from '~cpn/base/button'
 import Script from 'next/script'
-import { AUTH_TELEGRAM_USERNAME } from '~envs'
 
 const TopProgressBar = dynamic(() => import('~app/layout/nprogress'), {
   ssr: false,
@@ -139,16 +138,14 @@ export default function App(props: AppPropsWithLayout) {
             beta site, proceed with caution.
           </span>
           <div className="flex gap-x-2 self-stretch mt-5">
-            <button
+            <Button
               type="button"
-              className={button({
-                appearance: 'secondary',
-                className: 'flex-1',
-              })}
+              appearance="secondary"
+              className="flex-1"
               onClick={onClose}
             >
               I understand the risk
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>

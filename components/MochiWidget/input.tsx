@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react'
-import { button } from '~components/button'
+import Button from '~cpn/base/button'
 
 export default function Input() {
   return (
@@ -24,15 +24,15 @@ export default function Input() {
         <div className="flex flex-1 justify-between items-center">
           <span className="text-[#848281] text-sm">Balance: 800 coffee</span>
           <div className="flex gap-x-2">
-            <button className={button({ appearance: 'text', size: 'xs' })}>
+            <Button appearance="text" size="xs">
               1
-            </button>
-            <button className={button({ appearance: 'text', size: 'xs' })}>
+            </Button>
+            <Button appearance="text" size="xs">
               2
-            </button>
-            <button className={button({ appearance: 'text', size: 'xs' })}>
+            </Button>
+            <Button appearance="text" size="xs">
               5
-            </button>
+            </Button>
           </div>
         </div>
       </div>

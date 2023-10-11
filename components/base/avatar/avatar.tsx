@@ -1,7 +1,7 @@
 import React from 'react'
-import { cva } from 'class-variance-authority'
-import type { VariantProps } from 'class-variance-authority'
 import { boringAvatar } from '~utils/string'
+import cc from 'clsx'
+import { cva, VariantProps } from 'class-variance-authority'
 
 const style = cva([], {
   variants: {
@@ -19,49 +19,30 @@ const style = cva([], {
   },
 })
 
-const cutoutMaskRadius = cva([], {
-  variants: {
-    size: {
-      xs: '26%',
-      sm: '25%',
-      base: '24%',
-      lg: '23%',
-      xl: '22.5%',
-      parent: '24%',
-    },
-  },
-  defaultVariants: {
-    size: 'base',
-  },
-})
-
 type Props = VariantProps<typeof style> & {
   src: string
   srcFallbackText?: string
   srcFallbackVariant?: 'beam' | 'ring'
   cutoutSrc: string
+  className?: string
 }
 
-export default function CutoutAvatar({
+export default function Avatar({
   size,
   srcFallbackText,
   srcFallbackVariant = 'beam',
   src,
   cutoutSrc,
+  className,
 }: Props) {
   const id = String(Date.now())
 
   return (
-    <div style={{ display: 'flex' }} className={style({ size })}>
+    <div className={size ? style({ size }) : cc(className, 'flex')}>
       <svg role="none" width="100%" height="100%" viewBox="0 0 100 100">
         <mask id={`circle-mask-${id}`}>
           <circle fill="white" cx="50%" cy="50%" r="50%"></circle>
-          <circle
-            fill="black"
-            cx="80%"
-            cy="80%"
-            r={cutoutMaskRadius({ size })}
-          ></circle>
+          <circle fill="black" cx="80%" cy="80%" r="24%"></circle>
         </mask>
         <image
           height="100%"

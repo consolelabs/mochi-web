@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Alert from '~components/alert'
 import Dialog from '~components/Dialog'
 import { API } from '~constants/api'
-import { button } from './button'
+import Button from '~cpn/base/button'
 
 type Props = {
   onClose: () => void
@@ -51,19 +51,12 @@ export default function NewAppForm({ onCreated, onClose }: Props) {
           </Alert>
         )}
         <div className="flex gap-2 justify-end mt-7">
-          <button
-            type="button"
-            onClick={onClose}
-            className={button({ appearance: 'text', size: 'sm' })}
-          >
+          <Button appearance="text" size="sm" type="button" onClick={onClose}>
             Cancel
-          </button>
-          <button
-            type="submit"
-            className={button({ appearance: 'secondary', size: 'sm' })}
-          >
+          </Button>
+          <Button appearance="secondary" size="sm" type="submit">
             Create
-          </button>
+          </Button>
         </div>
       </form>
     </Dialog>

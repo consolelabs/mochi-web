@@ -1,6 +1,6 @@
 import { useClipboard } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
-import { button } from './button'
+import Button from '~cpn/base/button'
 import cc from 'clsx'
 import { truncate } from '@dwarvesf/react-utils'
 
@@ -14,14 +14,12 @@ export default function CopyButton({
   const { hasCopied, onCopy } = useClipboard(children)
 
   return (
-    <button
+    <Button
       type="button"
       onClick={onCopy}
-      className={button({
-        appearance: 'text',
-        size: 'sm',
-        className: cc('flex gap-x-2 items-center pr-3', className ?? ''),
-      })}
+      appearance="text"
+      size="sm"
+      className={cc('flex gap-x-2 items-center pr-3', className ?? '')}
     >
       {truncate(children, 6, true)}
       <div className="relative w-4 h-4">
@@ -40,6 +38,6 @@ export default function CopyButton({
           })}
         />
       </div>
-    </button>
+    </Button>
   )
 }

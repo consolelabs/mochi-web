@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
 
-const variant = cva(
+export const button = cva(
   [
     'flex gap-x-1 items-center justify-center flex-shrink-0 font-semibold transition-all duration-100 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed',
   ],
@@ -62,7 +62,25 @@ const variant = cva(
   },
 )
 
-type Props = VariantProps<typeof variant> & { className?: string }
+type Props = VariantProps<typeof button> & {
+  className?: string
+} & Omit<React.HTMLProps<HTMLButtonElement>, 'size'>
 
-export const button = ({ className = '', ...rest }: Props = {}) =>
-  variant({ className, ...rest })
+export default function Button({
+  size,
+  className,
+  appearance,
+  children,
+  type = 'button',
+  ...rest
+}: Props) {
+  return (
+    <button
+      className={button({ appearance, className, size })}
+      type={type as any}
+      {...rest}
+    >
+      {children}
+    </button>
+  )
+}

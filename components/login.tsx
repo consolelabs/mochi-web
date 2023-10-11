@@ -1,4 +1,4 @@
-import { button } from './button'
+import Button, { button } from '~cpn/base/button'
 import { heading } from './heading'
 import { Icon } from '@iconify/react'
 import { useAppWalletContext } from '~context/wallet-context'
@@ -101,18 +101,16 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
   if (compact) {
     return (
       <div className="grid grid-cols-2 grid-rows-3 gap-3 p-3">
-        <button
+        <Button
           type="button"
+          appearance="secondary"
+          size="sm"
+          className="col-span-2"
           onClick={() => showConnectModal(loginAfterConnect)}
-          className={button({
-            appearance: 'secondary',
-            size: 'sm',
-            className: 'col-span-2',
-          })}
         >
           <WalletAddIcon className="mr-2 w-5 h-5" />
           Connect Wallet
-        </button>
+        </Button>
         <a
           href={discordAuthUrl ?? ''}
           className={button({

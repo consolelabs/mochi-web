@@ -7,7 +7,7 @@ import { HOME_URL } from '~envs'
 import { SEO } from '~app/layout/seo'
 import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
 import { Icon } from '@iconify/react'
-import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import Avatar from '~cpn/base/avatar'
 import {
   discordLogo,
   successStampIcon,
@@ -196,13 +196,13 @@ function Template({
         alt={title}
       />
       <div className="absolute bottom-0 left-1/2 p-0.5 rounded-full -translate-x-1/2 translate-y-1/2 bg-inherit">
-        <Avatar {...rest} />
+        <InternalAvatar {...rest} />
       </div>
     </div>
   )
 }
 
-function Avatar({
+function InternalAvatar({
   platformIcon,
   avatar,
 }: {
@@ -212,7 +212,7 @@ function Avatar({
   return !platformIcon ? (
     <img className="w-14 h-14 rounded-full" src={avatar} alt="" />
   ) : (
-    <CutoutAvatar size="sm" src={avatar} cutoutSrc={platformIcon} />
+    <Avatar size="sm" src={avatar} cutoutSrc={platformIcon} />
   )
 }
 
@@ -313,7 +313,10 @@ export default function Transfer({
           <div className="flex flex-col gap-y-12 py-3 px-6 pb-6 md:px-8">
             <div className="flex relative flex-col items-center">
               {ogData.template ? null : (
-                <Avatar platformIcon={platformIcon} avatar={sender.avatar} />
+                <InternalAvatar
+                  platformIcon={platformIcon}
+                  avatar={sender.avatar}
+                />
               )}
               <div className="mt-2 text-sm">
                 <span className="font-medium">{sender.value}</span>

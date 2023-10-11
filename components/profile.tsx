@@ -3,7 +3,7 @@ import { api, UI } from '~constants/mochi'
 import useSWR from 'swr'
 import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
 import { Icon } from '@iconify/react'
-import CutoutAvatar from './CutoutAvatar/CutoutAvatar'
+import Avatar from '~cpn/base/avatar'
 import { Stats } from '@consolelabs/mochi-rest'
 import { discordLogo, telegramLogo } from '~utils/image'
 import { Pagination } from './Dashboard/Pagination'
@@ -145,7 +145,7 @@ export default function Profile() {
             <Box
               icon={
                 stats?.most_send.profile.platformIcon ? (
-                  <CutoutAvatar
+                  <Avatar
                     src={stats.most_send.profile.avatar}
                     srcFallbackText={stats.most_send.other_profile_id}
                     cutoutSrc={stats.most_send.profile.platformIcon}
@@ -173,7 +173,7 @@ export default function Profile() {
             <Box
               icon={
                 stats?.most_receive.profile.platformIcon ? (
-                  <CutoutAvatar
+                  <Avatar
                     src={stats?.most_receive.profile.avatar}
                     srcFallbackText={stats.most_receive.other_profile_id}
                     cutoutSrc={stats.most_receive.profile.platformIcon}

@@ -1,7 +1,7 @@
 import { truncate } from '@dwarvesf/react-utils'
 import { ImageResponse } from '@vercel/og'
 import { NextRequest } from 'next/server'
-import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import Avatar from '~cpn/base/avatar'
 import { HOME_URL } from '~envs'
 
 export const config = {
@@ -193,7 +193,7 @@ const og = async (req: NextRequest) => {
                         alt=""
                       />
                     ) : (
-                      <CutoutAvatar
+                      <Avatar
                         cutoutSrc={`${HOME_URL}/assets/coin.png`}
                         src={data.tokenIcon}
                         size="xs"

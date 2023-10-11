@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react'
-import { button } from '~components/button'
+import Button, { button } from '~cpn/base/button'
 import { label as labelStyles } from '~components/Dashboard/Form/styles'
 import { FileInput, Input } from '~components/Dashboard/Input'
 import { Menu } from '~components/Dashboard/Menu'
@@ -16,7 +16,7 @@ import { Table } from '~components/Dashboard/Table'
 import Field from '~components/Dashboard/Form/Field'
 import { useCallback, useMemo, useState } from 'react'
 import { UseSortByState } from 'react-table'
-import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import Avatar from '~cpn/base/avatar'
 
 export default function Default() {
   const mounted = useHasMounted()
@@ -78,26 +78,27 @@ export default function Default() {
                     onClick: setComponentPage(
                       'cutout-avatar',
                       <div className="flex gap-2">
-                        <CutoutAvatar
+                        <Avatar
                           src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
                           cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
+                          className="w-36 h-36"
                           size="xl"
                         />
-                        <CutoutAvatar
+                        <Avatar
                           src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
                           cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
                           size="lg"
                         />
-                        <CutoutAvatar
+                        <Avatar
                           src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
                           cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
                         />
-                        <CutoutAvatar
+                        <Avatar
                           src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
                           cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
                           size="sm"
                         />
-                        <CutoutAvatar
+                        <Avatar
                           src="https://www.worldcryptoindex.com/wp-content/uploads/2018/01/usdt-logo-300.png"
                           cutoutSrc="https://www.citypng.com/public/uploads/small/11662225468b17snizehiwsims2wniy30tpginmlvry1aapdvfw0j90c79z8tyqgagylhqmvj6krludjrmmmccyr6zgglbziqjtywcdhy7ykebm.png"
                           size="xs"
@@ -118,51 +119,24 @@ export default function Default() {
                       'button',
                       <div className="flex flex-col gap-y-4">
                         <div className="flex flex-wrap gap-2">
-                          <button className={button({ appearance: 'primary' })}>
-                            Primary
-                          </button>
-                          <button
-                            className={button({ appearance: 'secondary' })}
-                          >
-                            Secondary
-                          </button>
-                          <button className={button({ appearance: 'mochi' })}>
-                            Mochi
-                          </button>
-                          <button className={button({ appearance: 'text' })}>
-                            Text
-                          </button>
+                          <Button appearance="primary">Primary</Button>
+                          <Button appearance="secondary">Secondary</Button>
+                          <Button appearance="mochi">Mochi</Button>
+                          <Button appearance="text">Text</Button>
                         </div>
                         <div className="flex flex-wrap gap-2 items-center">
-                          <button className={button({ appearance: 'primary' })}>
-                            Base
-                          </button>
-                          <button
-                            className={button({
-                              appearance: 'primary',
-                              size: 'sm',
-                            })}
-                          >
+                          <Button appearance="primary">Base</Button>
+                          <Button appearance="primary" size="sm">
                             Small
-                          </button>
+                          </Button>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          <button
-                            className={button({
-                              appearance: 'primary',
-                              size: 'icon',
-                            })}
-                          >
+                          <Button appearance="primary" size="icon">
                             <Icon icon="ic:baseline-discord" />
-                          </button>
-                          <button
-                            className={button({
-                              appearance: 'secondary',
-                              size: 'icon',
-                            })}
-                          >
+                          </Button>
+                          <Button appearance="secondary" size="icon">
                             <Icon icon="ic:baseline-discord" />
-                          </button>
+                          </Button>
                         </div>
                       </div>,
                     ),

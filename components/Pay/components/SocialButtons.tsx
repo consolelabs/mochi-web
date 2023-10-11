@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react'
-import { button } from '~components/button'
+import { button } from '~cpn/base/button'
 import { AUTH_DISCORD_URL } from '~envs'
 
 export default function SocialButtons({

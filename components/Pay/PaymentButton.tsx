@@ -1,7 +1,7 @@
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { Icon } from '@iconify/react'
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import { button } from '~components/button'
+import Button from '~cpn/base/button'
 import Modal from '~components/Modal'
 import { toast } from 'sonner'
 import ConnectSocialButton from './ConnectSocialButton'
@@ -445,13 +445,9 @@ export default function PaymentButton({
     <>
       {isDone && (
         <div className="flex flex-col gap-y-2">
-          <button
-            className={button({
-              appearance: 'secondary',
-            })}
-          >
+          <Button appearance="secondary">
             <div>Back to Home page</div>
-          </button>
+          </Button>
           <ConnectSocialButton />
         </div>
       )}
@@ -473,12 +469,11 @@ export default function PaymentButton({
             show={showPopover ? true : undefined}
           >
             <Popover.Button
+              as={Button}
               onClick={() => setButtonClicked()}
               type="button"
-              className={button({
-                appearance: 'secondary',
-                className: 'w-full',
-              })}
+              appearance="secondary"
+              className="w-full"
             >
               {isPayMe ? (
                 <>
@@ -611,32 +606,28 @@ export default function PaymentButton({
             </>
           )}
           <div className="flex gap-x-2 self-stretch mt-5">
-            <button
+            <Button
               type="button"
-              className={button({
-                appearance: 'secondary',
-                className: 'flex-1',
-              })}
+              appearance="secondary"
+              className="flex-1"
               onClick={() => {
                 hideReminder()
                 option.handler?.()
               }}
             >
               Yes
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={() => {
                 closeConnectModal()
                 hideReminder()
               }}
-              className={button({
-                appearance: 'primary',
-                className: 'flex-1',
-              })}
+              appearance="primary"
+              className="flex-1"
             >
               No
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>

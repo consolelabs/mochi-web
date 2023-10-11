@@ -1,6 +1,6 @@
 import { utils } from 'ethers'
 import { useForm } from 'react-hook-form'
-import { button } from '~components/button'
+import Button from '~cpn/base/button'
 import Field from '~components/Dashboard/Form/Field'
 import { Input } from '~components/Dashboard/Input'
 import { isSolAddress } from '~utils/sol'
@@ -39,23 +39,12 @@ export default function WalletAddressForm({
           </Field>
         </div>
         <div className="flex gap-x-2 justify-end">
-          <button
-            type="button"
-            className={button({
-              appearance: 'gray',
-            })}
-            onClick={onCancel}
-          >
+          <Button type="button" appearance="gray" onClick={onCancel}>
             Cancel
-          </button>
-          <button
-            className={button({
-              appearance: 'secondary',
-            })}
-            type="submit"
-          >
+          </Button>
+          <Button appearance="secondary" type="submit">
             Claim
-          </button>
+          </Button>
         </div>
       </form>
     </div>

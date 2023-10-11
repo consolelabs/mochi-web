@@ -6,11 +6,10 @@ import Link from 'next/link'
 import { Fragment, ReactElement, useCallback, useRef, useState } from 'react'
 import Alert from '~components/alert'
 import AuthenticatedLayout from '~components/auth-layout'
-import { button } from '~components/button'
-import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import Button from '~cpn/base/button'
+import Avatar from '~cpn/base/avatar'
 import { API } from '~constants/api'
 import { NextPageWithLayout } from '~pages/_app'
-import { useProfileStore } from '~store'
 import { boringAvatar } from '~utils/string'
 import { utils as mochiUtils } from '@consolelabs/mochi-ui'
 import { utils } from 'ethers'
@@ -218,19 +217,17 @@ function Home({ id, key, name, avatar, balances }: Props) {
                   </div>
                   <div className="flex absolute right-2 top-1/2 gap-x-2 -translate-y-1/2">
                     {newKey && (
-                      <button
+                      <Button
                         type="button"
                         onClick={onCopy}
-                        className={button({
-                          appearance: 'text',
-                          className: 'bg-white-pure',
-                          size: 'xs',
-                        })}
+                        appearance="text"
+                        size="xs"
+                        className="bg-white-pure"
                       >
                         {hasCopied ? 'Copied' : 'Copy'}
-                      </button>
+                      </Button>
                     )}
-                    <button
+                    <Button
                       onClick={() => {
                         API.MOCHI_PROFILE.put(
                           { app_name: name },
@@ -240,14 +237,12 @@ function Home({ id, key, name, avatar, balances }: Props) {
                         })
                       }}
                       type="button"
-                      className={button({
-                        appearance: 'text',
-                        className: 'bg-white-pure',
-                        size: 'xs',
-                      })}
+                      appearance="text"
+                      size="xs"
+                      className="bg-white-pure"
                     >
                       Reset
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -291,25 +286,18 @@ function Home({ id, key, name, avatar, balances }: Props) {
                       You have unsaved changes
                     </span>
                     <div className="flex">
-                      <button
+                      <Button
                         type="button"
                         onClick={reset}
-                        className={button({
-                          appearance: 'text',
-                          size: 'xs',
-                          className: 'text-white border-none hover:underline',
-                        })}
+                        appearance="text"
+                        size="xs"
+                        className="text-white border-none hover:underline"
                       >
                         Reset
-                      </button>
-                      <button
-                        className={button({
-                          appearance: 'primary',
-                          size: 'xs',
-                        })}
-                      >
+                      </Button>
+                      <Button appearance="primary" size="xs">
                         Save changes
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -357,7 +345,7 @@ function Home({ id, key, name, avatar, balances }: Props) {
                         />
                       ) : (
                         <div className="w-7 h-7">
-                          <CutoutAvatar
+                          <Avatar
                             src={bal.token.icon}
                             cutoutSrc={bal.token.chain.icon}
                             srcFallbackText={bal.token.symbol}
@@ -401,16 +389,14 @@ function Home({ id, key, name, avatar, balances }: Props) {
               </span>
             </div>
             <div className="flex gap-2">
-              <button
+              <Button
+                appearance="text"
+                size="sm"
                 type="button"
-                className={button({
-                  appearance: 'text',
-                  size: 'sm',
-                  className: 'text-red-400 border-red-200',
-                })}
+                className="text-red-400 border-red-200"
               >
                 Delete app
-              </button>
+              </Button>
             </div>
           </div>
         </div>

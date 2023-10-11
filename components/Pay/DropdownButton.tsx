@@ -1,7 +1,7 @@
 import { noop } from '@dwarvesf/react-utils'
-import clsx from 'clsx'
+import cc from 'clsx'
 import React from 'react'
-import { button } from '~components/button'
+import Button from '~cpn/base/button'
 
 export const DropdownButton = ({
   icon,
@@ -19,13 +19,10 @@ export const DropdownButton = ({
   disabled?: boolean
 }) => {
   return (
-    <button
-      type="button"
-      className={button({
-        appearance: 'text',
-        className: clsx('!p-0 gap-x-2', {
-          'opacity-40 outline-none cursor-auto': disabled,
-        }),
+    <Button
+      appearance="text"
+      className={cc('!p-0 gap-x-2', {
+        'opacity-40 outline-none cursor-auto': disabled,
       })}
       onClick={onClick}
     >
@@ -45,6 +42,6 @@ export const DropdownButton = ({
           {description}
         </div>
       </div>
-    </button>
+    </Button>
   )
 }

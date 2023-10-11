@@ -1,5 +1,5 @@
 import { shallow } from 'zustand/shallow'
-import CutoutAvatar from '~components/CutoutAvatar/CutoutAvatar'
+import Avatar from '~cpn/base/avatar'
 import { HOME_URL } from '~envs'
 import { usePayRequest } from '~store/pay-request'
 
@@ -160,7 +160,7 @@ export function CardUI({
                 alt={`${symbol} token icon`}
               />
             ) : (
-              <CutoutAvatar
+              <Avatar
                 cutoutSrc={chainIcon || '/assets/coin.png'}
                 src={tokenIcon}
                 size="xs"
