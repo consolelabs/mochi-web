@@ -3,10 +3,10 @@ import { api, UI } from '~constants/mochi'
 import useSWR from 'swr'
 import { Platform, utils as mochiUtils } from '@consolelabs/mochi-ui'
 import { Icon } from '@iconify/react'
-import Avatar from '~cpn/base/avatar'
 import { Stats } from '@consolelabs/mochi-rest'
 import { discordLogo, telegramLogo } from '~utils/image'
 import { Pagination } from './Dashboard/Pagination'
+import { Avatar } from '@consolelabs/ui-components'
 
 const Box = ({
   children,
@@ -84,11 +84,7 @@ export default function Profile() {
   return (
     <div className="flex flex-col max-w-3xl">
       <div className="flex flex-col gap-y-2 items-center mx-auto mb-10">
-        <img
-          src={me?.avatar}
-          className="w-24 h-24 rounded-full border border-gray-200"
-          alt=""
-        />
+        <Avatar src={me?.avatar ?? ''} fallback={me?.profile_name} size="xl" />
         <span className="font-semibold">{me?.profile_name}</span>
       </div>
       <div className="flex gap-3">
@@ -147,8 +143,7 @@ export default function Profile() {
                 stats?.most_send.profile.platformIcon ? (
                   <Avatar
                     src={stats.most_send.profile.avatar}
-                    srcFallbackText={stats.most_send.other_profile_id}
-                    cutoutSrc={stats.most_send.profile.platformIcon}
+                    smallSrc={stats.most_send.profile.platformIcon}
                     size="sm"
                   />
                 ) : null
@@ -175,8 +170,7 @@ export default function Profile() {
                 stats?.most_receive.profile.platformIcon ? (
                   <Avatar
                     src={stats?.most_receive.profile.avatar}
-                    srcFallbackText={stats.most_receive.other_profile_id}
-                    cutoutSrc={stats.most_receive.profile.platformIcon}
+                    smallSrc={stats.most_receive.profile.platformIcon}
                     size="sm"
                   />
                 ) : null

@@ -20,7 +20,6 @@ import { Toaster } from 'sonner'
 import { useRouter } from 'next/router'
 import { useAuthStore } from '~store'
 import { shallow } from 'zustand/shallow'
-import ConnectWalletModal from '~components/Wallet/ConnectWalletModal'
 import Modal from '~components/Modal'
 import { useDisclosure } from '@dwarvesf/react-hooks'
 import { isBeta } from '~constants'
@@ -44,8 +43,7 @@ export function handleCancelRendering(e: any) {
 }
 
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
-  const { isShowingConnectModal, closeConnectModal, disconnect } =
-    useAppWalletContext()
+  const { disconnect } = useAppWalletContext()
   const { query, asPath, replace, isReady } = useRouter()
   const { isLoggedIn, login, removeToken } = useAuthStore(
     (s) => ({
@@ -84,15 +82,7 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
     }
   }, [asPath, disconnect, removeToken, replace])
 
-  return (
-    <>
-      {getLayout(<Component {...pageProps} />)}
-      <ConnectWalletModal
-        isOpen={isShowingConnectModal}
-        onClose={closeConnectModal}
-      />
-    </>
-  )
+  return <>{getLayout(<Component {...pageProps} />)}</>
 }
 
 export default function App(props: AppPropsWithLayout) {
@@ -124,11 +114,11 @@ export default function App(props: AppPropsWithLayout) {
         }}
       />
       <TopProgressBar />
+      <Script
+        async
+        src="https://telegram.org/js/telegram-widget.js?22"
+      ></Script>
       <WalletProvider>
-        <Script
-          async
-          src="https://telegram.org/js/telegram-widget.js?22"
-        ></Script>
         <InnerApp {...props} />
       </WalletProvider>
       <Modal isOpen={isOpen} onClose={onClose}>
