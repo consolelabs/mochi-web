@@ -11,6 +11,7 @@ import type { ReactNode, ReactElement } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import 'nprogress/nprogress.css'
+import '@consolelabs/ui-components/styles.css'
 import '~styles/global.css'
 import '~styles/nprogress.css'
 import '../styles/tos.css'
@@ -43,7 +44,8 @@ export function handleCancelRendering(e: any) {
 }
 
 function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
-  const { isShowingConnectModal, closeConnectModal } = useAppWalletContext()
+  const { isShowingConnectModal, closeConnectModal, disconnect } =
+    useAppWalletContext()
   const { query, asPath, replace, isReady } = useRouter()
   const { isLoggedIn, login, removeToken } = useAuthStore(
     (s) => ({
@@ -74,12 +76,13 @@ function InnerApp({ Component, pageProps }: AppPropsWithLayout) {
     const hash = parts.at(1)
     const path = parts.at(0)?.split('?').at(0)
     if (hash && hash === 'logout') {
+      disconnect()
       removeToken()
       replace({ pathname: path }, undefined, {
         shallow: true,
       }).catch(handleCancelRendering)
     }
-  }, [asPath, removeToken, replace])
+  }, [asPath, disconnect, removeToken, replace])
 
   return (
     <>

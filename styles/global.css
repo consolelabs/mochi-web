@@ -14,7 +14,6 @@ body {
   overflow: hidden;
   position: relative;
   height: 100vh;
-  font-weight: 300;
   letter-spacing: -0.2px;
   color: #474645;
 }
@@ -35,16 +34,6 @@ body {
 
 .body-block {
   @apply max-w-7xl mx-auto relative z-10;
-}
-
-/* p for titles/headings */
-p {
-  @apply text-foreground;
-}
-
-/* span for normal text */
-span {
-  @apply text-foreground-secondary font-extralight;
 }
 
 /* Gradient block */

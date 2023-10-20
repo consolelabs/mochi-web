@@ -37,7 +37,6 @@ export type Blockchain = 'EVM' | 'SOL'
 
 export type ConnectCallback = (data: {
   signature: string
-  code: string
   address: string
   msg: string
   platform: 'evm' | 'solana' | 'sui' | 'ronin'

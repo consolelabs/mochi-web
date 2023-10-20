@@ -1,14 +1,14 @@
 import Button, { button } from '~cpn/base/button'
 import Text from '~cpn/base/text'
 import { Icon } from '@iconify/react'
-import { useAppWalletContext } from '~context/wallet-context'
-import { useLoginAfterConnect } from '~hooks/useLoginAfterConnect'
 import useSWR from 'swr'
 import { api } from '~constants/mochi'
 import { AUTH_TELEGRAM_ID, MOCHI_PROFILE_API } from '~envs'
 import { API } from '~constants/api'
 import qs from 'query-string'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { LoginWidget, useMochi } from '@consolelabs/ui-components'
+import { useAuthStore } from '~store'
 
 const WalletAddIcon = (props: any) => (
   <svg
@@ -50,8 +50,9 @@ const Divider = ({ children }: { children: React.ReactNode }) => {
 }
 
 export function LoginPanel({ compact = false }: { compact?: boolean }) {
-  const { showConnectModal } = useAppWalletContext()
-  const loginAfterConnect = useLoginAfterConnect()
+  const [open, setOpen] = useState(false)
+  const { user } = useMochi()
+  const login = useAuthStore((s) => s.login)
   const { data: discordAuthUrl } = useSWR('login-discord', async () => {
     const { data } = await api.profile.auth.byDiscord({
       urlLocation: window.location.href,
@@ -98,19 +99,32 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
     )
   }, [])
 
+  useEffect(() => {
+    if (user?.token) {
+      login({ token: user.token })
+    }
+  }, [login, user?.token])
+
   if (compact) {
     return (
       <div className="grid grid-cols-2 grid-rows-3 gap-3 p-3">
-        <Button
-          type="button"
-          appearance="secondary"
-          size="sm"
-          className="col-span-2"
-          onClick={() => showConnectModal(loginAfterConnect)}
-        >
-          <WalletAddIcon className="mr-2 w-5 h-5" />
-          Connect Wallet
-        </Button>
+        <LoginWidget
+          open={open}
+          onOpenChange={setOpen}
+          authUrl="https://api-preview.mochi-profile.console.so/api/v1/profiles/auth"
+          meUrl="https://api-preview.mochi-profile.console.so/api/v1/profiles/me"
+          trigger={
+            <Button
+              type="button"
+              appearance="secondary"
+              size="sm"
+              className="col-span-2"
+            >
+              <WalletAddIcon className="mr-2 w-5 h-5" />
+              Connect Wallet
+            </Button>
+          }
+        />
         <a
           href={discordAuthUrl ?? ''}
           className={button({
@@ -166,14 +180,21 @@ export function LoginPanel({ compact = false }: { compact?: boolean }) {
       </Text>
       <div className="flex flex-col gap-y-5 bg-inherit">
         <Divider>Sign in with an extension wallet</Divider>
-        <button
-          type="button"
-          onClick={() => showConnectModal(loginAfterConnect)}
-          className="flex items-center self-center py-3 px-7 my-3 font-medium text-white bg-black rounded-xl"
-        >
-          <WalletAddIcon className="mr-2 w-5 h-5" />
-          Connect Wallet
-        </button>
+        <LoginWidget
+          open={open}
+          onOpenChange={setOpen}
+          authUrl="https://api-preview.mochi-profile.console.so/api/v1/profiles/auth"
+          meUrl="https://api-preview.mochi-profile.console.so/api/v1/profiles/me"
+          trigger={
+            <button
+              type="button"
+              className="flex items-center self-center py-3 px-7 my-3 font-medium text-white bg-black rounded-xl"
+            >
+              <WalletAddIcon className="mr-2 w-5 h-5" />
+              Connect Wallet
+            </button>
+          }
+        />
         <Divider>Or connect with verified social links</Divider>
         <div className="grid grid-cols-2 grid-rows-2 gap-3 mt-3">
           <a

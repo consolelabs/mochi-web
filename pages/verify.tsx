@@ -86,13 +86,7 @@ export default function Verify({
                         className={button({ size: 'sm' })}
                         onClick={() =>
                           showConnectModal(
-                            async ({
-                              signature,
-                              code,
-                              address,
-                              platform,
-                              msg,
-                            }) => {
+                            async ({ signature, address, platform, msg }) => {
                               if (!code || loading) return
                               setLoading(true)
                               const payload = {

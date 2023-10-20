@@ -105,12 +105,14 @@ export interface ViewPaginationResponse {
 }
 
 export interface ViewProfile {
-  associated_accounts?: ViewAssociatedAccount[]
-  avatar?: string
-  created_at?: string
-  id?: string
-  profile_name?: string
-  updated_at?: string
+  associated_accounts: ViewAssociatedAccount[]
+  avatar: string
+  created_at: string
+  id: string
+  profile_name: string
+  updated_at: string
+  platform: string
+  platformIcon: string
 }
 
 export interface ViewUserDiscordGuilds {

@@ -3,8 +3,9 @@ import Link from 'next/link'
 import { Fragment } from 'react'
 import { LoginPanel } from '~components/login'
 import { Popover } from '~components/Popover'
-import { useAuthStore } from '~store'
+import { useAuthStore, useProfileStore } from '~store'
 import { logo } from '~utils/image'
+import { ProfileBadge } from '@consolelabs/ui-components'
 
 const NavLinks = ({ className }: { className?: string }) => (
   <div className={['flex flex-wrap items-stretch gap-5', className].join(' ')}>
@@ -15,6 +16,7 @@ const NavLinks = ({ className }: { className?: string }) => (
 )
 
 export const Navbar = () => {
+  const { me } = useProfileStore()
   const { isLoggedIn } = useAuthStore()
 
   return (
@@ -35,9 +37,13 @@ export const Navbar = () => {
           </Link>
           <div className="flex flex-col order-1 gap-y-2 gap-x-5 self-start sm:flex-row sm:self-center sm:ml-auto md:order-2">
             <NavLinks />
-            {isLoggedIn ? (
-              <Link href="/profile" className="text-sm font-semibold">
-                Dashboard
+            {isLoggedIn && me ? (
+              <Link href="/profile">
+                <ProfileBadge
+                  avatar={me.avatar}
+                  name={me.profile_name}
+                  platform={me.platformIcon}
+                />
               </Link>
             ) : (
               <Popover

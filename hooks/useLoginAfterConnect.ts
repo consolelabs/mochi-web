@@ -8,11 +8,10 @@ export const useLoginAfterConnect = () => {
   const { disconnect } = useAppWalletContext()
 
   const loginAfterConnect = useCallback<ConnectCallback>(
-    async ({ signature, msg, address, code, platform }) => {
+    async ({ signature, msg, address, platform }) => {
       API.MOCHI_PROFILE.post(
         {
           wallet_address: address,
-          code,
           signature,
           message: msg,
           platform,

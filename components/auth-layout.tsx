@@ -2,29 +2,53 @@ import Image from 'next/image'
 import { logo } from '~utils/image'
 import clsx from 'clsx'
 import { useHasMounted } from '@dwarvesf/react-hooks'
-import { useAuthStore } from '~store'
+import { useAuthStore, useProfileStore } from '~store'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import ProfileDropdown from './profile-dropdrown'
 import Login from './login'
+import {
+  ProfileBadge,
+  Sidebar,
+  IconLifeBuoy,
+  IconX,
+  IconDiscord,
+  IconStar,
+  IconAddUser,
+  IconCoding,
+  IconSetting,
+  IconGame,
+  IconUser,
+  IconSuperGroup,
+} from '@consolelabs/ui-components'
+import { DISCORD_LINK } from '~envs'
 
 const authenticatedRoute = ['/profile', '/app', '/server']
 
+function Header() {
+  return (
+    <img
+      alt="header"
+      className="object-cover w-full h-20"
+      src="https://pbs.twimg.com/profile_banners/1168522102410010626/1684159976/300x100"
+    />
+  )
+}
+
 export default function AuthenticatedLayout({
   children,
-  /* showSidebar = false, */
   fullWidth = false,
   footer,
   childSEO,
 }: {
   childSEO?: React.ReactNode
   children: React.ReactNode
-  /* showSidebar?: boolean */
   fullWidth?: boolean
   footer?: React.ReactNode
 }) {
   const { pathname } = useRouter()
   const mounted = useHasMounted()
+  const { me } = useProfileStore()
   const { isLoggedIn, isLoadingSession } = useAuthStore()
 
   if (!mounted) return <>{childSEO}</>
@@ -55,33 +79,82 @@ export default function AuthenticatedLayout({
           </span>
           <span className="text-base text-gray-500">Dashboard</span>
         </Link>
-        {isLoggedIn ? (
+        {isLoggedIn && me ? (
           <div className="flex gap-x-5 items-center">
             <span className="text-sm font-medium">See Docs</span>
+            <ProfileBadge
+              avatar={me.avatar}
+              name={me.profile_name}
+              platform={me.platformIcon}
+            />
             <ProfileDropdown />
           </div>
         ) : null}
       </div>
       <div className="flex relative z-10 flex-1">
         {isLoadingSession ? null : isLoggedIn ? (
-          <div
-            className={clsx(
-              'flex items-start gap-x-24 mx-auto w-full max-w-full relative',
-              {
-                'max-w-5xl my-10 px-4': !fullWidth,
-              },
-            )}
-          >
-            {/* {showSidebar ? ( */}
-            {/*   <div className="sticky flex-shrink-0 min-w-[200px] top-[108px]"> */}
-            {/*     <Sidebar /> */}
-            {/*   </div> */}
-            {/* ) : null} */}
-            <div className="flex-1 h-full">
-              {childSEO}
-              {children}
+          <>
+            <div
+              style={{ top: 80, height: 'calc(100vh - 80px)' }}
+              className="sticky left-0 z-10"
+            >
+              <Sidebar
+                Header={Header}
+                headerItems={[
+                  {
+                    title: 'Profile',
+                    Icon: IconUser,
+                    type: 'link',
+                    as: Link,
+                    href: '/profile',
+                  },
+                  { title: 'Server', Icon: IconDiscord },
+                  { title: 'App Store', Icon: IconGame },
+                  { title: 'Settings', Icon: IconSetting },
+                  { type: 'break' },
+                  {
+                    title: 'Developer',
+                    Icon: IconCoding,
+                    type: 'link',
+                    as: Link,
+                    href: '/app',
+                  },
+                  { title: 'Gift your friend', Icon: IconSuperGroup },
+                  { title: 'Invite Friends', Icon: IconAddUser },
+                  { title: 'Feedback', Icon: IconStar },
+                ]}
+                footerItems={[
+                  { title: 'Support', Icon: IconLifeBuoy },
+                  {
+                    title: 'Follow Us',
+                    Icon: IconX,
+                    type: 'link',
+                    href: 'https://twitter.com/mochi_gg_',
+                  },
+                  {
+                    title: 'Join Community',
+                    Icon: IconDiscord,
+                    type: 'link',
+                    href: DISCORD_LINK,
+                  },
+                ]}
+                className="absolute"
+              />
             </div>
-          </div>
+            <div
+              className={clsx(
+                'flex items-start gap-x-24 mx-auto w-full max-w-full relative',
+                {
+                  'max-w-5xl my-10 px-4': !fullWidth,
+                },
+              )}
+            >
+              <div className="flex-1 h-full">
+                {childSEO}
+                {children}
+              </div>
+            </div>
+          </>
         ) : (
           <Login />
         )}

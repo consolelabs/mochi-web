@@ -46,7 +46,7 @@ export const ConnectDetail = ({
     return (
       <div className="relative h-full">
         <div className="flex justify-center items-center w-full h-full">
-          <div className="mx-auto w-full text-center max-w-[200px]">
+          <div className="flex flex-col mx-auto w-full text-center max-w-[200px]">
             <div className="flex justify-center items-center">
               <div className="w-14 h-14 rounded-full lg:w-20 lg:h-20">
                 <img

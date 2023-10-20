@@ -192,7 +192,7 @@ export default function Profile() {
                 <span className="font-medium">
                   {stats?.most_receive.token.symbol}
                 </span>{' '}
-                to{' '}
+                from{' '}
                 <span className="font-medium">
                   {stats?.most_receive.profile.plain}
                 </span>

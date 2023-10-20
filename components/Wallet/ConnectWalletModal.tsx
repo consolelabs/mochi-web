@@ -26,6 +26,7 @@ import { isAndroid, isMobile } from '~utils/isMobile'
 import { getWalletLoginSignMessage } from '~utils/string'
 import { ConnectDetail } from './ConnectDetail'
 import { ConnectWalletIntro } from './ConnectWalletIntro'
+import { useAuthStore } from '~store'
 
 type Props = {
   isOpen: boolean
@@ -50,6 +51,7 @@ type State = {
 }
 
 export default function ConnectWalletModal({ isOpen, onClose }: Props) {
+  const { isLoggedIn } = useAuthStore()
   const { signMsg, isSigning } = useSignMessage()
   const {
     connected,
@@ -102,7 +104,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
             signature,
             address: accounts[0],
             msg,
-            code,
             platform: 'ronin',
           })
         } else {
@@ -276,7 +277,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
           signature,
           address,
           msg,
-          code,
           platform: isSuiConnected ? 'sui' : isEVMConnected ? 'evm' : 'solana',
         }),
       )
@@ -300,8 +300,8 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
     connectModalCallback,
     connected,
     disconnect,
-    isEVMConnected,
     isSigning,
+    isEVMConnected,
     isSuiConnected,
     signMsg,
   ])
@@ -311,6 +311,17 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
       changeWalletStep(WalletStep.None)
     }
   }, [changeWalletStep, isOpen])
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setState({
+        selectedWallet: undefined,
+        walletStep: WalletStep.None,
+        initialWalletStep: WalletStep.None,
+        isConnectionError: false,
+      })
+    }
+  }, [isLoggedIn])
 
   return (
     <Transition show={isOpen} as={Fragment}>
@@ -364,7 +375,6 @@ export default function ConnectWalletModal({ isOpen, onClose }: Props) {
                                         signature,
                                         address,
                                         msg,
-                                        code,
                                         platform: 'solana',
                                       })
                                     }
